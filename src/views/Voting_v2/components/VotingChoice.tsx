@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import dayjs from 'dayjs'
 import { Flex, Text, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from 'hooks/klipProvider'
@@ -94,6 +95,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   const votedChoices = useMemo(() => {
     return participatedProposal ? participatedProposal.choices.map(({ choiceName }) => choiceName) : [];
   }, [participatedProposal])
+  const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])
 
   const onVote = useCallback((balances: string[]) => {
     setTrState(TransactionState.START);
@@ -227,6 +229,9 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   }, [isVoteMore]);
 
   const renderVoteButton = useCallback(() => {
+    if (isEndDate) {
+      return <></>;
+    }
     if (!account) {
       return <UnlockButton width="280px" lg />
     }
@@ -252,7 +257,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
     }
     return <Button lg width="280px" onClick={handleApprove}>{t('Approve Contract')}</Button>
     
-  }, [account, isVoteMore, allowance, transactionHash, handleApprove, t, handleVoteMore, participatedProposal, selectedIndexs.length, onPresentVotingConfirmModal]);
+  }, [account, isVoteMore, isEndDate, allowance, transactionHash, handleApprove, t, handleVoteMore, participatedProposal, selectedIndexs.length, onPresentVotingConfirmModal]);
 
   return (
     <WrapVote>
@@ -274,15 +279,16 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
       <WrapMobilePlural>
         {isMulti && <Text color="orange" textStyle="R_12M">*{t('Plural vote')}</Text>}
       </WrapMobilePlural>
-        {proposal?.choices && proposal.choices.map((choice, index) => <VotingChoiceItem
-          choice={choice}
-          index={index}
-          isMax={maxVotingIndex === index}
-          votingResult={mapVoting[index]}
-          isVoteMore={isVoteMore}
-          isChecked={selectedIndexs.indexOf(index) > -1}
-          isVoted={votedChoices.includes(choice)}
-          onCheckChange={onCheckChange} />)}
+      {proposal?.choices && proposal.choices.map((choice, index) => <VotingChoiceItem
+        choice={choice}
+        index={index}
+        isMax={maxVotingIndex === index}
+        votingResult={mapVoting[index]}
+        isVoteMore={isVoteMore}
+        isChecked={selectedIndexs.indexOf(index) > -1}
+        isVoted={votedChoices.includes(choice)}
+        isEndDate={isEndDate}
+        onCheckChange={onCheckChange} />)}
       <Flex justifyContent="center" mt="22px">
         {renderVoteButton()}
       </Flex>

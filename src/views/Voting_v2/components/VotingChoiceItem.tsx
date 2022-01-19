@@ -1,9 +1,8 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Text, CheckboxLabel, Checkbox, Skeleton, CheckBIcon } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import Translate from './Translate'
-import VoteOptionLabel from './VoteOptionLabel'
 
 interface Props {
   choice: string;
@@ -14,13 +13,14 @@ interface Props {
     percent: string;
     vote: number;
     value: string;
-  }
+  };
+  isEndDate: boolean;
   index: number;
   onCheckChange: (isChecked: boolean, index: number) => void;
   isChecked: boolean;
 }
 
-const WrapChoice = styled(Flex)<{ isParticipated: boolean }>`
+const WrapChoice = styled(Flex)<{ isLeft: boolean }>`
   flex-direction: column;
   padding-top: 20px;
   padding-bottom: 10px;
@@ -35,9 +35,14 @@ const WrapChoice = styled(Flex)<{ isParticipated: boolean }>`
   }
 
   .wrap-votes {
-    margin-left: ${({ isParticipated }) => isParticipated ? '0' : '36px'};
+    margin-left: ${({ isLeft }) => isLeft ? '0' : '36px'};
     margin-top: 6px;
   }
+
+  .range {
+
+  }
+  
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     padding-top: 0;
@@ -57,7 +62,7 @@ const WrapChoice = styled(Flex)<{ isParticipated: boolean }>`
 
     .wrap-votes {
       justify-content: space-between;
-      margin-left: ${({ isParticipated }) => isParticipated ? '0' : '36px'};
+      margin-left: ${({ isLeft }) => isLeft ? '0' : '36px'};
     }
 
     .mobile-percent {
@@ -80,10 +85,16 @@ const RangeValue = styled(Box)<{ width: number, isParticipated: boolean, isMax: 
   background-color: ${({ theme, isParticipated, isMax }) => isParticipated && isMax ? theme.colors.red : theme.colors.lightbrown};
 `
 
-const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, votingResult, isChecked, isVoted, onCheckChange }) => {
+const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, votingResult, isChecked, isVoted, isEndDate, onCheckChange }) => {
   const { t } = useTranslation();
+  const isLeft = useMemo(() => isVoteMore || isEndDate, [isEndDate, isVoteMore]);
 
   const renderChoice = useCallback(() => {
+    if (isEndDate) {
+      return <Text className="choice" textStyle="R_16R" color="black">
+        <Translate text={choice} type="opinion" />
+      </Text>
+    }
     if (isVoteMore) {
       if (isVoted) {
         return <Flex alignItems="center">
@@ -104,19 +115,19 @@ const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, v
         <Translate text={choice} type="opinion" />
       </Text>
     </CheckboxLabel>
-  }, [choice, index, isChecked, isVoteMore, onCheckChange, isVoted]);
+  }, [isEndDate, isVoteMore, isChecked, choice, isVoted, onCheckChange, index]);
 
   return (
-    <WrapChoice key={choice} isParticipated={isVoteMore}>
+    <WrapChoice key={choice} isLeft={isLeft}>
       <Flex justifyContent="space-between" alignItems="center">
         {renderChoice()}
         <div className="percent">
           {
-            votingResult ? <Text textStyle="R_16M" color="deepgrey">{votingResult ? `${!Number.isNaN(votingResult.percent) ? votingResult.percent : '0'  }%` : ' '}</Text> : <Skeleton width="100px" height="100%" animation="waves" />
+            votingResult ? <Text textStyle="R_16M" color="deepgrey">{votingResult ? `${!(window as any).isNaN(votingResult.percent) ? votingResult.percent : '0'  }%` : ' '}</Text> : <Skeleton width="100px" height="100%" animation="waves" />
           }
         </div>
       </Flex>
-      <Flex ml={isVoteMore ? '0' : "36px"} mt="14px">
+      <Flex ml={isLeft ? '0' : "36px"} mt="14px">
         <Range>
           <RangeValue width={votingResult ? +votingResult.percent : 0} isParticipated={isVoteMore} isMax={isMax} />
         </Range>
