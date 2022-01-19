@@ -243,6 +243,7 @@ const getProposal = async ({ id }) => {
 }
 
 export const fetchProposalIndex = (index) => async (dispatch) => {
+  dispatch(setProposalIndex({}))
   const fetchPromise = []
   fetchPromise.push(
     getProposalByIndex({

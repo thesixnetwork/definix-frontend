@@ -112,7 +112,7 @@ const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, v
         {renderChoice()}
         <div className="percent">
           {
-            votingResult ? <Text textStyle="R_16M" color="deepgrey">{votingResult ? `${votingResult.percent  }%` : ' '}</Text> : <Skeleton width="100px" height="100%" animation="waves" />
+            votingResult ? <Text textStyle="R_16M" color="deepgrey">{votingResult ? `${!Number.isNaN(votingResult.percent) ? votingResult.percent : '0'  }%` : ' '}</Text> : <Skeleton width="100px" height="100%" animation="waves" />
           }
         </div>
       </Flex>

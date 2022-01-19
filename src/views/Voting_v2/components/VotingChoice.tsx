@@ -165,7 +165,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
 
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fastRefresh])
+  }, [fastRefresh, proposal])
 
   const onCheckChange = useCallback((isChecked: boolean, index) => {
     function setVoteIndexs(voteIndexs) {
