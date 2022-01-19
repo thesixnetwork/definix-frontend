@@ -218,11 +218,17 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
       const txHash = await onApprove()
       if (txHash) {
         setTransactionHash(_.get(txHash, 'transactionHash'))
+        toastSuccess(t('{{Action}} Complete', {
+          Action: t('actionApprove')
+        }));
       }
     } catch (e) {
       setTransactionHash('')
+      toastError(t('{{Action}} Failed', {
+        Action: t('actionApprove')
+      }));
     }
-  }, [onApprove])
+  }, [onApprove, t, toastError, toastSuccess])
 
   const handleVoteMore = useCallback(() => {
     setIsVoteMore(!isVoteMore);
