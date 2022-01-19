@@ -50,7 +50,6 @@ const Col = styled.td`
       width: 32%;
     }
   }
-
 `
 
 const Link = styled.a`
@@ -66,6 +65,12 @@ const Link = styled.a`
   }
 `
 
+const Title = styled(Text)`
+  ${({ theme }) => theme.textStyle.R_12M}
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  white-space: nowrap;
+`
+
 const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
   const { t, i18n } = useTranslation();
   const { account } = useWallet()
@@ -75,7 +80,7 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
       <WrapTable>
         <Row>
           <Col>
-            <Text textStyle="R_12M" color="mediumgrey">{t('Identifier')}</Text>
+            <Title>{t('Identifier')}</Title>
           </Col>
           <Col>
             <Link as="a" href={`${process.env.REACT_APP_IPFS}/${id}`} target="_blank">
@@ -86,7 +91,7 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
         </Row>
         <Row>
           <Col>
-            <Text textStyle="R_12M" color="mediumgrey">{t('Creator')}</Text>
+            <Title>{t('Creator')}</Title>
           </Col>
           <Col>
             <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
@@ -99,7 +104,7 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
         </Row>
         {/* <Row>
           <Col>
-            <Text textStyle="R_12M" color="mediumgrey">{t('Snapshot')}</Text>
+            <Title>{t('Snapshot')}</Text>
           </Col>
           <Col>
             <Text textStyle="R_14R" color="black">test1</Text>
@@ -107,7 +112,7 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
         </Row> */}
         <Row>
           <Col>
-            <Text textStyle="R_12M" color="mediumgrey">{t('Start Date')}</Text>
+            <Title>{t('Start Date')}</Title>
           </Col>
           <Col>
             <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.startEpoch)}</Text>
@@ -115,7 +120,7 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
         </Row>
         <Row>
           <Col>
-            <Text textStyle="R_12M" color="mediumgrey">{t('End Date')}</Text>
+            <Title>{t('End Date')}</Title>
           </Col>
           <Col>
             <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.endEpoch)}</Text>
