@@ -32,13 +32,17 @@ const WrapTable = styled.table`
   width: 100%;
 `
 
-const Row = styled.tr`
+const HeadRow = styled.tr`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
   &:nth-child(1) {
     border-top: 1px solid ${({ theme }) => theme.colors.border};
     background-color: ${({ theme }) => theme.colors.lightGrey20};
   }
+`
+
+const Row = styled.tr`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const Col = styled.td`
@@ -117,7 +121,7 @@ const InfoVotes: React.FC<Props> = ({ id, proposalIndex }) => {
           <ScrollTable>
             <WrapTable>
               <thead>
-                <Row>
+                <HeadRow>
                   <TitleCol>
                     <Text textStyle="R_12M" color="mediumgrey">{t('Transaction Hash')}</Text>
                   </TitleCol>
@@ -130,38 +134,40 @@ const InfoVotes: React.FC<Props> = ({ id, proposalIndex }) => {
                   <TitleCol>
                     <Text textStyle="R_12M" color="mediumgrey">{t('Voting Power')}</Text>
                   </TitleCol>
-                </Row>
+                </HeadRow>
               </thead>
-              {
-                mapAllVote.map((vote) => <Row>
-                  <Col>
-                    <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/tx/${vote.transaction_hash}`} target="_blank">
+              <tbody>
+                {
+                  mapAllVote.map((vote) => <Row key={vote.transaction_hash}>
+                    <Col>
+                      <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/tx/${vote.transaction_hash}`} target="_blank">
+                        <Text textStyle="R_14R" color="black">
+                          {`${vote.transaction_hash.substring(0, 6)}...${vote.transaction_hash.substring(vote.transaction_hash.length - 4)}`}
+                        </Text>
+                        <LinkIcon />
+                      </Link>
+                    </Col>
+                    <Col>
+                      <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${vote.voter_addr}`} target="_blank">
+                        <Text textStyle="R_14R" color="black">
+                          {`${vote.voter_addr.substring(0, 6)}...${vote.voter_addr.substring(vote.voter_addr.length - 4)}`}
+                        </Text>
+                        <LinkIcon />
+                      </Link>
+                    </Col>
+                    <Col>
                       <Text textStyle="R_14R" color="black">
-                        {`${vote.transaction_hash.substring(0, 6)}...${vote.transaction_hash.substring(vote.transaction_hash.length - 4)}`}
+                        <Translate text={vote.voting_opt} type="opinion" />
                       </Text>
-                      <LinkIcon />
-                    </Link>
-                  </Col>
-                  <Col>
-                    <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${vote.voter_addr}`} target="_blank">
+                    </Col>
+                    <Col>
                       <Text textStyle="R_14R" color="black">
-                        {`${vote.voter_addr.substring(0, 6)}...${vote.voter_addr.substring(vote.voter_addr.length - 4)}`}
+                        {vote.voting_power}
                       </Text>
-                      <LinkIcon />
-                    </Link>
-                  </Col>
-                  <Col>
-                    <Text textStyle="R_14R" color="black">
-                      <Translate text={vote.voting_opt} type="opinion" />
-                    </Text>
-                  </Col>
-                  <Col>
-                    <Text textStyle="R_14R" color="black">
-                      {vote.voting_power}
-                    </Text>
-                  </Col>
-                </Row>)
-              }
+                    </Col>
+                  </Row>)
+                }
+              </tbody>
             </WrapTable>
           </ScrollTable>
           <Flex alignItems="center" justifyContent="center" mt="20px">

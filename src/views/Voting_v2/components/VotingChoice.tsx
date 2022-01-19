@@ -286,6 +286,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
         {isMulti && <Text color="orange" textStyle="R_12M">*{t('Plural vote')}</Text>}
       </WrapMobilePlural>
       {proposal?.choices && proposal.choices.map((choice, index) => <VotingChoiceItem
+        key={choice}
         choice={choice}
         index={index}
         isMax={maxVotingIndex === index}

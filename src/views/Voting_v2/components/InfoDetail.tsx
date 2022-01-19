@@ -78,54 +78,56 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
   return (
     <Wrap>
       <WrapTable>
-        <Row>
-          <Col>
-            <Title>{t('Identifier')}</Title>
-          </Col>
-          <Col>
-            <Link as="a" href={`${process.env.REACT_APP_IPFS}/${id}`} target="_blank">
-              <Text textStyle="R_14R" color="black">{id && `${id.substring(0, 6)}...${id.substring(id.length - 4)}`}</Text>
-              <LinkIcon />
-            </Link>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Title>{t('Creator')}</Title>
-          </Col>
-          <Col>
-            <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
-              <Text textStyle="R_14R" color="black">
-                {proposal.creator && `${proposal.creator.substring(0, 6)}...${proposal.creator.substring(proposal.creator.length - 4)}`}
-              </Text>
-              <LinkIcon />
-            </Link>
-          </Col>
-        </Row>
-        {/* <Row>
-          <Col>
-            <Title>{t('Snapshot')}</Text>
-          </Col>
-          <Col>
-            <Text textStyle="R_14R" color="black">test1</Text>
-          </Col>
-        </Row> */}
-        <Row>
-          <Col>
-            <Title>{t('Start Date')}</Title>
-          </Col>
-          <Col>
-            <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.startEpoch)}</Text>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Title>{t('End Date')}</Title>
-          </Col>
-          <Col>
-            <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.endEpoch)}</Text>
-          </Col>
-        </Row>
+        <tbody>
+          <Row>
+            <Col>
+              <Title>{t('Identifier')}</Title>
+            </Col>
+            <Col>
+              <Link as="a" href={`${process.env.REACT_APP_IPFS}/${id}`} target="_blank">
+                <Text textStyle="R_14R" color="black">{id && `${id.substring(0, 6)}...${id.substring(id.length - 4)}`}</Text>
+                <LinkIcon />
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Title>{t('Creator')}</Title>
+            </Col>
+            <Col>
+              <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
+                <Text textStyle="R_14R" color="black">
+                  {proposal.creator && `${proposal.creator.substring(0, 6)}...${proposal.creator.substring(proposal.creator.length - 4)}`}
+                </Text>
+                <LinkIcon />
+              </Link>
+            </Col>
+          </Row>
+          {/* <Row>
+            <Col>
+              <Title>{t('Snapshot')}</Text>
+            </Col>
+            <Col>
+              <Text textStyle="R_14R" color="black">test1</Text>
+            </Col>
+          </Row> */}
+          <Row>
+            <Col>
+              <Title>{t('Start Date')}</Title>
+            </Col>
+            <Col>
+              <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.startEpoch)}</Text>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Title>{t('End Date')}</Title>
+            </Col>
+            <Col>
+              <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.endEpoch)}</Text>
+            </Col>
+          </Row>
+        </tbody>
       </WrapTable>
     </Wrap>
   )

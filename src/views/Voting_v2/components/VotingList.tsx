@@ -33,7 +33,7 @@ const VotingList: React.FC<Props> = ({ list, isStartDate = false }) => {
     <Box width="100%" pb="20px">
       <List>
         {
-          currentList.map((item) => <VotingItem isStartDate={isStartDate} item={item} />)
+          currentList.map((item) => <VotingItem key={item.ipfsHash} isStartDate={isStartDate} item={item} />)
         }
       </List>
       <Flex mt="12px" justifyContent="center">
