@@ -12,6 +12,32 @@ interface Props {
   isParticipated: boolean;
 }
 
+function getFilterList(filterListAllProposal, filterId: FilterId) {
+  const list = filterListAllProposal.filter((item) => {
+    switch (filterId) {
+      case FilterId.SOON:
+        return (
+          Number(_.get(item, 'start_unixtimestamp')) * 1000 > Date.now() &&
+          Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+        )
+
+      case FilterId.CLOSED:
+        return (
+          Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+          Number(_.get(item, 'end_unixtimestamp')) * 1000 < Date.now()
+        )
+
+      case FilterId.NOW:
+      default:
+        return (
+          Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+          Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+        )
+    }
+  })
+  return list.sort((a, b) => _.get(a, 'end_unixtimestamp') - _.get(b, 'end_unixtimestamp'))
+}
+
 const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const { t } = useTranslation();
   const { isMobile } = useMatchBreakpoints();
@@ -41,53 +67,27 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   ], [t, voteList])
 
   useEffect(() => {
-    if (!listAllProposal) return;
-
-    const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
-      if (participatedVotes.includes(_.get(item, 'ipfsHash'))) {
-        return {
-          isParticipated: true,
-          ...item,
+    if (listAllProposal) {
+      const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
+        if (participatedVotes.includes(_.get(item, 'ipfsHash'))) {
+          return {
+            isParticipated: true,
+            ...item,
+          }
         }
-      }
-      return item;
-    })
-
-    const filterListAllProposal = participatedAllProposal.filter((item) => {
-      if (isParticipated && !item.isParticipated) {
-        return false;
-      }
-      return proposalType === ProposalType.ALL ? true : _.get(item, 'proposals_type') === proposalType;
-    })
-
-    function getFilterList(filterId: FilterId) {
-      const list = filterListAllProposal.filter((item) => {
-        switch (filterId) {
-          case FilterId.SOON:
-            return (
-              Number(_.get(item, 'start_unixtimestamp')) * 1000 > Date.now() &&
-              Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
-            )
-  
-          case FilterId.CLOSED:
-            return (
-              Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
-              Number(_.get(item, 'end_unixtimestamp')) * 1000 < Date.now()
-            )
-  
-          case FilterId.NOW:
-          default:
-            return (
-              Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
-              Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
-            )
-        }
+        return item;
       })
-      return list.sort((a, b) => _.get(a, 'end_unixtimestamp') - _.get(b, 'end_unixtimestamp'))
+  
+      const filterListAllProposal = participatedAllProposal.filter((item) => {
+        if (isParticipated && !item.isParticipated) {
+          return false;
+        }
+        return proposalType === ProposalType.ALL ? true : _.get(item, 'proposals_type') === proposalType;
+      })
+  
+      setVoteList([getFilterList(filterListAllProposal, FilterId.NOW), getFilterList(filterListAllProposal, FilterId.SOON), getFilterList(filterListAllProposal, FilterId.CLOSED)])
     }
 
-
-    setVoteList([getFilterList(FilterId.NOW), getFilterList(FilterId.SOON), getFilterList(FilterId.CLOSED)])
     
   }, [isParticipated, listAllProposal, participatedVotes, proposalType]);
 
