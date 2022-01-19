@@ -43,7 +43,7 @@ const ConfirmContentModal: React.FC<Props> = ({ selectedVotes, balances, proposa
       </VotingReceipt>
       <Flex flexDirection="column" pt="24px">
         <Flex justifyContent="space-between">
-          <Text textStyle="R_14R" color="mediumgrey">{t('Period End')}</Text>
+          <Text textStyle="R_14R" color="mediumgrey">{t('End Date')}</Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">{getDateFormat(i18n.languages[0], proposal.endEpoch, false)}</Text>
             <Text textStyle="R_12R" color="mediumgrey">*GMT+9 Asia/Seoul</Text>

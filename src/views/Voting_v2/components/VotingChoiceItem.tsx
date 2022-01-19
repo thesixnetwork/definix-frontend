@@ -136,7 +136,7 @@ const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, v
       </Flex>
       <Flex minHeight="20px" className="wrap-votes">
         {
-          votingResult ? <Text className="votes">{votingResult ? `${votingResult.vote} ${t('Votes')}` : ' '}</Text> : <Skeleton width="100px" height="100%" animation="waves" />
+          votingResult ? <Text className="votes">{votingResult ? `${votingResult.vote} ${t('N Votes')}` : ' '}</Text> : <Skeleton width="100px" height="100%" animation="waves" />
         }
         <div className="mobile-percent">
           {
