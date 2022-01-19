@@ -2255,10 +2255,10 @@
     "@ethersproject/properties" "^5.4.0"
     "@ethersproject/strings" "^5.4.0"
 
-"@fingerlabs/definixswap-uikit-v2@^0.16.20":
-  version "0.16.20"
-  resolved "https://registry.yarnpkg.com/@fingerlabs/definixswap-uikit-v2/-/definixswap-uikit-v2-0.16.20.tgz#e0190aa422596a94ad2f7e177c456de40c11fda4"
-  integrity sha512-pvYD9PNVXb2cPFdtQU/rSi0EISIR63I0ilOwdoUCT6nBgLpUWG45CzaCVe79mPx3RrCVeQqaxyAr+zJ/U/V2ww==
+"@fingerlabs/definixswap-uikit-v2@^0.16.22":
+  version "0.16.22"
+  resolved "https://registry.yarnpkg.com/@fingerlabs/definixswap-uikit-v2/-/definixswap-uikit-v2-0.16.22.tgz#7f61fda5ee49051da7025eefec461515710461be"
+  integrity sha512-t1SXRqgDC2aenVAFNvZ+GVmErMcbqsHsHK2psXZZo9Mwz7RyjO9faDotinpR6fi86+sl/si32xmhDiJ3fTXCCQ==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
@@ -7040,7 +7040,7 @@ copy-descriptor@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
 
-copy-to-clipboard@*:
+copy-to-clipboard@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.3.1.tgz#115aa1a9998ffab6196f93076ad6da3b913662ae"
   integrity sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw==
@@ -14477,7 +14477,7 @@ pnp-webpack-plugin@1.6.4:
   dependencies:
     ts-pnp "^1.1.6"
 
-polished@*, polished@^4.1.3:
+polished@^4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/polished/-/polished-4.1.3.tgz#7a3abf2972364e7d97770b827eec9a9e64002cfc"
   dependencies:
@@ -15872,7 +15872,7 @@ react-paginate@^8.1.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-popper-tooltip@*:
+react-popper-tooltip@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-popper-tooltip/-/react-popper-tooltip-4.3.1.tgz#0bfdd40453395865d7a5678a160640243070528e"
   integrity sha512-/Lj1vjAEFEFxKKWnxupeS9pRrXYQlJd++OAAj/Ht3uOSqjWLtYWDXKV99e+YO6b5hV3SgXbtkHFzHH4eqlMWJA==

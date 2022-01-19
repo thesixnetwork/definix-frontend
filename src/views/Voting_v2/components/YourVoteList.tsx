@@ -68,7 +68,7 @@ const YourVoteList = () => {
         <Flex flexDirection="column">
           <Text textStyle="R_16M" color="deepgrey">{t('Your Vote')}</Text>
           {
-            items.choices.map(({ choiceName, votePower }) => <VoteItem>
+            items.choices.map(({ choiceName, votePower }) => <VoteItem key={choiceName}>
               <VoteOptionLabel label={<Translate text={choiceName} type="opinion" />} />
               <Flex className="wrap-power">
                 <Text textStyle="R_14B" className="power">{votePower}</Text>

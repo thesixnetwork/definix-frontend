@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import _ from 'lodash'
-import styled from 'styled-components';
-import { Card, Flex, Tabs } from '@fingerlabs/definixswap-uikit-v2'
+import { Card, TabBox, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { VotingItem } from 'state/types';
 import VotingList from './VotingList';
@@ -13,22 +12,9 @@ interface Props {
   isParticipated: boolean;
 }
 
-const ContentArea = styled(Flex)`
-  width: 100%;
-`
-
-const StyledTabs = styled(Tabs)`
-  ${({ theme }) => theme.textStyle.R_16B}
-
-  ${({ theme }) => theme.mediaQueries.mobile} {
-    width: 33%;
-    padding: 18px 0;
-    ${({ theme }) => theme.textStyle.R_14B}
-  }
-`
-
 const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const { t } = useTranslation();
+  const { isMobile } = useMatchBreakpoints();
   const allProposalMap = useAllProposalOfType()
   const { proposalOfAddress } = useAllProposalOfAddress()
   const listAllProposal: VotingItem[] = _.get(allProposalMap, 'allProposalMap')
@@ -38,21 +24,21 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   }, [proposalOfAddress]);
   const tabs = useMemo(() => [
     {
+      id: 'votenow',
       name: t('Vote Now'),
       component: <VotingList list={voteList[0]} />,
     },
     {
+      id: 'soon',
       name: t('Soon'),
       component: <VotingList isStartDate list={voteList[1]} />,
     },
     {
+      id: 'closed',
       name: t('Closed'),
       component: <VotingList list={voteList[2]} />,
     },
   ], [t, voteList])
-  const [curTab, setCurTab] = useState<string>(tabs[0]?.name);
-
-  const tabNames = useRef(tabs.map(({ name }) => name));
 
   useEffect(() => {
     if (!listAllProposal) return;
@@ -105,16 +91,9 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
     
   }, [isParticipated, listAllProposal, participatedVotes, proposalType]);
 
-  const onClickTab = (name: string) => {
-    setCurTab(name);
-  };
-
   return (
     <Card mt="16px">
-      <StyledTabs tabs={tabNames.current} curTab={curTab} setCurTab={onClickTab} />
-      <ContentArea>
-        {tabs.map(({ name, component }) => (curTab === name ? component : null))}
-      </ContentArea>
+      <TabBox tabs={tabs} equal={isMobile} />
     </Card>
   )
 }
