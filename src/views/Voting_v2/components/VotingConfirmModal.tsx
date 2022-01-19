@@ -32,7 +32,7 @@ const ModalBodyWrap = styled(ModalBody)`
 const VotingConfirmModal: React.FC<Props> = ({ onDismiss, selectedVotes, onVote, proposal }) => {
   const { t } = useTranslation();
   const [activeModal, setActiveModal] = useState<ModalState>(ModalState.VOTING);
-  const [balances, setBalances] = useState<string[]>(selectedVotes.map(() => '0'));
+  const [balances, setBalances] = useState<string[]>(selectedVotes.map(() => ''));
   const [showNotis, setShowNotis] = useState<string[]>([]);
   const isNext = useMemo(() => balances.length === 0 || balances.some((balance) => !balance || +balance <= 0 || showNotis.some((showNoti) => showNoti.length > 0)), [balances, showNotis]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
