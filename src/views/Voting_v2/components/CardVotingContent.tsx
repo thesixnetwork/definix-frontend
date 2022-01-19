@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Card, CardBody, Box, Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 import ReactMarkdown from 'components/ReactMarkdown'
 import useVoteTranslate from 'hooks/useVoteTranslate'
-import { Voting } from 'state/types'
+import { Voting, ParticipatedVoting } from 'state/types'
 import Badge from './Badge'
 import { BadgeType } from '../types'
 import VotingChoice from './VotingChoice'
@@ -13,6 +13,7 @@ interface Props {
   id: string;
   proposalIndex: string;
   proposal: Voting;
+  participatedProposal: ParticipatedVoting;
 }
 
 const WrapCard = styled(Card)`
@@ -94,7 +95,7 @@ const WrapContent = styled(Flex)`
   }
 `
 
-const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
+const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal, participatedProposal }) => {
   const { t } = useTranslation();
 
   return (
@@ -105,7 +106,7 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
             {
               proposal.proposals_type === 'core' && <Badge type={BadgeType.CORE} />
             }
-            {proposal.isParticipated && <Badge type={BadgeType.PARTICIPATION} />}
+            {participatedProposal && <Badge type={BadgeType.PARTICIPATION} />}
           </Flex>
           <TextTitle>
             {useVoteTranslate(proposal.title, 'title')}
@@ -122,7 +123,7 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
             </Text>
           </BoxContent>
         </WrapContent>
-        <VotingChoice proposal={proposal} proposalIndex={proposalIndex} />
+        <VotingChoice proposal={proposal} proposalIndex={proposalIndex} participatedProposal={participatedProposal} />
       </StyledCardBody>
     </WrapCard>
   )

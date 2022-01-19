@@ -12,7 +12,7 @@ import { usePrivateData } from 'hooks/useLongTermStake'
 import useRefresh from 'hooks/useRefresh'
 import { useToast } from 'state/hooks'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
-import { Voting } from 'state/types'
+import { ParticipatedVoting, Voting } from 'state/types'
 import VotingConfirmModal from './VotingConfirmModal'
 import { TransactionState } from '../types'
 import VotingChoiceItem from './VotingChoiceItem'
@@ -20,6 +20,7 @@ import VotingChoiceItem from './VotingChoiceItem'
 interface Props {
   proposalIndex: string;
   proposal: Voting;
+  participatedProposal: ParticipatedVoting;
 }
 
 const WrapVote = styled(Flex)`
@@ -67,7 +68,7 @@ const WrapVoteMore = styled(Flex)`
   }
 `
 
-const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal }) => {
+const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedProposal }) => {
   const { t } = useTranslation();
   const { account } = useWallet()
   const [transactionHash, setTransactionHash] = useState('')
@@ -84,12 +85,15 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal }) => {
   const selectedVotes = useRef<string[]>([]);
   const { toastSuccess, toastError } = useToast()
   const [trState, setTrState] = useState<TransactionState>(TransactionState.NONE);
-  const [isVoteMore, setIsVoteMore] = useState<boolean>(!!proposal.isParticipated);
+  const [isVoteMore, setIsVoteMore] = useState<boolean>(!!participatedProposal);
   const maxVotingIndex = useMemo(() => {
     const votes = mapVoting.map(({ vote }) => vote).slice(0);
     const maxNum = votes.sort()[0];
     return votes.indexOf(maxNum);
   }, [mapVoting]);
+  const votedChoices = useMemo(() => {
+    return participatedProposal ? participatedProposal.choices.map(({ choiceName }) => choiceName) : [];
+  }, [participatedProposal])
 
   const onVote = useCallback((balances: string[]) => {
     setTrState(TransactionState.START);
@@ -123,10 +127,10 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal }) => {
   }, [trState]);
 
   useEffect(() => {
-    if (proposal.isParticipated) {
-      setIsVoteMore(!!proposal.isParticipated)
+    if (participatedProposal) {
+      setIsVoteMore(!!participatedProposal)
     }
-  }, [proposal.isParticipated])
+  }, [participatedProposal])
 
   useEffect(() => {
     const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
@@ -230,7 +234,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal }) => {
       return <Button lg width="280px" onClick={handleVoteMore} variant="line">{t('Vote More')}</Button>  
     }
     if (allowance > 0 || transactionHash !== '') {
-      if (proposal.isParticipated && !isVoteMore) {
+      if (participatedProposal && !isVoteMore) {
         return <WrapVoteMore>
           <Button mr="8px" lg variant="line" onClick={() => {
             setIsVoteMore(true);
@@ -248,7 +252,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal }) => {
     }
     return <Button lg width="280px" onClick={handleApprove}>{t('Approve Contract')}</Button>
     
-  }, [account, isVoteMore, allowance, transactionHash, handleApprove, t, handleVoteMore, proposal.isParticipated, selectedIndexs.length, onPresentVotingConfirmModal]);
+  }, [account, isVoteMore, allowance, transactionHash, handleApprove, t, handleVoteMore, participatedProposal, selectedIndexs.length, onPresentVotingConfirmModal]);
 
   return (
     <WrapVote>
@@ -277,6 +281,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal }) => {
           votingResult={mapVoting[index]}
           isVoteMore={isVoteMore}
           isChecked={selectedIndexs.indexOf(index) > -1}
+          isVoted={votedChoices.includes(choice)}
           onCheckChange={onCheckChange} />)}
       <Flex justifyContent="center" mt="22px">
         {renderVoteButton()}

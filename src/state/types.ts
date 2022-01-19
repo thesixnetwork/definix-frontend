@@ -269,6 +269,25 @@ export interface VotingItem {
   isParticipated?: boolean;
 }
 
+export interface ParticipatedVoting {
+  IsClaimable: boolean;
+  IsParticipated: boolean;
+  choices: {
+    choiceName: string;
+    votePower: number;
+  }[];
+  endDate: number;
+  endTimestamp: string;
+  ipfsHash: string;
+  optionVotingPower: BigNumber[];
+  optionsCount: string;
+  proposalIndex: number;
+  proposalType: number;
+  proposer: string;
+  startTimestamp: string;
+  title: string;
+}
+
 export interface Voting extends VotingItem {
   // proposalIndex?: BigNumber
   // ipfsHash: any

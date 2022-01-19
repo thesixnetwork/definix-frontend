@@ -24,7 +24,7 @@ const Label = styled(Text)`
 
 const VoteOptionLabel: React.FC<Props> = ({ label }) => {
   return (
-    <Flex alignItems="flex-start">
+    <Flex alignItems="center">
       <CheckBIcon style={{
         flexShrink: 0
       }} />

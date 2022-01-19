@@ -1,13 +1,18 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import { Card, CardBody, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
-import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useAllProposalOfAddress, useIsClaimable, useClaimVote } from 'hooks/useVoting'
+import { useIsClaimable, useClaimVote } from 'hooks/useVoting'
 import { useToast } from 'state/hooks'
+import { ParticipatedVoting } from 'state/types'
 import VoteOptionLabel from './VoteOptionLabel'
 import Translate from './Translate'
+
+interface Props {
+  proposalIndex: string;
+  participatedProposal: ParticipatedVoting;
+}
 
 const VoteItem = styled(Flex)`
   justify-content: space-between;
@@ -35,17 +40,11 @@ const WrapCardBody = styled(CardBody)`
   }
 `
 
-const YourVoteList = () => {
+const YourVoteList: React.FC<Props> = ({ participatedProposal, proposalIndex }) => {
   const { t } = useTranslation();
-  const { proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const { proposalOfAddress } = useAllProposalOfAddress()
-  const isClaimable = useIsClaimable(proposalIndex)
+  const isClaimable = useIsClaimable(+proposalIndex)
   const { callClaimVote } = useClaimVote()
   const { toastSuccess, toastError } = useToast()
-  const items = useMemo(() => {
-    const itemByIndex = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
-    return itemByIndex
-  }, [proposalIndex, proposalOfAddress])
 
   const onClaim = useCallback((r) => {
     const claim = callClaimVote(r)
@@ -64,11 +63,11 @@ const YourVoteList = () => {
 
   return (
     <Card mt="20px">
-      {items && <WrapCardBody>
+      {participatedProposal && <WrapCardBody>
         <Flex flexDirection="column">
           <Text textStyle="R_16M" color="deepgrey">{t('Your Vote')}</Text>
           {
-            items.choices.map(({ choiceName, votePower }) => <VoteItem key={choiceName}>
+            participatedProposal.choices.map(({ choiceName, votePower }) => <VoteItem key={choiceName}>
               <VoteOptionLabel label={<Translate text={choiceName} type="opinion" />} />
               <Flex className="wrap-power">
                 <Text textStyle="R_14B" className="power">{votePower}</Text>
@@ -78,7 +77,7 @@ const YourVoteList = () => {
           }
         </Flex>
         <Flex justifyContent="center" mt="8px">
-          <Button lg width="280px" onClick={onClaim} disabled={Date.now() < + _.get(items, 'endDate') || !isClaimable}>{t('Claim Voting Power')}</Button>
+          <Button lg width="280px" onClick={onClaim} disabled={Date.now() < + _.get(participatedProposal, 'endDate') || !isClaimable}>{t('Claim Voting Power')}</Button>
         </Flex>
       </WrapCardBody>}
     </Card>

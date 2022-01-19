@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Text, CheckboxLabel, Checkbox, Skeleton } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, Flex, Text, CheckboxLabel, Checkbox, Skeleton, CheckBIcon } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import Translate from './Translate'
+import VoteOptionLabel from './VoteOptionLabel'
 
 interface Props {
   choice: string;
   isVoteMore: boolean;
   isMax: boolean;
+  isVoted: boolean;
   votingResult: {
-    percent: number;
-    vote: string;
+    percent: string;
+    vote: number;
+    value: string;
   }
   index: number;
   onCheckChange: (isChecked: boolean, index: number) => void;
@@ -77,21 +80,36 @@ const RangeValue = styled(Box)<{ width: number, isParticipated: boolean, isMax: 
   background-color: ${({ theme, isParticipated, isMax }) => isParticipated && isMax ? theme.colors.red : theme.colors.lightbrown};
 `
 
-const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, votingResult, isChecked, onCheckChange }) => {
+const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, votingResult, isChecked, isVoted, onCheckChange }) => {
   const { t } = useTranslation();
+
+  const renderChoice = useCallback(() => {
+    if (isVoteMore) {
+      if (isVoted) {
+        return <Flex alignItems="center">
+          <CheckBIcon style={{
+            flexShrink: 0
+          }} />
+          <Text className="choice" textStyle="R_16R" color="black" ml="8px">
+            <Translate text={choice} type="opinion" />
+          </Text>
+        </Flex>
+      }
+      return <Text className="choice" textStyle="R_16R" color="black">
+        <Translate text={choice} type="opinion" />
+      </Text>
+    }
+    return <CheckboxLabel control={<Checkbox checked={isChecked} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
+      <Text className="choice" textStyle="R_16R" color="black">
+        <Translate text={choice} type="opinion" />
+      </Text>
+    </CheckboxLabel>
+  }, [choice, index, isChecked, isVoteMore, onCheckChange, isVoted]);
 
   return (
     <WrapChoice key={choice} isParticipated={isVoteMore}>
       <Flex justifyContent="space-between" alignItems="center">
-        {
-          isVoteMore ? <Text className="choice" textStyle="R_16R" color="black">
-            <Translate text={choice} type="opinion" />
-          </Text> : <CheckboxLabel control={<Checkbox checked={isChecked} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
-            <Text className="choice" textStyle="R_16R" color="black">
-              <Translate text={choice} type="opinion" />
-            </Text>
-          </CheckboxLabel>
-        }
+        {renderChoice()}
         <div className="percent">
           {
             votingResult ? <Text textStyle="R_16M" color="deepgrey">{votingResult ? `${votingResult.percent  }%` : ' '}</Text> : <Skeleton width="100px" height="100%" animation="waves" />
@@ -100,7 +118,7 @@ const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, v
       </Flex>
       <Flex ml={isVoteMore ? '0' : "36px"} mt="14px">
         <Range>
-          <RangeValue width={votingResult ? votingResult.percent : 0} isParticipated={isVoteMore} isMax={isMax} />
+          <RangeValue width={votingResult ? +votingResult.percent : 0} isParticipated={isVoteMore} isMax={isMax} />
         </Range>
       </Flex>
       <Flex minHeight="20px" className="wrap-votes">
