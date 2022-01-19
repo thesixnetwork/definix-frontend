@@ -5,6 +5,7 @@ import { Card, CardBody, Box, Flex, Text } from '@fingerlabs/definixswap-uikit-v
 import ReactMarkdown from 'components/ReactMarkdown'
 import useVoteTranslate from 'hooks/useVoteTranslate'
 import { Voting, ParticipatedVoting } from 'state/types'
+import getDateFormat from 'utils/getDateFormat'
 import Badge from './Badge'
 import { BadgeType } from '../types'
 import VotingChoice from './VotingChoice'
@@ -96,7 +97,7 @@ const WrapContent = styled(Flex)`
 `
 
 const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal, participatedProposal }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <WrapCard>
@@ -113,7 +114,7 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal, participa
           </TextTitle>
           <TextEndDate>
             <span>{t('End Date')}</span>
-            <span>{proposal.endTimestamp}</span>
+            <span>{getDateFormat(i18n.languages[0], proposal.endEpoch)}</span>
           </TextEndDate>
           <BoxContent>
             <Text className="text">

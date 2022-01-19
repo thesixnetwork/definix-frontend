@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import styled from 'styled-components'
 import { Voting } from 'state/types'
+import getDateFormat from 'utils/getDateFormat'
 
 interface Props {
   id: string;
@@ -66,8 +67,9 @@ const Link = styled.a`
 `
 
 const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { account } = useWallet()
+
   return (
     <Wrap>
       <WrapTable>
@@ -108,7 +110,7 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
             <Text textStyle="R_12M" color="mediumgrey">{t('Start Date')}</Text>
           </Col>
           <Col>
-            <Text textStyle="R_14R" color="black">{proposal.start_unixtimestamp} GMT+9</Text>
+            <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.startEpoch)}</Text>
           </Col>
         </Row>
         <Row>
@@ -116,7 +118,7 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
             <Text textStyle="R_12M" color="mediumgrey">{t('End Date')}</Text>
           </Col>
           <Col>
-            <Text textStyle="R_14R" color="black">{proposal.end_unixtimestamp} GMT+9</Text>
+            <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.endEpoch)}</Text>
           </Col>
         </Row>
       </WrapTable>

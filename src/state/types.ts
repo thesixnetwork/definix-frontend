@@ -267,6 +267,8 @@ export interface VotingItem {
   start_unixtimestamp: number;
   title: string;
   isParticipated?: boolean;
+  startEpoch: number;
+  endEpoch: number;
 }
 
 export interface ParticipatedVoting {

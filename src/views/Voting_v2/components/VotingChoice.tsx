@@ -117,7 +117,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
       })
   }, [onCastVote, proposal.choices, proposalIndex, selectedIndexs, t, toastError, toastSuccess]);
 
-  const [onPresentVotingConfirmModal, onDismiss] = useModal(<VotingConfirmModal trState={trState} selectedVotes={selectedVotes.current} onVote={onVote} />);
+  const [onPresentVotingConfirmModal, onDismiss] = useModal(<VotingConfirmModal proposal={proposal} trState={trState} selectedVotes={selectedVotes.current} onVote={onVote} />);
 
   useEffect(() => {
     if ([TransactionState.SUCCESS, TransactionState.ERROR].includes(trState)) {
