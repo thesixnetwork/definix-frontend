@@ -11,8 +11,16 @@ function CardSummary({ products }) {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
-  const tabs = useMemo(() => [t('Earned'), t('Net Worth')], [t])
-  const [curTab, setCurTab] = useState<string>(tabs[0])
+  const tabs = useMemo(() => {
+    return [{
+      id: 'earned',
+      name: t('Earned')
+    }, {
+      id: 'networth',
+      name: t('Net Worth'),
+    }]
+  }, [t])
+  const [curTab, setCurTab] = useState<string>(tabs[0].id)
   const longTermStake = useMemo(
     () => products.find((product) => product.type.toLowerCase() === 'longtermstake'),
     [products],
@@ -32,7 +40,7 @@ function CardSummary({ products }) {
 
       <Card isOverflowHidden>
         <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} small={isMobile} equal={isMobile} />
-        {curTab === tabs[1] ? (
+        {curTab === tabs[1].id ? (
           <NetWorth isMobile={isMobile} products={_.groupBy(products, 'type')} />
         ) : (
           <Earned isMobile={isMobile} products={_.groupBy(products, 'type')} />

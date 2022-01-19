@@ -30,20 +30,9 @@ const DetailVoting: React.FC = () => {
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { proposal } = useGetProposal(id)
   const { proposalOfAddress } = useAllProposalOfAddress()
-  const participatedVotes = useMemo(() => {
-    return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
-  }, [proposalOfAddress]);
-
   const participatedProposal = useMemo(() => {
-    if (participatedVotes.includes(id)) {
-      return {
-        isParticipated: true,
-        ...proposal,
-      }
-    }
-    return proposal;
-  }, [id, participatedVotes, proposal]);
-
+    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
+  }, [id, proposalOfAddress]);
 
   return (
     <Wrap>
@@ -63,9 +52,9 @@ const DetailVoting: React.FC = () => {
           </Button>
         </Flex>
       </Box>
-      <CardVotingContent id={id} proposalIndex={proposalIndex} proposal={participatedProposal} />
-      <YourVoteList />
-      <VotingInfo id={id} proposalIndex={proposalIndex} proposal={participatedProposal} />
+      <CardVotingContent id={id} proposalIndex={proposalIndex} proposal={proposal} participatedProposal={participatedProposal} />
+      <YourVoteList proposalIndex={proposalIndex} participatedProposal={participatedProposal} />
+      <VotingInfo id={id} proposalIndex={proposalIndex} proposal={proposal} />
     </Wrap>
   )
 }

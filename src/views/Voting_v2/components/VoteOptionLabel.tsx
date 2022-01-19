@@ -7,16 +7,17 @@ import {
 import styled from 'styled-components'
 
 interface Props {
-  label: string;
+  label: string | React.ReactNode;
 }
 
 const Label = styled(Text)`
-  width: 320px;
   margin-left: 8px;
+  padding-right: 20px;
   ${({ theme }) => theme.textStyle.R_14R}
   color: ${({ theme }) => theme.colors.deepgrey};
 
   ${({ theme }) => theme.mediaQueries.mobile} {
+    padding-right: 0;
     width: auto;
   }
 `
@@ -24,7 +25,10 @@ const Label = styled(Text)`
 const VoteOptionLabel: React.FC<Props> = ({ label }) => {
   return (
     <Flex alignItems="flex-start">
-      <CheckBIcon />
+      <CheckBIcon style={{
+        flexShrink: 0,
+        marginTop: '2px'
+      }} />
       <Label>{label}</Label>
     </Flex>
   )

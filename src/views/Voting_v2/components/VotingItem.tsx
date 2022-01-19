@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Text, Flex } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next';
 import { VotingItem as Voting } from 'state/types';
+import useVoteTranslate from 'hooks/useVoteTranslate';
+import getDateFormat from 'utils/getDateFormat';
 import Badge from './Badge';
 import { BadgeType } from '../types';
 
@@ -49,7 +51,7 @@ const TextEndDate = styled(Text)`
 `
 
 const VotingItem: React.FC<Props> = ({ item, isStartDate }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <Item as={Link} to={`/voting/detail/${_.get(item, 'ipfsHash')}/${_.get(item, 'proposalIndex')}`}>
       <Flex>
@@ -58,10 +60,12 @@ const VotingItem: React.FC<Props> = ({ item, isStartDate }) => {
         }
         {item.isParticipated && <Badge type={BadgeType.PARTICIPATION} />}
       </Flex>
-      <Text textStyle="R_14R" color="black" mt="12px">{item.title}</Text>
+      <Text textStyle="R_14R" color="black" mt="12px">
+        {useVoteTranslate(item.title, 'title')}
+      </Text>
       <TextEndDate textStyle="R_12R" color="mediumgrey" mt="6px">
         <span>{t(isStartDate ? 'Start Date' : 'End Date')}</span>
-        <span>{isStartDate ? item.startTimestamp : item.endTimestamp}</span>
+        <span>{getDateFormat(i18n.languages[0], isStartDate ? item.startEpoch : item.endEpoch)}</span>
       </TextEndDate>
     </Item>
   )

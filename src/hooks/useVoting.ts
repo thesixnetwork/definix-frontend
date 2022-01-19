@@ -14,7 +14,7 @@ import IVotingFacet from '../config/abi/IVotingFacet.json'
 import IServiceInfoFacet from '../config/abi/IServiceInfoFacet.json'
 import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
-import { State } from '../state/types'
+import { ParticipatedVoting, State } from '../state/types'
 import { getFinixAddress, getVFinix, getVFinixVoting } from '../utils/addressHelpers'
 import {
   fetchAllProposalOfType,
@@ -88,13 +88,13 @@ export const useAllProposalOfAddress = () => {
   const { fastRefresh } = useRefresh()
   // const dispatch = useDispatch()
   const { account } = useWallet()
-  const [proposalOfAddress, setUserProposals] = useState([])
+  const [proposalOfAddress, setUserProposals] = useState<ParticipatedVoting[]>([])
   const proposal = useSelector((state: State) => state.voting.allProposal)
 
   useEffect(() => {
     const fetch = async () => {
       if (account) {
-        let userProposalsFilter: any[] = JSON.parse(JSON.stringify(proposal))
+        let userProposalsFilter = JSON.parse(JSON.stringify(proposal))
         const isParticipateds = []
         for (let i = 0; i < userProposalsFilter.length; i++) {
           userProposalsFilter[i].choices = []
@@ -133,7 +133,7 @@ export const useAllProposalOfAddress = () => {
           }
         }
 
-        setUserProposals(userProposalsFilter)
+        setUserProposals(userProposalsFilter as ParticipatedVoting[])
       }
     }
     fetch()

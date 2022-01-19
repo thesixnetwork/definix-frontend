@@ -252,7 +252,7 @@ export interface AchievementState {
 }
 
 export interface VotingItem {
-  choice_type: 'single' | 'multi';
+  choice_type: 'single' | 'multiple';
   choices: string[];
   content: string;
   creator: string;
@@ -267,6 +267,27 @@ export interface VotingItem {
   start_unixtimestamp: number;
   title: string;
   isParticipated?: boolean;
+  startEpoch: number;
+  endEpoch: number;
+}
+
+export interface ParticipatedVoting {
+  IsClaimable: boolean;
+  IsParticipated: boolean;
+  choices: {
+    choiceName: string;
+    votePower: number;
+  }[];
+  endDate: number;
+  endTimestamp: string;
+  ipfsHash: string;
+  optionVotingPower: BigNumber[];
+  optionsCount: string;
+  proposalIndex: number;
+  proposalType: number;
+  proposer: string;
+  startTimestamp: string;
+  title: string;
 }
 
 export interface Voting extends VotingItem {
