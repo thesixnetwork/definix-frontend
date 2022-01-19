@@ -47,7 +47,7 @@ const VotingConfirmModal: React.FC<Props> = ({ onDismiss, selectedVotes, onVote,
   }, []);
 
   return (
-    <Modal title={t('Voting')} onDismiss={onDismiss} mobileFull>
+    <Modal title={t(isVotingModal ? 'Voting' : 'Confirm Voting')} onDismiss={onDismiss} mobileFull>
       <ModalBodyWrap isBody>
         {isVotingModal ? <VotingContentModal selectedVotes={selectedVotes} balances={balances} setBalances={setBalances} showNotis={showNotis} setShowNotis={setShowNotis} /> : <ConfirmContentModal selectedVotes={selectedVotes} balances={balances} proposal={proposal} />}
       </ModalBodyWrap>
