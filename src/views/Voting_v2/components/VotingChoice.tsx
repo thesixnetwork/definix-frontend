@@ -80,7 +80,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   const { indexProposal } = useProposalIndex(proposalIndex)
   const allowance = useServiceAllowance()
   const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
-  const isMulti = useMemo(() => proposal.choice_type === 'multi', [proposal]);
+  const isMulti = useMemo(() => proposal.choice_type === 'multiple', [proposal]);
   const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix]);
   const [selectedIndexs, setSelectedIndexs] = useState<number[]>([]);
   const selectedVotes = useRef<string[]>([]);

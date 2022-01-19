@@ -252,7 +252,7 @@ export interface AchievementState {
 }
 
 export interface VotingItem {
-  choice_type: 'single' | 'multi';
+  choice_type: 'single' | 'multiple';
   choices: string[];
   content: string;
   creator: string;
