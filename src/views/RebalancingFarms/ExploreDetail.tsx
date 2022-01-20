@@ -62,8 +62,23 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
   const { t } = useTranslation()
-  const tabs = useMemo(() => [t('Overview'), t('Performance'), t('Transaction')], [t])
-  const [curTab, setCurTab] = useState<string>(tabs[0])
+  const tabs = useMemo(() => {
+    return [
+      {
+        id: 'overview',
+        name: t('Overview'),
+      },
+      {
+        id: 'performance',
+        name: t('Performance'),
+      },
+      {
+        id: 'transaction',
+        name: t('Transaction'),
+      },
+    ]
+  }, [t])
+  const [curTab, setCurTab] = useState<string>(tabs[0].id)
   // for adjust color
   const rebalance = useMemo(() => {
     if (!rawData?.ratio) return rawData
@@ -455,8 +470,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
 
           <Card>
             <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} {...(isMaxXl && { small: true, equal: true })} />
-            {curTab === tabs[0] && <Overview rebalance={rebalance} periodPriceTokens={periodPriceTokens} />}
-            {curTab === tabs[1] && (
+            {curTab === tabs[0].id && <Overview rebalance={rebalance} periodPriceTokens={periodPriceTokens} />}
+            {curTab === tabs[1].id && (
               <Performance
                 rebalance={rebalance}
                 isLoading={isLoading}
@@ -468,7 +483,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                 sharpRatio={sharpRatio}
               />
             )}
-            {curTab === tabs[2] && <Transaction rbAddress={rebalance.address} />}
+            {curTab === tabs[2].id && <Transaction rbAddress={rebalance.address} />}
           </Card>
         </div>
 

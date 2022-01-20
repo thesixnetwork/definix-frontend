@@ -9,7 +9,7 @@ import useUserDeadline from 'hooks/useUserDeadline'
 import useWallet from 'hooks/useWallet'
 import { links } from './config'
 
-const Menu: React.FC<any> = (props) => {
+const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
   const { account, connect, reset } = useWallet()
 
   const { i18n, t } = useTranslation()
@@ -26,6 +26,7 @@ const Menu: React.FC<any> = (props) => {
 
   return (
     <UikitMenu
+      finixPrice={finixPrice}
       version={process.env.REACT_APP_VERSION}
       Link={Link}
       // SettingsModal slippage

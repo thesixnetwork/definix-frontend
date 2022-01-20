@@ -62,17 +62,15 @@ const App: React.FC = () => {
   useFetchPublicData()
   useFetchProfile()
 
-  const finixPrice = usePriceFinixUsd();
+  const finixPrice = usePriceFinixUsd()
 
   return (
     <BrowserRouter>
       <Helmet>
-        <title>
-          Definix{!finixPrice ? '' : ` - ${finixPrice?.toFixed(4)} FINIX/USD`}
-        </title>
+        <title>Definix{!finixPrice || !account ? '' : ` - ${finixPrice?.toFixed(4)} FINIX/USD`}</title>
       </Helmet>
       <GlobalStyle />
-      <Menu>
+      <Menu finixPrice={finixPrice?.toFixed(4)}>
         <Suspense fallback={<Loading />}>
           <Switch>
             <Route exact path={ROUTES.HOME}>

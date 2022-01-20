@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import AddLiquidity from './AddLiquidity'
 
 const Liquidity: React.FC = () => {
-  const history = useHistory();
+  const history = useHistory()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
   const { t, i18n } = useTranslation()
@@ -18,12 +18,27 @@ const Liquidity: React.FC = () => {
     [i18n.language],
   )
 
-  const tabNames = useMemo(() => [t('Add'), t('Remove')], [t])
-  const changeTab = useCallback((tab: string) => {
-    if(tab === tabNames[1]){
-      history.push('/liquidity/list')
-    }
-  }, [history, tabNames]);
+  const tabNames = useMemo(
+    () => [
+      {
+        id: 'add',
+        name: t('Add'),
+      },
+      {
+        id: 'remove',
+        name: t('Remove'),
+      },
+    ],
+    [t],
+  )
+  const changeTab = useCallback(
+    (tab: string) => {
+      if (tab === tabNames[1].id) {
+        history.push('/liquidity/list')
+      }
+    },
+    [history, tabNames],
+  )
 
   return (
     <Flex width="100%" justifyContent="center">
@@ -46,7 +61,7 @@ const Liquidity: React.FC = () => {
             borderRight="1px solid #ffe5c9"
             style={{ boxShadow: '0 12px 12px 0 rgba(227, 132, 0, 0.1)' }}
           >
-            <Tabs tabs={tabNames} curTab={tabNames[0]} setCurTab={changeTab} equal={isMobile} />
+            <Tabs tabs={tabNames} curTab={tabNames[0].id} setCurTab={changeTab} equal={isMobile} />
           </Box>
           <Box pb={isMobile ? '40px' : '80px'}>
             <AddLiquidity />
