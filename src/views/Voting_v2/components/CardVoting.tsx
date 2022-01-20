@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import _ from 'lodash'
+import dayjs from 'dayjs'
 import { Card, Tabs, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { VotingItem } from 'state/types'
@@ -35,7 +36,7 @@ function getFilterList(filterListAllProposal, filterId: FilterId) {
         )
     }
   })
-  return list.sort((a, b) => _.get(a, 'end_unixtimestamp') - _.get(b, 'end_unixtimestamp'))
+  return list.sort((a, b) => dayjs(b.endTimestamp).valueOf() - dayjs(a.endTimestamp).valueOf())
 }
 
 const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
@@ -48,7 +49,7 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
     return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
   }, [proposalOfAddress])
   const voteList = useMemo(() => {
-    if (listAllProposal) {
+    if (listAllProposal && listAllProposal.length > 0) {
       const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
         if (participatedVotes.includes(_.get(item, 'ipfsHash'))) {
           return {
