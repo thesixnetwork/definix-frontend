@@ -87,10 +87,10 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   const { toastSuccess, toastError } = useToast()
   const [trState, setTrState] = useState<TransactionState>(TransactionState.NONE)
   const [isVoteMore, setIsVoteMore] = useState<boolean>(!!participatedProposal)
-  const maxVotingIndex = useMemo(() => {
+  const maxVotingValue = useMemo(() => {
     const votes = mapVoting.map(({ vote }) => vote).slice(0)
-    const maxNum = votes.sort()[0]
-    return votes.indexOf(maxNum)
+    const maxNum = votes.sort()[votes.length - 1]
+    return maxNum
   }, [mapVoting])
   const votedChoices = useMemo(() => {
     return participatedProposal ? participatedProposal.choices.map(({ choiceName }) => choiceName) : []
@@ -374,7 +374,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
             key={choice}
             choice={choice}
             index={index}
-            isMax={maxVotingIndex === index}
+            maxVotingValue={maxVotingValue}
             votingResult={mapVoting[index]}
             isVoteMore={isVoteMore}
             isChecked={selectedIndexs.indexOf(index) > -1}

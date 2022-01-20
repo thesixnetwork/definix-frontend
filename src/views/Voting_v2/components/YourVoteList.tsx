@@ -3,7 +3,7 @@ import _ from 'lodash'
 import styled from 'styled-components'
 import { Card, CardBody, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
-import { useIsClaimable, useClaimVote } from 'hooks/useVoting'
+import { useClaimVote } from 'hooks/useVoting'
 import { useToast } from 'state/hooks'
 import { ParticipatedVoting } from 'state/types'
 import VoteOptionLabel from './VoteOptionLabel'
@@ -42,13 +42,12 @@ const WrapCardBody = styled(CardBody)`
 
 const YourVoteList: React.FC<Props> = ({ participatedProposal, proposalIndex }) => {
   const { t } = useTranslation()
-  const isClaimable = useIsClaimable(+proposalIndex)
   const { callClaimVote } = useClaimVote()
   const { toastSuccess, toastError } = useToast()
 
   const onClaim = useCallback(
-    (r) => {
-      const claim = callClaimVote(r)
+    () => {
+      const claim = callClaimVote(proposalIndex)
       claim
         .then(() => {
           toastSuccess(
@@ -65,7 +64,7 @@ const YourVoteList: React.FC<Props> = ({ participatedProposal, proposalIndex }) 
           )
         })
     },
-    [callClaimVote, t, toastError, toastSuccess],
+    [callClaimVote, proposalIndex, t, toastError, toastSuccess],
   )
 
   return (
@@ -95,7 +94,7 @@ const YourVoteList: React.FC<Props> = ({ participatedProposal, proposalIndex }) 
               lg
               width="280px"
               onClick={onClaim}
-              disabled={Date.now() < +_.get(participatedProposal, 'endDate') || !isClaimable}
+              disabled={Date.now() < +_.get(participatedProposal, 'endDate') || !participatedProposal.IsClaimable}
             >
               {t('Claim Voting Power')}
             </Button>

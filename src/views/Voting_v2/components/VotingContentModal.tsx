@@ -156,8 +156,6 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balances, myVFinixBalance])
 
-  console.log(remainVFinix)
-
   return (
     <>
       <Flex flexDirection="column">

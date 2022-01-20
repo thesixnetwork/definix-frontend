@@ -60,10 +60,7 @@ const DetailVoting: React.FC = () => {
         participatedProposal={participatedProposal}
       />
       <YourVoteList proposalIndex={proposalIndex} participatedProposal={participatedProposal} />
-      {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        useMemo(() => <VotingInfo id={id} proposalIndex={proposalIndex} proposal={proposal} />, [id])
-      }
+      <VotingInfo id={id} proposalIndex={proposalIndex} proposal={proposal} />
     </Wrap>
   )
 }

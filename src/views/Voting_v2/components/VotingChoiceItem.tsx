@@ -7,7 +7,7 @@ import Translate from './Translate'
 interface Props {
   choice: string
   isVoteMore: boolean
-  isMax: boolean
+  maxVotingValue: number
   isVoted: boolean
   isMulti: boolean
   votingResult: {
@@ -95,7 +95,7 @@ const VotingChoiceItem: React.FC<Props> = ({
   choice,
   index,
   isVoteMore,
-  isMax,
+  maxVotingValue,
   votingResult,
   isChecked,
   isVoted,
@@ -180,7 +180,7 @@ const VotingChoiceItem: React.FC<Props> = ({
       </Flex>
       <Flex ml={isLeft ? '0' : '36px'} mt="14px">
         <Range>
-          <RangeValue width={votingResult ? votingResult.percent : '0'} isParticipated={isVoteMore} isMax={isMax} />
+          <RangeValue width={votingResult ? votingResult.percent : '0'} isParticipated={isVoteMore} isMax={votingResult ? maxVotingValue === votingResult.vote : false} />
         </Range>
       </Flex>
       <Flex minHeight="20px" className="wrap-votes">
