@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useState, useCallback, useRef } from 'react'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import dayjs from 'dayjs'
@@ -139,11 +140,11 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trState])
 
-  useEffect(() => {
-    if (participatedProposal) {
-      setIsVoteMore(!!participatedProposal)
-    }
-  }, [participatedProposal])
+  // useEffect(() => {
+  //   if (participatedProposal) {
+  //     setIsVoteMore(!!participatedProposal)
+  //   }
+  // }, [participatedProposal])
 
   useEffect(() => {
     const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
@@ -178,7 +179,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
 
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fastRefresh, proposal])
+  }, [fastRefresh, proposal.ipfsHash])
 
   const onCheckChange = useCallback(
     (isChecked: boolean, index) => {
@@ -359,7 +360,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
       </WrapMobileBalance>
       <WrapMobilePlural>
         {isMulti && (
-          <Text color="orange" textStyle="R_12M">
+          <Text color="orange" textStyle="R_12M" mb="8px">
             *{t('Plural vote')}
           </Text>
         )}
