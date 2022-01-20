@@ -183,6 +183,7 @@ const EarningBoxTemplate: React.FC<{
   const myFarmPools = useMemo(() => {
     return farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   }, [farmsWithBalance])
+
   const farmPoolHarvestHook = useAllHarvest(
     myFarmPools.map((farmWithBalance) => _.pick(farmWithBalance, ['pid', 'lpSymbol'])),
   )
@@ -213,10 +214,12 @@ const EarningBoxTemplate: React.FC<{
       ])
     }
   }, [longTermStakeHarvestHook])
+
   const harvestAll = useCallback(async () => {
     if (pendingTx || isHarvestingUsingKlip) return
     harvestAllLength.current = needHarvestLongTermStake ? myFarmPools.length + 1 : myFarmPools.length
     setPendingTx(true)
+
     try {
       await farmPoolHarvestHook.onReward()
       if (needHarvestLongTermStake) {
