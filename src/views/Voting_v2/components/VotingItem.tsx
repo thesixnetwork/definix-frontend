@@ -62,7 +62,7 @@ const VotingItem: React.FC<Props> = ({ item, isStartDate }) => {
       </Text>
       <TextEndDate textStyle="R_12R" color="mediumgrey" mt="6px">
         <span>{t(isStartDate ? 'Start Date' : 'End Date')}</span>
-        <span>{getDateFormat(i18n.languages[0], isStartDate ? item.startEpoch : item.endEpoch)}</span>
+        <span>{getDateFormat(i18n.languages[0], isStartDate ? item.startTimestamp : item.endTimestamp)}</span>
       </TextEndDate>
     </Item>
   )

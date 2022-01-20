@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import dayjs from 'dayjs'
 import { Card, CardBody, Box, Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 import ReactMarkdown from 'components/ReactMarkdown'
 import useVoteTranslate from 'hooks/useVoteTranslate'
@@ -52,6 +53,7 @@ const TextEndDate = styled(Text)`
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     margin-top: 10px;
+    flex-direction: column;
 
     span:nth-child(2) {
       margin-left: 0;
@@ -98,6 +100,7 @@ const WrapContent = styled(Flex)`
 
 const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal, participatedProposal }) => {
   const { t, i18n } = useTranslation()
+  const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
 
   return (
     <WrapCard>
@@ -109,8 +112,8 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal, participa
           </Flex>
           <TextTitle>{useVoteTranslate(proposal.title, 'title')}</TextTitle>
           <TextEndDate>
-            <span>{t('End Date')}</span>
-            <span>{getDateFormat(i18n.languages[0], proposal.endEpoch)}</span>
+            <span>{isStartDate ? t('Start Date') : t('End Date')}</span>
+            <span>{getDateFormat(i18n.languages[0], isStartDate ? proposal.startEpoch : proposal.endEpoch)}</span>
           </TextEndDate>
           <BoxContent>
             <Text className="text">

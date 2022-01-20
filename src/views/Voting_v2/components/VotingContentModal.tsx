@@ -183,7 +183,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
                   {t('Available')}
                 </Text>
                 <Text textStyle="R_14M" color="mediumgrey" ml="6px">
-                  {numeral(remainVFinix).format('0,0.00')}
+                  {numeral(remainVFinix).value() < 0 ? numeral('0').format('0,0.00') : numeral(remainVFinix).format('0,0.00')}
                 </Text>
                 <Text textStyle="R_14R" color="mediumgrey" ml="2px">
                   {t('vFINIX')}
@@ -196,7 +196,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
               {t('Available')}
             </Text>
             <Text textStyle="R_14M" color="mediumgrey" ml="6px">
-              {numeral(remainVFinix).format('0,0.00')}
+              {numeral(remainVFinix).value() < 0 ? numeral('0').format('0,0.00') : numeral(remainVFinix).format('0,0.00')}
             </Text>
             <Text textStyle="R_14R" color="mediumgrey" ml="6px">
               {t('vFINIX')}
@@ -206,7 +206,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
       </Flex>
       <WrapScroll>
         {selectedVotes.map((vote, index) => (
-          <Flex flexDirection="column" pt="32px">
+          <Flex key="vote" flexDirection="column" pt="32px">
             <VoteOptionLabel label={<Translate text={vote} type="opinion" />} />
             <InputBox mt="12px">
               <NumericalInput

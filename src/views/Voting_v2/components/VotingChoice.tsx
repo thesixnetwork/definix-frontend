@@ -87,15 +87,17 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   const { toastSuccess, toastError } = useToast()
   const [trState, setTrState] = useState<TransactionState>(TransactionState.NONE)
   const [isVoteMore, setIsVoteMore] = useState<boolean>(!!participatedProposal)
-  const maxVotingIndex = useMemo(() => {
+  const maxVotingValue = useMemo(() => {
     const votes = mapVoting.map(({ vote }) => vote).slice(0)
-    const maxNum = votes.sort()[0]
-    return votes.indexOf(maxNum)
+    const maxNum = votes.sort()[votes.length - 1]
+    return maxNum
   }, [mapVoting])
   const votedChoices = useMemo(() => {
     return participatedProposal ? participatedProposal.choices.map(({ choiceName }) => choiceName) : []
   }, [participatedProposal])
+  const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])
+  const isParticipated = useMemo(() => !!participatedProposal, [participatedProposal]);
 
   const onVote = useCallback(
     (balances: string[]) => {
@@ -139,11 +141,12 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trState])
 
+
   useEffect(() => {
-    if (participatedProposal) {
-      setIsVoteMore(!!participatedProposal)
+    if (isParticipated) {
+      setIsVoteMore(isParticipated)
     }
-  }, [participatedProposal])
+  }, [isParticipated])
 
   useEffect(() => {
     const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
@@ -178,7 +181,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
 
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fastRefresh, proposal])
+  }, [fastRefresh, proposal.ipfsHash])
 
   const onCheckChange = useCallback(
     (isChecked: boolean, index) => {
@@ -250,7 +253,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   }, [isVoteMore])
 
   const renderVoteButton = useCallback(() => {
-    if (isEndDate) {
+    if (isStartDate || isEndDate) {
       return <></>
     }
     if (!account) {
@@ -314,6 +317,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
     account,
     isVoteMore,
     isEndDate,
+    isStartDate,
     allowance,
     transactionHash,
     handleApprove,
@@ -359,7 +363,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
       </WrapMobileBalance>
       <WrapMobilePlural>
         {isMulti && (
-          <Text color="orange" textStyle="R_12M">
+          <Text color="orange" textStyle="R_12M" mb="8px">
             *{t('Plural vote')}
           </Text>
         )}
@@ -370,13 +374,15 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
             key={choice}
             choice={choice}
             index={index}
-            isMax={maxVotingIndex === index}
+            maxVotingValue={maxVotingValue}
             votingResult={mapVoting[index]}
             isVoteMore={isVoteMore}
             isChecked={selectedIndexs.indexOf(index) > -1}
             isVoted={votedChoices.includes(choice)}
             isMulti={isMulti}
+            isStartDate={isStartDate}
             isEndDate={isEndDate}
+            isParticipated={isParticipated}
             onCheckChange={onCheckChange}
           />
         ))}

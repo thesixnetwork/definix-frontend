@@ -7,7 +7,7 @@ import Translate from './Translate'
 interface Props {
   choice: string
   isVoteMore: boolean
-  isMax: boolean
+  maxVotingValue: number
   isVoted: boolean
   isMulti: boolean
   votingResult: {
@@ -16,9 +16,11 @@ interface Props {
     value: string
   }
   isEndDate: boolean
+  isStartDate: boolean
   index: number
   onCheckChange: (isChecked: boolean, index: number) => void
   isChecked: boolean
+  isParticipated: boolean
 }
 
 const WrapChoice = styled(Flex)<{ isLeft: boolean; isDisabled: boolean }>`
@@ -81,7 +83,7 @@ const Range = styled(Box)`
   border-radius: 4px;
 `
 
-const RangeValue = styled(Box)<{ width: number; isParticipated: boolean; isMax: boolean }>`
+const RangeValue = styled(Box)<{ width: string; isParticipated: boolean; isMax: boolean }>`
   width: ${({ width }) => width}%;
   height: 100%;
   border-radius: 4px;
@@ -93,19 +95,21 @@ const VotingChoiceItem: React.FC<Props> = ({
   choice,
   index,
   isVoteMore,
-  isMax,
+  maxVotingValue,
   votingResult,
   isChecked,
   isVoted,
   isEndDate,
   isMulti,
+  isStartDate,
+  isParticipated,
   onCheckChange,
 }) => {
   const { t } = useTranslation()
-  const isLeft = useMemo(() => isVoteMore || isEndDate, [isEndDate, isVoteMore])
+  const isLeft = useMemo(() => isVoteMore || isEndDate || isStartDate, [isEndDate, isStartDate, isVoteMore])
 
   const renderChoice = useCallback(() => {
-    if (isEndDate) {
+    if (isEndDate || isStartDate) {
       return (
         <Text className="choice" textStyle="R_16R" color="black">
           <Translate text={choice} type="opinion" />
@@ -143,10 +147,25 @@ const VotingChoiceItem: React.FC<Props> = ({
         </Text>
       </CheckboxLabel>
     )
-  }, [isEndDate, isVoteMore, isChecked, choice, isVoted, onCheckChange, index])
+  }, [isEndDate, isStartDate, isVoteMore, isChecked, choice, isVoted, onCheckChange, index])
+
+  const isDisabled = useMemo(() => {
+    if (!isParticipated) {
+      return false;
+    }
+
+    if (isVoteMore) {
+      return false;
+    }
+
+    if (!isMulti && !isVoted) {
+      return true;
+    }
+    return false;
+  }, [isMulti, isVoteMore, isVoted, isParticipated]);
 
   return (
-    <WrapChoice key={choice} isLeft={isLeft} isDisabled={!isMulti && !isVoted && !isVoteMore}>
+    <WrapChoice key={choice} isLeft={isLeft} isDisabled={isDisabled}>
       <Flex justifyContent="space-between" alignItems="center">
         {renderChoice()}
         <div className="percent">
@@ -161,7 +180,7 @@ const VotingChoiceItem: React.FC<Props> = ({
       </Flex>
       <Flex ml={isLeft ? '0' : '36px'} mt="14px">
         <Range>
-          <RangeValue width={votingResult ? +votingResult.percent : 0} isParticipated={isVoteMore} isMax={isMax} />
+          <RangeValue width={votingResult ? votingResult.percent : '0'} isParticipated={isVoteMore} isMax={votingResult ? maxVotingValue === votingResult.vote : false} />
         </Range>
       </Flex>
       <Flex minHeight="20px" className="wrap-votes">
@@ -173,7 +192,7 @@ const VotingChoiceItem: React.FC<Props> = ({
         <div className="mobile-percent">
           {votingResult ? (
             <Text textStyle="R_12M" color="deepgrey">
-              {votingResult ? `${votingResult.percent}%` : ' '}
+              {votingResult ? `${!(window as any).isNaN(votingResult.percent) ? votingResult.percent : '0'}%` : ' '}
             </Text>
           ) : (
             <Skeleton width="100px" height="100%" animation="waves" />
