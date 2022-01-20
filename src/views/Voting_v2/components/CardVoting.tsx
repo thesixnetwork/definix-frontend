@@ -99,7 +99,7 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
 
   return (
     <Card mt="16px">
-      <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab}/>
+      <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} equal={isMobile} />
       {curTab === 'votenow' && <VotingList key="votenow" list={voteList[0]} />}
       {curTab === 'soon' && <VotingList key="soon" isStartDate list={voteList[1]} />}
       {curTab === 'closed' && <VotingList key="closed" list={voteList[2]} />}

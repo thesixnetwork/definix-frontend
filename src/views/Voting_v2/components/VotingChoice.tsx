@@ -96,6 +96,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   const votedChoices = useMemo(() => {
     return participatedProposal ? participatedProposal.choices.map(({ choiceName }) => choiceName) : []
   }, [participatedProposal])
+  const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])
   const isParticipated = useMemo(() => !!participatedProposal, [participatedProposal]);
 
@@ -253,7 +254,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   }, [isVoteMore])
 
   const renderVoteButton = useCallback(() => {
-    if (isEndDate) {
+    if (isStartDate || isEndDate) {
       return <></>
     }
     if (!account) {
@@ -317,6 +318,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
     account,
     isVoteMore,
     isEndDate,
+    isStartDate,
     allowance,
     transactionHash,
     handleApprove,
@@ -379,6 +381,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
             isChecked={selectedIndexs.indexOf(index) > -1}
             isVoted={votedChoices.includes(choice)}
             isMulti={isMulti}
+            isStartDate={isStartDate}
             isEndDate={isEndDate}
             isParticipated={isParticipated}
             onCheckChange={onCheckChange}

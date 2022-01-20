@@ -16,6 +16,7 @@ interface Props {
     value: string
   }
   isEndDate: boolean
+  isStartDate: boolean
   index: number
   onCheckChange: (isChecked: boolean, index: number) => void
   isChecked: boolean
@@ -100,14 +101,15 @@ const VotingChoiceItem: React.FC<Props> = ({
   isVoted,
   isEndDate,
   isMulti,
+  isStartDate,
   isParticipated,
   onCheckChange,
 }) => {
   const { t } = useTranslation()
-  const isLeft = useMemo(() => isVoteMore || isEndDate, [isEndDate, isVoteMore])
+  const isLeft = useMemo(() => isVoteMore || isEndDate || isStartDate, [isEndDate, isStartDate, isVoteMore])
 
   const renderChoice = useCallback(() => {
-    if (isEndDate) {
+    if (isEndDate || isStartDate) {
       return (
         <Text className="choice" textStyle="R_16R" color="black">
           <Translate text={choice} type="opinion" />
@@ -145,7 +147,7 @@ const VotingChoiceItem: React.FC<Props> = ({
         </Text>
       </CheckboxLabel>
     )
-  }, [isEndDate, isVoteMore, isChecked, choice, isVoted, onCheckChange, index])
+  }, [isEndDate, isStartDate, isVoteMore, isChecked, choice, isVoted, onCheckChange, index])
 
   const isDisabled = useMemo(() => {
     if (!isParticipated) {
@@ -190,7 +192,7 @@ const VotingChoiceItem: React.FC<Props> = ({
         <div className="mobile-percent">
           {votingResult ? (
             <Text textStyle="R_12M" color="deepgrey">
-              {votingResult ? `${votingResult.percent}%` : ' '}
+              {votingResult ? `${!(window as any).isNaN(votingResult.percent) ? votingResult.percent : '0'}%` : ' '}
             </Text>
           ) : (
             <Skeleton width="100px" height="100%" animation="waves" />
