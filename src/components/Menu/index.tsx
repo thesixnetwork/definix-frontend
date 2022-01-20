@@ -24,6 +24,7 @@ const Menu = (props) => {
 
   return (
     <UikitMenu
+      finixPrice={props?.finixPrice}
       version={process.env.REACT_APP_VERSION}
       Link={Link}
       // SettingsModal slippage

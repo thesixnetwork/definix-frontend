@@ -19,9 +19,9 @@ import { TransactionState } from '../types'
 import VotingChoiceItem from './VotingChoiceItem'
 
 interface Props {
-  proposalIndex: string;
-  proposal: Voting;
-  participatedProposal: ParticipatedVoting;
+  proposalIndex: string
+  proposal: Voting
+  participatedProposal: ParticipatedVoting
 }
 
 const WrapVote = styled(Flex)`
@@ -34,7 +34,7 @@ const WrapVote = styled(Flex)`
 `
 
 const WrapBalance = styled(Flex)<{ isMulti: boolean }>`
-  justify-content: ${({ isMulti }) => isMulti? 'space-between' : 'flex-end'};
+  justify-content: ${({ isMulti }) => (isMulti ? 'space-between' : 'flex-end')};
   ${({ theme }) => theme.mediaQueries.mobile} {
     display: none;
   }
@@ -70,7 +70,7 @@ const WrapVoteMore = styled(Flex)`
 `
 
 const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedProposal }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const { account } = useWallet()
   const [transactionHash, setTransactionHash] = useState('')
   const [mapVoting, setMapVoting] = useState([])
@@ -80,53 +80,64 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   const { indexProposal } = useProposalIndex(proposalIndex)
   const allowance = useServiceAllowance()
   const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
-  const isMulti = useMemo(() => proposal.choice_type === 'multiple', [proposal]);
-  const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix]);
-  const [selectedIndexs, setSelectedIndexs] = useState<number[]>([]);
-  const selectedVotes = useRef<string[]>([]);
+  const isMulti = useMemo(() => proposal.choice_type === 'multiple', [proposal])
+  const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix])
+  const [selectedIndexs, setSelectedIndexs] = useState<number[]>([])
+  const selectedVotes = useRef<string[]>([])
   const { toastSuccess, toastError } = useToast()
-  const [trState, setTrState] = useState<TransactionState>(TransactionState.NONE);
-  const [isVoteMore, setIsVoteMore] = useState<boolean>(!!participatedProposal);
+  const [trState, setTrState] = useState<TransactionState>(TransactionState.NONE)
+  const [isVoteMore, setIsVoteMore] = useState<boolean>(!!participatedProposal)
   const maxVotingIndex = useMemo(() => {
-    const votes = mapVoting.map(({ vote }) => vote).slice(0);
-    const maxNum = votes.sort()[0];
-    return votes.indexOf(maxNum);
-  }, [mapVoting]);
+    const votes = mapVoting.map(({ vote }) => vote).slice(0)
+    const maxNum = votes.sort()[0]
+    return votes.indexOf(maxNum)
+  }, [mapVoting])
   const votedChoices = useMemo(() => {
-    return participatedProposal ? participatedProposal.choices.map(({ choiceName }) => choiceName) : [];
+    return participatedProposal ? participatedProposal.choices.map(({ choiceName }) => choiceName) : []
   }, [participatedProposal])
   const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])
 
-  const onVote = useCallback((balances: string[]) => {
-    setTrState(TransactionState.START);
-    const result = proposal.choices.map((choice, index) => {
-      const selectedIndex = selectedIndexs.indexOf(index);
-      return selectedIndex > -1 ? new BigNumber(Number(balances[selectedIndex].replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed() : '0';
-    })
-    const res = onCastVote(proposalIndex, result)
-    res
-      .then(() => {
-        setTrState(TransactionState.SUCCESS);
-        toastSuccess(t('{{Action}} Complete', {
-          Action: t('actionVote')
-        }));
+  const onVote = useCallback(
+    (balances: string[]) => {
+      setTrState(TransactionState.START)
+      const result = proposal.choices.map((choice, index) => {
+        const selectedIndex = selectedIndexs.indexOf(index)
+        return selectedIndex > -1
+          ? new BigNumber(Number(balances[selectedIndex].replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed()
+          : '0'
       })
-      .catch(() => {
-        setTrState(TransactionState.ERROR);
-        toastError(t('{{Action}} Failed', {
-          Action: t('actionVote')
-        }));
-      })
-  }, [onCastVote, proposal.choices, proposalIndex, selectedIndexs, t, toastError, toastSuccess]);
+      const res = onCastVote(proposalIndex, result)
+      res
+        .then(() => {
+          setTrState(TransactionState.SUCCESS)
+          toastSuccess(
+            t('{{Action}} Complete', {
+              Action: t('actionVote'),
+            }),
+          )
+        })
+        .catch(() => {
+          setTrState(TransactionState.ERROR)
+          toastError(
+            t('{{Action}} Failed', {
+              Action: t('actionVote'),
+            }),
+          )
+        })
+    },
+    [onCastVote, proposal.choices, proposalIndex, selectedIndexs, t, toastError, toastSuccess],
+  )
 
-  const [onPresentVotingConfirmModal, onDismiss] = useModal(<VotingConfirmModal proposal={proposal} trState={trState} selectedVotes={selectedVotes.current} onVote={onVote} />);
+  const [onPresentVotingConfirmModal, onDismiss] = useModal(
+    <VotingConfirmModal proposal={proposal} trState={trState} selectedVotes={selectedVotes.current} onVote={onVote} />,
+  )
 
   useEffect(() => {
     if ([TransactionState.SUCCESS, TransactionState.ERROR].includes(trState)) {
-      onDismiss();
+      onDismiss()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trState])
 
   useEffect(() => {
     if (participatedProposal) {
@@ -169,134 +180,206 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fastRefresh, proposal])
 
-  const onCheckChange = useCallback((isChecked: boolean, index) => {
-    function setVoteIndexs(voteIndexs) {
-      if (voteIndexs.lnegth === 0) {
-        selectedVotes.current = [];
-        return;  
+  const onCheckChange = useCallback(
+    (isChecked: boolean, index) => {
+      function setVoteIndexs(voteIndexs) {
+        if (voteIndexs.lnegth === 0) {
+          selectedVotes.current = []
+          return
+        }
+        selectedVotes.current = voteIndexs.map((voteIndex) => proposal.choices[voteIndex])
       }
-      selectedVotes.current = voteIndexs.map((voteIndex) => proposal.choices[voteIndex]);
-    }
 
-    function addSelectedIndexs(addIndex) {
-      const temp = selectedIndexs.slice(0);
-      temp.push(addIndex)
-      setSelectedIndexs(temp);
-      setVoteIndexs(temp);
-    }
-
-    function removeSelectedIndexs(removeIndex) {
-      const tempIndex = selectedIndexs.indexOf(removeIndex);
-      if (tempIndex > -1) {
-        const temp = [
-          ...selectedIndexs.slice(0, tempIndex),
-          ...selectedIndexs.slice(tempIndex + 1)
-        ];
-        setSelectedIndexs(temp);
-        setVoteIndexs(temp);
+      function addSelectedIndexs(addIndex) {
+        const temp = selectedIndexs.slice(0)
+        temp.push(addIndex)
+        setSelectedIndexs(temp)
+        setVoteIndexs(temp)
       }
-    }
-    if (isMulti) {
+
+      function removeSelectedIndexs(removeIndex) {
+        const tempIndex = selectedIndexs.indexOf(removeIndex)
+        if (tempIndex > -1) {
+          const temp = [...selectedIndexs.slice(0, tempIndex), ...selectedIndexs.slice(tempIndex + 1)]
+          setSelectedIndexs(temp)
+          setVoteIndexs(temp)
+        }
+      }
+      if (isMulti) {
+        if (isChecked) {
+          addSelectedIndexs(index)
+        } else {
+          removeSelectedIndexs(index)
+        }
+        return
+      }
       if (isChecked) {
-        addSelectedIndexs(index);
+        setSelectedIndexs([index])
+        setVoteIndexs([index])
       } else {
-        removeSelectedIndexs(index);
+        setSelectedIndexs([])
+        setVoteIndexs([])
       }
-      return;
-    }
-    if (isChecked) {
-      setSelectedIndexs([index]);
-      setVoteIndexs([index]);
-    } else {
-      setSelectedIndexs([]);
-      setVoteIndexs([]);
-    }
-  }, [isMulti, setSelectedIndexs, selectedIndexs, proposal]);
+    },
+    [isMulti, setSelectedIndexs, selectedIndexs, proposal],
+  )
 
   const handleApprove = useCallback(async () => {
     try {
       const txHash = await onApprove()
       if (txHash) {
         setTransactionHash(_.get(txHash, 'transactionHash'))
-        toastSuccess(t('{{Action}} Complete', {
-          Action: t('actionApprove')
-        }));
+        toastSuccess(
+          t('{{Action}} Complete', {
+            Action: t('actionApprove'),
+          }),
+        )
       }
     } catch (e) {
       setTransactionHash('')
-      toastError(t('{{Action}} Failed', {
-        Action: t('actionApprove')
-      }));
+      toastError(
+        t('{{Action}} Failed', {
+          Action: t('actionApprove'),
+        }),
+      )
     }
   }, [onApprove, t, toastError, toastSuccess])
 
   const handleVoteMore = useCallback(() => {
-    setIsVoteMore(!isVoteMore);
-  }, [isVoteMore]);
+    setIsVoteMore(!isVoteMore)
+  }, [isVoteMore])
 
   const renderVoteButton = useCallback(() => {
     if (isEndDate) {
-      return <></>;
+      return <></>
     }
     if (!account) {
       return <UnlockButton width="280px" lg />
     }
     if (isVoteMore) {
-      return <Button lg width="280px" onClick={handleVoteMore} variant="line">{t('Vote More')}</Button>  
+      return (
+        <Button lg width="280px" onClick={handleVoteMore} variant="line">
+          {t('Vote More')}
+        </Button>
+      )
     }
     if (allowance > 0 || transactionHash !== '') {
       if (participatedProposal && !isVoteMore) {
-        return <WrapVoteMore>
-          <Button mr="8px" lg variant="line" onClick={() => {
-            setIsVoteMore(true);
-          }}>{t('Cancel')}</Button>
-          <Button ml="8px" lg onClick={() => {
-            setTrState(TransactionState.NONE);
-            onPresentVotingConfirmModal();
-          }} disabled={selectedIndexs.length === 0}>{t('Cast Vote')}</Button>
-        </WrapVoteMore>
+        return (
+          <WrapVoteMore>
+            <Button
+              mr="8px"
+              lg
+              variant="line"
+              onClick={() => {
+                setIsVoteMore(true)
+              }}
+            >
+              {t('Cancel')}
+            </Button>
+            <Button
+              ml="8px"
+              lg
+              onClick={() => {
+                setTrState(TransactionState.NONE)
+                onPresentVotingConfirmModal()
+              }}
+              disabled={selectedIndexs.length === 0}
+            >
+              {t('Cast Vote')}
+            </Button>
+          </WrapVoteMore>
+        )
       }
-      return <Button lg width="280px" onClick={() => {
-        setTrState(TransactionState.NONE);
-        onPresentVotingConfirmModal();
-      }} disabled={selectedIndexs.length === 0}>{t('Cast Vote')}</Button>
+      return (
+        <Button
+          lg
+          width="280px"
+          onClick={() => {
+            setTrState(TransactionState.NONE)
+            onPresentVotingConfirmModal()
+          }}
+          disabled={selectedIndexs.length === 0}
+        >
+          {t('Cast Vote')}
+        </Button>
+      )
     }
-    return <Button lg width="280px" onClick={handleApprove}>{t('Approve Contract')}</Button>
-    
-  }, [account, isVoteMore, isEndDate, allowance, transactionHash, handleApprove, t, handleVoteMore, participatedProposal, selectedIndexs.length, onPresentVotingConfirmModal]);
+    return (
+      <Button lg width="280px" onClick={handleApprove}>
+        {t('Approve Contract')}
+      </Button>
+    )
+  }, [
+    account,
+    isVoteMore,
+    isEndDate,
+    allowance,
+    transactionHash,
+    handleApprove,
+    t,
+    handleVoteMore,
+    participatedProposal,
+    selectedIndexs.length,
+    onPresentVotingConfirmModal,
+  ])
 
   return (
     <WrapVote>
       <WrapBalance isMulti={isMulti}>
-        {isMulti && <Text color="orange" textStyle="R_14M">*{t('Plural vote')}</Text>}
+        {isMulti && (
+          <Text color="orange" textStyle="R_14M">
+            *{t('Plural vote')}
+          </Text>
+        )}
         <Flex>
-          <Text color="mediumgrey" textStyle="R_14R" mr="8px">{t('Balance')}</Text>
-          <Text color="black" textStyle="R_14B" mr="4px">{myVFinixBalance}</Text>
-          <Text color="black" textStyle="R_14M">{t('vFINIX')}</Text>
+          <Text color="mediumgrey" textStyle="R_14R" mr="8px">
+            {t('Balance')}
+          </Text>
+          <Text color="black" textStyle="R_14B" mr="4px">
+            {myVFinixBalance}
+          </Text>
+          <Text color="black" textStyle="R_14M">
+            {t('vFINIX')}
+          </Text>
         </Flex>
       </WrapBalance>
       <WrapMobileBalance>
-        <Text color="mediumgrey" textStyle="R_14R" mr="8px">{t('Balance')}</Text>
+        <Text color="mediumgrey" textStyle="R_14R" mr="8px">
+          {t('Balance')}
+        </Text>
         <Flex>
-          <Text color="black" textStyle="R_14B" mr="4px">{myVFinixBalance}</Text>
-          <Text color="black" textStyle="R_14M">{t('vFINIX')}</Text>
+          <Text color="black" textStyle="R_14B" mr="4px">
+            {myVFinixBalance}
+          </Text>
+          <Text color="black" textStyle="R_14M">
+            {t('vFINIX')}
+          </Text>
         </Flex>
       </WrapMobileBalance>
       <WrapMobilePlural>
-        {isMulti && <Text color="orange" textStyle="R_12M">*{t('Plural vote')}</Text>}
+        {isMulti && (
+          <Text color="orange" textStyle="R_12M">
+            *{t('Plural vote')}
+          </Text>
+        )}
       </WrapMobilePlural>
-      {proposal?.choices && proposal.choices.map((choice, index) => <VotingChoiceItem
-        key={choice}
-        choice={choice}
-        index={index}
-        isMax={maxVotingIndex === index}
-        votingResult={mapVoting[index]}
-        isVoteMore={isVoteMore}
-        isChecked={selectedIndexs.indexOf(index) > -1}
-        isVoted={votedChoices.includes(choice)}
-        isMulti={isMulti}
-        isEndDate={isEndDate}
-        onCheckChange={onCheckChange} />)}
+      {proposal?.choices &&
+        proposal.choices.map((choice, index) => (
+          <VotingChoiceItem
+            key={choice}
+            choice={choice}
+            index={index}
+            isMax={maxVotingIndex === index}
+            votingResult={mapVoting[index]}
+            isVoteMore={isVoteMore}
+            isChecked={selectedIndexs.indexOf(index) > -1}
+            isVoted={votedChoices.includes(choice)}
+            isMulti={isMulti}
+            isEndDate={isEndDate}
+            onCheckChange={onCheckChange}
+          />
+        ))}
       <Flex justifyContent="center" mt="22px">
         {renderVoteButton()}
       </Flex>

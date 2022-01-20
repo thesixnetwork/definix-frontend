@@ -252,42 +252,42 @@ export interface AchievementState {
 }
 
 export interface VotingItem {
-  choice_type: 'single' | 'multiple';
-  choices: string[];
-  content: string;
-  creator: string;
-  endTimestamp: string;
-  end_unixtimestamp: number;
-  ipfsHash: string;
-  proposalIndex: number;
-  proposalType: number;
-  proposals_type: string;
-  proposer: string;
-  startTimestamp: string;
-  start_unixtimestamp: number;
-  title: string;
-  isParticipated?: boolean;
-  startEpoch: number;
-  endEpoch: number;
+  choice_type: 'single' | 'multiple'
+  choices: string[]
+  content: string
+  creator: string
+  endTimestamp: string
+  end_unixtimestamp: number
+  ipfsHash: string
+  proposalIndex: number
+  proposalType: number
+  proposals_type: string
+  proposer: string
+  startTimestamp: string
+  start_unixtimestamp: number
+  title: string
+  isParticipated?: boolean
+  startEpoch: number
+  endEpoch: number
 }
 
 export interface ParticipatedVoting {
-  IsClaimable: boolean;
-  IsParticipated: boolean;
+  IsClaimable: boolean
+  IsParticipated: boolean
   choices: {
-    choiceName: string;
-    votePower: number;
-  }[];
-  endDate: number;
-  endTimestamp: string;
-  ipfsHash: string;
-  optionVotingPower: BigNumber[];
-  optionsCount: string;
-  proposalIndex: number;
-  proposalType: number;
-  proposer: string;
-  startTimestamp: string;
-  title: string;
+    choiceName: string
+    votePower: number
+  }[]
+  endDate: number
+  endTimestamp: string
+  ipfsHash: string
+  optionVotingPower: BigNumber[]
+  optionsCount: string
+  proposalIndex: number
+  proposalType: number
+  proposer: string
+  startTimestamp: string
+  title: string
 }
 
 export interface Voting extends VotingItem {
@@ -304,11 +304,10 @@ export interface Voting extends VotingItem {
   // optionVotingPower?: any
 }
 
-
 export interface VotingState {
   allProposal: Voting[]
   indexProposal: []
-  proposals: Voting;
+  proposals: Voting
   isProposable: boolean
   allProposalMap: []
   totalVote: ''

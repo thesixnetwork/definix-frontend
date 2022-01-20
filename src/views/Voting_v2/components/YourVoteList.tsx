@@ -10,8 +10,8 @@ import VoteOptionLabel from './VoteOptionLabel'
 import Translate from './Translate'
 
 interface Props {
-  proposalIndex: string;
-  participatedProposal: ParticipatedVoting;
+  proposalIndex: string
+  participatedProposal: ParticipatedVoting
 }
 
 const VoteItem = styled(Flex)`
@@ -41,45 +41,67 @@ const WrapCardBody = styled(CardBody)`
 `
 
 const YourVoteList: React.FC<Props> = ({ participatedProposal, proposalIndex }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const isClaimable = useIsClaimable(+proposalIndex)
   const { callClaimVote } = useClaimVote()
   const { toastSuccess, toastError } = useToast()
 
-  const onClaim = useCallback((r) => {
-    const claim = callClaimVote(r)
-    claim
-      .then(() => {
-        toastSuccess(t('{{Action}} Complete', {
-          Action: t('actionClaim')
-        }));
-      })
-      .catch(() => {
-        toastError(t('{{Action}} Failed', {
-          Action: t('actionClaim')
-        }));
-      })
-  }, [callClaimVote, t, toastError, toastSuccess]);
+  const onClaim = useCallback(
+    (r) => {
+      const claim = callClaimVote(r)
+      claim
+        .then(() => {
+          toastSuccess(
+            t('{{Action}} Complete', {
+              Action: t('actionClaim'),
+            }),
+          )
+        })
+        .catch(() => {
+          toastError(
+            t('{{Action}} Failed', {
+              Action: t('actionClaim'),
+            }),
+          )
+        })
+    },
+    [callClaimVote, t, toastError, toastSuccess],
+  )
 
   return (
     <Card mt="20px">
-      {participatedProposal && <WrapCardBody>
-        <Flex flexDirection="column">
-          <Text textStyle="R_16M" color="deepgrey">{t('Your Vote')}</Text>
-          {
-            participatedProposal.choices.map(({ choiceName, votePower }) => <VoteItem key={choiceName}>
-              <VoteOptionLabel label={<Translate text={choiceName} type="opinion" />} />
-              <Flex className="wrap-power">
-                <Text textStyle="R_14B" className="power">{votePower}</Text>
-                <Text textStyle="R_14R" ml="6px">{t('vFINIX')}</Text>
-              </Flex>
-            </VoteItem>)
-          }
-        </Flex>
-        <Flex justifyContent="center" mt="8px">
-          <Button lg width="280px" onClick={onClaim} disabled={Date.now() < + _.get(participatedProposal, 'endDate') || !isClaimable}>{t('Claim Voting Power')}</Button>
-        </Flex>
-      </WrapCardBody>}
+      {participatedProposal && (
+        <WrapCardBody>
+          <Flex flexDirection="column">
+            <Text textStyle="R_16M" color="deepgrey">
+              {t('Your Vote')}
+            </Text>
+            {participatedProposal.choices.map(({ choiceName, votePower }) => (
+              <VoteItem key={choiceName}>
+                <VoteOptionLabel label={<Translate text={choiceName} type="opinion" />} />
+                <Flex className="wrap-power">
+                  <Text textStyle="R_14B" className="power">
+                    {votePower}
+                  </Text>
+                  <Text textStyle="R_14R" ml="6px">
+                    {t('vFINIX')}
+                  </Text>
+                </Flex>
+              </VoteItem>
+            ))}
+          </Flex>
+          <Flex justifyContent="center" mt="8px">
+            <Button
+              lg
+              width="280px"
+              onClick={onClaim}
+              disabled={Date.now() < +_.get(participatedProposal, 'endDate') || !isClaimable}
+            >
+              {t('Claim Voting Power')}
+            </Button>
+          </Flex>
+        </WrapCardBody>
+      )}
     </Card>
   )
 }

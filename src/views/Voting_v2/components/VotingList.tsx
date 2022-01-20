@@ -2,13 +2,13 @@ import React, { useState, useMemo } from 'react'
 import { Flex, Box, Text } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { VotingItem as Voting } from 'state/types';
+import { VotingItem as Voting } from 'state/types'
 import StakeListPagination from 'views/LongTermStake_v2/components/StakeListPagination'
-import VotingItem from './VotingItem';
+import VotingItem from './VotingItem'
 
 interface Props {
-  list: Voting[];
-  isStartDate?: boolean;
+  list: Voting[]
+  isStartDate?: boolean
 }
 
 const List = styled(Box)`
@@ -19,22 +19,21 @@ const List = styled(Box)`
   }
 `
 
-const ItemPerPage = 10;
+const ItemPerPage = 10
 
 const VotingList: React.FC<Props> = ({ list, isStartDate = false }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState<number>(1)
   const currentList = useMemo(() => {
-    return list ? list.slice((currentPage - 1) * ItemPerPage, currentPage * ItemPerPage) : [];
+    return list ? list.slice((currentPage - 1) * ItemPerPage, currentPage * ItemPerPage) : []
   }, [currentPage, list])
-
 
   return list && list.length > 0 ? (
     <Box width="100%" pb="20px">
       <List>
-        {
-          currentList.map((item) => <VotingItem key={item.ipfsHash} isStartDate={isStartDate} item={item} />)
-        }
+        {currentList.map((item) => (
+          <VotingItem key={item.ipfsHash} isStartDate={isStartDate} item={item} />
+        ))}
       </List>
       <Flex mt="12px" justifyContent="center">
         <StakeListPagination
@@ -46,9 +45,13 @@ const VotingList: React.FC<Props> = ({ list, isStartDate = false }) => {
         />
       </Flex>
     </Box>
-  ) : <Flex width="100%" py="20px" height="280px" alignItems="center" justifyContent="center">
-      <Text textStyle="R_14R" color="deepgrey">{t('There are no proposals.')}</Text>
+  ) : (
+    <Flex width="100%" py="20px" height="280px" alignItems="center" justifyContent="center">
+      <Text textStyle="R_14R" color="deepgrey">
+        {t('There are no proposals.')}
+      </Text>
     </Flex>
+  )
 }
 
 export default VotingList

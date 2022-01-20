@@ -6,24 +6,24 @@ export enum ProposalType {
 export enum FilterId {
   NOW = 'now',
   SOON = 'soon',
-  CLOSED = 'closed'
+  CLOSED = 'closed',
 }
 
 export enum BadgeType {
   CORE = 'core',
-  PARTICIPATION = 'Participation'
+  PARTICIPATION = 'Participation',
 }
 
 export enum TransactionState {
   NONE = 'none',
   START = 'start',
   SUCCESS = 'success',
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 export enum ModalState {
   VOTING = 'voting',
-  CONFIRM = 'confirm'
+  CONFIRM = 'confirm',
 }
 
-export default {};
+export default {}

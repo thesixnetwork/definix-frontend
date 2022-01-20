@@ -11,10 +11,10 @@ import { BadgeType } from '../types'
 import VotingChoice from './VotingChoice'
 
 interface Props {
-  id: string;
-  proposalIndex: string;
-  proposal: Voting;
-  participatedProposal: ParticipatedVoting;
+  id: string
+  proposalIndex: string
+  proposal: Voting
+  participatedProposal: ParticipatedVoting
 }
 
 const WrapCard = styled(Card)`
@@ -97,30 +97,24 @@ const WrapContent = styled(Flex)`
 `
 
 const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal, participatedProposal }) => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation()
 
   return (
     <WrapCard>
       <StyledCardBody>
         <WrapContent>
           <Flex>
-            {
-              proposal.proposals_type === 'core' && <Badge type={BadgeType.CORE} />
-            }
+            {proposal.proposals_type === 'core' && <Badge type={BadgeType.CORE} />}
             {participatedProposal && <Badge type={BadgeType.PARTICIPATION} />}
           </Flex>
-          <TextTitle>
-            {useVoteTranslate(proposal.title, 'title')}
-          </TextTitle>
+          <TextTitle>{useVoteTranslate(proposal.title, 'title')}</TextTitle>
           <TextEndDate>
             <span>{t('End Date')}</span>
             <span>{getDateFormat(i18n.languages[0], proposal.endEpoch)}</span>
           </TextEndDate>
           <BoxContent>
             <Text className="text">
-              <ReactMarkdown>
-                {useVoteTranslate(proposal.content, 'content')}
-              </ReactMarkdown>
+              <ReactMarkdown>{useVoteTranslate(proposal.content, 'content')}</ReactMarkdown>
             </Text>
           </BoxContent>
         </WrapContent>

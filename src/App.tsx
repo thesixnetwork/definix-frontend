@@ -62,13 +62,11 @@ const App: React.FC = () => {
   return (
     <Router history={history}>
       <Helmet>
-        <title>
-          Definix{!finixPrice ? '' : ` - ${finixPrice?.toFixed(4)} FINIX/USD`}
-        </title>
+        <title>Definix{!finixPrice || !account ? '' : ` - ${finixPrice?.toFixed(4)} FINIX/USD`}</title>
       </Helmet>
       <GlobalStyle />
       <Suspense fallback={<></>}>
-        <Menu>
+        <Menu finixPrice={finixPrice?.toFixed(4)}>
           <Suspense fallback={<Loading />}>
             <Switch>
               <Route path="/" exact>

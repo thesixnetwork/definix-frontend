@@ -8,10 +8,9 @@ import { Voting } from 'state/types'
 import getDateFormat from 'utils/getDateFormat'
 
 interface Props {
-  id: string;
-  proposal: Voting;
+  id: string
+  proposal: Voting
 }
-
 
 const Wrap = styled(CardBody)`
   padding: 32px;
@@ -55,7 +54,7 @@ const Col = styled.td`
 const Link = styled.a`
   display: inline-flex;
   align-items: center;
-  
+
   &:hover {
     text-decoration: underline;
   }
@@ -72,7 +71,7 @@ const Title = styled(Text)`
 `
 
 const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation()
   const { account } = useWallet()
 
   return (
@@ -85,7 +84,9 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
             </Col>
             <Col>
               <Link as="a" href={`${process.env.REACT_APP_IPFS}/${id}`} target="_blank">
-                <Text textStyle="R_14R" color="black">{id && `${id.substring(0, 6)}...${id.substring(id.length - 4)}`}</Text>
+                <Text textStyle="R_14R" color="black">
+                  {id && `${id.substring(0, 6)}...${id.substring(id.length - 4)}`}
+                </Text>
                 <LinkIcon />
               </Link>
             </Col>
@@ -97,7 +98,8 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
             <Col>
               <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
                 <Text textStyle="R_14R" color="black">
-                  {proposal.creator && `${proposal.creator.substring(0, 6)}...${proposal.creator.substring(proposal.creator.length - 4)}`}
+                  {proposal.creator &&
+                    `${proposal.creator.substring(0, 6)}...${proposal.creator.substring(proposal.creator.length - 4)}`}
                 </Text>
                 <LinkIcon />
               </Link>
@@ -116,7 +118,9 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
               <Title>{t('Start Date')}</Title>
             </Col>
             <Col>
-              <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.startEpoch)}</Text>
+              <Text textStyle="R_14R" color="black">
+                {getDateFormat(i18n.languages[0], proposal.startEpoch)}
+              </Text>
             </Col>
           </Row>
           <Row>
@@ -124,7 +128,9 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
               <Title>{t('End Date')}</Title>
             </Col>
             <Col>
-              <Text textStyle="R_14R" color="black">{getDateFormat(i18n.languages[0], proposal.endEpoch)}</Text>
+              <Text textStyle="R_14R" color="black">
+                {getDateFormat(i18n.languages[0], proposal.endEpoch)}
+              </Text>
             </Col>
           </Row>
         </tbody>
