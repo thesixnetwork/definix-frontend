@@ -58,8 +58,8 @@ interface IProps extends InjectedModalProps {
   tokenB: Token
   signatureData: { v: number; r: string; s: string; deadline: number }
   onDismissModal: () => void
-  onUserInput: (field: Field, val: string) => void;
-  successTxCallback?: any;
+  onUserInput: (field: Field, val: string) => void
+  successTxCallback?: any
 }
 
 const StyledNotiIcon = styled(NotiIcon)`
@@ -79,7 +79,7 @@ export default function ConfirmRemoveModal({
   signatureData,
   onDismissModal,
   onUserInput,
-  successTxCallback
+  successTxCallback,
 }: IProps) {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
@@ -361,8 +361,8 @@ export default function ConfirmRemoveModal({
         }),
         <KlaytnScopeLink hash={txHash} />,
       )
-      if(successTxCallback){
-        successTxCallback();
+      if (successTxCallback) {
+        successTxCallback()
       }
       onDismiss()
     }

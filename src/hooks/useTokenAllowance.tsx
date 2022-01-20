@@ -1,7 +1,7 @@
 import { Token, TokenAmount } from 'definixswap-sdk'
 import { useMemo } from 'react'
 
-import { useTokenContract } from "./useContract"
+import { useTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
 
 function useTokenAllowance(token?: Token, owner?: string, spender?: string): TokenAmount | undefined {

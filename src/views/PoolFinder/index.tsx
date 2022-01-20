@@ -42,23 +42,29 @@ export default function PoolFinder() {
   const hasPosition = useMemo(() => Boolean(position && JSBI.greaterThan(position.raw, JSBI.BigInt(0))), [position])
   const { toastSuccess } = useToast()
 
-  const handleCurrency0 = useCallback((currency: Currency) => {
-    if(currency === currency1){
-      setCurrency1(currency0)
-      setCurrency0(currency1)
-      return;
-    }
-    setCurrency0(currency)
-  }, [currency1, currency0]);
+  const handleCurrency0 = useCallback(
+    (currency: Currency) => {
+      if (currency === currency1) {
+        setCurrency1(currency0)
+        setCurrency0(currency1)
+        return
+      }
+      setCurrency0(currency)
+    },
+    [currency1, currency0],
+  )
 
-  const handleCurrency1 = useCallback((currency: Currency) => {
-    if(currency === currency0){
-      setCurrency0(currency1)
-      setCurrency1(currency0)
-      return;
-    }
-    setCurrency1(currency)
-  }, [currency0, currency1]);
+  const handleCurrency1 = useCallback(
+    (currency: Currency) => {
+      if (currency === currency0) {
+        setCurrency0(currency1)
+        setCurrency1(currency0)
+        return
+      }
+      setCurrency1(currency)
+    },
+    [currency0, currency1],
+  )
 
   const onClickCreatePoolButton = useCallback(() => {
     if (pair) {
@@ -76,11 +82,11 @@ export default function PoolFinder() {
     (currencyId0, currencyId1) => {
       history.replace(`/liquidity/add/${currencyId0}/${currencyId1}`)
     },
-    [history]
+    [history],
   )
 
   useEffect(() => {
-    if(!account) {
+    if (!account) {
       history.push('/liquidity')
     }
   }, [account, history])
@@ -113,19 +119,13 @@ export default function PoolFinder() {
         borderColor={ColorStyles.YELLOWBG2}
         style={{ boxShadow: '0 12px 12px 0 rgba(254, 169, 72, 0.2)' }}
       >
-        <SelectCurrencyPanel 
-          currency={currency0}
-          onCurrencySelect={handleCurrency0}
-        />
+        <SelectCurrencyPanel currency={currency0} onCurrencySelect={handleCurrency0} />
 
         <Flex justifyContent="center" m="12px 0">
           <ChangePlusIcon />
         </Flex>
 
-        <SelectCurrencyPanel 
-          currency={currency1}
-          onCurrencySelect={handleCurrency1}
-        />
+        <SelectCurrencyPanel currency={currency1} onCurrencySelect={handleCurrency1} />
 
         {(!currency0 || !currency1) && (
           <Noti type="guide" mt="12px">
@@ -193,7 +193,6 @@ export default function PoolFinder() {
                       </Button>
                     </Flex>
                   )}
-                  
                 </Flex>
               </>
             )}

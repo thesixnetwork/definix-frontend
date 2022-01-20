@@ -15,7 +15,9 @@ export enum PairState {
   INVALID,
 }
 
-export default function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
+export default function usePairs(
+  currencies: [Currency | undefined, Currency | undefined][],
+): [PairState, Pair | null][] {
   // const { chainId } = useActiveWeb3React()
   const { chainId } = useWallet()
 

@@ -19,7 +19,7 @@ export enum ROUTES {
   LONG_TERM_STAKE = '/long-term-stake',
   SUPER_STAKE = '/long-term-stake/super',
   BRIDGE = '/bridge',
-  VOTING = '/voting'
+  VOTING = '/voting',
 }
 
-export default null;
+export default null

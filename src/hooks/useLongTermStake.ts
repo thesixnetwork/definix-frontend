@@ -630,7 +630,8 @@ export const useSousHarvest = () => {
         return new Promise((resolve, reject) => {
           herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
         })
-      } if (sousId === 1) {
+      }
+      if (sousId === 1) {
         return new Promise((resolve, reject) => {
           herodotusContract.methods
             .deposit(sousId, '0')

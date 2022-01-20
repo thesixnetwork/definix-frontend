@@ -1,14 +1,6 @@
 import { JSBI, Pair } from 'definixswap-sdk'
 import React, { useMemo, useState } from 'react'
-import {
-  Text,
-  CardBody,
-  Flex,
-  Box,
-  ColorStyles,
-  useMatchBreakpoints,
-  Lp,
-} from '@fingerlabs/definixswap-uikit-v2'
+import { Text, CardBody, Flex, Box, ColorStyles, useMatchBreakpoints, Lp } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import useWallet from 'hooks/useWallet'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -138,4 +130,4 @@ const MinimalPositionCard: React.FC<IProps> = React.memo(({ pair, showUnwrapped 
   )
 })
 
-export default MinimalPositionCard;
+export default MinimalPositionCard

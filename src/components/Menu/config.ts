@@ -1,4 +1,4 @@
-import { ROUTES } from "config/constants/routes"
+import { ROUTES } from 'config/constants/routes'
 
 export const links = (t: (key: string) => string, currentLang: string) => {
   return [

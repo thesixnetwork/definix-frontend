@@ -1,18 +1,19 @@
-import { Coin, ColorStyles, Flex, useModal, Text, Box, ArrowBottomGIcon } from '@fingerlabs/definixswap-uikit-v2';
-import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal';
+import { Coin, ColorStyles, Flex, useModal, Text, Box, ArrowBottomGIcon } from '@fingerlabs/definixswap-uikit-v2'
+import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import React from 'react'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
-const SelectCurrencyPanel = React.memo(({currency, onCurrencySelect, handleSearchDismiss}: any) => {
-  const { t } = useTranslation();
+const SelectCurrencyPanel = React.memo(({ currency, onCurrencySelect, handleSearchDismiss }: any) => {
+  const { t } = useTranslation()
 
   const [onPresentCurrencySearchModal] = useModal(
     <CurrencySearchModal
       onCurrencySelect={onCurrencySelect}
       onDismiss={handleSearchDismiss}
       selectedCurrency={currency}
-    />
-  , false)
+    />,
+    false,
+  )
 
   return (
     <Flex
@@ -45,6 +46,6 @@ const SelectCurrencyPanel = React.memo(({currency, onCurrencySelect, handleSearc
       </Box>
     </Flex>
   )
-});
+})
 
-export default SelectCurrencyPanel;
+export default SelectCurrencyPanel

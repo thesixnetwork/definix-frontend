@@ -184,7 +184,7 @@ export default function RemoveLiquidity() {
         signatureData,
         onDismissModal: handleDismissConfirmation,
         onUserInput,
-        successTxCallback: () => history.replace('/liquidity/list')
+        successTxCallback: () => history.replace('/liquidity/list'),
       }}
     />,
   )
