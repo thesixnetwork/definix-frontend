@@ -2,7 +2,6 @@
 import React from 'react'
 import { CardBody, LinkIcon, Text } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import styled from 'styled-components'
 import { Voting } from 'state/types'
 import getDateFormat from 'utils/getDateFormat'
@@ -72,7 +71,6 @@ const Title = styled(Text)`
 
 const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
   const { t, i18n } = useTranslation()
-  const { account } = useWallet()
 
   return (
     <Wrap>
@@ -96,7 +94,7 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
               <Title>{t('Creator')}</Title>
             </Col>
             <Col>
-              <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
+              <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${proposal.creator}`} target="_blank">
                 <Text textStyle="R_14R" color="black">
                   {proposal.creator &&
                     `${proposal.creator.substring(0, 6)}...${proposal.creator.substring(proposal.creator.length - 4)}`}
