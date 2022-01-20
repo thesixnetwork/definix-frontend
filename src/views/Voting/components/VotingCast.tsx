@@ -117,7 +117,7 @@ const VotingCast = ({ indexs, proposalIndex }) => {
   const [, setIsLoading] = useState(false)
   const [allChoice, setAllChoice] = useState([])
   const [flgMerge, setFlgMerge] = useState('')
-  const {choices} = indexs
+  const { choices } = indexs
   const choiceType = indexs.choice_type
   const allChoices = useMemo(() => {
     const set = []

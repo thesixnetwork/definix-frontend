@@ -1,13 +1,13 @@
 import React from 'react'
-import styled from 'styled-components';
+import styled from 'styled-components'
 import { Text, Flex, Toggle } from '@fingerlabs/definixswap-uikit-v2'
-import { useTranslation } from 'react-i18next';
-import { ProposalType } from '../types';
+import { useTranslation } from 'react-i18next'
+import { ProposalType } from '../types'
 
 interface Props {
-  setProposalType: (id: ProposalType) => void;
-  setIsParticipated: (isParticipated: boolean) => void;
-  isParticipated: boolean;
+  setProposalType: (id: ProposalType) => void
+  setIsParticipated: (isParticipated: boolean) => void
+  isParticipated: boolean
 }
 
 const Wrap = styled(Flex)`
@@ -23,7 +23,7 @@ const TextVotingOnly = styled(Text)`
 `
 
 const ProposalFilterVoting: React.FC<Props> = ({ isParticipated, setIsParticipated }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   // const [isOpen, setIsOpen] = useState(false);
   // const [activeIndex, setActiveIndex] = useState(0);
   // const options: {

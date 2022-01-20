@@ -12,13 +12,16 @@ function CardSummary({ products }) {
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const tabs = useMemo(() => {
-    return [{
-      id: 'earned',
-      name: t('Earned')
-    }, {
-      id: 'networth',
-      name: t('Net Worth'),
-    }]
+    return [
+      {
+        id: 'earned',
+        name: t('Earned'),
+      },
+      {
+        id: 'networth',
+        name: t('Net Worth'),
+      },
+    ]
   }, [t])
   const [curTab, setCurTab] = useState<string>(tabs[0].id)
   const longTermStake = useMemo(

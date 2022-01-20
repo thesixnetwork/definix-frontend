@@ -115,11 +115,7 @@ const CardVoting = () => {
       </BannerVoting>
       <CardProposals />
 
-      {account && proposalOfAddress.length > 0 ? (
-        <VotingPartProposal userProposals={proposalOfAddress} />
-      ) : (
-        ''
-      )}
+      {account && proposalOfAddress.length > 0 ? <VotingPartProposal userProposals={proposalOfAddress} /> : ''}
     </>
   )
 }

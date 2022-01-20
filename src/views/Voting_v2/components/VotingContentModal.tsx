@@ -4,16 +4,7 @@ import styled from 'styled-components'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { rgba } from 'polished'
-import {
-  Flex,
-  Coin,
-  Text,
-  AnountButton,
-  Noti,
-  NotiType,
-  ModalProps,
-  VDivider,
-} from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Coin, Text, AnountButton, Noti, NotiType, ModalProps, VDivider } from '@fingerlabs/definixswap-uikit-v2'
 import NumericalInput from 'components/NumericalInput'
 import { usePrivateData } from 'hooks/useLongTermStake'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
@@ -21,11 +12,11 @@ import VoteOptionLabel from './VoteOptionLabel'
 import Translate from './Translate'
 
 interface Props extends ModalProps {
-  selectedVotes: string[];
-  setBalances: (balances: string[]) => void;
-  balances: string[];
-  showNotis: string[];
-  setShowNotis: (showNotis: string[]) => void;
+  selectedVotes: string[]
+  setBalances: (balances: string[]) => void
+  balances: string[]
+  showNotis: string[]
+  setShowNotis: (showNotis: string[]) => void
 }
 
 const WrapScroll = styled(Flex)`
@@ -69,7 +60,6 @@ const WrapBalanceAvailable = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {
     flex-direction: column;
   }
-  
 `
 
 const WrapBalance = styled(Flex)`
@@ -110,38 +100,46 @@ const WrapAvailable = styled(Flex)`
 `
 
 const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalances, showNotis, setShowNotis }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const { balancevfinix } = usePrivateData()
-  const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix]);
-  const [remainVFinix, setRemainVFinix] = useState<string>(myVFinixBalance);
-  const [activeInputIndex, setActiveInputIndex] = useState<number>(0);
-  const balancesRef = useRef<string[]>([]);
+  const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix])
+  const [remainVFinix, setRemainVFinix] = useState<string>(myVFinixBalance)
+  const [activeInputIndex, setActiveInputIndex] = useState<number>(0)
+  const balancesRef = useRef<string[]>([])
 
-  const onUserInput = useCallback((index: number, input: string) => {
-    const temp = balances.slice(0);
-    temp[index] = input;
-    setActiveInputIndex(index);
-    setBalances(temp);
-    balancesRef.current = temp;
-  }, [balances, setBalances])
+  const onUserInput = useCallback(
+    (index: number, input: string) => {
+      const temp = balances.slice(0)
+      temp[index] = input
+      setActiveInputIndex(index)
+      setBalances(temp)
+      balancesRef.current = temp
+    },
+    [balances, setBalances],
+  )
 
-  const handlePercent = useCallback((index: number, percent: number) => {
-    const total = numeral(remainVFinix).add(+balances[index] > -1 ? +balances[index] : 0);
-    onUserInput(index, total.multiply(percent * 1 / 100).format('0,0.00'))
-  }, [balances, onUserInput, remainVFinix])
+  const handlePercent = useCallback(
+    (index: number, percent: number) => {
+      const total = numeral(remainVFinix).add(+balances[index] > -1 ? +balances[index] : 0)
+      onUserInput(index, total.multiply((percent * 1) / 100).format('0,0.00'))
+    },
+    [balances, onUserInput, remainVFinix],
+  )
 
   useEffect(() => {
     function setShowNoti(index: number, message: string) {
-      const temp = showNotis.slice(0);
-      temp[index] = message;
-      setShowNotis(temp);
+      const temp = showNotis.slice(0)
+      temp[index] = message
+      setShowNotis(temp)
     }
 
-    const resultVFinix = numeral(myVFinixBalance).subtract(balances.reduce((sum, cur) => {
-      // eslint-disable-next-line no-param-reassign
-      sum += +cur;
-      return sum;
-    }, 0));
+    const resultVFinix = numeral(myVFinixBalance).subtract(
+      balances.reduce((sum, cur) => {
+        // eslint-disable-next-line no-param-reassign
+        sum += +cur
+        return sum
+      }, 0),
+    )
 
     if (new BigNumber(balances[activeInputIndex]).decimalPlaces() > 18) {
       setShowNoti(activeInputIndex, t('The value entered is out of the valid range'))
@@ -155,8 +153,8 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
 
     setRemainVFinix(resultVFinix.format('0,0.00'))
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [balances, myVFinixBalance]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [balances, myVFinixBalance])
 
   return (
     <>
@@ -164,45 +162,70 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
         <WrapBalanceAvailable>
           <StyledCoin symbol="VFINIX" size="40px" />
           <WrapBalance>
-            <Text textStyle="R_14R" color="mediumgrey">{t('Balance')}</Text>
+            <Text textStyle="R_14R" color="mediumgrey">
+              {t('Balance')}
+            </Text>
             <Flex mt="2px" alignItems="flex-end">
               <Text className="finix">{myVFinixBalance}</Text>
-              <Text textStyle="R_14R" color="black" ml="6px">{t('vFINIX')}</Text>
+              <Text textStyle="R_14R" color="black" ml="6px">
+                {t('vFINIX')}
+              </Text>
               <Flex alignItems="center" className="available">
-                <VDivider mx="12px" mb="2px" style={{
-                  height: '12px',
-                  alignSelf: 'center'
-                }} />
-                <Text textStyle="R_14R" color="mediumgrey">{t('Available')}</Text>
-                <Text textStyle="R_14M" color="mediumgrey" ml="6px">{numeral(remainVFinix).format('0,0.00')}</Text>
-                <Text textStyle="R_14R" color="mediumgrey" ml="2px">{t('vFINIX')}</Text>
+                <VDivider
+                  mx="12px"
+                  mb="2px"
+                  style={{
+                    height: '12px',
+                    alignSelf: 'center',
+                  }}
+                />
+                <Text textStyle="R_14R" color="mediumgrey">
+                  {t('Available')}
+                </Text>
+                <Text textStyle="R_14M" color="mediumgrey" ml="6px">
+                  {numeral(remainVFinix).format('0,0.00')}
+                </Text>
+                <Text textStyle="R_14R" color="mediumgrey" ml="2px">
+                  {t('vFINIX')}
+                </Text>
               </Flex>
             </Flex>
           </WrapBalance>
           <WrapAvailable>
-            <Text textStyle="R_14R" color="mediumgrey">{t('Available')}</Text>
-            <Text textStyle="R_14M" color="mediumgrey" ml="6px">{numeral(remainVFinix).format('0,0.00')}</Text>
-            <Text textStyle="R_14R" color="mediumgrey" ml="6px">{t('vFINIX')}</Text>
+            <Text textStyle="R_14R" color="mediumgrey">
+              {t('Available')}
+            </Text>
+            <Text textStyle="R_14M" color="mediumgrey" ml="6px">
+              {numeral(remainVFinix).format('0,0.00')}
+            </Text>
+            <Text textStyle="R_14R" color="mediumgrey" ml="6px">
+              {t('vFINIX')}
+            </Text>
           </WrapAvailable>
         </WrapBalanceAvailable>
       </Flex>
       <WrapScroll>
-        {selectedVotes.map((vote, index) => <Flex flexDirection="column" pt="32px">
-          <VoteOptionLabel label={<Translate text={vote} type="opinion" />} />
-          <InputBox mt="12px">
-            <NumericalInput
-              placeholder="0.0"
-              value={balances[index]}
-              onUserInput={(input) => onUserInput(index, input)}
-            />
-            <div className="flex align-center justify-end">
-              <StyledAnountButton onClick={() => handlePercent(index, 100)}>MAX</StyledAnountButton>
-            </div>
-          </InputBox>
-          {!showNotis[index] || showNotis[index] !== '' && <Noti mt="12px" type={NotiType.ALERT}>
-            {showNotis[index]}
-          </Noti>}
-        </Flex>)}
+        {selectedVotes.map((vote, index) => (
+          <Flex flexDirection="column" pt="32px">
+            <VoteOptionLabel label={<Translate text={vote} type="opinion" />} />
+            <InputBox mt="12px">
+              <NumericalInput
+                placeholder="0.0"
+                value={balances[index]}
+                onUserInput={(input) => onUserInput(index, input)}
+              />
+              <div className="flex align-center justify-end">
+                <StyledAnountButton onClick={() => handlePercent(index, 100)}>MAX</StyledAnountButton>
+              </div>
+            </InputBox>
+            {!showNotis[index] ||
+              (showNotis[index] !== '' && (
+                <Noti mt="12px" type={NotiType.ALERT}>
+                  {showNotis[index]}
+                </Noti>
+              ))}
+          </Flex>
+        ))}
       </WrapScroll>
     </>
   )

@@ -63,17 +63,21 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   const { account } = useWallet()
   const { t } = useTranslation()
   const tabs = useMemo(() => {
-    return [{
-      id: 'overview',
-      name: t('Overview'),
-    }, {
-      id: 'performance',
-      name: t('Performance')
-    }, {
-      id: 'transaction',
-      name: t('Transaction')
-    }]
-  }, [t]);
+    return [
+      {
+        id: 'overview',
+        name: t('Overview'),
+      },
+      {
+        id: 'performance',
+        name: t('Performance'),
+      },
+      {
+        id: 'transaction',
+        name: t('Transaction'),
+      },
+    ]
+  }, [t])
   const [curTab, setCurTab] = useState<string>(tabs[0].id)
   // for adjust color
   const rebalance = useMemo(() => {

@@ -1,12 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import {
-  Modal,
-  ModalProps,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Flex,
-} from '@fingerlabs/definixswap-uikit-v2'
+import { Modal, ModalProps, ModalBody, ModalFooter, Button, Flex } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Voting } from 'state/types'
@@ -15,10 +8,10 @@ import VotingContentModal from './VotingContentModal'
 import { TransactionState, ModalState } from '../types'
 
 interface Props extends ModalProps {
-  selectedVotes: string[];
-  onVote: (balances: string[]) => void;
-  trState: TransactionState;
-  proposal: Voting;
+  selectedVotes: string[]
+  onVote: (balances: string[]) => void
+  trState: TransactionState
+  proposal: Voting
 }
 
 const ModalBodyWrap = styled(ModalBody)`
@@ -30,35 +23,66 @@ const ModalBodyWrap = styled(ModalBody)`
 `
 
 const VotingConfirmModal: React.FC<Props> = ({ onDismiss, selectedVotes, onVote, proposal }) => {
-  const { t } = useTranslation();
-  const [activeModal, setActiveModal] = useState<ModalState>(ModalState.VOTING);
-  const [balances, setBalances] = useState<string[]>(selectedVotes.map(() => ''));
-  const [showNotis, setShowNotis] = useState<string[]>([]);
-  const isNext = useMemo(() => balances.length === 0 || balances.some((balance) => !balance || +balance <= 0 || showNotis.some((showNoti) => showNoti.length > 0)), [balances, showNotis]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { t } = useTranslation()
+  const [activeModal, setActiveModal] = useState<ModalState>(ModalState.VOTING)
+  const [balances, setBalances] = useState<string[]>(selectedVotes.map(() => ''))
+  const [showNotis, setShowNotis] = useState<string[]>([])
+  const isNext = useMemo(
+    () =>
+      balances.length === 0 ||
+      balances.some((balance) => !balance || +balance <= 0 || showNotis.some((showNoti) => showNoti.length > 0)),
+    [balances, showNotis],
+  )
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const isVotingModal = useMemo(() => activeModal === ModalState.VOTING, [activeModal])
 
   const onPrev = useCallback(() => {
-    setActiveModal(ModalState.VOTING);
-  }, []);
+    setActiveModal(ModalState.VOTING)
+  }, [])
 
   const onNext = useCallback(() => {
-    setActiveModal(ModalState.CONFIRM);
-  }, []);
+    setActiveModal(ModalState.CONFIRM)
+  }, [])
 
   return (
     <Modal title={t(isVotingModal ? 'Voting' : 'Confirm Voting')} onDismiss={onDismiss} mobileFull>
       <ModalBodyWrap isBody>
-        {isVotingModal ? <VotingContentModal selectedVotes={selectedVotes} balances={balances} setBalances={setBalances} showNotis={showNotis} setShowNotis={setShowNotis} /> : <ConfirmContentModal selectedVotes={selectedVotes} balances={balances} proposal={proposal} />}
+        {isVotingModal ? (
+          <VotingContentModal
+            selectedVotes={selectedVotes}
+            balances={balances}
+            setBalances={setBalances}
+            showNotis={showNotis}
+            setShowNotis={setShowNotis}
+          />
+        ) : (
+          <ConfirmContentModal selectedVotes={selectedVotes} balances={balances} proposal={proposal} />
+        )}
       </ModalBodyWrap>
       <ModalFooter isFooter>
-        {isVotingModal ? <Button lg onClick={onNext} disabled={isNext}>{t('Next')}</Button> : <Flex>
-          <Button width="50%" mr="8px" lg variant="line" onClick={onPrev}>{t('Back')}</Button>
-          <Button width="50%" ml="8px" lg onClick={() => {
-            setIsLoading(true);
-            onVote(balances)
-          }} isLoading={isLoading}>{t('Cast Vote')}</Button>
-        </Flex>}
+        {isVotingModal ? (
+          <Button lg onClick={onNext} disabled={isNext}>
+            {t('Next')}
+          </Button>
+        ) : (
+          <Flex>
+            <Button width="50%" mr="8px" lg variant="line" onClick={onPrev}>
+              {t('Back')}
+            </Button>
+            <Button
+              width="50%"
+              ml="8px"
+              lg
+              onClick={() => {
+                setIsLoading(true)
+                onVote(balances)
+              }}
+              isLoading={isLoading}
+            >
+              {t('Cast Vote')}
+            </Button>
+          </Flex>
+        )}
       </ModalFooter>
     </Modal>
   )

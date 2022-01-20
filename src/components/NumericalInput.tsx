@@ -60,7 +60,6 @@ export const Input = React.memo(function InnerInput({
       onUserInput(nextUserInput)
     } else if (nextUserInput.length === 1 && Number.isNaN(+nextUserInput)) {
       onUserInput('')
-
     }
   }
 

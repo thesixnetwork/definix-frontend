@@ -1,13 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import {
-  Card,
-  CardBody,
-  Text,
-  Flex,
-  ArrowRightGIcon,
-  Box,
-} from '@fingerlabs/definixswap-uikit-v2'
+import { Card, CardBody, Text, Flex, ArrowRightGIcon, Box } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
 const StyledCardBody = styled(CardBody)`
@@ -57,23 +50,29 @@ const Dot = styled(Box)`
 
 const CardRelease = () => {
   const { t, i18n } = useTranslation()
-  const [isNew, setIsNew] = useState(false);
-  const linkHref = useMemo(() => (i18n.language.includes('ko') ? 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/release-note' : 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/release-note'), [i18n.language])
-  
+  const [isNew, setIsNew] = useState(false)
+  const linkHref = useMemo(
+    () =>
+      i18n.language.includes('ko')
+        ? 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/release-note'
+        : 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/release-note',
+    [i18n.language],
+  )
+
   useEffect(() => {
-    const releaseDate = localStorage.getItem('releaseDate');
+    const releaseDate = localStorage.getItem('releaseDate')
     if (!releaseDate) {
-      setIsNew(true);
+      setIsNew(true)
     } else if (releaseDate !== t('Release notes date')) {
-      setIsNew(true);
+      setIsNew(true)
     }
-  }, [t]);
+  }, [t])
 
   const goLink = useCallback(() => {
-    setIsNew(false);
+    setIsNew(false)
     localStorage.setItem('releaseDate', t('Release notes date'))
-    window.open(linkHref, '_blank');
-  }, [linkHref, t]);
+    window.open(linkHref, '_blank')
+  }, [linkHref, t])
 
   return (
     <Card>
