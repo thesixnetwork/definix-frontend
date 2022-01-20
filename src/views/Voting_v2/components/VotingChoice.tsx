@@ -97,6 +97,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
     return participatedProposal ? participatedProposal.choices.map(({ choiceName }) => choiceName) : []
   }, [participatedProposal])
   const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])
+  const isParticipated = useMemo(() => !!participatedProposal, [participatedProposal]);
 
   const onVote = useCallback(
     (balances: string[]) => {
@@ -140,11 +141,12 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trState])
 
-  // useEffect(() => {
-  //   if (participatedProposal) {
-  //     setIsVoteMore(!!participatedProposal)
-  //   }
-  // }, [participatedProposal])
+
+  useEffect(() => {
+    if (isParticipated) {
+      setIsVoteMore(isParticipated)
+    }
+  }, [isParticipated])
 
   useEffect(() => {
     const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
@@ -378,6 +380,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
             isVoted={votedChoices.includes(choice)}
             isMulti={isMulti}
             isEndDate={isEndDate}
+            isParticipated={isParticipated}
             onCheckChange={onCheckChange}
           />
         ))}

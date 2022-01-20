@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Card, CardBody, Box, Flex, Text } from '@fingerlabs/definixswap-uikit-v2'

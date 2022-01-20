@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { BackIcon, Box, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { useGetProposal, useAllProposalOfAddress, useAllProposalOfType } from 'hooks/useVoting'
+import { setProposalIndex } from 'state/voting'
 import CardVotingContent from './CardVotingContent'
 import YourVoteList from './YourVoteList'
 import VotingInfo from './VotingInfo'
@@ -27,12 +29,20 @@ const TextBack = styled(Text)`
 const DetailVoting: React.FC = () => {
   useAllProposalOfType()
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { proposal } = useGetProposal(id)
   const { proposalOfAddress } = useAllProposalOfAddress()
   const participatedProposal = useMemo(() => {
     return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
   }, [id, proposalOfAddress])
+
+  useEffect(() => {
+    return () => {
+      dispatch(setProposalIndex({}))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Wrap>
@@ -50,7 +60,10 @@ const DetailVoting: React.FC = () => {
         participatedProposal={participatedProposal}
       />
       <YourVoteList proposalIndex={proposalIndex} participatedProposal={participatedProposal} />
-      <VotingInfo id={id} proposalIndex={proposalIndex} proposal={proposal} />
+      {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        useMemo(() => <VotingInfo id={id} proposalIndex={proposalIndex} proposal={proposal} />, [id])
+      }
     </Wrap>
   )
 }
