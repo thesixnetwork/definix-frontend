@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import _ from 'lodash'
-import { Card, TabBox, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import { Card, Tabs, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { VotingItem } from 'state/types'
 import VotingList from './VotingList'
@@ -44,32 +44,10 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const allProposalMap = useAllProposalOfType()
   const { proposalOfAddress } = useAllProposalOfAddress()
   const listAllProposal: VotingItem[] = _.get(allProposalMap, 'allProposalMap')
-  const [voteList, setVoteList] = useState([])
   const participatedVotes = useMemo(() => {
     return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
   }, [proposalOfAddress])
-  const tabs = useMemo(
-    () => [
-      {
-        id: 'votenow',
-        name: t('Vote Now'),
-        component: <VotingList key="votenow" list={voteList[0]} />,
-      },
-      {
-        id: 'soon',
-        name: t('Soon'),
-        component: <VotingList key="soon" isStartDate list={voteList[1]} />,
-      },
-      {
-        id: 'closed',
-        name: t('Closed'),
-        component: <VotingList key="closed" list={voteList[2]} />,
-      },
-    ],
-    [t, voteList],
-  )
-
-  useEffect(() => {
+  const voteList = useMemo(() => {
     if (listAllProposal) {
       const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
         if (participatedVotes.includes(_.get(item, 'ipfsHash'))) {
@@ -88,17 +66,43 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
         return proposalType === ProposalType.ALL ? true : _.get(item, 'proposals_type') === proposalType
       })
 
-      setVoteList([
+      return [
         getFilterList(filterListAllProposal, FilterId.NOW),
         getFilterList(filterListAllProposal, FilterId.SOON),
         getFilterList(filterListAllProposal, FilterId.CLOSED),
-      ])
+      ]
     }
+    return [];
   }, [isParticipated, listAllProposal, participatedVotes, proposalType])
+
+  const tabs = useMemo(
+    () => [
+      {
+        id: 'votenow',
+        name: t('Vote Now'),
+        // component: <VotingList key="votenow" list={voteList[0]} />,
+      },
+      {
+        id: 'soon',
+        name: t('Soon'),
+        // component: <VotingList key="soon" isStartDate list={voteList[1]} />,
+      },
+      {
+        id: 'closed',
+        name: t('Closed'),
+        // component: <VotingList key="closed" list={voteList[2]} />,
+      },
+    ],
+    [t],
+  )
+  const [curTab, setCurTab] = useState(tabs[0].id)
 
   return (
     <Card mt="16px">
-      <TabBox tabs={tabs} equal={isMobile} />
+      <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab}/>
+      {curTab === 'votenow' && <VotingList key="votenow" list={voteList[0]} />}
+      {curTab === 'soon' && <VotingList key="soon" isStartDate list={voteList[1]} />}
+      {curTab === 'closed' && <VotingList key="closed" list={voteList[2]} />}
     </Card>
   )
 }
