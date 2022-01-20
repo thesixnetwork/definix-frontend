@@ -52,6 +52,7 @@ const TextEndDate = styled(Text)`
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     margin-top: 10px;
+    flex-direction: column;
 
     span:nth-child(2) {
       margin-left: 0;
