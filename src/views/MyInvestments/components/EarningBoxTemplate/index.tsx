@@ -219,7 +219,7 @@ const EarningBoxTemplate: React.FC<{
     if (pendingTx || isHarvestingUsingKlip) return
     harvestAllLength.current = needHarvestLongTermStake ? myFarmPools.length + 1 : myFarmPools.length
     setPendingTx(true)
-    
+
     try {
       await farmPoolHarvestHook.onReward()
       if (needHarvestLongTermStake) {
