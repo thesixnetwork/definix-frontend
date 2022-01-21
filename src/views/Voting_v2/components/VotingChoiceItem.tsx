@@ -106,10 +106,10 @@ const VotingChoiceItem: React.FC<Props> = ({
   onCheckChange,
 }) => {
   const { t } = useTranslation()
-  const isLeft = useMemo(() => isVoteMore || isEndDate || isStartDate, [isEndDate, isStartDate, isVoteMore])
+  const isLeft = useMemo(() => isVoteMore || isEndDate || isStartDate || !votingResult, [isEndDate, isStartDate, isVoteMore, votingResult])
 
   const renderChoice = useCallback(() => {
-    if (isEndDate || isStartDate) {
+    if (isEndDate || isStartDate || !votingResult) {
       return (
         <Text className="choice" textStyle="R_16R" color="black">
           <Translate text={choice} type="opinion" />
@@ -147,7 +147,7 @@ const VotingChoiceItem: React.FC<Props> = ({
         </Text>
       </CheckboxLabel>
     )
-  }, [isEndDate, isStartDate, isVoteMore, isChecked, choice, isVoted, onCheckChange, index])
+  }, [isEndDate, isStartDate, votingResult, isVoteMore, isChecked, choice, isVoted, onCheckChange, index])
 
   const isDisabled = useMemo(() => {
     if (!isParticipated) {
@@ -167,7 +167,9 @@ const VotingChoiceItem: React.FC<Props> = ({
   return (
     <WrapChoice key={choice} isLeft={isLeft} isDisabled={isDisabled}>
       <Flex justifyContent="space-between" alignItems="center">
-        {renderChoice()}
+        {
+          votingResult ? renderChoice() : <Skeleton width="200px" height="100%" animation="waves" />
+        }
         <div className="percent">
           {votingResult ? (
             <Text textStyle="R_16M" color="deepgrey">

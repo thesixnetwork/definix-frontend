@@ -534,5 +534,7 @@
   "Available": "사용 가능",
   "The amount of vFINIX you are": "입력하신 vFINIX 수량이 최소 투표 수량보다 부족합니다.",
   "Claim will be available after": "vFINIX는 투표 기간이 종료되면 수령할 수 있습니다.",
-  "There are no proposals.": "안건이 없습니다."
+  "There are no proposals.": "안건이 없습니다.",
+  "no transaction": "투표 내역이 없습니다.",
+  "My Voting Power": "보유 투표권"
 }

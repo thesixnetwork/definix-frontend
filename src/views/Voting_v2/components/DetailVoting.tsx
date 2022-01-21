@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { BackIcon, Box, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
-import { useGetProposal, useAllProposalOfAddress, useAllProposalOfType } from 'hooks/useVoting'
+import { Link } from 'react-router-dom'
+import { useAllProposalOfType } from 'hooks/useVoting'
 import { setProposalIndex } from 'state/voting'
 import CardVotingContent from './CardVotingContent'
 import YourVoteList from './YourVoteList'
@@ -30,12 +30,6 @@ const DetailVoting: React.FC = () => {
   useAllProposalOfType()
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const { proposal } = useGetProposal(id)
-  const { proposalOfAddress } = useAllProposalOfAddress()
-  const participatedProposal = useMemo(() => {
-    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
-  }, [id, proposalOfAddress])
 
   useEffect(() => {
     return () => {
@@ -53,14 +47,9 @@ const DetailVoting: React.FC = () => {
           </Button>
         </Flex>
       </Box>
-      <CardVotingContent
-        id={id}
-        proposalIndex={proposalIndex}
-        proposal={proposal}
-        participatedProposal={participatedProposal}
-      />
-      <YourVoteList proposalIndex={proposalIndex} participatedProposal={participatedProposal} />
-      <VotingInfo id={id} proposalIndex={proposalIndex} proposal={proposal} />
+      <CardVotingContent />
+      <YourVoteList />
+      <VotingInfo />
     </Wrap>
   )
 }

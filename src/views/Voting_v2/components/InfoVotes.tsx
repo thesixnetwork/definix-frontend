@@ -116,7 +116,7 @@ const InfoVotes: React.FC<Props> = ({ id, proposalIndex }) => {
 
   return (
     <Wrap>
-      {mapAllVote && (
+      {mapAllVote && mapAllVote.length > 0 ? (
         <>
           <ScrollTable>
             <WrapTable>
@@ -200,7 +200,12 @@ const InfoVotes: React.FC<Props> = ({ id, proposalIndex }) => {
             />
           </Flex>
         </>
-      )}
+      ) : 
+      <Flex width="100%" py="20px" height="280px" alignItems="center" justifyContent="center">
+        <Text textStyle="R_14R" color="deepgrey">
+          {t('no transaction')}
+        </Text>
+      </Flex>}
     </Wrap>
   )
 }

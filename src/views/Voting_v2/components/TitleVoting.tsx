@@ -7,9 +7,9 @@ const TitleVoting: React.FC = () => {
 
   const getLink = () => {
     if (i18n.language === 'ko') {
-      return 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/long-term-stake/how-to-use-long-term-stake'
+      return 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/vFINIX/voting'
     }
-    return 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-stake/how-to-use-long-term-stake'
+    return 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/vFINIX/voting'
   }
 
   return (

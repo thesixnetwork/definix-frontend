@@ -1,19 +1,16 @@
 /* eslint-disable no-nested-ternary */
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 import { Card, Tabs, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
-import { Voting } from 'state/types'
+import { useGetProposal } from 'hooks/useVoting'
 import InfoDetail from './InfoDetail'
 import InfoVotes from './InfoVotes'
 
-interface Props {
-  id: string
-  proposalIndex: string
-  proposal: Voting
-}
-
-const VotingInfo: React.FC<Props> = ({ id, proposal, proposalIndex }) => {
+const VotingInfo: React.FC = () => {
   const { t } = useTranslation()
+  const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
+  const { proposal } = useGetProposal(id)
   const { isMobile } = useMatchBreakpoints()
   const tabs = useMemo(
     () => [

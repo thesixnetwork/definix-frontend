@@ -36,7 +36,18 @@ function getFilterList(filterListAllProposal, filterId: FilterId) {
         )
     }
   })
-  return list.sort((a, b) => dayjs(b.endTimestamp).valueOf() - dayjs(a.endTimestamp).valueOf())
+
+  switch (filterId) {
+    case FilterId.SOON:
+      return list.sort((a, b) => dayjs(b.endTimestamp).valueOf() - dayjs(a.endTimestamp).valueOf())
+      
+      case FilterId.CLOSED:
+        return list.sort((a, b) => dayjs(b.startTimestamp).valueOf() - dayjs(a.startTimestamp).valueOf())
+        
+      case FilterId.NOW:
+      default:
+      return list.sort((a, b) => dayjs(a.endTimestamp).valueOf() - dayjs(b.endTimestamp).valueOf())
+  }
 }
 
 const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
@@ -81,17 +92,14 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
       {
         id: 'votenow',
         name: t('Vote Now'),
-        // component: <VotingList key="votenow" list={voteList[0]} />,
       },
       {
         id: 'soon',
         name: t('Soon'),
-        // component: <VotingList key="soon" isStartDate list={voteList[1]} />,
       },
       {
         id: 'closed',
         name: t('Closed'),
-        // component: <VotingList key="closed" list={voteList[2]} />,
       },
     ],
     [t],
