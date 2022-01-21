@@ -1,18 +1,14 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
 import { Card, CardBody, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
-import { useClaimVote } from 'hooks/useVoting'
+import { useClaimVote, useAllProposalOfAddress } from 'hooks/useVoting'
 import { useToast } from 'state/hooks'
 import { ParticipatedVoting } from 'state/types'
 import VoteOptionLabel from './VoteOptionLabel'
 import Translate from './Translate'
-
-interface Props {
-  proposalIndex: string
-  participatedProposal: ParticipatedVoting
-}
 
 const VoteItem = styled(Flex)`
   justify-content: space-between;
@@ -40,10 +36,15 @@ const WrapCardBody = styled(CardBody)`
   }
 `
 
-const YourVoteList: React.FC<Props> = ({ participatedProposal, proposalIndex }) => {
+const YourVoteList: React.FC = () => {
   const { t } = useTranslation()
+  const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { callClaimVote } = useClaimVote()
+  const { proposalOfAddress } = useAllProposalOfAddress()
   const { toastSuccess, toastError } = useToast()
+  const participatedProposal = useMemo(() => {
+    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
+  }, [id, proposalOfAddress])
 
   const onClaim = useCallback(
     () => {
@@ -66,10 +67,10 @@ const YourVoteList: React.FC<Props> = ({ participatedProposal, proposalIndex }) 
     },
     [callClaimVote, proposalIndex, t, toastError, toastSuccess],
   )
-
+  
   return (
     <Card mt="20px">
-      {participatedProposal && (
+      {participatedProposal && participatedProposal.IsClaimable && (
         <WrapCardBody>
           <Flex flexDirection="column">
             <Text textStyle="R_16M" color="deepgrey">
