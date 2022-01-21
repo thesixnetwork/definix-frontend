@@ -81,17 +81,14 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
       {
         id: 'votenow',
         name: t('Vote Now'),
-        // component: <VotingList key="votenow" list={voteList[0]} />,
       },
       {
         id: 'soon',
         name: t('Soon'),
-        // component: <VotingList key="soon" isStartDate list={voteList[1]} />,
       },
       {
         id: 'closed',
         name: t('Closed'),
-        // component: <VotingList key="closed" list={voteList[2]} />,
       },
     ],
     [t],

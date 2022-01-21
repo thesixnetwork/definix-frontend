@@ -7,6 +7,7 @@ import { rgba } from 'polished'
 import { Flex, Coin, Text, AnountButton, Noti, NotiType, ModalProps, VDivider } from '@fingerlabs/definixswap-uikit-v2'
 import NumericalInput from 'components/NumericalInput'
 import { usePrivateData } from 'hooks/useLongTermStake'
+import { useAvailableVotes } from 'hooks/useVoting'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 import VoteOptionLabel from './VoteOptionLabel'
 import Translate from './Translate'
@@ -101,8 +102,8 @@ const WrapAvailable = styled(Flex)`
 
 const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalances, showNotis, setShowNotis }) => {
   const { t } = useTranslation()
-  const { balancevfinix } = usePrivateData()
-  const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix])
+  const { availableVotes } = useAvailableVotes()
+  const myVFinixBalance = useMemo(() => getBalanceOverBillion(+availableVotes), [availableVotes])
   const [remainVFinix, setRemainVFinix] = useState<string>(myVFinixBalance)
   const [activeInputIndex, setActiveInputIndex] = useState<number>(0)
   const balancesRef = useRef<string[]>([])
@@ -120,10 +121,10 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
 
   const handlePercent = useCallback(
     (index: number, percent: number) => {
-      const total = numeral(remainVFinix).add(+balances[index] > -1 ? +balances[index] : 0)
-      onUserInput(index, total.multiply((percent * 1) / 100).format('0,0.00'))
+      // const total = numeral(availableVotes).add(+balances[index] > -1 ? +balances[index] : 0)
+      onUserInput(index, numeral(availableVotes).multiply((percent * 1) / 100).value())
     },
-    [balances, onUserInput, remainVFinix],
+    [availableVotes, onUserInput],
   )
 
   useEffect(() => {
@@ -139,11 +140,11 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
         sum += +cur
         return sum
       }, 0),
-    )
+    ).value()
 
     if (new BigNumber(balances[activeInputIndex]).decimalPlaces() > 18) {
       setShowNoti(activeInputIndex, t('The value entered is out of the valid range'))
-    } else if (new BigNumber(balances[activeInputIndex]).gt(myVFinixBalance)) {
+    } else if (+resultVFinix < 0) {
       setShowNoti(activeInputIndex, t('Insufficient balance'))
     } else if (new BigNumber(balances[activeInputIndex]).lt(10)) {
       setShowNoti(activeInputIndex, t('The amount of vFINIX you are'))
@@ -151,10 +152,11 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
       setShowNoti(activeInputIndex, '')
     }
 
-    setRemainVFinix(resultVFinix.format('0,0.00'))
+    setRemainVFinix(resultVFinix)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balances, myVFinixBalance])
+
 
   return (
     <>
@@ -166,7 +168,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
               {t('Balance')}
             </Text>
             <Flex mt="2px" alignItems="flex-end">
-              <Text className="finix">{myVFinixBalance}</Text>
+              <Text className="finix">{availableVotes}</Text>
               <Text textStyle="R_14R" color="black" ml="6px">
                 {t('vFINIX')}
               </Text>

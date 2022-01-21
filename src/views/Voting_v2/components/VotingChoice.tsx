@@ -1,28 +1,22 @@
 import React, { useMemo, useEffect, useState, useCallback, useRef } from 'react'
 import _ from 'lodash'
+import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import dayjs from 'dayjs'
 import { Flex, Text, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from 'hooks/klipProvider'
-import { useProposalIndex, useServiceAllowance, useApproveToService, useVote } from 'hooks/useVoting'
-import { usePrivateData } from 'hooks/useLongTermStake'
+import { useProposalIndex, useServiceAllowance, useApproveToService, useVote, useGetProposal, useAllProposalOfAddress, useAvailableVotes } from 'hooks/useVoting'
 import useRefresh from 'hooks/useRefresh'
 import { useToast } from 'state/hooks'
-import getBalanceOverBillion from 'utils/getBalanceOverBillion'
-import { ParticipatedVoting, Voting } from 'state/types'
+import { Voting } from 'state/types'
 import VotingConfirmModal from './VotingConfirmModal'
 import { TransactionState } from '../types'
 import VotingChoiceItem from './VotingChoiceItem'
-
-interface Props {
-  proposalIndex: string
-  proposal: Voting
-  participatedProposal: ParticipatedVoting
-}
 
 const WrapVote = styled(Flex)`
   flex-direction: column;
@@ -69,23 +63,29 @@ const WrapVoteMore = styled(Flex)`
   }
 `
 
-const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedProposal }) => {
+const VotingChoice: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWallet()
+  const { availableVotes } = useAvailableVotes()
   const [transactionHash, setTransactionHash] = useState('')
+  const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
+  const { proposal: getProposal } = useGetProposal(id)
+  const [proposal, setProposal] = useState<Voting>(getProposal)
+  const { proposalOfAddress } = useAllProposalOfAddress()
   const [mapVoting, setMapVoting] = useState([])
-  const { balancevfinix } = usePrivateData()
   const { onCastVote } = useVote()
   const { fastRefresh } = useRefresh()
   const { indexProposal } = useProposalIndex(proposalIndex)
   const allowance = useServiceAllowance()
   const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
   const isMulti = useMemo(() => proposal.choice_type === 'multiple', [proposal])
-  const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix])
   const [selectedIndexs, setSelectedIndexs] = useState<number[]>([])
   const selectedVotes = useRef<string[]>([])
   const { toastSuccess, toastError } = useToast()
   const [trState, setTrState] = useState<TransactionState>(TransactionState.NONE)
+  const participatedProposal = useMemo(() => {
+    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
+  }, [id, proposalOfAddress])
   const [isVoteMore, setIsVoteMore] = useState<boolean>(!!participatedProposal)
   const maxVotingValue = useMemo(() => {
     const votes = mapVoting.map(({ vote }) => vote).slice(0)
@@ -98,6 +98,16 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
   const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])
   const isParticipated = useMemo(() => !!participatedProposal, [participatedProposal]);
+
+  useEffect(() => {
+    if (getProposal) {
+      setProposal(getProposal);
+    }
+
+    return () => {
+      setProposal({} as Voting);
+    }
+  }, [getProposal])
 
   const onVote = useCallback(
     (balances: string[]) => {
@@ -341,7 +351,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
             {t('Balance')}
           </Text>
           <Text color="black" textStyle="R_14B" mr="4px">
-            {myVFinixBalance}
+            {numeral(availableVotes).format('0,0.00')}
           </Text>
           <Text color="black" textStyle="R_14M">
             {t('vFINIX')}
@@ -354,7 +364,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
         </Text>
         <Flex>
           <Text color="black" textStyle="R_14B" mr="4px">
-            {myVFinixBalance}
+            {numeral(availableVotes).format('0,0.00')}
           </Text>
           <Text color="black" textStyle="R_14M">
             {t('vFINIX')}
@@ -371,7 +381,8 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
       {proposal?.choices &&
         proposal.choices.map((choice, index) => (
           <VotingChoiceItem
-            key={choice}
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
             choice={choice}
             index={index}
             maxVotingValue={maxVotingValue}
@@ -385,7 +396,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
             isParticipated={isParticipated}
             onCheckChange={onCheckChange}
           />
-        ))}
+      ))}
       <Flex justifyContent="center" mt="22px">
         {renderVoteButton()}
       </Flex>
