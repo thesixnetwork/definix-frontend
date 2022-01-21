@@ -168,7 +168,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
               {t('Balance')}
             </Text>
             <Flex mt="2px" alignItems="flex-end">
-              <Text className="finix">{availableVotes}</Text>
+              <Text className="finix">{numeral(availableVotes).format('0,0.00')}</Text>
               <Text textStyle="R_14R" color="black" ml="6px">
                 {t('vFINIX')}
               </Text>
