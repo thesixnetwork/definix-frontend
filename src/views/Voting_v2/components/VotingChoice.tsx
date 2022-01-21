@@ -348,7 +348,7 @@ const VotingChoice: React.FC = () => {
         )}
         <Flex>
           <Text color="mediumgrey" textStyle="R_14R" mr="8px">
-            {t('Balance')}
+            {t('My Voting Power')}
           </Text>
           <Text color="black" textStyle="R_14B" mr="4px">
             {numeral(availableVotes).format('0,0.00')}
@@ -360,7 +360,7 @@ const VotingChoice: React.FC = () => {
       </WrapBalance>
       <WrapMobileBalance>
         <Text color="mediumgrey" textStyle="R_14R" mr="8px">
-          {t('Balance')}
+          {t('My Voting Power')}
         </Text>
         <Flex>
           <Text color="black" textStyle="R_14B" mr="4px">

@@ -6,7 +6,6 @@ import BigNumber from 'bignumber.js'
 import { rgba } from 'polished'
 import { Flex, Coin, Text, AnountButton, Noti, NotiType, ModalProps, VDivider } from '@fingerlabs/definixswap-uikit-v2'
 import NumericalInput from 'components/NumericalInput'
-import { usePrivateData } from 'hooks/useLongTermStake'
 import { useAvailableVotes } from 'hooks/useVoting'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 import VoteOptionLabel from './VoteOptionLabel'
@@ -165,7 +164,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
           <StyledCoin symbol="VFINIX" size="40px" />
           <WrapBalance>
             <Text textStyle="R_14R" color="mediumgrey">
-              {t('Balance')}
+              {t('My Voting Power')}
             </Text>
             <Flex mt="2px" alignItems="flex-end">
               <Text className="finix">{numeral(availableVotes).format('0,0.00')}</Text>

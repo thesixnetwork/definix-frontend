@@ -6,7 +6,6 @@ import { Card, CardBody, Flex, Text, Button } from '@fingerlabs/definixswap-uiki
 import { useTranslation } from 'react-i18next'
 import { useClaimVote, useAllProposalOfAddress } from 'hooks/useVoting'
 import { useToast } from 'state/hooks'
-import { ParticipatedVoting } from 'state/types'
 import VoteOptionLabel from './VoteOptionLabel'
 import Translate from './Translate'
 

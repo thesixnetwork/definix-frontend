@@ -535,5 +535,6 @@
   "The amount of vFINIX you are": "The amount of vFINIX you are about to vote doesn't reach the minimum requirement.",
   "Claim will be available after": "Claim will be available after the the voting time is ended",
   "There are no proposals.": "There are no proposals.",
-  "no transaction": "Don`t have any transactions in this votes."
+  "no transaction": "Don`t have any transactions in this votes.",
+  "My Voting Power": "My Voting Power"
 }
