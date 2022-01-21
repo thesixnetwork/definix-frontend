@@ -122,7 +122,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
   const handlePercent = useCallback(
     (index: number, percent: number) => {
       // const total = numeral(availableVotes).add(+balances[index] > -1 ? +balances[index] : 0)
-      onUserInput(index, numeral(availableVotes).multiply((percent * 1) / 100).value())
+      onUserInput(index, numeral(availableVotes).multiply((percent * 1) / 100).format('0.00'))
     },
     [availableVotes, onUserInput],
   )
