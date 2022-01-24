@@ -3,7 +3,7 @@ import { Flex, Box, Text } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { VotingItem as Voting } from 'state/types'
-import StakeListPagination from 'views/LongTermStake_v2/components/StakeListPagination'
+import Pagination from 'components/Pagination'
 import VotingItem from './VotingItem'
 
 interface Props {
@@ -36,7 +36,7 @@ const VotingList: React.FC<Props> = ({ list, isStartDate = false }) => {
         ))}
       </List>
       <Flex mt="12px" justifyContent="center">
-        <StakeListPagination
+        <Pagination
           isMobile={false}
           itemPerPage={ItemPerPage}
           dataLength={list.length}

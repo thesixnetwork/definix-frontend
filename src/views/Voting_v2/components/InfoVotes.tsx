@@ -5,7 +5,7 @@ import { Flex, CardBody, Text, LinkIcon, Box } from '@fingerlabs/definixswap-uik
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useVotesByIndex, useVotesByIpfs } from 'hooks/useVoting'
-import StakeListPagination from 'views/LongTermStake_v2/components/StakeListPagination'
+import Pagination from 'components/Pagination'
 import Translate from './Translate'
 
 interface Props {
@@ -191,7 +191,7 @@ const InfoVotes: React.FC<Props> = ({ id, proposalIndex }) => {
             </WrapTable>
           </ScrollTable>
           <Flex alignItems="center" justifyContent="center" mt="20px">
-            <StakeListPagination
+            <Pagination
               isMobile={false}
               itemPerPage={10}
               dataLength={+totalVote}

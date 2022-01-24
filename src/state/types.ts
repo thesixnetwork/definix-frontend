@@ -307,7 +307,7 @@ export interface VotingState {
   allProposal: Voting[]
   indexProposal: []
   // eslint-disable-next-line @typescript-eslint/ban-types
-  proposals: {}
+  proposals: Voting
   isProposable: boolean
   allProposalMap: []
   totalVote: ''

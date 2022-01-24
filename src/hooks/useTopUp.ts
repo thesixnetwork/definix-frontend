@@ -9,7 +9,7 @@ import * as klipProvider from 'hooks/klipProvider'
 import VaultTopUpFeatureFacetAbi from '../config/abi/VaultTopUpFeatureFacet.json'
 import IKIP7 from '../config/abi/IKIP7.json'
 import { getContract } from '../utils/caver'
-import { getVFinix } from '../utils/addressHelpers'
+import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
 import useWallet from './useWallet'
 /* eslint no-else-return: "error" */
 
