@@ -1,35 +1,46 @@
-import React, { useState } from 'react'
-import { Route, useRouteMatch } from 'react-router-dom'
-import { Box, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import React from 'react'
+import { Box, useMatchBreakpoints, Flex, TitleSet,
+  Card,
+  ImageSet,
+  Text,
+  ImgLongtermRepair1x,
+  ImgLongtermRepair2x,
+  ImgLongtermRepair3x,
+  Button, } from '@fingerlabs/definixswap-uikit-v2'
+import { useTranslation } from 'react-i18next'
 
-import TitleVoting from './components/TitleVoting'
-import ProposalFilterVoting from './components/ProposalFilterVoting'
-import CardVoting from './components/CardVoting'
-import { ProposalType } from './types'
-import DetailVoting from './components/DetailVoting'
 
 const Voting: React.FC = () => {
-  const { path } = useRouteMatch()
+  const { t } = useTranslation();
   const { isMobile } = useMatchBreakpoints()
-  const [proposalType, setProposalType] = useState<ProposalType>(ProposalType.ALL)
-  const [isParticipated, setIsParticipated] = useState<boolean>(false)
 
   return (
     <>
-      <Route exact path={path}>
-        <Box maxWidth="100%" mx="auto" mt={`${isMobile ? 'S_32' : 'S_28'}`} mb={`${isMobile ? 'S_40' : 'S_80'}`}>
-          <TitleVoting />
-          <ProposalFilterVoting
-            setProposalType={setProposalType}
-            isParticipated={isParticipated}
-            setIsParticipated={setIsParticipated}
-          />
-          <CardVoting proposalType={proposalType} isParticipated={isParticipated} />
-        </Box>
-      </Route>
-      <Route exact path={`${path}/detail/:id/:proposalIndex`}>
-        <DetailVoting />
-      </Route>
+      <Box maxWidth="100%" mx="auto" mt={`${isMobile ? 'S_32' : 'S_28'}`} mb={`${isMobile ? 'S_40' : 'S_80'}`}>
+        <Flex mb="S_40">
+          <TitleSet title={t('Voting')} description={t('Drive forward together')} />
+        </Flex>
+        <Card>
+          <Flex flexDirection="column" alignItems="center" justifyContent="center" mt="120px" mb="130px">
+            <ImageSet
+              srcSet={[ImgLongtermRepair1x, ImgLongtermRepair2x, ImgLongtermRepair3x]}
+              alt=""
+              width={236}
+              height={147}
+            />
+            <Text textStyle="R_14R" color="black" mt="43px" textAlign="center">
+              {t('Still in progress')}
+            </Text>
+            <Button
+              mt="24px"
+              minWidth="146px"
+              onClick={() => window.open('https://klaytn.definix.com/voting', '_blank')}
+            >
+              {t('Go to G1')}
+            </Button>
+          </Flex>
+        </Card>
+      </Box>
     </>
   )
 }

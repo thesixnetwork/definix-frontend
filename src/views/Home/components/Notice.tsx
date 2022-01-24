@@ -212,8 +212,9 @@ const HomeNotice: React.FC = () => {
               setSlideIndex(newIndex)
             }}
           >
-            {notices.map((notice) => (
-              <NoticeItem key={notice.id} {...notice} />
+            {notices.map((notice, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <NoticeItem key={index} {...notice} />
             ))}
           </NoticeSlider>
         )}
