@@ -1,6 +1,6 @@
+import useWallet from 'hooks/useWallet'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import EarningBoxTemplate from './EarningBoxTemplate/index'
 
 const NetWorth: React.FC<{

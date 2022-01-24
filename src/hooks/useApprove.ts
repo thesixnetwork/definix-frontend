@@ -1,4 +1,4 @@
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { ethers } from 'ethers'
 import { useCallback, useContext } from 'react'
@@ -8,12 +8,13 @@ import { approve } from 'utils/callHelpers'
 import { useHerodotus, useFinix, useSousChef, useLottery } from './useContract'
 import * as klipProvider from './klipProvider'
 import { getAbiERC20ByName } from './hookHelper'
+import useWallet from './useWallet'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 // Approve a Farm
 export const useApprove = (lpContract: Contract) => {
   const dispatch = useDispatch()
-  const { account, connector }: { account: string; connector: string } = useWallet()
+  const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
   const herodotusContract = useHerodotus()
 

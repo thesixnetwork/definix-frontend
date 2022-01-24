@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'

@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import React, { useState, useMemo, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import { QuoteToken } from 'config/constants/types'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 
 const Wrap = styled(Flex)<{ isInPool: boolean }>`
   flex-direction: ${({ isInPool }) => (isInPool ? 'column' : 'row')};
@@ -88,7 +88,7 @@ const HarvestActionAirdrop: React.FC<{
   isBnbPool?: boolean
   needsApprovalContract: boolean
   sousId?: number
-  farm: any
+  // farm?: any
   earnings: BigNumber
   tokenName: string
 }> = ({
@@ -125,7 +125,8 @@ const HarvestActionAirdrop: React.FC<{
 
   const showHarvestResult = useCallback(
     (isSuccess: boolean) => {
-      // if (!isFinixPool) return
+      // if (isFinixPool) return
+
       const toastDescription = (
         <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
           {tokenName}

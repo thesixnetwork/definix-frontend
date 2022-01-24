@@ -4,7 +4,7 @@ import erc20 from 'config/abi/erc20.json'
 import rebalanceAbi from 'config/abi/rebalance.json'
 import multicall, { multicallEth } from 'utils/multicall'
 import { getAddress } from 'utils/addressHelpers'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { createSlice } from '@reduxjs/toolkit'
 import { WalletState, Rebalance } from '../types'
 

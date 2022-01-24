@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash-es'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Card, useMatchBreakpoints, Tabs } from '@fingerlabs/definixswap-uikit-v2'

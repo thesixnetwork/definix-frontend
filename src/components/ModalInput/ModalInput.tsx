@@ -16,7 +16,7 @@ import {
   Button,
   ButtonVariants,
 } from '@fingerlabs/definixswap-uikit-v2'
-import BalanceText from 'components/BalanceText'
+import BalanceText from 'components/Text/BalanceText'
 
 const ButtonWrap = styled(Box)`
   margin-top: ${({ theme }) => theme.spacing.S_40}px;
@@ -28,15 +28,26 @@ const ButtonWrap = styled(Box)`
 const ModalInput: React.FC<{
   type: string // deposit, withdraw
   max: BigNumber
-  symbol: string
-  placeholder?: string
+  // symbol: string
+  // placeholder?: string
   value: string
-  addLiquidityUrl?: string
+  // addLiquidityUrl?: string
   onChange: (e: React.FormEvent<HTMLInputElement>) => void
   onSelectBalanceRateButton: (rate: number) => void
   buttonName?: string
   onClickButton?: () => void
-}> = ({ type, max, onChange, value, onSelectBalanceRateButton, onClickButton, buttonName }) => {
+}> = ({
+  // addLiquidityUrl,
+  // placeholder,
+  // symbol,
+  type,
+  max,
+  onChange,
+  value,
+  onSelectBalanceRateButton,
+  onClickButton,
+  buttonName,
+}) => {
   const { t } = useTranslation()
 
   const maxValue = useMemo(() => getBalanceNumber(max), [max])

@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { provider } from 'web3-core'
 import finixABI from 'config/abi/finix.json'
 import { getContract, getWeb3Contract } from 'utils/caver'
 import { getTokenBalance } from 'utils/erc20'
 import { getFinixAddress, getBscFinixAddress, getBscCollecteralAddress } from 'utils/addressHelpers'
 import useCaver from './useCaver'
 import useRefresh from './useRefresh'
+import useWallet from './useWallet'
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const { account, klaytn } = useWallet()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {

@@ -1,10 +1,10 @@
-import _ from 'lodash'
+import _ from 'lodash-es'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import styled from 'styled-components'
 import { Text, Box, Flex, DoubleArrowButtons } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/CurrencyText'
-import BalanceText from 'components/BalanceText'
+import CurrencyText from 'components/Text/CurrencyText'
+import BalanceText from 'components/Text/BalanceText'
 
 const Wrap = styled(Flex)<{ bg: any }>`
   justify-content: space-between;

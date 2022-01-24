@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
 import Caver from 'caver-js'
@@ -15,7 +15,6 @@ import {
   getBunnySpecialAddress,
   getTradingCompetRegisAddress,
 } from 'utils/addressHelpers'
-import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
@@ -30,8 +29,23 @@ import profile from 'config/abi/definixProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 import tradeCompetRegisAbi from 'config/abi/definixTradeCompetitionABI.json'
-// import getRPCHalper from 'utils/getRPCHalper'
-// import caver from '../klaytn/caver'
+
+import { Contract } from '@ethersproject/contracts'
+import { WETH } from 'definixswap-sdk'
+import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import { HERODOTUS_ADDRESS, poolsConfig } from 'config/constants'
+import ENS_ABI from 'config/constants/abis/ens-registrar.json'
+import ENS_PUBLIC_RESOLVER_ABI from 'config/constants/abis/ens-public-resolver.json'
+import { ERC20_BYTES32_ABI } from 'config/constants/abis/erc20'
+import ERC20_ABI from 'config/constants/abis/erc20.json'
+import WETH_ABI from 'config/constants/abis/weth.json'
+import HERODOTUS_ABI from 'config/constants/abis/herodotus.json'
+import { MULTICALL_ABI, MULTICALL_NETWORKS } from 'config/constants/multicall'
+import { getContract } from 'utils'
+import useWallet from './useWallet'
+
+const intMainnetId = parseInt(process.env.REACT_APP_MAINNET_ID || '')
+const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   // @ts-ignore
@@ -126,3 +140,69 @@ export const useBunnySpecialContract = () => {
 }
 
 export default useContract
+
+// returns null on errors
+function useContractForExchange(
+  address: string | 0 | undefined,
+  ABI: any,
+  withSignerIfPossible = true,
+): Contract | null {
+  const { account, library } = useWallet()
+
+  return useMemo(() => {
+    if (!address || !ABI || !library) return null
+    try {
+      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+    } catch (error) {
+      console.error('Failed to get contract', error)
+      return null
+    }
+  }, [address, ABI, library, withSignerIfPossible, account])
+}
+
+export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return useContractForExchange(tokenAddress, ERC20_ABI, withSignerIfPossible)
+}
+
+export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useWallet()
+  // const { chainId } = useActiveWeb3React()
+  return useContractForExchange(chainId ? WETH(chainId).address : undefined, WETH_ABI, withSignerIfPossible)
+}
+
+export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useWallet()
+  // const { chainId } = useActiveWeb3React()
+  let address: string | undefined
+  if (chainId) {
+    switch (chainId) {
+      case intMainnetId:
+      case intTestnetId:
+    }
+  }
+  return useContractForExchange(address, ENS_ABI, withSignerIfPossible)
+}
+
+export function useHerodotusContract(): Contract | null {
+  const { chainId } = useWallet()
+  // const { chainId } = useActiveWeb3React()
+  return useContractForExchange(chainId && HERODOTUS_ADDRESS[chainId], HERODOTUS_ABI)
+}
+
+export function useENSResolverContract(address: string | undefined, withSignerIfPossible?: boolean): Contract | null {
+  return useContractForExchange(address, ENS_PUBLIC_RESOLVER_ABI, withSignerIfPossible)
+}
+
+export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return useContractForExchange(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
+}
+
+export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return useContractForExchange(pairAddress, IUniswapV2PairABI, withSignerIfPossible)
+}
+
+export function useMulticallContract(): Contract | null {
+  const { chainId } = useWallet()
+  // const { chainId } = useActiveWeb3React()
+  return useContractForExchange(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
+}

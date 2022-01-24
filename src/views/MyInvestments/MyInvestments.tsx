@@ -1,10 +1,9 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { provider } from 'web3-core'
 import React, { useState } from 'react'
 import { Route, useRouteMatch, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import useMyInvestments from 'hooks/useMyInvestments'
 import { Box, Card, DropdownOption } from '@fingerlabs/definixswap-uikit-v2'
+import useWallet from 'hooks/useWallet'
 import CardSummary from './components/CardSummary'
 import MyProductsFilter from './components/MyProductsFilter'
 import MyProducts from './components/MyProducts'
@@ -23,7 +22,7 @@ const MyInvestments: React.FC = () => {
   const [selectedOrderBy, setSelectedOrderBy] = useState<DropdownOption>()
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
-  const { account }: { account: string; klaytn: provider } = useWallet()
+  const { account } = useWallet()
   const stakedProducts = useMyInvestments()
 
   return account ? (

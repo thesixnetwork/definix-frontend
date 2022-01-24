@@ -1,13 +1,14 @@
 import BigNumber from 'bignumber.js'
 import { Pool } from 'state/types'
-import { FarmWithStakedValue } from '../../../Farms/components/FarmCard/types'
+// import { FarmWithStakedValue } from '../../../Farms/components/FarmCard/types'
 
 export interface PoolWithApy extends Pool {
   apy: BigNumber
   finixApy?: BigNumber
   klayApy?: BigNumber
   rewardPerBlock?: number
-  farm: FarmWithStakedValue
+  // farm: FarmWithStakedValue
+  farm: any
 }
 
 export interface PoolCardProps {

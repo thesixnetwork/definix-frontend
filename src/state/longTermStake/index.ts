@@ -10,7 +10,7 @@ import RewardFacet from 'config/abi/RewardFacet.json'
 import TokenFacet from 'config/abi/TokenFacet.json'
 import multicall from 'utils/multicall'
 import { getFinixAddress, getVFinix } from 'utils/addressHelpers'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { getContract } from 'utils/caver'
 
 const initialState = {

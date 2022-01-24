@@ -2,8 +2,7 @@
 import { useEffect, useState, useCallback, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import { provider } from 'web3-core'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import {
   getAbiERC20ByName,
   getAbiVaultPenaltyFacetByName,
@@ -11,7 +10,7 @@ import {
   getAbiRewardFacetByName,
   getAbiHerodotusByName,
 } from 'hooks/hookHelper'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { useSelector, useDispatch } from 'react-redux'
 import * as klipProvider from 'hooks/klipProvider'
 import {
@@ -33,12 +32,11 @@ import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
 import useRefresh from './useRefresh'
 import { State } from '../state/types'
 import { useHerodotus } from './useContract'
-/* eslint no-else-return: "error" */
+import useWallet from './useWallet'
 
-// @ts-ignore
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const { account, klaytn } = useWallet()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
@@ -632,7 +630,8 @@ export const useSousHarvest = () => {
         return new Promise((resolve, reject) => {
           herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
         })
-      } else if (sousId === 1) {
+      }
+      if (sousId === 1) {
         return new Promise((resolve, reject) => {
           herodotusContract.methods
             .deposit(sousId, '0')

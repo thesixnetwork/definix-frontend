@@ -2,6 +2,8 @@ import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
@@ -18,7 +20,7 @@ import {
   Button,
 } from '@fingerlabs/definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 import ConfirmModal from './ConfirmModal'
 import CardHeading from './PoolCard/CardHeading'
 import { PoolWithApy } from './PoolCard/types'
@@ -91,6 +93,7 @@ const Deposit: React.FC<{
   addSwapUrl?: string
   onBack: () => void
 }> = ({ isOldSyrup, isBnbPool, pool, onBack, addSwapUrl }) => {
+  const history = useHistory()
   const { t } = useTranslation()
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const { onStake } = useSousStake(pool.sousId, isBnbPool)
@@ -188,7 +191,7 @@ const Deposit: React.FC<{
           type="deposit"
           value={val}
           max={maxValue}
-          symbol={tokenName}
+          // symbol={tokenName}
           buttonName={t('Deposit')}
           onChange={handleChange}
           onSelectBalanceRateButton={handleSelectBalanceRate}
@@ -203,7 +206,8 @@ const Deposit: React.FC<{
             type="button"
             variant="line"
             onClick={() => {
-              window.location.href = `${addSwapUrl}`
+              history.push(addSwapUrl)
+              // window.location.href = `${addSwapUrl}`
             }}
           >
             {t('Swap')}

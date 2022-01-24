@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
 import {
   CampaignType,
@@ -132,7 +130,8 @@ export interface Rebalance extends RebalanceConfig {
 // Slices states
 
 export interface ToastsState {
-  data: Toast[]
+  // data: Toast[]
+  data: any
 }
 
 export interface FarmsState {
@@ -147,7 +146,7 @@ export interface LongTermState {
   id: string
   level: string
   amount: number
-  isPenalty: Boolean
+  isPenalty: boolean
   periodPenalty: string
   penaltyUnlockTimestamp: string
   penaltyFinixAmount: string
@@ -307,7 +306,8 @@ export interface Voting extends VotingItem {
 export interface VotingState {
   allProposal: Voting[]
   indexProposal: []
-  proposals: Voting
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  proposals: {}
   isProposable: boolean
   allProposalMap: []
   totalVote: ''

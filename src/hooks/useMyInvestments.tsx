@@ -1,7 +1,5 @@
-import _ from 'lodash'
+import _ from 'lodash-es'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { provider } from 'web3-core'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -13,10 +11,11 @@ import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
+import useWallet from './useWallet'
 
 const useMyInvestments = () => {
   const { t } = useTranslation()
-  const { account }: { account: string; klaytn: provider } = useWallet()
+  const { account } = useWallet()
   const { convertToPriceFromToken, convertToPriceFromSymbol } = useConverter()
   const dispatch = useDispatch()
   const balances = useBalances(account)

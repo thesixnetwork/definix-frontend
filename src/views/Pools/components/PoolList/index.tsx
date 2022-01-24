@@ -1,6 +1,6 @@
-import _ from 'lodash'
+import _ from 'lodash-es'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import React, { useMemo, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'

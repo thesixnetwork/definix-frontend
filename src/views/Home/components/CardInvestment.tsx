@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash-es'
 import React, { useMemo } from 'react'
 import { Card, CardBody, ColorStyles, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import useMyInvestments from 'hooks/useMyInvestments'
