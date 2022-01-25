@@ -1,8 +1,8 @@
 /* eslint no-await-in-loop: 0 */
 /* eslint no-restricted-syntax: 0 */
 import axios from 'axios'
-
-const RPCS = [process.env.REACT_APP_NODE_3, process.env.REACT_APP_NODE_2, process.env.REACT_APP_NODE_1]
+// 'http://localhost:8080/rpc',
+const RPCS = [`${process.env.REACT_APP_SIX_KLAYTN_EN_URL}`, `${process.env.REACT_APP_NETWORK_URL}`]
 
 const checkHeartBeat = async (rpc: string): Promise<number> => {
   return new Promise((reslove) => {
@@ -11,7 +11,7 @@ const checkHeartBeat = async (rpc: string): Promise<number> => {
       .then((res) => {
         reslove(res.status)
       })
-      .catch((error) => {
+      .catch(function (error) {
         if (error.response) {
           reslove(error.response.status)
         }
@@ -32,7 +32,9 @@ const getRPCurlIsWorking = async () => {
 }
 const getRPCurl = async (): Promise<string> => {
   try {
-    return await getRPCurlIsWorking()
+    const x = await getRPCurlIsWorking()
+    // console.log(x)
+    return x
   } catch (error) {
     return '' // all rpc is die
   }

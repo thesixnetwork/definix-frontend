@@ -4,7 +4,7 @@ import herodotusABI from 'config/abi/herodotus.json'
 import multicall from 'utils/multicall'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 import farmsConfig from 'config/constants/farms'
-import { compact, uniq } from 'lodash'
+import { compact, uniq } from 'lodash-es'
 
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < (array.length || array.size); index++) {

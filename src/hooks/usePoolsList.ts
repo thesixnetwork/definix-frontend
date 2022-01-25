@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import _ from 'lodash'
+import { compact } from 'lodash-es'
 import { useCallback } from 'react'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
@@ -166,7 +166,7 @@ const usePoolsList = ({ farms, pools }) => {
     sixPriceUSD,
   ])
 
-  return !_.compact(pools.map((pool) => pool.totalStaked)).length ? [] : getPoolsList()
+  return !compact(pools.map((pool) => pool.totalStaked)).length ? [] : getPoolsList()
 }
 
 export default usePoolsList

@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import rebalance from 'config/abi/rebalance.json'
 import multicall from 'utils/multicall'
-import _ from 'lodash'
+import { flattenDeep } from 'lodash-es'
 import { BLOCKS_PER_YEAR } from 'config'
 import herodotusABI from 'config/abi/herodotus.json'
 import autoHerodotusABI from 'config/abi/autoHerodotus.json'
@@ -116,8 +116,8 @@ export const fetchRebalances = () => async (dispatch) => {
       for (let i = 0; i < tokenLength; i++) {
         tokenRatioPointsCallers.push(multicall(rebalance, [{ address, name: 'tokenRatioPoints', params: [i] }]))
       }
-      const tokenAddresss = _.flattenDeep(await Promise.all(tokenCallers))
-      const tokenRatioPoints = _.flattenDeep(await Promise.all(tokenRatioPointsCallers))
+      const tokenAddresss = flattenDeep(await Promise.all(tokenCallers))
+      const tokenRatioPoints = flattenDeep(await Promise.all(tokenRatioPointsCallers))
       const makeTokenCallers = (inputArray) => {
         return inputArray.map((tokenAddress) => {
           return multicall(erc20, [

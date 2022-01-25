@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Toast, toastTypes } from '@fingerlabs/definixswap-uikit-v2'
 import { getAddress } from 'utils/addressHelpers'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
+import useWallet from 'hooks/useWallet'
 import {
   fetchFarmUnlockDate,
   fetchFarmsPublicDataAsync,

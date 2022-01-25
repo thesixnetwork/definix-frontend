@@ -1,122 +1,118 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import _ from 'lodash'
-import { Card, Heading, Text, Button } from 'uikit-dev'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
-import CardProposals from './CardProposals'
-import { useIsProposable, useAllProposalOfAddress } from '../../../hooks/useVoting'
-import VotingPartProposal from './VotingPartProposal'
+import React, { useMemo, useState } from 'react'
+import { get } from 'lodash-es'
+import dayjs from 'dayjs'
+import { Card, Tabs, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import { useTranslation } from 'react-i18next'
+import { VotingItem } from 'state/types'
+import VotingList from './VotingList'
+import { useAllProposalOfType, useAllProposalOfAddress } from '../../../hooks/useVoting'
+import { FilterId, ProposalType } from '../types'
 
-const BannerVoting = styled(Card)`
-  width: 100%;
-  background: ${({ theme }) => theme.colors.card};
-  padding: 28px 24px;
-  position: relative;
-  overflow: visible;
+interface Props {
+  proposalType: ProposalType
+  isParticipated: boolean
+}
 
-  &:before {
-    content: '';
-    width: 50%;
-    height: 100%;
-    background: url(${definixVoting});
-    background-size: contain;
-    background-position: right bottom;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    right: 0;
-    opacity: 0.2;
-    margin-right: 4%;
-    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
-  }
+function getFilterList(filterListAllProposal, filterId: FilterId) {
+  const list = filterListAllProposal.filter((item) => {
+    switch (filterId) {
+      case FilterId.SOON:
+        return (
+          Number(get(item, 'start_unixtimestamp')) * 1000 > Date.now() &&
+          Number(get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+        )
 
-  h2 {
-    font-size: 20px !important;
-  }
+      case FilterId.CLOSED:
+        return (
+          Number(get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+          Number(get(item, 'end_unixtimestamp')) * 1000 < Date.now()
+        )
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 50px 0px 50px 5%;
-    align-items: center;
-
-    &:before {
-      opacity: 0.2;
-      width: 40%;
+      case FilterId.NOW:
+      default:
+        return (
+          Number(get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+          Number(get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+        )
     }
+  })
 
-    h2 {
-      font-size: 32px !important;
-      width: 80%;
-    }
+  switch (filterId) {
+    case FilterId.SOON:
+      return list.sort((a, b) => dayjs(a.endTimestamp).valueOf() - dayjs(b.endTimestamp).valueOf())
+      
+      case FilterId.CLOSED:
+        return list.sort((a, b) => dayjs(b.startTimestamp).valueOf() - dayjs(a.startTimestamp).valueOf())
+        
+      case FilterId.NOW:
+      default:
+      return list.sort((a, b) => dayjs(a.endTimestamp).valueOf() - dayjs(b.endTimestamp).valueOf())
   }
+}
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    align-items: center;
-
-    &:before {
-      opacity: 0.2;
-    }
-
-    h2 {
-      font-size: 32px !important;
-      width: 80%;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding: 50px 2% 50px 12%;
-    align-items: center;
-
-    &:before {
-      opacity: 1;
-      width: 20%;
-      margin-right: 14%;
-      background-position: center;
-    }
-
-    h2 {
-      font-size: 32px !important;
-      width: 70%;
-    }
-  }
-`
-
-const DetailBanner = styled(Text)`
-  width: 80%;
-  font-size: 14px !important;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 16px !important;
-    width: 60%;
-  }
-`
-
-const CardVoting = () => {
-  const proposable = useIsProposable()
-  const isProposable = _.get(proposable, 'proposables')
-  const { account } = useWallet()
+const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
+  const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
+  const allProposalMap = useAllProposalOfType()
   const { proposalOfAddress } = useAllProposalOfAddress()
+  const listAllProposal: VotingItem[] = get(allProposalMap, 'allProposalMap')
+  const participatedVotes = useMemo(() => {
+    return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
+  }, [proposalOfAddress])
+  const voteList = useMemo(() => {
+    if (listAllProposal && listAllProposal.length > 0) {
+      const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
+        if (participatedVotes.includes(get(item, 'ipfsHash'))) {
+          return {
+            isParticipated: true,
+            ...item,
+          }
+        }
+        return item
+      })
+
+      const filterListAllProposal = participatedAllProposal.filter((item) => {
+        if (isParticipated && !item.isParticipated) {
+          return false
+        }
+        return proposalType === ProposalType.ALL ? true : get(item, 'proposals_type') === proposalType
+      })
+
+      return [
+        getFilterList(filterListAllProposal, FilterId.NOW),
+        getFilterList(filterListAllProposal, FilterId.SOON),
+        getFilterList(filterListAllProposal, FilterId.CLOSED),
+      ]
+    }
+    return [];
+  }, [isParticipated, listAllProposal, participatedVotes, proposalType])
+
+  const tabs = useMemo(
+    () => [
+      {
+        id: 'votenow',
+        name: t('Vote Now'),
+      },
+      {
+        id: 'soon',
+        name: t('Soon'),
+      },
+      {
+        id: 'closed',
+        name: t('Closed'),
+      },
+    ],
+    [t],
+  )
+  const [curTab, setCurTab] = useState(tabs[0].id)
 
   return (
-    <>
-      <BannerVoting>
-        <div>
-          <Heading color="primary">DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING</Heading>
-          <DetailBanner>
-            Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
-          </DetailBanner>
-        </div>
-        {isProposable && (
-          <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
-            Make a Proposals
-          </Button>
-        )}
-      </BannerVoting>
-      <CardProposals />
-
-      {account && proposalOfAddress.length > 0 ? <VotingPartProposal userProposals={proposalOfAddress} /> : ''}
-    </>
+    <Card mt="16px">
+      <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} equal={isMobile} />
+      {curTab === 'votenow' && <VotingList key="votenow" list={voteList[0]} />}
+      {curTab === 'soon' && <VotingList key="soon" isStartDate list={voteList[1]} />}
+      {curTab === 'closed' && <VotingList key="closed" list={voteList[2]} />}
+    </Card>
   )
 }
 

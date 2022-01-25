@@ -1,57 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { LeftPanel, TwoPanelLayout, MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
-import { Heading } from 'uikit-dev'
-import CardVoting from './components/CardVoting'
-import VotingInfos from './VotingInfos'
-import VotingProposal from './VotingProposal'
+import { Box, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 
-// const TutorailsLink = styled(Link)`
-//   text-decoration-line: underline;
-// `
+import TitleVoting from './components/TitleVoting'
+import ProposalFilterVoting from './components/ProposalFilterVoting'
+import CardVoting from './components/CardVoting'
+import { ProposalType } from './types'
+import DetailVoting from './components/DetailVoting'
 
 const Voting: React.FC = () => {
   const { path } = useRouteMatch()
+  const { isMobile } = useMatchBreakpoints()
+  const [proposalType, setProposalType] = useState<ProposalType>(ProposalType.ALL)
+  const [isParticipated, setIsParticipated] = useState<boolean>(false)
 
   return (
     <>
       <Route exact path={path}>
-        {/* <StartVoting /> */}
-        <TwoPanelLayout>
-          <LeftPanel isShowRightPanel={false}>
-            <MaxWidth>
-              <div className="mb-5">
-                <div className="flex align-center mb-2">
-                  <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                    Voting
-                  </Heading>
-                  {/* <div className="mt-2 flex align-center justify-center">
-                    <Text paddingRight="1">I’m new to this,</Text>
-                    <TutorailsLink
-                      href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
-                      target="_blank"
-                    >
-                      How to voting.
-                    </TutorailsLink>
-                  </div> */}
-                </div>
-                <CardVoting />
-              </div>
-            </MaxWidth>
-          </LeftPanel>
-        </TwoPanelLayout>
+        <Box maxWidth="100%" mx="auto" mt={`${isMobile ? 'S_32' : 'S_28'}`} mb={`${isMobile ? 'S_40' : 'S_80'}`}>
+          <TitleVoting />
+          <ProposalFilterVoting
+            setProposalType={setProposalType}
+            isParticipated={isParticipated}
+            setIsParticipated={setIsParticipated}
+          />
+          <CardVoting proposalType={proposalType} isParticipated={isParticipated} />
+        </Box>
       </Route>
-
       <Route exact path={`${path}/detail/:id/:proposalIndex`}>
-        <VotingInfos isParticipate={false} />
-      </Route>
-
-      <Route exact path={`${path}/participate/:id/:proposalIndex`}>
-        <VotingInfos isParticipate />
-      </Route>
-
-      <Route exact path={`${path}/make-proposal`}>
-        <VotingProposal />
+        <DetailVoting />
       </Route>
     </>
   )

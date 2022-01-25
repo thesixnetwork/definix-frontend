@@ -1,150 +1,192 @@
 import BigNumber from 'bignumber.js'
-import { useHarvest } from 'hooks/useHarvest'
-import useI18n from 'hooks/useI18n'
-import numeral from 'numeral'
-import React, { useState } from 'react'
-import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Text, useModal } from 'uikit-dev'
-import miniLogo from 'uikit-dev/images/finix-coin.png'
+import React, { useState, useMemo, useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { QuoteToken } from 'config/constants/types'
+import { useHarvest } from 'hooks/useHarvest'
+import useConverter from 'hooks/useConverter'
+import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getTokenImageUrl } from 'utils/getTokenImage'
-// import { QuoteToken } from 'config/constants/types'
-import AirDropHarvestModal from './AirDropHarvestModal'
-import { FarmWithStakedValue } from './types'
+import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
+import CurrencyText from 'components/Text/CurrencyText'
 
-interface FarmCardActionsProps {
-  pendingRewards?: any
-  bundleRewardLength?: BigNumber
-  bundleRewards?: any
-  earnings?: BigNumber
-  pid?: number
-  className?: string
-  isHorizontal?: boolean
-  farm?: FarmWithStakedValue
-}
-
-const MiniLogo = styled.img`
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  display: block;
-  flex-shrink: 0;
+const Wrap = styled(Flex)<{ isInFarm: boolean }>`
+  flex-direction: ${({ isInFarm }) => (isInFarm ? 'column' : 'row')};
+  justify-content: space-between;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+  }
+`
+const TitleSection = styled(Text)`
+  margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_12R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+  }
+`
+const HarvestInfo = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+  }
+`
+const TokenLabel = styled(Label)`
+  margin-right: ${({ theme }) => theme.spacing.S_6}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-right: ${({ theme }) => theme.spacing.S_12}px;
+  }
+`
+const TokenValueWrap = styled(Box)`
+  margin-top: -3px;
+`
+const BalanceText = styled(Text)`
+  color: ${({ theme }) => theme.colors.black};
+  ${({ theme }) => theme.textStyle.R_18M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_16M};
+  }
+`
+const PriceText = styled(CurrencyText)`
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_14R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_12R};
+  }
+`
+const HarvestButtonSectionInFarm = styled(Box)`
+  width: 100px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+    width: 100%;
+  }
+`
+const HarvestButtonSectionInMyInvestment = styled(Flex)`
+  flex-direction: column;
+  justify-content: center;
+  width: 100px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: row;
+    margin-top: ${({ theme }) => theme.spacing.S_28}px;
+    width: 100%;
+  }
+`
+const DetailButton = styled(Button)`
+  margin-top: ${({ theme }) => theme.spacing.S_8}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 0;
+    margin-left: ${({ theme }) => theme.spacing.S_16}px;
+  }
 `
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({
-  pendingRewards,
-  bundleRewards,
-  pid,
-  className = '',
-  isHorizontal,
-  farm,
-}) => {
+const HarvestAction: React.FC<{
+  componentType: string
+  pid?: number
+  earnings: BigNumber
+  lpSymbol: string
+}> = ({ pid, earnings, componentType = 'farm', lpSymbol }) => {
+  const { t } = useTranslation()
+  const { toastSuccess, toastError } = useToast()
+  const navigate = useHistory()
+  const isInFarm = useMemo(() => componentType === 'farm', [componentType])
   const [pendingTx, setPendingTx] = useState(false)
-  const TranslateString = useI18n()
+
   const { onReward } = useHarvest(pid)
-  const { earnings } = useFarmUser(pid)
+  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
 
-  const rawEarningsBalance = getBalanceNumber(earnings)
-  const displayBalance = rawEarningsBalance.toLocaleString()
+  const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
+  const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
+  const earningsPrice = useMemo(() => {
+    return new BigNumber(finixEarningsValue).multipliedBy(finixPrice).toNumber()
+  }, [finixEarningsValue, finixPrice])
 
-  const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
-  const finixApy = farm.finixApy || new BigNumber(0)
-
-  const AirDrop = ({ logo, title, percent, value, name }) => (
-    <div className="flex justify-space-between align-baseline mb-2">
-      <div className="flex align-baseline flex-shrink" style={{ width: '160px' }}>
-        <MiniLogo src={logo} alt="" className="align-self-center" />
-        <Text color="textSubtle" textAlign="left" className="mr-2">
-          {title}
+  const showHarvestResult = useCallback(
+    (isSuccess: boolean) => {
+      const toastDescription = (
+        <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
+          {lpSymbol}
         </Text>
-        <Text textAlign="left" fontSize="14px !important" bold>
-          {percent}
-        </Text>
-      </div>
+      )
+      const actionText = t('actionHarvest')
+      if (isSuccess) {
+        toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
+      } else {
+        toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
+      }
+    },
+    [toastSuccess, toastError, t, lpSymbol],
+  )
 
-      <Text color="textSubtle" fontSize="14px !important" style={{ width: '16px' }} className="flex-shrink">
-        :
-      </Text>
+  const handleHarvest = useCallback(async () => {
+    try {
+      if (pendingTx) return
+      setPendingTx(true)
+      const tx = await onReward()
+      if (!tx) {
+        throw new Error()
+      }
+      showHarvestResult(true)
+    } catch {
+      showHarvestResult(false)
+    } finally {
+      setPendingTx(false)
+    }
+  }, [onReward, showHarvestResult, pendingTx])
 
-      <div className="flex align-baseline flex-grow">
-        <Text fontSize="14px !important" bold className="mr-2" textAlign="left">
-          {value}
-        </Text>
-        <Text color="textSubtle" textAlign="left">
-          {name}
-        </Text>
-      </div>
-    </div>
+  const renderHarvestButton = useCallback(
+    () => (
+      <Button
+        variant={ButtonVariants.RED}
+        width="100%"
+        disabled={finixEarningsValue === 0}
+        isLoading={pendingTx}
+        onClick={handleHarvest}
+      >
+        {t('Harvest')}
+      </Button>
+    ),
+    [t, finixEarningsValue, pendingTx, handleHarvest],
+  )
+
+  const renderDetailButton = useCallback(
+    () => (
+      <DetailButton variant={ButtonVariants.BROWN} width="100%" onClick={() => navigate.push('/farm')}>
+        {t('Detail')}
+      </DetailButton>
+    ),
+    [navigate, t],
   )
 
   return (
-    <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
-      <div className={isHorizontal ? 'col-8 pr-4' : ''}>
-        <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
-          Earned
-        </Text>
+    <>
+      <Box>
+        <Wrap isInFarm={isInFarm}>
+          <Box>
+            <TitleSection>{t('Earned Token')}</TitleSection>
+            <HarvestInfo>
+              <Flex>
+                <TokenLabel type="token">FINIX</TokenLabel>
+                <TokenValueWrap>
+                  <BalanceText>{convertToBalanceFormat(finixEarningsValue)}</BalanceText>
+                  <PriceText value={earningsPrice} prefix="=" />
+                </TokenValueWrap>
+              </Flex>
+              {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton()}</HarvestButtonSectionInFarm>}
+            </HarvestInfo>
+          </Box>
 
-        <AirDrop
-          logo={miniLogo}
-          title="APR"
-          percent={`${numeral(finixApy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
-          value={displayBalance}
-          name="FINIX"
-        />
-        {(bundleRewards || []).map((br, bundleId) => {
-          // let apy = new BigNumber(0)
-          // if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
-          //   apy = farm.klayApy
-          // }
-
-          const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
-          // const allocate = br.rewardPerBlock || new BigNumber(0)
-          const allocate = new BigNumber(0)
-
-          return reward !== 0 || allocate.toNumber() !== 0 ? (
-            <AirDrop
-              logo={getTokenImageUrl(br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name)}
-              title="AAPR"
-              percent="0.0%"
-              value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
-              name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
-            />
-          ) : (
-            <></>
-          )
-        })}
-
-        {false && (
-          <div className="flex align-center justify-space-between">
-            <Text color="textSubtle">Claim Ended Bonus</Text>
-
-            <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-              Claim
-            </Button>
-          </div>
-        )}
-      </div>
-      <div
-        className={`flex  ${
-          isHorizontal ? 'flex-column col-4 align-center justify-center' : 'flex-column-reverse align-start'
-        }`}
-      >
-        <Button
-          fullWidth
-          disabled={rawEarningsBalance === 0 || pendingTx}
-          radii="small"
-          onClick={async () => {
-            setPendingTx(true)
-            await onReward()
-            setPendingTx(false)
-          }}
-        >
-          {TranslateString(562, 'Harvest')}
-        </Button>
-      </div>
-    </div>
+          {isInFarm ? null : (
+            <HarvestButtonSectionInMyInvestment>
+              {renderHarvestButton()}
+              {renderDetailButton()}
+            </HarvestButtonSectionInMyInvestment>
+          )}
+        </Wrap>
+      </Box>
+    </>
   )
 }
 
-export default HarvestAction
+export default React.memo(HarvestAction)

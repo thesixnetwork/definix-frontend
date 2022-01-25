@@ -5,8 +5,8 @@ import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useConverter from 'hooks/useConverter'
 import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/CurrencyText'
-import BalanceText from 'components/BalanceText'
+import CurrencyText from 'components/Text/CurrencyText'
+import BalanceText from 'components/Text/BalanceText'
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;

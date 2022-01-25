@@ -5,7 +5,7 @@ import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import { usePriceTVL, usePriceWeb3TVL } from 'state/hooks'
 import { Card, CardBody, ColorStyles, Text, Flex, useMatchBreakpoints, Coin } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 
 const Title = styled(Text)`
   ${({ theme }) => theme.textStyle.R_18M}

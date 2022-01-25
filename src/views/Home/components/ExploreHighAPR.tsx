@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import _ from 'lodash'
+import { get } from 'lodash-es'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
@@ -33,8 +33,8 @@ const ExploreHighAPR: React.FC = () => {
       const temp = {
         ...rebalance,
         apr: new BigNumber(finixPrice)
-          .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
-          .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+          .times(get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+          .div(get(rebalance, 'totalAssetValue', new BigNumber(0)))
           .times(100)
           .toNumber(),
       }
@@ -52,7 +52,7 @@ const ExploreHighAPR: React.FC = () => {
     <FormAPR
       isFarm={false}
       title={highAprRebalance.title}
-      totalAssetValue={numeral(_.get(highAprRebalance, 'totalAssetValue', 0)).format('0,0.00')}
+      totalAssetValue={numeral(get(highAprRebalance, 'totalAssetValue', 0)).format('0,0.00')}
       apr={numeral(highAprRebalance.apr).format('0,0.00')}
       Images={
         <WrapImage>

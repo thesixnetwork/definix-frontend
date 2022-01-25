@@ -1,1 +1,1 @@
-export { default } from './Farms'
+export { default } from './NewFarms'

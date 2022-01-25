@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
-import { Heading } from 'uikit-dev'
+import { Heading } from '@fingerlabs/definixswap-uikit-v2'
 import { NormalComponents, SpecialComponents } from 'react-markdown/src/ast-to-react'
 import styled from 'styled-components'
 

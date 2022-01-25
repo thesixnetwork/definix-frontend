@@ -11,7 +11,7 @@ import {
   GradeGoldIcon,
   GradeDiamondIcon,
 } from '@fingerlabs/definixswap-uikit-v2'
-import BalanceText from 'components/BalanceText'
+import BalanceText from 'components/Text/BalanceText'
 
 const Wrap = styled(Flex)`
   margin: ${({ theme }) => theme.spacing.S_32}px;

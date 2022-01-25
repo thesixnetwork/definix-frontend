@@ -10,7 +10,7 @@ import RewardFacet from 'config/abi/RewardFacet.json'
 import TokenFacet from 'config/abi/TokenFacet.json'
 import multicall from 'utils/multicall'
 import { getFinixAddress, getVFinix } from 'utils/addressHelpers'
-import _ from 'lodash'
+import { get, set } from 'lodash-es'
 import { getContract } from 'utils/caver'
 
 const initialState = {
@@ -180,16 +180,16 @@ const getVaultFacet = async ({ vFinix }) => {
     ]
     const [finixLock] = await multicall(VaultFacet.abi, calls)
     for (let i = 0; i < 3; i++) {
-      _.set(
+      set(
         finixLockMap,
         `${i}`,
         numeral(
-          new BigNumber(_.get(finixLock, `totalFinixLockAtLevel${i + 1}_._hex`)).dividedBy(new BigNumber(10).pow(18)),
+          new BigNumber(get(finixLock, `totalFinixLockAtLevel${i + 1}_._hex`)).dividedBy(new BigNumber(10).pow(18)),
         ).format('0'),
       )
     }
 
-    totalFinixLock = new BigNumber(_.get(finixLock, 'totalFinixLock_._hex'))
+    totalFinixLock = new BigNumber(get(finixLock, 'totalFinixLock_._hex'))
       .dividedBy(new BigNumber(10).pow(18))
       .toNumber()
   } catch (error) {
@@ -270,8 +270,8 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     const finixLock = await callContract.methods.locksDesc(account, index, 10).call({ from: account })
     balanceFinix = new BigNumber(balanceOfFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     balancevFinix = new BigNumber(balanceOfvFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
-    const result = _.get(infoFacet, 'locks_')
-    const topup = _.get(finixLock, 'locksTopup')
+    const result = get(infoFacet, 'locks_')
+    const topup = get(finixLock, 'locksTopup')
     let canBeUnlock_
     let canBeClaim_
     let asDays = 0
@@ -280,29 +280,29 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     result.map((value) => {
       canBeUnlock_ =
         Date.now() >
-        (new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() + _.get(period, '0.periodMap')[value.level]) *
+        (new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() + get(period, '0.periodMap')[value.level]) *
           1000
       canBeClaim_ =
         Date.now() >
-        (new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() +
-          _.get(period, '0.penaltyPeriod')[value.level]) *
+        (new BigNumber(get(value, 'penaltyUnlockTimestamp._hex')).toNumber() +
+          get(period, '0.penaltyPeriod')[value.level]) *
           1000
-      asDays = moment.duration({ seconds: _.get(period, '0.periodMap')[value.level] }).asDays()
-      asPenaltyDays = moment.duration({ seconds: _.get(period, '0.penaltyPeriod')[value.level] }).asDays()
+      asDays = moment.duration({ seconds: get(period, '0.periodMap')[value.level] }).asDays()
+      asPenaltyDays = moment.duration({ seconds: get(period, '0.penaltyPeriod')[value.level] }).asDays()
 
-      let lockTimes = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
+      let lockTimes = new Date(new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() * 1000)
       lockTimes.setDate(lockTimes.getDate() + asDays)
       lockTimes = new Date(lockTimes)
 
-      let lockTopup = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
+      let lockTopup = new Date(new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() * 1000)
       lockTopup.setDate(lockTopup.getDate())
       lockTopup = new Date(lockTopup)
 
-      let penaltyTimestamp = new Date(new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() * 1000)
+      let penaltyTimestamp = new Date(new BigNumber(get(value, 'penaltyUnlockTimestamp._hex')).toNumber() * 1000)
       penaltyTimestamp.setDate(penaltyTimestamp.getDate() + asPenaltyDays)
       penaltyTimestamp = new Date(penaltyTimestamp)
 
-      let unLockTime = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
+      let unLockTime = new Date(new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() * 1000)
       unLockTime.setDate(unLockTime.getDate() + asPenaltyDays)
       unLockTime = new Date(unLockTime)
 
@@ -318,12 +318,12 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       const unLock = new Date(utcUnLock + 3600000 * offset)
 
       locksData.push({
-        id: new BigNumber(_.get(value, 'id._hex')).toNumber(),
+        id: new BigNumber(get(value, 'id._hex')).toNumber(),
         level: value.level * 1 + 1,
         isUnlocked: value.isUnlocked,
         isPenalty: value.isPenalty,
         flg: value.isPenalty && value.isUnlocked,
-        penaltyFinixAmount: new BigNumber(_.get(value, 'penaltyFinixAmount._hex'))
+        penaltyFinixAmount: new BigNumber(get(value, 'penaltyFinixAmount._hex'))
           .dividedBy(new BigNumber(10).pow(18))
           .toNumber(),
         penaltyUnlockTimestamp: moment(penaltyUnlock).format(`DD-MMM-YY HH:mm:ss`),
@@ -331,11 +331,11 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         canBeClaim: canBeClaim_,
         lockTimestamp: moment(lock).format(`DD-MMM-YY HH:mm:ss`),
         lockTopupTimes: moment(topupTime).format(`DD-MMM-YY HH:mm:ss`),
-        penaltyRate: _.get(period, '0.realPenaltyRate')[value.level] * 100,
-        lockAmount: new BigNumber(_.get(value, 'lockAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-        voteAmount: new BigNumber(_.get(value, 'voteAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
+        penaltyRate: get(period, '0.realPenaltyRate')[value.level] * 100,
+        lockAmount: new BigNumber(get(value, 'lockAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
+        voteAmount: new BigNumber(get(value, 'voteAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
         periodPenalty: moment(unLock).format(`DD-MMM-YY HH:mm:ss`),
-        multiplier: _.get(period, '0.multiplier')[value.level * 1 + 1 - 1],
+        multiplier: get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
         topup,
         topupTimeStamp: moment(new Date(topupTime.setDate(topupTime.getDate() + 28))).format(`DD-MMM-YY HH:mm:ss`),
@@ -370,28 +370,28 @@ const getAllLockPeriods = async ({ vFinix }) => {
     ]
     const [lockPeriods] = await multicall(VaultInfoFacet.abi, calls)
     for (let i = 0; i < 3; i++) {
-      _.set(periodMap, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_period${i + 1}._hex`)).toNumber())
-      _.set(
+      set(periodMap, `${i}`, new BigNumber(get(lockPeriods.param_, `_period${i + 1}._hex`)).toNumber())
+      set(
         minimum,
         `${i}`,
-        new BigNumber(_.get(lockPeriods.param_, `_minimum${i + 1}._hex`))
+        new BigNumber(get(lockPeriods.param_, `_minimum${i + 1}._hex`))
           .dividedBy(new BigNumber(10).pow(18))
           .toNumber(),
       )
-      _.set(multiplier, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_multiplier${i + 1}._hex`)).toNumber() / 10)
-      _.set(penaltyPeriod, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyPeriod${i + 1}._hex`)).toNumber())
-      _.set(penaltyRate, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyRate${i + 1}._hex`)).toNumber())
-      _.set(
+      set(multiplier, `${i}`, new BigNumber(get(lockPeriods.param_, `_multiplier${i + 1}._hex`)).toNumber() / 10)
+      set(penaltyPeriod, `${i}`, new BigNumber(get(lockPeriods.param_, `_penaltyPeriod${i + 1}._hex`)).toNumber())
+      set(penaltyRate, `${i}`, new BigNumber(get(lockPeriods.param_, `_penaltyRate${i + 1}._hex`)).toNumber())
+      set(
         penaltyRateDecimal,
         `${i}`,
-        new BigNumber(_.get(lockPeriods.param_, `_penaltyRateDecimal${i + 1}._hex`)).toNumber(),
+        new BigNumber(get(lockPeriods.param_, `_penaltyRateDecimal${i + 1}._hex`)).toNumber(),
       )
-      _.set(
+      set(
         realPenaltyRate,
         `${i}`,
         Number(
-          new BigNumber(_.get(lockPeriods.param_, `_penaltyRate${i + 1}._hex`))
-            .dividedBy(_.get(lockPeriods.param_, `_penaltyRateDecimal${i + 1}._hex`))
+          new BigNumber(get(lockPeriods.param_, `_penaltyRate${i + 1}._hex`))
+            .dividedBy(get(lockPeriods.param_, `_penaltyRateDecimal${i + 1}._hex`))
             .toFixed(),
         ),
       )

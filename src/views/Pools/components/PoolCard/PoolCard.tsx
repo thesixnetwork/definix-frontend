@@ -1,10 +1,9 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-import { BASE_ADD_SWAP_URL } from 'config'
 import { getSwapUrlPathParts } from 'utils/getUrlPathParts'
 import {
   Flex,
@@ -79,7 +78,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
 
   const addSwapUrl = useMemo(() => {
     const swapUrlPathParts = getSwapUrlPathParts({ tokenAddress: pool.stakingTokenAddress })
-    return `${BASE_ADD_SWAP_URL}${swapUrlPathParts}`
+    // return `${BASE_ADD_SWAP_URL}/${swapUrlPathParts}`
+    return `/swap/${swapUrlPathParts}`
   }, [pool.stakingTokenAddress])
 
   /**
@@ -185,11 +185,11 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
         needsApprovalContract={!hasUserData || !hasAllowance || isBnbPool}
         sousId={sousId}
         earnings={earnings}
-        farm={pool.farm}
+        // farm={pool.farm}
         tokenName={tokenName}
       />
     ),
-    [componentType, isBnbPool, isOldSyrup, hasUserData, hasAllowance, sousId, earnings, pool.farm, tokenName],
+    [componentType, isBnbPool, isOldSyrup, hasUserData, hasAllowance, sousId, earnings, tokenName],
   )
   /**
    * Link Section

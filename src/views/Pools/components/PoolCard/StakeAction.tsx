@@ -9,7 +9,7 @@ import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 import { StakeActionProps } from './types'
 
 const TitleSection = styled(Text)`

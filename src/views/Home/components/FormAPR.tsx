@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ColorStyles, Flex, Grid, Text } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 
 interface Props {
   isFarm?: boolean

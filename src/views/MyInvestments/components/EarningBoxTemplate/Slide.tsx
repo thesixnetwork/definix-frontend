@@ -1,10 +1,10 @@
-import _ from 'lodash'
+import { chunk } from 'lodash-es'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import styled from 'styled-components'
 import { Text, Box, Flex, DoubleArrowButtons } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/CurrencyText'
-import BalanceText from 'components/BalanceText'
+import CurrencyText from 'components/Text/CurrencyText'
+import BalanceText from 'components/Text/BalanceText'
 
 const Wrap = styled(Flex)<{ bg: any }>`
   justify-content: space-between;
@@ -122,7 +122,7 @@ const Slide: React.FC<{
 
   const slidesToShow = useMemo(() => (isMobile ? 1 : 4), [isMobile])
   const useSlide = useMemo(() => data.length > slidesToShow, [slidesToShow, data.length])
-  const slideList = useMemo(() => (isMobile ? _.chunk(data, 2) : data), [isMobile, data])
+  const slideList = useMemo(() => (isMobile ? chunk(data, 2) : data), [isMobile, data])
   const isFirstIndex = useMemo(() => slideIndex === 0, [slideIndex])
   const isLastIndex = useMemo(() => {
     return slideIndex + slidesToShow === slideList.length

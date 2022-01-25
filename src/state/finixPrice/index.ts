@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import { getLpNetwork, allTokens } from 'config/constants/tokens'
 import multicall from 'utils/multicall'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import axios from 'axios'
 
 import {

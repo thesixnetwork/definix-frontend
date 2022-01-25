@@ -1,139 +1,149 @@
 import BigNumber from 'bignumber.js'
-import UnlockButton from 'components/UnlockButton'
-import { useApprove } from 'hooks/useApprove'
-import useI18n from 'hooks/useI18n'
+import { Contract } from 'web3-eth-contract'
 import React, { useCallback, useMemo, useState } from 'react'
-import { useFarmFromSymbol, useFarmUnlockDate, useFarmUser } from 'state/hooks'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
-import { getAddress } from 'utils/addressHelpers'
-import { getContract } from 'utils/erc20'
+import { useApprove } from 'hooks/useApprove'
+import useConverter from 'hooks/useConverter'
+import { useFarmUnlockDate, useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { provider } from 'web3-core'
-import numeral from 'numeral'
-import { FarmWithStakedValue } from './types'
+import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from '@fingerlabs/definixswap-uikit-v2'
+import CurrencyText from 'components/Text/CurrencyText'
+import UnlockButton from 'components/UnlockButton'
+
+const TitleSection = styled(Text)`
+  margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_12R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+  }
+`
+const BalanceText = styled(Text)`
+  color: ${({ theme }) => theme.colors.black};
+  ${({ theme }) => theme.textStyle.R_18M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_16M};
+  }
+`
+const PriceText = styled(CurrencyText)`
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_14R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_12R};
+  }
+`
 
 interface FarmStakeActionProps {
-  farm: FarmWithStakedValue
-  klaytn?: provider
-  account?: string
-  addLiquidityUrl?: string
-  className?: string
+  componentType?: string
+  hasAccount: boolean
+  hasUserData: boolean
+  hasAllowance: boolean
+  myLiquidity: BigNumber
+  myLiquidityPrice: BigNumber
+  lpContract: Contract
   onPresentDeposit?: any
   onPresentWithdraw?: any
 }
 
-const IconButtonWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  svg {
-    width: 20px;
-  }
-`
-
 const StakeAction: React.FC<FarmStakeActionProps> = ({
-  farm,
-  klaytn,
-  account,
-  className = '',
+  componentType = 'farm',
+  hasAccount,
+  hasUserData,
+  hasAllowance,
+  myLiquidity,
+  myLiquidityPrice,
+  lpContract,
   onPresentDeposit,
   onPresentWithdraw,
 }) => {
-  const [requestedApproval, setRequestedApproval] = useState(false)
-
-  const TranslateString = useI18n()
-  const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
-  const { allowance, stakedBalance } = useFarmUser(pid)
-  const lpAddress = getAddress(lpAddresses)
-  const lpName = farm.lpSymbol.toUpperCase()
-  const isApproved = account && allowance && allowance.isGreaterThan(0)
+  const { t } = useTranslation()
+  const { toastError, toastSuccess } = useToast()
+  const { convertToBalanceFormat } = useConverter()
+  const [isLoadingApproveContract, setIsLoadingApproveContract] = useState(false)
 
   const farmUnlockDate = useFarmUnlockDate()
-
-  const rawStakedBalance = getBalanceNumber(stakedBalance)
-  const displayBalance = numeral(rawStakedBalance || 0).format('0,0.0[0000000000]')
-
-  const lpContract = useMemo(() => {
-    return getContract(klaytn as provider, lpAddress)
-  }, [klaytn, lpAddress])
+  const isEnableAddStake = useMemo(() => {
+    return (
+      typeof farmUnlockDate === 'undefined' ||
+      (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())
+    )
+  }, [farmUnlockDate])
+  const myLiquidityValue = useMemo(() => getBalanceNumber(myLiquidity), [myLiquidity])
 
   const { onApprove } = useApprove(lpContract)
-
   const handleApprove = useCallback(async () => {
     try {
-      setRequestedApproval(true)
-      await onApprove()
-      setRequestedApproval(false)
+      setIsLoadingApproveContract(true)
+      const txHash = await onApprove()
+      if (txHash) {
+        toastSuccess(t('{{Action}} Complete', { Action: t('actionApprove') }))
+      } else {
+        // user rejected tx or didn't go thru
+        throw new Error()
+      }
     } catch (e) {
-      console.error(e)
+      toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
+    } finally {
+      setIsLoadingApproveContract(false)
     }
-  }, [onApprove])
-
-  const renderStakingButtons = () => {
-    if (rawStakedBalance === 0) {
-      return (
-        <Button
-          disabled={farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()}
-          onClick={onPresentDeposit}
-          fullWidth
-          radii="small"
-        >
-          {TranslateString(999, 'Stake LP')}
-        </Button>
-      )
-    }
-
-    return (
-      <IconButtonWrapper>
-        <Button
-          variant="secondary"
-          disabled={stakedBalance.eq(new BigNumber(0))}
-          onClick={onPresentWithdraw}
-          className="btn-secondary-disable col-6 mr-1"
-        >
-          <MinusIcon color="primary" />
-        </Button>
-        {(typeof farmUnlockDate === 'undefined' ||
-          (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && (
-          <Button variant="secondary" onClick={onPresentDeposit} className="btn-secondary-disable col-6 ml-1">
-            <AddIcon color="primary" />
-          </Button>
-        )}
-      </IconButtonWrapper>
-    )
-  }
-
-  const renderApprovalOrStakeButton = () => {
-    if (!isApproved) {
-      return (
-        <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
-          {TranslateString(758, 'Approve Contract')}
-        </Button>
-      )
-    }
-
-    return (
-      <div className="flex align-center">
-        <Heading
-          fontSize="20px !important"
-          textAlign="left"
-          color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}
-          className="col-6 pr-3"
-        >
-          {displayBalance}
-        </Heading>
-
-        <div className="col-6">{renderStakingButtons()}</div>
-      </div>
-    )
-  }
+  }, [onApprove, toastError, toastSuccess, t])
 
   return (
-    <div className={className}>
-      <Text textAlign="left" className="mb-2" color="textSubtle">{`${lpName} ${TranslateString(1074, 'Staked')}`}</Text>
-      {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
-    </div>
+    <>
+      <TitleSection>{t('My Liquidity')}</TitleSection>
+      {hasAccount ? (
+        <>
+          {/* // hasAllowance로 loading 상태 구분 */}
+          {hasUserData && hasAllowance ? (
+            <Flex justifyContent="space-between">
+              <Box>
+                <BalanceText>{convertToBalanceFormat(myLiquidityValue)}</BalanceText>
+                <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
+              </Box>
+
+              {componentType === 'farm' && (
+                <Box>
+                  <Button
+                    minWidth="40px"
+                    md
+                    variant={ButtonVariants.LINE}
+                    disabled={myLiquidity.eq(new BigNumber(0)) || isLoadingApproveContract}
+                    onClick={onPresentWithdraw}
+                  >
+                    <MinusIcon />
+                  </Button>
+                  {isEnableAddStake && (
+                    <Button
+                      minWidth="40px"
+                      md
+                      variant={ButtonVariants.LINE}
+                      onClick={onPresentDeposit}
+                      style={{ marginLeft: '4px' }}
+                    >
+                      <PlusIcon />
+                    </Button>
+                  )}
+                </Box>
+              )}
+            </Flex>
+          ) : (
+            <Button
+              width="100%"
+              md
+              variant={ButtonVariants.BROWN}
+              isLoading={!hasUserData || isLoadingApproveContract}
+              onClick={handleApprove}
+            >
+              {t('Approve Contract')}
+            </Button>
+          )}
+        </>
+      ) : (
+        <UnlockButton />
+      )}
+    </>
   )
 }
 
-export default StakeAction
+export default React.memo(StakeAction)
