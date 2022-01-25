@@ -22,7 +22,7 @@ Config.configure(sdkConfig)
 // Route-based code splitting
 // Only pool is included in the main bucndle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
-const Voting = lazy(() => import('./views/Voting_v2'))
+const Voting = lazy(() => import('./views/Voting'))
 // const VotingPrev = lazy(() => import('./views/Voting'))
 const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
