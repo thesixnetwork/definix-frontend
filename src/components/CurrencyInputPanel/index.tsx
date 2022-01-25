@@ -18,7 +18,7 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import useWallet from 'hooks/useWallet'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
-import { Input as NumericalInput } from '../NumericalInput'
+import { Input as NumericalInput } from '../NumericalInputBySwap'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 
 interface CurrencyInputPanelProps {
