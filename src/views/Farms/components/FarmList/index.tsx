@@ -1,4 +1,4 @@
-import _ from 'lodash-es'
+import { orderBy as lorderBy, get, uniq } from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +11,6 @@ import { getAddress, getWklayAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { DropdownOption } from '@fingerlabs/definixswap-uikit-v2'
 import NoResultArea from 'components/NoResultArea'
-// eslint-disable-next-line import/no-unresolved
 import useWallet from 'hooks/useWallet'
 import FarmCard from '../FarmCard/FarmCard'
 import { FarmWithStakedValue } from '../FarmCard/types'
@@ -38,7 +37,7 @@ const FarmList: React.FC<{
 
   const orderedFarms = useMemo(() => {
     if (!orderBy) return filteredFarms
-    return _.orderBy(filteredFarms, orderBy.id, orderBy.orderBy)
+    return lorderBy(filteredFarms, orderBy.id, orderBy.orderBy)
   }, [filteredFarms, orderBy])
 
   const displayFarms = useMemo(() => {
@@ -64,7 +63,7 @@ const FarmList: React.FC<{
       return tokens.reduce((result, token) => {
         const obj = {}
         const realTokenAddress = getTokenAddress(token)
-        obj[getTokenSymbol(realTokenAddress)] = balances ? _.get(balances, realTokenAddress) : null
+        obj[getTokenSymbol(realTokenAddress)] = balances ? get(balances, realTokenAddress) : null
         return { ...result, ...obj }
       }, {})
     },
@@ -77,7 +76,7 @@ const FarmList: React.FC<{
       const allLPaddresses = farmsWithApy.reduce((addressArray, farm) => {
         return [...addressArray, getAddress(farm.firstToken), getAddress(farm.secondToken)]
       }, [])
-      dispatch(fetchBalances(account, _.uniq(allLPaddresses)))
+      dispatch(fetchBalances(account, uniq(allLPaddresses)))
     }
   }, [account, farmsWithApy, balances, dispatch])
 

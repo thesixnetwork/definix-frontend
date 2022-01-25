@@ -176,7 +176,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
     }
 
     return cancel
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [account, address, currentPage, myOnly])
 
   useEffect(() => {

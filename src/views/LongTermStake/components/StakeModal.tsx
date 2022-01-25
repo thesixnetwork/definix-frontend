@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import moment from 'moment'
 import BigNumber from 'bignumber.js'
 import { useTranslation, Trans } from 'react-i18next'
@@ -122,18 +122,18 @@ const StakeModal: React.FC<ModalProps> = ({
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
-      const removeTopUpId = allLock.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
+      const removeTopUpId = allLock.filter((item) => !arrStr.includes(Number(get(item, 'id'))))
       let max = 0
       for (let i = 0; i < removeTopUpId.length; i++) {
         const selector = removeTopUpId[i]
         const selectorPeriod = getLevel(days) + 1
         if (
-          _.get(selector, 'isUnlocked') === false &&
-          _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === selectorPeriod
+          get(selector, 'isUnlocked') === false &&
+          get(selector, 'isPenalty') === false &&
+          get(selector, 'level') === selectorPeriod
         ) {
-          if (Number(_.get(selector, 'id')) >= max) {
-            max = Number(_.get(selector, 'id'))
+          if (Number(get(selector, 'id')) >= max) {
+            max = Number(get(selector, 'id'))
             setIdLast(max)
           }
         }
@@ -144,12 +144,12 @@ const StakeModal: React.FC<ModalProps> = ({
         const selector = allLock[i]
         const selectorPeriod = getLevel(days) + 1
         if (
-          _.get(selector, 'isUnlocked') === false &&
-          _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === selectorPeriod
+          get(selector, 'isUnlocked') === false &&
+          get(selector, 'isPenalty') === false &&
+          get(selector, 'level') === selectorPeriod
         ) {
-          if (Number(_.get(selector, 'id')) >= max) {
-            max = Number(_.get(selector, 'id'))
+          if (Number(get(selector, 'id')) >= max) {
+            max = Number(get(selector, 'id'))
             setIdLast(max)
           }
         }

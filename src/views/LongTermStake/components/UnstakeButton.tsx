@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -74,15 +74,15 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
     }
 
     onUnStake(
-      _.get(item, 'id'),
-      _.get(item, 'level'),
-      _.get(item, 'lockAmount'),
-      _.get(item, 'isPenalty'),
-      !_.get(item, 'canBeUnlock'),
-      _.get(item, 'penaltyRate'),
-      _.get(item, 'periodPenalty'),
-      _.get(item, 'multiplier'),
-      _.get(item, 'days'),
+      get(item, 'id'),
+      get(item, 'level'),
+      get(item, 'lockAmount'),
+      get(item, 'isPenalty'),
+      !get(item, 'canBeUnlock'),
+      get(item, 'penaltyRate'),
+      get(item, 'periodPenalty'),
+      get(item, 'multiplier'),
+      get(item, 'days'),
     )
     onPresentUnstakeModal()
   }
@@ -105,7 +105,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
 
   const handleClaimed = (item: AllDataLockType) => {
     return item.canBeClaim ? (
-      <StyledButton variant="lightbrown" isLoading={isLoadingClaim} onClick={() => handleClaim(_.get(item, 'id'))}>
+      <StyledButton variant="lightbrown" isLoading={isLoadingClaim} onClick={() => handleClaim(get(item, 'id'))}>
         <Text textStyle={isMobile ? 'R_14B' : 'R_12B'} color="white">
           {t('Claim')}
         </Text>

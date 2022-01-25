@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
@@ -74,11 +74,11 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
     const voteIPFS = process.env.REACT_APP_IPFS
 
     await proposalOfType.map(async (item) => {
-      let startTimestamp = new Date(new BigNumber(_.get(item, 'startTimestamp._hex')).toNumber() * 1000)
+      let startTimestamp = new Date(new BigNumber(get(item, 'startTimestamp._hex')).toNumber() * 1000)
       startTimestamp.setDate(startTimestamp.getDate())
       startTimestamp = new Date(startTimestamp)
 
-      let endTimestamp = new Date(new BigNumber(_.get(item, 'endTimestamp._hex')).toNumber() * 1000)
+      let endTimestamp = new Date(new BigNumber(get(item, 'endTimestamp._hex')).toNumber() * 1000)
       endTimestamp.setDate(endTimestamp.getDate())
       endTimestamp = new Date(endTimestamp)
 
@@ -96,8 +96,8 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
         endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
         proposalType: item.proposalType,
         proposer: item.proposer,
-        proposalIndex: new BigNumber(_.get(item, 'proposalIndex._hex')).toNumber(),
-        optionsCount: new BigNumber(_.get(item, 'optionsCount._hex')),
+        proposalIndex: new BigNumber(get(item, 'proposalIndex._hex')).toNumber(),
+        optionsCount: new BigNumber(get(item, 'optionsCount._hex')),
         optionVotingPower: item.optionVotingPower,
       })
 
@@ -159,11 +159,11 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
 
     const [proposalByIndex] = await multicall(IProposalFacet.abi, calls)
     const resultByIndex = proposalByIndex.map((item) => {
-      let startTimestamp = new Date(new BigNumber(_.get(item, 'startTimestamp._hex')).toNumber() * 1000)
+      let startTimestamp = new Date(new BigNumber(get(item, 'startTimestamp._hex')).toNumber() * 1000)
       startTimestamp.setDate(startTimestamp.getDate())
       startTimestamp = new Date(startTimestamp)
 
-      let endTimestamp = new Date(new BigNumber(_.get(item, 'endTimestamp._hex')).toNumber() * 1000)
+      let endTimestamp = new Date(new BigNumber(get(item, 'endTimestamp._hex')).toNumber() * 1000)
       endTimestamp.setDate(endTimestamp.getDate())
       endTimestamp = new Date(endTimestamp)
 
@@ -180,10 +180,10 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
         proposer: item.proposer,
         startTimestamp: moment(startTime).format(`DD-MMM-YY HH:mm:ss`),
         endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
-        startEpoch: new BigNumber(_.get(item, 'startTimestamp._hex')).toNumber() * 1000,
-        endEpoch: new BigNumber(_.get(item, 'endTimestamp._hex')).toNumber() * 1000,
+        startEpoch: new BigNumber(get(item, 'startTimestamp._hex')).toNumber() * 1000,
+        endEpoch: new BigNumber(get(item, 'endTimestamp._hex')).toNumber() * 1000,
         proposalType: item.proposalType,
-        proposalIndex: new BigNumber(_.get(item, 'proposalIndex._hex')).toNumber(),
+        proposalIndex: new BigNumber(get(item, 'proposalIndex._hex')).toNumber(),
         optionVotingPower: item.optionVotingPower,
         totalVotingPower: item.totalVotingPower,
       }
@@ -275,8 +275,8 @@ const getVotesByIndex = async ({ proposalIndex, pages, limits }) => {
       .get(`${voteIPFS}/list_votes?proposalIndex=${proposalIndex}&page=${pages}&limit=${limits}`)
       .then(async (resp) => {
         if (resp.data.success) {
-          const data = _.get(resp, 'data.result')
-          const total = _.get(resp, 'data.total')
+          const data = get(resp, 'data.result')
+          const total = get(resp, 'data.total')
           totalVote = total
           await data.map((v) =>
             dataArray.push({

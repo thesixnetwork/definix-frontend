@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useDispatch } from 'react-redux'
-import _ from 'lodash-es'
+import { compact, get } from 'lodash-es'
 
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
@@ -220,12 +220,12 @@ const NetWorth = () => {
   const getNetWorth = (d) => {
     if (typeof d.ratio === 'object') {
       const thisBalance = d.enableAutoCompound ? rebalanceBalances : balances
-      const currentBalance = _.get(thisBalance, getAddress(d.address), new BigNumber(0))
+      const currentBalance = get(thisBalance, getAddress(d.address), new BigNumber(0))
       return currentBalance.times(d.sharedPrice || new BigNumber(0))
     }
     if (typeof d.pid === 'number') {
       // farm
-      const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
+      const stakedBalance = get(d, 'userData.stakedBalance', new BigNumber(0))
       const ratio = new BigNumber(stakedBalance).div(new BigNumber(d.lpTotalSupply))
       const stakedTotalInQuoteToken = new BigNumber(d.quoteTokenBlanceLP)
         .div(new BigNumber(10).pow(d.quoteTokenDecimals))
@@ -250,13 +250,13 @@ const NetWorth = () => {
         totalValue = sixPrice.times(stakedTotalInQuoteToken)
       }
 
-      const earningRaw = _.get(d, 'userData.earnings', 0)
+      const earningRaw = get(d, 'userData.earnings', 0)
       const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
       const totalEarning = finixPrice.times(earning)
       return new BigNumber(totalValue).plus(totalEarning)
     }
     if (typeof d.sousId === 'number') {
-      const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
+      const stakedBalance = get(d, 'userData.stakedBalance', new BigNumber(0))
       const stakedTotal = new BigNumber(stakedBalance).div(new BigNumber(10).pow(18))
       let totalValue
       totalValue = stakedTotal
@@ -272,7 +272,7 @@ const NetWorth = () => {
       if (d.stakingTokenName === QuoteToken.SIX) {
         totalValue = sixPrice.times(stakedTotal)
       }
-      const earningRaw = _.get(d, 'userData.pendingReward', 0)
+      const earningRaw = get(d, 'userData.pendingReward', 0)
       const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
       const totalEarning = finixPrice.times(earning)
       return new BigNumber(totalValue).plus(totalEarning)
@@ -290,8 +290,8 @@ const NetWorth = () => {
         })
         // eslint-disable-next-line
         const totalNetWorth =
-          _.compact(allNetWorth).length > 0
-            ? _.compact(allNetWorth).reduce((fv, sv) => {
+          compact(allNetWorth).length > 0
+            ? compact(allNetWorth).reduce((fv, sv) => {
                 return fv.plus(sv)
               })
             : new BigNumber(0)

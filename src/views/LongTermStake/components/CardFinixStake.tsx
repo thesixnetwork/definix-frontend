@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import { Card, Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
 import { useApr, useAllLock, usePrivateData, useAllowance } from 'hooks/useLongTermStake'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
@@ -53,7 +53,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const [possibleSuperStake, setPossibleSuperStake] = useState<boolean>(false)
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
-  const minimum = _.get(allLockPeriod, '0.minimum')
+  const minimum = get(allLockPeriod, '0.minimum')
   const { balancefinix, balancevfinix } = usePrivateData()
 
   const { account } = useWallet()
@@ -66,21 +66,21 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
       multiple: 1,
       day: 90,
       apr: apr * 1,
-      minStake: _.get(minimum, '0'),
+      minStake: get(minimum, '0'),
       level: 1,
     },
     {
       multiple: 2,
       day: 180,
       apr: apr * 2,
-      minStake: _.get(minimum, '1'),
+      minStake: get(minimum, '1'),
       level: 2,
     },
     {
       multiple: 4,
       day: 365,
       apr: apr * 4,
-      minStake: _.get(minimum, '2'),
+      minStake: get(minimum, '2'),
       level: 3,
     },
   ]

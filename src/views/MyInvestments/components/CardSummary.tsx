@@ -1,4 +1,4 @@
-import _ from 'lodash-es'
+import { groupBy } from 'lodash-es'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Card, useMatchBreakpoints, Tabs } from '@fingerlabs/definixswap-uikit-v2'
@@ -44,9 +44,9 @@ function CardSummary({ products }) {
       <Card isOverflowHidden>
         <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} small={isMobile} equal={isMobile} />
         {curTab === tabs[1].id ? (
-          <NetWorth isMobile={isMobile} products={_.groupBy(products, 'type')} />
+          <NetWorth isMobile={isMobile} products={groupBy(products, 'type')} />
         ) : (
-          <Earned isMobile={isMobile} products={_.groupBy(products, 'type')} />
+          <Earned isMobile={isMobile} products={groupBy(products, 'type')} />
         )}
       </Card>
     </>

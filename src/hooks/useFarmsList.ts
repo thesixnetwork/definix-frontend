@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import _ from 'lodash-es'
+import { compact } from 'lodash-es'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import { getLpImageUrlsAndSymbols } from 'utils/getTokenImage'
@@ -122,7 +122,7 @@ const useFarmsList = (farms: Farm[]): any => {
   const getFilteredFarms = useCallback(() => {
     const farmsWithApy = getFarmsList()
     const filteredFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
-    return !_.compact(filteredFarms.map((farm) => farm.lpTotalInQuoteToken)).length ? [] : filteredFarms
+    return !compact(filteredFarms.map((farm) => farm.lpTotalInQuoteToken)).length ? [] : filteredFarms
   }, [getFarmsList])
 
   return getFilteredFarms()

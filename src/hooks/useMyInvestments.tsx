@@ -1,4 +1,4 @@
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -29,12 +29,12 @@ const useMyInvestments = () => {
     if (typeof d.ratio === 'object') {
       // rebalance
       const thisBalance = d.enableAutoCompound ? rebalanceBalances : balances
-      const currentBalance = _.get(thisBalance, getAddress(d.address), new BigNumber(0))
+      const currentBalance = get(thisBalance, getAddress(d.address), new BigNumber(0))
       return currentBalance.times(d.sharedPrice || new BigNumber(0))
     }
     if (typeof d.pid === 'number') {
       // farm
-      const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
+      const stakedBalance = get(d, 'userData.stakedBalance', new BigNumber(0))
       const ratio = new BigNumber(stakedBalance).div(new BigNumber(d.lpTotalSupply))
       const stakedTotalInQuoteToken = new BigNumber(d.quoteTokenBlanceLP)
         .div(new BigNumber(10).pow(d.quoteTokenDecimals))
@@ -48,17 +48,17 @@ const useMyInvestments = () => {
         totalValue = convertToPriceFromToken(stakedTotalInQuoteToken, d.quoteTokenSymbol)
       }
 
-      const earningRaw = _.get(d, 'userData.earnings', 0)
+      const earningRaw = get(d, 'userData.earnings', 0)
       const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
       const totalEarning = convertToPriceFromToken(earning, 'finix')
       return new BigNumber(totalValue).plus(totalEarning)
     }
     if (typeof d.sousId === 'number') {
       // pool
-      const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
+      const stakedBalance = get(d, 'userData.stakedBalance', new BigNumber(0))
       const stakedTotal = new BigNumber(stakedBalance).div(new BigNumber(10).pow(18))
       const totalValue = convertToPriceFromToken(stakedTotal, d.stakingTokenName)
-      const earningRaw = _.get(d, 'userData.pendingReward', 0)
+      const earningRaw = get(d, 'userData.pendingReward', 0)
       const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
       const totalEarning = convertToPriceFromToken(earning, 'finix')
       return new BigNumber(totalValue).plus(totalEarning)

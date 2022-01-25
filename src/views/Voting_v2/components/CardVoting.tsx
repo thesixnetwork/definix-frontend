@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import _ from 'lodash'
+import { get } from 'lodash-es'
 import dayjs from 'dayjs'
 import { Card, Tabs, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
@@ -18,21 +18,21 @@ function getFilterList(filterListAllProposal, filterId: FilterId) {
     switch (filterId) {
       case FilterId.SOON:
         return (
-          Number(_.get(item, 'start_unixtimestamp')) * 1000 > Date.now() &&
-          Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+          Number(get(item, 'start_unixtimestamp')) * 1000 > Date.now() &&
+          Number(get(item, 'end_unixtimestamp')) * 1000 > Date.now()
         )
 
       case FilterId.CLOSED:
         return (
-          Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
-          Number(_.get(item, 'end_unixtimestamp')) * 1000 < Date.now()
+          Number(get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+          Number(get(item, 'end_unixtimestamp')) * 1000 < Date.now()
         )
 
       case FilterId.NOW:
       default:
         return (
-          Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
-          Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+          Number(get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+          Number(get(item, 'end_unixtimestamp')) * 1000 > Date.now()
         )
     }
   })
@@ -55,14 +55,14 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const { isMobile } = useMatchBreakpoints()
   const allProposalMap = useAllProposalOfType()
   const { proposalOfAddress } = useAllProposalOfAddress()
-  const listAllProposal: VotingItem[] = _.get(allProposalMap, 'allProposalMap')
+  const listAllProposal: VotingItem[] = get(allProposalMap, 'allProposalMap')
   const participatedVotes = useMemo(() => {
     return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
   }, [proposalOfAddress])
   const voteList = useMemo(() => {
     if (listAllProposal && listAllProposal.length > 0) {
       const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
-        if (participatedVotes.includes(_.get(item, 'ipfsHash'))) {
+        if (participatedVotes.includes(get(item, 'ipfsHash'))) {
           return {
             isParticipated: true,
             ...item,
@@ -75,7 +75,7 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
         if (isParticipated && !item.isParticipated) {
           return false
         }
-        return proposalType === ProposalType.ALL ? true : _.get(item, 'proposals_type') === proposalType
+        return proposalType === ProposalType.ALL ? true : get(item, 'proposals_type') === proposalType
       })
 
       return [

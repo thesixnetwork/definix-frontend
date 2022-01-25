@@ -1,4 +1,4 @@
-import _ from 'lodash-es'
+import { get, pick } from 'lodash-es'
 import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
@@ -173,9 +173,9 @@ const EarningBoxTemplate: React.FC<{
   const [harvestResultList, setHarvestResultList] = useState([])
 
   const curTheme = useMemo(() => THEME[theme], [theme])
-  const displayOnlyTotalPrice = useMemo(() => typeof _.get(total, 'value') !== 'number', [total])
+  const displayOnlyTotalPrice = useMemo(() => typeof get(total, 'value') !== 'number', [total])
   const totalValue = useMemo(() => {
-    return _.get(total, displayOnlyTotalPrice ? 'price' : 'value') || 0
+    return get(total, displayOnlyTotalPrice ? 'price' : 'value') || 0
   }, [displayOnlyTotalPrice, total])
 
   // farm, pool
@@ -185,7 +185,7 @@ const EarningBoxTemplate: React.FC<{
   }, [farmsWithBalance])
 
   const farmPoolHarvestHook = useAllHarvest(
-    myFarmPools.map((farmWithBalance) => _.pick(farmWithBalance, ['pid', 'lpSymbol'])),
+    myFarmPools.map((farmWithBalance) => pick(farmWithBalance, ['pid', 'lpSymbol'])),
   )
   // long term stake
   const { finixEarn } = usePrivateData()

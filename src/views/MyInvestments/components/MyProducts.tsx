@@ -1,4 +1,4 @@
-import _ from 'lodash-es'
+import { get, flatten, orderBy } from 'lodash-es'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -38,11 +38,11 @@ const MyProducts: React.FC<{
   const getTokenName = useCallback((product) => {
     let tokenName = ''
     if (product.productType === 'farm') {
-      tokenName = _.get(product, 'lpSymbol').replace(/ LP$/, '')
+      tokenName = get(product, 'lpSymbol').replace(/ LP$/, '')
     } else if (product.productType === 'pool') {
-      tokenName = _.get(product, 'tokenName')
+      tokenName = get(product, 'tokenName')
     } else {
-      tokenName = _.get(product, 'title')
+      tokenName = get(product, 'title')
     }
     return tokenName.toLowerCase()
   }, [])
@@ -61,7 +61,7 @@ const MyProducts: React.FC<{
         ...product.data,
       })
     })
-    return _.flatten(Object.values(defaultProducts))
+    return flatten(Object.values(defaultProducts))
   }, [products])
 
   const filteredProducts = useMemo(() => {
@@ -71,7 +71,7 @@ const MyProducts: React.FC<{
 
   const orderedProducts = useMemo(() => {
     if (!currentOrderBy) return filteredProducts
-    return _.orderBy(filteredProducts, currentOrderBy.id, currentOrderBy.orderBy)
+    return orderBy(filteredProducts, currentOrderBy.id, currentOrderBy.orderBy)
   }, [filteredProducts, currentOrderBy])
 
   const displayProducts = useMemo(() => {
@@ -86,7 +86,7 @@ const MyProducts: React.FC<{
       return tokens.reduce((result, token) => {
         const obj = {}
         const realTokenAddress = getAddress(token)
-        obj[getTokenSymbol(realTokenAddress)] = balances ? _.get(balances, realTokenAddress) : null
+        obj[getTokenSymbol(realTokenAddress)] = balances ? get(balances, realTokenAddress) : null
         return { ...result, ...obj }
       }, {})
     },
@@ -96,7 +96,7 @@ const MyProducts: React.FC<{
     (tokenName: string, tokenAddress: string) => {
       if (balances) {
         const address = tokenName === 'WKLAY' ? 'main' : tokenAddress
-        return _.get(balances, address)
+        return get(balances, address)
       }
       return null
     },
@@ -104,7 +104,7 @@ const MyProducts: React.FC<{
   )
   const getProductComponent = useCallback(
     (product) => {
-      const type = _.get(product, 'productType').toLowerCase()
+      const type = get(product, 'productType').toLowerCase()
       if (type === 'farm') {
         return (
           <FarmCard
@@ -189,7 +189,7 @@ const MyProducts: React.FC<{
         <>
           {stakedRebalances.map((r) => {
             const thisBalance = r.enableAutoCompound ? rebalanceBalances : balances
-            const currentBalance = _.get(thisBalance, getAddress(r.address), new BigNumber(0))
+            const currentBalance = get(thisBalance, getAddress(r.address), new BigNumber(0))
             const currentBalanceNumber = currentBalance.toNumber()
             return (
               <FarmsAndPools className="mb-3">
@@ -217,8 +217,8 @@ const MyProducts: React.FC<{
                     <Text bold color="success">
                       {numeral(
                         finixPrice
-                          .times(_.get(r, 'finixRewardPerYear', new BigNumber(0)))
-                          .div(_.get(r, 'totalAssetValue', new BigNumber(0)))
+                          .times(get(r, 'finixRewardPerYear', new BigNumber(0)))
+                          .div(get(r, 'totalAssetValue', new BigNumber(0)))
                           .times(100)
                           .toFixed(2),
                       ).format('0,0.[00]')}

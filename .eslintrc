@@ -12,7 +12,10 @@
     "browser": true,
     "jest": true
   },
-  "extends": "@pancakeswap-libs/eslint-config-pancake",
+  "extends": [
+    // "@pancakeswap-libs/eslint-config-pancake",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "rules": {
     "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-imports-ts": "warn",

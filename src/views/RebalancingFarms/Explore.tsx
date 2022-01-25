@@ -77,7 +77,7 @@ const Explore: React.FC = () => {
   useEffect(() => {
     if (new Date(localStorage.getItem('disclaimerSkipped') || 0).getTime() < new Date().getTime() - 1209600000)
       onPresentDisclaimersModal()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [])
 
   return (

@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import farmsConfig from 'config/constants/farms'
 import axios from 'axios'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import fetchFarms from './fetchFarms'
 import {
   fetchFarmUserEarnings,
@@ -51,7 +51,7 @@ export const fetchFarmsPublicDataAsync = () => async (dispatch) => {
 }
 export const fetchFarmUnlockDate = () => async (dispatch) => {
   const response = await axios.get('https://api.bscscan.com/api?module=block&action=getblockcountdown&blockno=6332527')
-  const timeInsecToUnlock = parseInt(_.get(response, 'data.result.EstimateTimeInSec'), 10) || 0
+  const timeInsecToUnlock = parseInt(get(response, 'data.result.EstimateTimeInSec'), 10) || 0
   const unlockDate = new Date(new Date().getTime() + timeInsecToUnlock * 1000)
   dispatch(setFarmUnlockAt({ farmUnlockAt: unlockDate }))
 }

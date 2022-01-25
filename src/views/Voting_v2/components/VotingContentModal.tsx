@@ -153,7 +153,6 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
 
     setRemainVFinix(resultVFinix)
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balances, myVFinixBalance])
 
 

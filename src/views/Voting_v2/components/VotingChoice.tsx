@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState, useCallback, useRef } from 'react'
-import _ from 'lodash'
+import { get } from 'lodash-es'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -148,7 +148,7 @@ const VotingChoice: React.FC = () => {
     if ([TransactionState.SUCCESS, TransactionState.ERROR].includes(trState)) {
       onDismiss()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [trState])
 
 
@@ -159,7 +159,7 @@ const VotingChoice: React.FC = () => {
   }, [isParticipated])
 
   useEffect(() => {
-    const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
+    const voting = indexProposal && get(indexProposal, 'optionVotingPower')
     const array = []
     let proposalMap = []
     const fetch = async () => {
@@ -170,7 +170,7 @@ const VotingChoice: React.FC = () => {
           .reduce((a, b) => a + b)
 
         voting.filter((v, index) => {
-          _.get(proposalMap, '0.choices').map((i, c) => {
+          get(proposalMap, '0.choices').map((i, c) => {
             if (index === c) {
               array.push({
                 vote: new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
@@ -190,7 +190,7 @@ const VotingChoice: React.FC = () => {
     }
 
     fetch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [fastRefresh, proposal.ipfsHash])
 
   const onCheckChange = useCallback(
@@ -241,7 +241,7 @@ const VotingChoice: React.FC = () => {
     try {
       const txHash = await onApprove()
       if (txHash) {
-        setTransactionHash(_.get(txHash, 'transactionHash'))
+        setTransactionHash(get(txHash, 'transactionHash'))
         toastSuccess(
           t('{{Action}} Complete', {
             Action: t('actionApprove'),

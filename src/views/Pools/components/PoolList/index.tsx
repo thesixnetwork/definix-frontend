@@ -1,4 +1,4 @@
-import _ from 'lodash-es'
+import { partition, get, orderBy as lorderBy } from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import useWallet from 'hooks/useWallet'
 import React, { useMemo, useCallback, useEffect } from 'react'
@@ -27,7 +27,7 @@ const PoolList: React.FC<{
   const poolsWithApy = usePoolsList({ farms, pools })
 
   const targetPools = useMemo(() => {
-    const [finishedPools, openPools] = _.partition(poolsWithApy, (pool) => pool.isFinished)
+    const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
     return liveOnly ? openPools : finishedPools
   }, [liveOnly, poolsWithApy])
 
@@ -38,7 +38,7 @@ const PoolList: React.FC<{
 
   const orderedPools = useMemo(() => {
     if (!orderBy) return filteredPools
-    return _.orderBy(filteredPools, orderBy.id, orderBy.orderBy)
+    return lorderBy(filteredPools, orderBy.id, orderBy.orderBy)
   }, [filteredPools, orderBy])
 
   const displayPools = useMemo(() => {
@@ -52,7 +52,7 @@ const PoolList: React.FC<{
     (tokenName: string, tokenAddress: string) => {
       if (balances) {
         const address = tokenName === 'WKLAY' ? 'main' : tokenAddress
-        return _.get(balances, address)
+        return get(balances, address)
       }
       return null
     },

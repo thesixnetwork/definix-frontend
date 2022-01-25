@@ -172,7 +172,7 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', color, height = 1
       })
     }
     return cancel
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [isDisplay, rebalanceAddress, tokens])
 
   useEffect(() => {

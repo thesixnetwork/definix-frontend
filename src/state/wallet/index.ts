@@ -4,7 +4,7 @@ import erc20 from 'config/abi/erc20.json'
 import rebalanceAbi from 'config/abi/rebalance.json'
 import multicall, { multicallEth } from 'utils/multicall'
 import { getAddress } from 'utils/addressHelpers'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import { createSlice } from '@reduxjs/toolkit'
 import { WalletState, Rebalance } from '../types'
 
@@ -25,18 +25,18 @@ export const walletSlice = createSlice({
   reducers: {
     setDecimals: (state, action) => {
       const { account, data } = action.payload
-      state.decimals = { ...state.decimals, [account]: { ..._.get(state, `decimals.${account}`, {}), ...data } }
+      state.decimals = { ...state.decimals, [account]: { ...get(state, `decimals.${account}`, {}), ...data } }
     },
     setBalance: (state, action) => {
       const { account, data } = action.payload
-      state.balances = { ...state.balances, [account]: { ..._.get(state, `balances.${account}`, {}), ...data } }
+      state.balances = { ...state.balances, [account]: { ...get(state, `balances.${account}`, {}), ...data } }
       state.isFetched = true
     },
     setUserRabalanceBalance: (state, action) => {
       const { account, data } = action.payload
       state.userRebalanceBalances = {
         ...state.userRebalanceBalances,
-        [account]: { ..._.get(state, `userRebalanceBalances.${account}`, {}), ...data },
+        [account]: { ...get(state, `userRebalanceBalances.${account}`, {}), ...data },
       }
       state.isRebalanceFetched = true
     },
@@ -45,8 +45,8 @@ export const walletSlice = createSlice({
       state.allowances = {
         ...state.allowances,
         [account]: {
-          ..._.get(state, `allowances.${account}`, {}),
-          [spender]: { ..._.get(state, `allowances.${account}.${spender}`, {}), ...data },
+          ...get(state, `allowances.${account}`, {}),
+          [spender]: { ...get(state, `allowances.${account}.${spender}`, {}), ...data },
         },
       }
     },

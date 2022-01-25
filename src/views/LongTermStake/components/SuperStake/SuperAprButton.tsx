@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Helper } from '@fingerlabs/definixswap-uikit-v2'
 import { useLockTopup, useAllDataLock } from 'hooks/useLongTermStake'
@@ -25,20 +25,20 @@ const SuperAprButton: React.FC<SuperAprButtonProps> = ({ isMobile, days, setDays
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
       const removeisUnlockedOrisPenalty = allLock.filter(
-        (item) => _.get(item, 'isUnlocked') === false && _.get(item, 'isPenalty') === false,
+        (item) => get(item, 'isUnlocked') === false && get(item, 'isPenalty') === false,
       )
 
-      const removeTopUpId = removeisUnlockedOrisPenalty.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
+      const removeTopUpId = removeisUnlockedOrisPenalty.filter((item) => !arrStr.includes(Number(get(item, 'id'))))
       removeTopUpId.map((r) => {
-        return array.push(_.get(r, 'level'))
+        return array.push(get(r, 'level'))
       })
       setSuperStakeData(array)
     } else {
       const removeisUnlockedOrisPenalty = allLock.filter(
-        (item) => _.get(item, 'isUnlocked') === false && _.get(item, 'isPenalty') === false,
+        (item) => get(item, 'isUnlocked') === false && get(item, 'isPenalty') === false,
       )
       removeisUnlockedOrisPenalty.map((r) => {
-        return array.push(_.get(r, 'level'))
+        return array.push(get(r, 'level'))
       })
       setSuperStakeData(array)
     }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import { useTranslation } from 'react-i18next'
 import { Box, Flex, Modal, Button, ModalBody, ModalFooter, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
@@ -36,7 +36,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const totalFinix = useMemo(() => Number(inputFinix) + Number(inputHarvest), [inputFinix, inputHarvest])
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
-  const minimum = _.get(allLockPeriod, '0.minimum')
+  const minimum = get(allLockPeriod, '0.minimum')
   const { balancefinix } = usePrivateData()
 
   const data = [
@@ -44,21 +44,21 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
       multiple: 1,
       day: 90,
       apr: apr * 1,
-      minStake: _.get(minimum, '0'),
+      minStake: get(minimum, '0'),
       level: 1,
     },
     {
       multiple: 2,
       day: 180,
       apr: apr * 2,
-      minStake: _.get(minimum, '1'),
+      minStake: get(minimum, '1'),
       level: 2,
     },
     {
       multiple: 4,
       day: 365,
       apr: apr * 4,
-      minStake: _.get(minimum, '2'),
+      minStake: get(minimum, '2'),
       level: 3,
     },
   ]

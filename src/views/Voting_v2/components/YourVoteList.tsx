@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import _ from 'lodash'
+import { get } from 'lodash-es'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import { Card, CardBody, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
@@ -94,7 +94,7 @@ const YourVoteList: React.FC = () => {
               lg
               width="280px"
               onClick={onClaim}
-              disabled={Date.now() < +_.get(participatedProposal, 'endDate') || !participatedProposal.IsClaimable}
+              disabled={Date.now() < +get(participatedProposal, 'endDate') || !participatedProposal.IsClaimable}
             >
               {t('Claim Voting Power')}
             </Button>

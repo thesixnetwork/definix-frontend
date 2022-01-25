@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import numeral from 'numeral'
@@ -36,7 +36,7 @@ const FarmHighAPR = () => {
   return sortedFarmData[0] ? (
     <FormAPR
       title={sortedFarmData[0].lpSymbol}
-      totalAssetValue={numeral(_.get(sortedFarmData[0], 'totalLiquidityValue', 0)).format('0,0.00')}
+      totalAssetValue={numeral(get(sortedFarmData[0], 'totalLiquidityValue', 0)).format('0,0.00')}
       apr={numeral(sortedFarmData[0].apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}
       Images={
         <WrapImage>

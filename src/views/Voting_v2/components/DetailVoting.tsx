@@ -35,7 +35,7 @@ const DetailVoting: React.FC = () => {
     return () => {
       dispatch(setProposalIndex({}))
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, [])
 
   return (

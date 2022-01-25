@@ -1,6 +1,5 @@
 import { CaverProvider } from 'finix-caver-providers'
 import { useCaverJsReact as useCaverJsReactCore } from '@sixnetwork/caverjs-react-core'
-// eslint-disable-next-line import/no-unresolved
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { NetworkContextName } from 'config/constants'

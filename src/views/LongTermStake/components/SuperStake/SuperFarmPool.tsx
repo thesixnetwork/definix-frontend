@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import _ from 'lodash-es'
+import { get } from 'lodash-es'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'react-i18next'
@@ -112,18 +112,18 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
-      const removeTopUpId = allLock.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
+      const removeTopUpId = allLock.filter((item) => !arrStr.includes(Number(get(item, 'id'))))
       let max = 0
       for (let i = 0; i < removeTopUpId.length; i++) {
         const selector = removeTopUpId[i]
         const selectorPeriod = getLevel(days) + 1
         if (
-          _.get(selector, 'isUnlocked') === false &&
-          _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === selectorPeriod
+          get(selector, 'isUnlocked') === false &&
+          get(selector, 'isPenalty') === false &&
+          get(selector, 'level') === selectorPeriod
         ) {
-          if (Number(_.get(selector, 'id')) >= max) {
-            max = Number(_.get(selector, 'id'))
+          if (Number(get(selector, 'id')) >= max) {
+            max = Number(get(selector, 'id'))
             setIdLast(max)
           }
         }
@@ -134,12 +134,12 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
         const selector = allLock[i]
         const selectorPeriod = getLevel(days) + 1
         if (
-          _.get(selector, 'isUnlocked') === false &&
-          _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === selectorPeriod
+          get(selector, 'isUnlocked') === false &&
+          get(selector, 'isPenalty') === false &&
+          get(selector, 'level') === selectorPeriod
         ) {
-          if (Number(_.get(selector, 'id')) > max) {
-            max = Number(_.get(selector, 'id'))
+          if (Number(get(selector, 'id')) > max) {
+            max = Number(get(selector, 'id'))
             setIdLast(max)
           }
         }
@@ -148,15 +148,15 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   }, [lockTopUp, allLock, days])
 
   const _superHarvest = useCallback(async () => {
-    const selected = Object.values(selectedToken).filter((d) => _.get(d, 'checked') === true)
+    const selected = Object.values(selectedToken).filter((d) => get(d, 'checked') === true)
     if (harvestProgress !== -1 && harvestProgress <= Object.values(selected).length) {
-      if (_.get(Object.values(selected)[harvestProgress], 'checked')) {
-        if (!_.get(Object.values(selected)[harvestProgress], 'pools')) {
-          if (_.get(Object.values(selected)[harvestProgress], 'farms')) {
+      if (get(Object.values(selected)[harvestProgress], 'checked')) {
+        if (!get(Object.values(selected)[harvestProgress], 'pools')) {
+          if (get(Object.values(selected)[harvestProgress], 'farms')) {
             // farm
             try {
               setIsLoadingStake('loading')
-              await onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
+              await onSuperHarvest(get(Object.values(selected)[harvestProgress], 'pid'))
               setHarvestProgress(harvestProgress + 1)
             } catch {
               setHarvestProgress(-1)
@@ -181,7 +181,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
           // pool
           try {
             setIsLoadingStake('loading')
-            await onReward(_.get(Object.values(selected)[harvestProgress], 'sousId'))
+            await onReward(get(Object.values(selected)[harvestProgress], 'sousId'))
             setHarvestProgress(harvestProgress + 1)
           } catch {
             setHarvestProgress(-1)
@@ -192,7 +192,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [harvestProgress, selectedToken, handleHarvest])
 
   const lockPlus = useCallback(async () => {
@@ -221,7 +221,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     } else if (harvestProgress !== -1) {
       _superHarvest()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [harvestProgress, _superHarvest])
 
   useEffect(() => {
@@ -229,8 +229,8 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
       const dataArray = []
       for (let i = 0; i < Object.values(selectedToken).length; i++) {
         const selector = Object.values(selectedToken)[i]
-        if (_.get(selector, 'checked')) {
-          dataArray.push(_.get(selector, 'pendingReward'))
+        if (get(selector, 'checked')) {
+          dataArray.push(get(selector, 'pendingReward'))
         } else {
           dataArray.splice(i)
         }
@@ -245,8 +245,8 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
       const dataArray = []
       for (let i = 0; i < Object.values(selectedToken).length; i++) {
         const selector = Object.values(selectedToken)[i]
-        if (_.get(selector, 'checked')) {
-          dataArray.push(_.get(selector, 'pendingReward'))
+        if (get(selector, 'checked')) {
+          dataArray.push(get(selector, 'pendingReward'))
         } else {
           dataArray.splice(i)
         }
@@ -258,8 +258,8 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
       const dataArray = []
       for (let i = 0; i < Object.values(selectedToken).length; i++) {
         const selector = Object.values(selectedToken)[i]
-        if (_.get(selector, 'checked')) {
-          dataArray.push(_.get(selector, 'pendingReward'))
+        if (get(selector, 'checked')) {
+          dataArray.push(get(selector, 'pendingReward'))
         } else {
           dataArray.splice(i)
         }
@@ -276,8 +276,8 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     let totalPendingReward = 0
     for (let i = 0; i < Object.values(selectedToken).length; i++) {
       const selector = Object.values(selectedToken)[i]
-      if (_.get(selector, 'checked')) {
-        totalPendingReward += Number(numeral(_.get(selector, 'pendingReward')).format('0,0.[00]'))
+      if (get(selector, 'checked')) {
+        totalPendingReward += Number(numeral(get(selector, 'pendingReward')).format('0,0.[00]'))
       }
     }
     setInputHarvest(String(totalPendingReward))
@@ -297,7 +297,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                   <Checkbox
                     scale="sm"
                     disabled={harvestProgress !== -1}
-                    checked={_.get(selectedToken, `${18}.checked`) || false}
+                    checked={get(selectedToken, `${18}.checked`) || false}
                     onChange={(event) => {
                       setSelectedToken({
                         ...selectedToken,
@@ -341,7 +341,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                     <Checkbox
                       scale="sm"
                       disabled={harvestProgress !== -1}
-                      checked={_.get(selectedToken, `${d.pid}.checked`) || false}
+                      checked={get(selectedToken, `${d.pid}.checked`) || false}
                       onChange={(event) => {
                         setSelectedToken({
                           ...selectedToken,
@@ -391,7 +391,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                   control={
                     <Checkbox
                       scale="sm"
-                      checked={_.get(selectedToken, `${d.sousId}.checked`) || false}
+                      checked={get(selectedToken, `${d.sousId}.checked`) || false}
                       disabled={harvestProgress !== -1}
                       onChange={(event) => {
                         setSelectedToken({

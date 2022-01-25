@@ -145,7 +145,7 @@ export const useProposalIndex = (index) => {
     if (index) {
       dispatch(fetchProposalIndex(index))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [slowRefresh, dispatch])
 
   return { indexProposal }
@@ -166,7 +166,7 @@ export const useIsProposable = () => {
     }
 
     fetchIsProposable()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [fastRefresh])
 
   return { proposables }
@@ -248,7 +248,7 @@ export const useGetProposal = (proposalId: string) => {
 
   useEffect(() => {
     dispatch(fetchProposal(proposalId))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [fastRefresh, dispatch])
 
   return { proposal }

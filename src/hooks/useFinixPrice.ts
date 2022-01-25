@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { useCallback, useState, useEffect } from 'react'
-import _ from 'lodash-es'
+import { get, compact } from 'lodash-es'
 import { allTokenAddresses, getLpNetwork, MULTICALL_ADDRESS } from 'config/constants'
 import erc20 from 'config/constants/abis/erc20.json'
 import { useActiveWeb3React } from './index'
@@ -52,7 +52,7 @@ const pairObjectCombination = (inputObject) => {
   Object.keys(inputObject).forEach((a) => {
     Object.keys(inputObject).forEach((b) => {
       if (a !== b) {
-        if (!_.get(mark, `${a}.${b}`) && !_.get(mark, `${b}.${a}`)) {
+        if (!get(mark, `${a}.${b}`) && !get(mark, `${b}.${a}`)) {
           if (mark[a]) {
             mark[a][b] = true
           } else {
@@ -101,7 +101,7 @@ export default function useFinixPrice(): number {
       // @ts-ignore
       (item) => item.indexOf('FINIX') >= 0 || item.indexOf('KUSDT') >= 0,
     )
-    const sortedPair = _.compact(allFinixPair.map((pair) => findAndSelectPair(pair)))
+    const sortedPair = compact(allFinixPair.map((pair) => findAndSelectPair(pair)))
     const searchablePair = {}
     sortedPair.forEach((pair, index) => {
       if (!searchablePair[pair[0]]) {
@@ -145,7 +145,7 @@ export default function useFinixPrice(): number {
       }
       return undefined
     })
-    const availAllPrices = _.compact(allPrices)
+    const availAllPrices = compact(allPrices)
     // @ts-ignore
     const calPrice = availAllPrices.reduce((sum, pair) => sum + pair[0] * pair[1], 0)
     // @ts-ignore

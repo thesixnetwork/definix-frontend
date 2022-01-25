@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import _ from 'lodash'
+import { get } from 'lodash-es'
 import styled from 'styled-components'
 import { Text, Flex } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
@@ -52,7 +52,7 @@ const TextEndDate = styled(Text)`
 const VotingItem: React.FC<Props> = ({ item, isStartDate }) => {
   const { t, i18n } = useTranslation()
   return (
-    <Item as={Link} to={`/voting/detail/${_.get(item, 'ipfsHash')}/${_.get(item, 'proposalIndex')}`}>
+    <Item as={Link} to={`/voting/detail/${get(item, 'ipfsHash')}/${get(item, 'proposalIndex')}`}>
       <Flex>
         {item.proposals_type === 'core' && <Badge type={BadgeType.CORE} />}
         {item.isParticipated && <Badge type={BadgeType.PARTICIPATION} />}

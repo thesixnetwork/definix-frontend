@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo } from 'react'
-import _ from 'lodash'
+import { get } from 'lodash-es'
 import { Flex, CardBody, Text, LinkIcon, Box } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -97,13 +97,13 @@ const InfoVotes: React.FC<Props> = ({ id, proposalIndex }) => {
     const array = []
     if (allVotesByIndex.length !== 0 && allVotesByIpfs.length !== 0) {
       allVotesByIndex.map((v) => {
-        _.get(allVotesByIpfs, '0.choices').map((item, index) => {
-          if (index === Number(_.get(v, 'voting_opt'))) {
+        get(allVotesByIpfs, '0.choices').map((item, index) => {
+          if (index === Number(get(v, 'voting_opt'))) {
             array.push({
-              transaction_hash: _.get(v, 'transaction_hash'),
-              voter_addr: _.get(v, 'voter_addr'),
+              transaction_hash: get(v, 'transaction_hash'),
+              voter_addr: get(v, 'voter_addr'),
               voting_opt: item,
-              voting_power: _.get(v, 'voting_power'),
+              voting_power: get(v, 'voting_power'),
             })
           }
           return array

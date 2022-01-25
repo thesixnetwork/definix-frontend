@@ -10,7 +10,7 @@ import {
   getAbiRewardFacetByName,
   getAbiHerodotusByName,
 } from 'hooks/hookHelper'
-import _ from 'lodash-es'
+import { set, get } from 'lodash-es'
 import { useSelector, useDispatch } from 'react-redux'
 import * as klipProvider from 'hooks/klipProvider'
 import {
@@ -80,11 +80,11 @@ export const useTotalFinixLock = () => {
       const finixLock = await callContract.methods.getTotalFinixLock().call()
       const finixLockMap = []
       for (let i = 0; i < 3; i++) {
-        _.set(
+        set(
           finixLockMap,
           `${i}`,
           numeral(
-            new BigNumber(_.get(finixLock, `totalFinixLockAtLevel${i + 1}_`)).dividedBy(new BigNumber(10).pow(18)),
+            new BigNumber(get(finixLock, `totalFinixLockAtLevel${i + 1}_`)).dividedBy(new BigNumber(10).pow(18)),
           ).format('0'),
         )
       }
@@ -446,8 +446,8 @@ export const useRank = () => {
         const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
         const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
         let maxRank = -1
-        for (let i = 0; i < _.get(userVfinixLocks, 'locks_').length; i++) {
-          const selector = _.get(userVfinixLocks, 'locks_')[i]
+        for (let i = 0; i < get(userVfinixLocks, 'locks_').length; i++) {
+          const selector = get(userVfinixLocks, 'locks_')[i]
 
           if (selector.isUnlocked === false && selector.isPenalty === false) {
             if (maxRank < selector.level) {
@@ -709,19 +709,19 @@ export const useAllDataLock = () => {
       if (account) {
         const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
         const [userVfinixAmount] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
-        const level = _.get(userVfinixAmount, 'locks_')
+        const level = get(userVfinixAmount, 'locks_')
         const countLevel = []
         const idNTopup = []
         for (let i = 0; i < level.length; i++) {
           const selector = level[i]
           idNTopup.push({
-            id: _.get(selector, 'id'),
-            isUnlocked: _.get(selector, 'isUnlocked'),
-            isPenalty: _.get(selector, 'isPenalty'),
-            level: _.get(selector, 'level') * 1 + 1,
+            id: get(selector, 'id'),
+            isUnlocked: get(selector, 'isUnlocked'),
+            isPenalty: get(selector, 'isPenalty'),
+            level: get(selector, 'level') * 1 + 1,
           })
           if (selector.isUnlocked === false && selector.isPenalty === false) {
-            countLevel.push(_.get(selector, 'level'))
+            countLevel.push(get(selector, 'level'))
           }
         }
         setAllLock(idNTopup)

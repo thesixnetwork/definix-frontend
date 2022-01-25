@@ -1,4 +1,4 @@
-import _ from 'lodash-es'
+import { chunk } from 'lodash-es'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import styled from 'styled-components'
@@ -122,7 +122,7 @@ const Slide: React.FC<{
 
   const slidesToShow = useMemo(() => (isMobile ? 1 : 4), [isMobile])
   const useSlide = useMemo(() => data.length > slidesToShow, [slidesToShow, data.length])
-  const slideList = useMemo(() => (isMobile ? _.chunk(data, 2) : data), [isMobile, data])
+  const slideList = useMemo(() => (isMobile ? chunk(data, 2) : data), [isMobile, data])
   const isFirstIndex = useMemo(() => slideIndex === 0, [slideIndex])
   const isLastIndex = useMemo(() => {
     return slideIndex + slidesToShow === slideList.length

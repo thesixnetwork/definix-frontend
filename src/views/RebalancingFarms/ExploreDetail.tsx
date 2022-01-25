@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
-import _ from 'lodash-es'
+import { isEqual, get, compact } from 'lodash-es'
 import moment from 'moment'
 import { Link, Redirect } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -116,7 +116,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   }, [rebalance])
 
   const fetchMaxDrawDownFromGraph = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe)) {
+    if (!isEqual(rebalance, prevRebalance) || !isEqual(timeframe, prevTimeframe)) {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
@@ -124,7 +124,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           const fundGraphResp = await axios.get(
             `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=ALL`,
           )
-          const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
+          const fundGraphResult = get(fundGraphResp, 'data.result', [])
           const label = []
           const rebalanceData = {
             name: 'Rebalance',
@@ -133,7 +133,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           const ALL = 'ALL'
           const base: Record<string, any> = {}
           fundGraphResult.forEach((data) => {
-            const allCurrentTokens = _.compact([
+            const allCurrentTokens = compact([
               ...((rebalance || {}).tokens || []),
               ...((rebalance || {}).usdToken || []),
             ])
@@ -141,7 +141,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
               formatter[ALL],
             )
             label.push(timestampLabel)
-            let dataValues = _.get(data, 'values', [])
+            let dataValues = get(data, 'values', [])
             let sumUsd = 0
             for (let i = 0; i <= (dataValues.length - 1) / 2; i++) {
               const currentIndex = i + 1
@@ -151,7 +151,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                 dataValues[currentIndex + (dataValues.length - 1) / 2] || '1',
               ).times(
                 new BigNumber(dataValues[currentIndex]).div(
-                  new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+                  new BigNumber(10).pow(get(currentLoopToken, 'decimals', 18)),
                 ),
               )
               sumUsd += currentLoopValue.toNumber()
@@ -199,7 +199,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe])
 
   const fetchReturnData = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe)) {
+    if (!isEqual(rebalance, prevRebalance) || !isEqual(timeframe, prevTimeframe)) {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
@@ -207,9 +207,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           const fundGraphResp = await axios.get(
             `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
           )
-          const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
+          const fundGraphResult = get(fundGraphResp, 'data.result', [])
           if (timeframe === '1D') {
-            const tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+            const tokens = compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
             const oldPrice = []
             for (let i = 1; i <= tokens.length; i++) {
               oldPrice.push(fundGraphResult[0].values[i + tokens.length])
@@ -224,7 +224,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           }
           const base: Record<string, any> = {}
           fundGraphResult.forEach((data) => {
-            const allCurrentTokens = _.compact([
+            const allCurrentTokens = compact([
               ...((rebalance || {}).tokens || []),
               ...((rebalance || {}).usdToken || []),
             ])
@@ -232,7 +232,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
               formatter[timeframe],
             )
             label.push(timestampLabel)
-            let dataValues = _.get(data, 'values', [])
+            let dataValues = get(data, 'values', [])
             let sumUsd = 0
             for (let i = 0; i <= (dataValues.length - 1) / 2; i++) {
               const currentIndex = i + 1
@@ -242,7 +242,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                 dataValues[currentIndex + (dataValues.length - 1) / 2] || '1',
               ).times(
                 new BigNumber(dataValues[currentIndex]).div(
-                  new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+                  new BigNumber(10).pow(get(currentLoopToken, 'decimals', 18)),
                 ),
               )
               sumUsd += currentLoopValue.toNumber()
@@ -270,7 +270,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe])
 
   const fetchNormalizeGraphData = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe)) {
+    if (!isEqual(rebalance, prevRebalance) || !isEqual(timeframe, prevTimeframe)) {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
@@ -278,7 +278,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           const fundGraphResp = await axios.get(
             `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
           )
-          const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
+          const fundGraphResult = get(fundGraphResp, 'data.result', [])
 
           const label = []
           const rebalanceData = {
@@ -292,7 +292,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           const base: Record<string, any> = {}
 
           fundGraphResult.forEach((data) => {
-            const allCurrentTokens = _.compact([
+            const allCurrentTokens = compact([
               ...((rebalance || {}).tokens || []),
               ...((rebalance || {}).usdToken || []),
             ])
@@ -300,7 +300,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
               formatter[timeframe],
             )
             label.push(timestampLabel)
-            let dataValues = _.get(data, 'values', [])
+            let dataValues = get(data, 'values', [])
             let sumUsd = 0
             for (let i = 0; i <= (dataValues.length - 1) / 2; i++) {
               const currentIndex = i + 1
@@ -309,7 +309,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                 dataValues[currentIndex + (dataValues.length - 1) / 2] || '1',
               ).times(
                 new BigNumber(dataValues[currentIndex]).div(
-                  new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+                  new BigNumber(10).pow(get(currentLoopToken, 'decimals', 18)),
                 ),
               )
               sumUsd += currentLoopValue.toNumber()
@@ -407,13 +407,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe])
 
   const fetchMaxDrawDown = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe)) {
+    if (!isEqual(rebalance, prevRebalance) || !isEqual(timeframe, prevTimeframe)) {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const maxDrawDownAPI = process.env.REACT_APP_DEFINIX_MAX_DRAWDOWN_API
         try {
           const maxDrawDownResp = await axios.get(`${maxDrawDownAPI}?pool=${getAddress(rebalance.address)}`)
-          const currentDrawdown = _.get(maxDrawDownResp, 'data.result.current_drawdown', [])
+          const currentDrawdown = get(maxDrawDownResp, 'data.result.current_drawdown', [])
           setMaxDrawDown(currentDrawdown)
           setIsLoading(false)
         } catch (error) {
