@@ -1,27 +1,27 @@
+import { ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import React from 'react'
 import styled from 'styled-components'
+import { escapeRegExp } from 'utils'
 
-export function escapeRegExp(string: string): string {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
-}
-
-const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
-  color: ${({ error, theme }) => (error ? theme.colors.failure : theme.colors.text)};
-  width: 0;
+const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string; width?: string }>`
+  width: ${({ width }) => width ? width : '100%'};
   position: relative;
   font-weight: 500;
   outline: none;
   border: none;
   flex: 1 1 auto;
   background-color: transparent;
-  font-size: 16px;
   text-align: ${({ align }) => align && align};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0px;
   -webkit-appearance: textfield;
-
+  ${({ theme }) => theme.textStyle.R_28M}
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    ${({ theme }) => theme.textStyle.R_23M}
+  }
+  ${ColorStyles.BLACK}
   ::-webkit-search-decoration {
     -webkit-appearance: none;
   }
@@ -35,8 +35,14 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
     -webkit-appearance: none;
   }
 
-  ::placeholder {
-    color: ${({ theme }) => theme.colors.placeholder};
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    /* ${ColorStyles.MEDIUMGREY} */
+    color: #999999;
+  }
+  :-ms-input-placeholder {
+    /* ${ColorStyles.MEDIUMGREY} */
+    color: #999999;
   }
 `
 
@@ -53,12 +59,11 @@ export const Input = React.memo(function InnerInput({
   error?: boolean
   fontSize?: string
   align?: 'right' | 'left'
+  width?: string;
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) {
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
       onUserInput(nextUserInput)
-    } else if (nextUserInput.length === 1 && Number.isNaN(+nextUserInput)) {
-      onUserInput('')
     }
   }
 
@@ -67,15 +72,11 @@ export const Input = React.memo(function InnerInput({
       {...rest}
       value={value}
       onChange={(event) => {
-        // replace commas with periods, because uniswap exclusively uses period as the decimal separator
         enforcer(event.target.value.replace(/,/g, '.'))
       }}
-      // universal input options
       inputMode="decimal"
-      title="Token Amount"
       autoComplete="off"
       autoCorrect="off"
-      // text-specific options
       type="text"
       pattern="^[0-9]*[.,]?[0-9]*$"
       placeholder={placeholder || '0.0'}

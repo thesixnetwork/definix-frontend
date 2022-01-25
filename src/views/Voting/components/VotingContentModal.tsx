@@ -210,6 +210,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
             <VoteOptionLabel label={<Translate text={vote} type="opinion" />} />
             <InputBox mt="12px">
               <NumericalInput
+                width="0"
                 placeholder="0.0"
                 value={balances[index]}
                 onUserInput={(input) => onUserInput(index, input)}
