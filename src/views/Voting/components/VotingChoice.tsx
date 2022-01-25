@@ -381,7 +381,6 @@ const VotingChoice: React.FC = () => {
       {proposal?.choices &&
         proposal.choices.map((choice, index) => (
           <VotingChoiceItem
-            // eslint-disable-next-line react/no-array-index-key
             key={index}
             choice={choice}
             index={index}
@@ -398,7 +397,7 @@ const VotingChoice: React.FC = () => {
           />
       ))}
       <Flex justifyContent="center" mt="22px">
-        {renderVoteButton()}
+        {mapVoting[0] ? renderVoteButton() : <></>}
       </Flex>
     </WrapVote>
   )
