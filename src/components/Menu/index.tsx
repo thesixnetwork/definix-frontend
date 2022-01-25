@@ -1,21 +1,23 @@
 import React, { useEffect } from 'react'
-import { Menu as UikitMenu } from '@fingerlabs/definixswap-uikit-v2'
+import { Menu as UikitMenu, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation, Trans } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
-import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
-import useUserDeadline from 'hooks/useUserDeadline'
 import useWallet from 'hooks/useWallet'
 import { links } from './config'
+import SettingsModal from 'components/SettingModal'
 
 const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
   const { account, connect, reset } = useWallet()
 
   const { i18n, t } = useTranslation()
 
-  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
-  const [deadline, setDeadline] = useUserDeadline()
+  const [onPresentSettingModal] = useModal(
+    <SettingsModal />,
+    false
+  );
+
   const { isDark, toggleTheme } = useTheme()
   // const finixPriceUsd = usePriceFinixUsd()
   // const { profile } = useProfile()
@@ -29,12 +31,7 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
       finixPrice={finixPrice}
       version={process.env.REACT_APP_VERSION}
       Link={Link}
-      // SettingsModal slippage
-      userSlippageTolerance={userSlippageTolerance}
-      setUserslippageTolerance={setUserslippageTolerance}
-      // SettingsModal deadline
-      deadline={deadline}
-      setDeadline={setDeadline}
+      onPresentSettingModal={onPresentSettingModal}
       account={account}
       login={connect}
       logout={reset}
