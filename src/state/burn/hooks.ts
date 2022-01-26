@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import { usePair } from 'hooks/usePairs'
-import { useActiveWeb3React } from '../../hooks'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
+import useWallet from 'hooks/useWallet'
 
 export function useBurnState(): AppState['burn'] {
   return useSelector<AppState, AppState['burn']>((state) => state.burn)
@@ -28,7 +28,7 @@ export function useDerivedBurnInfo(
   }
   error?: string
 } {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useWallet()
 
   const { independentField, typedValue } = useBurnState()
 

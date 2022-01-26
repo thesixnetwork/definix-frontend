@@ -12,6 +12,7 @@ interface Call {
 
 const multicall = async (abi: any[], calls: Call[]) => {
   const caver = getCaver()
+
   const multi = new caver.klay.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const itf = new Interface(abi)
 

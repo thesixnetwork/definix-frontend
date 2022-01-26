@@ -217,7 +217,6 @@ export function useDerivedSwapInfo(): {
 }
 
 function parseCurrencyFromURLParameter(urlParam: any, chainId: any): string {
-  // const { chainId } = useActiveWeb3React()
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam)
     if (valid) return valid

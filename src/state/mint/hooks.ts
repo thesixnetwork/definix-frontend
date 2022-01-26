@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import { PairState, usePair } from 'hooks/usePairs'
-import { useActiveWeb3React } from '../../hooks'
 import { wrappedCurrency, wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
+import useWallet from 'hooks/useWallet'
 
 const ZERO = JSBI.BigInt(0)
 
@@ -41,7 +41,7 @@ export function useDerivedMintInfo(
   poolTokenPercentage?: Percent
   error?: DerivedMintInfoError | string | undefined
 } {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useWallet()
 
   const { independentField, typedValue, otherTypedValue } = useMintState()
 

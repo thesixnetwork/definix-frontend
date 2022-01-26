@@ -17,7 +17,6 @@ export function useTransactionAdder(): (
     klipTx?: string
   },
 ) => void {
-  // const { chainId, account } = useActiveWeb3React()
   const { chainId, account } = useWallet()
   const dispatch = useDispatch<AppDispatch>()
 
