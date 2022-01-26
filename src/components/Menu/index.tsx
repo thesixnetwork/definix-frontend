@@ -13,10 +13,7 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
 
   const { i18n, t } = useTranslation()
 
-  const [onPresentSettingModal] = useModal(
-    <SettingsModal />,
-    false
-  );
+  const [onPresentSettingModal] = useModal(<SettingsModal />, false)
 
   const { isDark, toggleTheme } = useTheme()
   // const finixPriceUsd = usePriceFinixUsd()

@@ -106,7 +106,10 @@ const VotingChoiceItem: React.FC<Props> = ({
   onCheckChange,
 }) => {
   const { t } = useTranslation()
-  const isLeft = useMemo(() => isVoteMore || isEndDate || isStartDate || !votingResult, [isEndDate, isStartDate, isVoteMore, votingResult])
+  const isLeft = useMemo(
+    () => isVoteMore || isEndDate || isStartDate || !votingResult,
+    [isEndDate, isStartDate, isVoteMore, votingResult],
+  )
 
   const renderChoice = useCallback(() => {
     if (isEndDate || isStartDate || !votingResult) {
@@ -151,25 +154,23 @@ const VotingChoiceItem: React.FC<Props> = ({
 
   const isDisabled = useMemo(() => {
     if (!isParticipated) {
-      return false;
+      return false
     }
 
     if (isVoteMore) {
-      return false;
+      return false
     }
 
     if (!isMulti && !isVoted) {
-      return true;
+      return true
     }
-    return false;
-  }, [isMulti, isVoteMore, isVoted, isParticipated]);
+    return false
+  }, [isMulti, isVoteMore, isVoted, isParticipated])
 
   return (
     <WrapChoice key={choice} isLeft={isLeft} isDisabled={isDisabled}>
       <Flex justifyContent="space-between" alignItems="center">
-        {
-          votingResult ? renderChoice() : <Skeleton width="200px" height="100%" animation="waves" />
-        }
+        {votingResult ? renderChoice() : <Skeleton width="200px" height="100%" animation="waves" />}
         <div className="percent">
           {votingResult ? (
             <Text textStyle="R_16M" color="deepgrey">
@@ -182,7 +183,11 @@ const VotingChoiceItem: React.FC<Props> = ({
       </Flex>
       <Flex ml={isLeft ? '0' : '36px'} mt="14px">
         <Range>
-          <RangeValue width={votingResult ? votingResult.percent : '0'} isParticipated={isVoteMore} isMax={votingResult ? maxVotingValue === votingResult.vote : false} />
+          <RangeValue
+            width={votingResult ? votingResult.percent : '0'}
+            isParticipated={isVoteMore}
+            isMax={votingResult ? maxVotingValue === votingResult.vote : false}
+          />
         </Range>
       </Flex>
       <Flex minHeight="20px" className="wrap-votes">

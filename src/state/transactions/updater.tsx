@@ -32,7 +32,6 @@ export default function Updater(): null {
   const dispatch = useDispatch<AppDispatch>()
   const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
 
-  
   const transactions = chainId ? state[chainId] ?? {} : {}
 
   useEffect(() => {
@@ -83,7 +82,6 @@ export default function Updater(): null {
             console.error(`failed to check transaction hash: ${hash}`, error)
           })
       })
-    
   }, [chainId, library, transactions, lastBlockNumber, dispatch])
 
   return null

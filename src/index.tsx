@@ -20,13 +20,15 @@ window.addEventListener('error', () => {
   localStorage?.removeItem('redux_localstorage_simple_lists')
 })
 
-window.addEventListener(
-  'klaytn#initialized',
-  () => {
-    window.caver = new Caver(window.klaytn)
-  },
-  false,
-)
+window.caver = new Caver(window.klaytn)
+
+// window.addEventListener(
+//   'klaytn#initialized',
+//   () => {
+//     window.caver = new Caver(window.klaytn)
+//   },
+//   false,
+// )
 
 ReactDOM.render(
   <React.StrictMode>

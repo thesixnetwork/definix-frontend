@@ -81,12 +81,14 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
               <Title>{t('Identifier')}</Title>
             </Col>
             <Col>
-              {id && <Link as="a" href={`${process.env.REACT_APP_IPFS}/${id}`} target="_blank">
-                <Text textStyle="R_14R" color="black">
-                  {`${id.substring(0, 6)}...${id.substring(id.length - 4)}`}
-                </Text>
-                <LinkIcon />
-              </Link>}
+              {id && (
+                <Link as="a" href={`${process.env.REACT_APP_IPFS}/${id}`} target="_blank">
+                  <Text textStyle="R_14R" color="black">
+                    {`${id.substring(0, 6)}...${id.substring(id.length - 4)}`}
+                  </Text>
+                  <LinkIcon />
+                </Link>
+              )}
             </Col>
           </Row>
           <Row>
@@ -94,12 +96,14 @@ const InfoDetail: React.FC<Props> = ({ id, proposal }) => {
               <Title>{t('Creator')}</Title>
             </Col>
             <Col>
-              {proposal.creator && <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${proposal.creator}`} target="_blank">
-                <Text textStyle="R_14R" color="black">
-                  {`${proposal.creator.substring(0, 6)}...${proposal.creator.substring(proposal.creator.length - 4)}`}
-                </Text>
-                <LinkIcon />
-              </Link>}
+              {proposal.creator && (
+                <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${proposal.creator}`} target="_blank">
+                  <Text textStyle="R_14R" color="black">
+                    {`${proposal.creator.substring(0, 6)}...${proposal.creator.substring(proposal.creator.length - 4)}`}
+                  </Text>
+                  <LinkIcon />
+                </Link>
+              )}
             </Col>
           </Row>
           {/* <Row>

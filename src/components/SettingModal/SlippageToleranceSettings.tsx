@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Button, Flex, Input, AlertIcon, Text, ColorStyles, TextStyles, Helper } from "@fingerlabs/definixswap-uikit-v2";
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { Button, Flex, Input, AlertIcon, Text, ColorStyles, TextStyles, Helper } from '@fingerlabs/definixswap-uikit-v2'
 import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
-const MAX_SLIPPAGE = 5000;
-const RISKY_SLIPPAGE_LOW = 50;
-const RISKY_SLIPPAGE_HIGH = 500;
+const MAX_SLIPPAGE = 5000
+const RISKY_SLIPPAGE_LOW = 50
+const RISKY_SLIPPAGE_HIGH = 500
 
 const StyledSlippageToleranceSettings = styled.div`
   margin-bottom: 24px;
-`;
+`
 
 const Option = styled.div`
   padding: 0 4px;
-`;
+`
 
 const Options = styled.div`
   align-items: strech;
@@ -40,7 +40,7 @@ const Options = styled.div`
       padding-top: 0;
     }
   }
-`;
+`
 
 const WrapInput = styled(Flex)`
   width: 154px;
@@ -48,72 +48,72 @@ const WrapInput = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {
     width: 184px;
   }
-`;
+`
 
 const Label = styled.div`
   align-items: center;
   display: flex;
   margin: 16px 0;
-`;
+`
 
 const predefinedValues = [
-  { label: "0.1%", value: 0.1 },
-  { label: "0.5%", value: 0.5 },
-  { label: "1%", value: 1 },
-];
+  { label: '0.1%', value: 0.1 },
+  { label: '0.5%', value: 0.5 },
+  { label: '1%', value: 1 },
+]
 
 const SlippageToleranceSettings: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
-  const [value, setValue] = useState((userSlippageTolerance / 100).toString());
-  const [error, setError] = useState<string | null>(null);
+  const [value, setValue] = useState((userSlippageTolerance / 100).toString())
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { value: inputValue } = evt.target;
+    const { value: inputValue } = evt.target
 
     if (isNaN(+inputValue) || inputValue.length > 10) {
-      return;
+      return
       // } else if (!inputValue || inputValue === "") {
       //   setValue("0.5");
     } else if (+inputValue > 50) {
-      return;
+      return
     } else if (+inputValue == 50) {
-      setValue("49");
+      setValue('49')
     } else {
       if (/^[0]+[^\.]/gi.test(inputValue)) {
-        setValue(inputValue.replace(/^[0]+[^\.]/, ""));
-        return;
+        setValue(inputValue.replace(/^[0]+[^\.]/, ''))
+        return
       }
-      setValue(inputValue);
+      setValue(inputValue)
     }
-  };
+  }
 
   const handleClick = (value: number) => {
-    setValue(value.toString());
-  };
+    setValue(value.toString())
+  }
 
   // Updates local storage if value is valid
   useEffect(() => {
     try {
-      const rawValue = +value * 100;
+      const rawValue = +value * 100
       if (!Number.isNaN(rawValue) && rawValue > 0 && rawValue < MAX_SLIPPAGE) {
-        setUserslippageTolerance(rawValue);
+        setUserslippageTolerance(rawValue)
 
         if (rawValue < RISKY_SLIPPAGE_LOW) {
-          setError("Your transaction may fail");
+          setError('Your transaction may fail')
         } else if (rawValue > RISKY_SLIPPAGE_HIGH) {
-          setError("Your transaction may be frontrun");
+          setError('Your transaction may be frontrun')
         } else {
-          setError(null);
+          setError(null)
         }
       } else {
-        setUserslippageTolerance(RISKY_SLIPPAGE_LOW);
-        setError("Enter a valid slippage percentage");
+        setUserslippageTolerance(RISKY_SLIPPAGE_LOW)
+        setError('Enter a valid slippage percentage')
       }
     } catch {
-      setError("Enter a valid slippage percentage");
+      setError('Enter a valid slippage percentage')
     }
-  }, [value, setError, setUserslippageTolerance]);
+  }, [value, setError, setUserslippageTolerance])
 
   return (
     <StyledSlippageToleranceSettings>
@@ -124,20 +124,20 @@ const SlippageToleranceSettings: React.FC = () => {
         <Helper text={t('Your transaction will revert if the price')}></Helper>
       </Label>
       <Options>
-        <Flex mb={["8px", 0]} mr={[0, "8px"]}>
+        <Flex mb={['8px', 0]} mr={[0, '8px']}>
           {predefinedValues.map(({ label, value: predefinedValue }) => {
             return (
               <Option key={predefinedValue}>
                 <Button
                   width="88px"
                   md
-                  variant={+value === predefinedValue ? "red" : "lightbrown"}
+                  variant={+value === predefinedValue ? 'red' : 'lightbrown'}
                   onClick={() => handleClick(predefinedValue)}
                 >
                   {label}
                 </Button>
               </Option>
-            );
+            )
           })}
         </Flex>
         <WrapInput>
@@ -160,7 +160,7 @@ const SlippageToleranceSettings: React.FC = () => {
         </Flex>
       )}
     </StyledSlippageToleranceSettings>
-  );
-};
+  )
+}
 
-export default SlippageToleranceSettings;
+export default SlippageToleranceSettings

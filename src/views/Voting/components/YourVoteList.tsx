@@ -45,28 +45,25 @@ const YourVoteList: React.FC = () => {
     return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
   }, [id, proposalOfAddress])
 
-  const onClaim = useCallback(
-    () => {
-      const claim = callClaimVote(proposalIndex)
-      claim
-        .then(() => {
-          toastSuccess(
-            t('{{Action}} Complete', {
-              Action: t('actionClaim'),
-            }),
-          )
-        })
-        .catch(() => {
-          toastError(
-            t('{{Action}} Failed', {
-              Action: t('actionClaim'),
-            }),
-          )
-        })
-    },
-    [callClaimVote, proposalIndex, t, toastError, toastSuccess],
-  )
-  
+  const onClaim = useCallback(() => {
+    const claim = callClaimVote(proposalIndex)
+    claim
+      .then(() => {
+        toastSuccess(
+          t('{{Action}} Complete', {
+            Action: t('actionClaim'),
+          }),
+        )
+      })
+      .catch(() => {
+        toastError(
+          t('{{Action}} Failed', {
+            Action: t('actionClaim'),
+          }),
+        )
+      })
+  }, [callClaimVote, proposalIndex, t, toastError, toastSuccess])
+
   return (
     <Card mt="20px">
       {participatedProposal && participatedProposal.IsClaimable && (

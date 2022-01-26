@@ -99,9 +99,9 @@ const App: React.FC = () => {
               <Bridge />
             </Route>
             <Route path="/voting">
-                <Voting />
-              </Route>
-              {/* <Route path="/voting_prev">
+              <Voting />
+            </Route>
+            {/* <Route path="/voting_prev">
                 <VotingPrev />
               </Route> */}
             {/* <Route exact path="/" component={RedirectPathToSwapOnly} /> */}

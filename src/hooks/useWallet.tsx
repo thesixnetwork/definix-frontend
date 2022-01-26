@@ -10,7 +10,7 @@ const useWallet = () => {
 
   return {
     account,
-    chainId,
+    chainId: chainId || parseInt(process.env.REACT_APP_CHAIN_ID),
     library: library || undefined,
     klaytn,
     connect: login,

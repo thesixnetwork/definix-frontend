@@ -40,12 +40,12 @@ function getFilterList(filterListAllProposal, filterId: FilterId) {
   switch (filterId) {
     case FilterId.SOON:
       return list.sort((a, b) => dayjs(a.endTimestamp).valueOf() - dayjs(b.endTimestamp).valueOf())
-      
-      case FilterId.CLOSED:
-        return list.sort((a, b) => dayjs(b.startTimestamp).valueOf() - dayjs(a.startTimestamp).valueOf())
-        
-      case FilterId.NOW:
-      default:
+
+    case FilterId.CLOSED:
+      return list.sort((a, b) => dayjs(b.startTimestamp).valueOf() - dayjs(a.startTimestamp).valueOf())
+
+    case FilterId.NOW:
+    default:
       return list.sort((a, b) => dayjs(a.endTimestamp).valueOf() - dayjs(b.endTimestamp).valueOf())
   }
 }
@@ -84,7 +84,7 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
         getFilterList(filterListAllProposal, FilterId.CLOSED),
       ]
     }
-    return [];
+    return []
   }, [isParticipated, listAllProposal, participatedVotes, proposalType])
 
   const tabs = useMemo(

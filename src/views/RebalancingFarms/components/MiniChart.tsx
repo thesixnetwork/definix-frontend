@@ -172,7 +172,6 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', color, height = 1
       })
     }
     return cancel
-    
   }, [isDisplay, rebalanceAddress, tokens])
 
   useEffect(() => {

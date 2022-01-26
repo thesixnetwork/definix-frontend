@@ -18,7 +18,6 @@ export enum PairState {
 export default function usePairs(
   currencies: [Currency | undefined, Currency | undefined][],
 ): [PairState, Pair | null][] {
-  // const { chainId } = useActiveWeb3React()
   const { chainId } = useWallet()
 
   const tokens = useMemo(

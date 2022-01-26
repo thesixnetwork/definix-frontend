@@ -35,7 +35,6 @@ export default function useWrapCallback(
 ): IProps {
   const [loading, setLoading] = useState<boolean>(false)
 
-  // const { chainId, account } = useActiveWeb3React()
   const { account, chainId } = useWallet()
 
   const wethContract = useWETHContract()

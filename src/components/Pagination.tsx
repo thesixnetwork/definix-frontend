@@ -3,7 +3,7 @@ import { Flex, Text, ArrowLeftGIcon, ArrowRightGIcon } from '@fingerlabs/definix
 import styled from 'styled-components'
 
 interface PaginationProps {
-  isMobile: boolean;
+  isMobile: boolean
   itemPerPage: number
   dataLength: number
   currentPage: number
@@ -29,13 +29,7 @@ const StyledArrow = styled(Flex)`
   cursor: pointer;
 `
 
-const Pagination: React.FC<PaginationProps> = ({
-  isMobile,
-  itemPerPage,
-  dataLength,
-  currentPage,
-  setCurrentPage,
-}) => {
+const Pagination: React.FC<PaginationProps> = ({ isMobile, itemPerPage, dataLength, currentPage, setCurrentPage }) => {
   const pageNumbers = useMemo(() => {
     const pageArray = []
 

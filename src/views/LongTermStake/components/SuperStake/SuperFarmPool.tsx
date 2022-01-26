@@ -192,7 +192,6 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
         }
       }
     }
-    
   }, [harvestProgress, selectedToken, handleHarvest])
 
   const lockPlus = useCallback(async () => {
@@ -221,7 +220,6 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     } else if (harvestProgress !== -1) {
       _superHarvest()
     }
-    
   }, [harvestProgress, _superHarvest])
 
   useEffect(() => {

@@ -145,7 +145,6 @@ export const useProposalIndex = (index) => {
     if (index) {
       dispatch(fetchProposalIndex(index))
     }
-    
   }, [slowRefresh, dispatch])
 
   return { indexProposal }
@@ -166,7 +165,6 @@ export const useIsProposable = () => {
     }
 
     fetchIsProposable()
-    
   }, [fastRefresh])
 
   return { proposables }
@@ -248,7 +246,6 @@ export const useGetProposal = (proposalId: string) => {
 
   useEffect(() => {
     dispatch(fetchProposal(proposalId))
-    
   }, [fastRefresh, dispatch])
 
   return { proposal }

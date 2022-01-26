@@ -206,6 +206,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
     const [firstKey, secondKey] = findAndSelectPair(pair)
     const firstTokenAddress = allTokens[firstKey]
     const secondTokenAddress = allTokens[secondKey]
+
     fetchPromise.push(
       getTotalBalanceLp({
         lpAddress: getAddress(getLpNetwork(firstTokenAddress, secondTokenAddress)),
@@ -237,6 +238,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
   const calPrice = availAllPrices.reduce((sum, pair) => sum + pair[0] * pair[1], 0)
   const quoteSum = availAllPrices.reduce((sum, pair) => sum + pair[1], 0)
   const finixPrice = calPrice / quoteSum || 0
+
   dispatch(
     setFinixPrice({
       price: finixPrice,

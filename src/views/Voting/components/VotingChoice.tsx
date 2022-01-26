@@ -10,7 +10,15 @@ import dayjs from 'dayjs'
 import { Flex, Text, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from 'hooks/klipProvider'
-import { useProposalIndex, useServiceAllowance, useApproveToService, useVote, useGetProposal, useAllProposalOfAddress, useAvailableVotes } from 'hooks/useVoting'
+import {
+  useProposalIndex,
+  useServiceAllowance,
+  useApproveToService,
+  useVote,
+  useGetProposal,
+  useAllProposalOfAddress,
+  useAvailableVotes,
+} from 'hooks/useVoting'
 import useRefresh from 'hooks/useRefresh'
 import { useToast } from 'state/hooks'
 import { Voting } from 'state/types'
@@ -97,15 +105,15 @@ const VotingChoice: React.FC = () => {
   }, [participatedProposal])
   const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])
-  const isParticipated = useMemo(() => !!participatedProposal, [participatedProposal]);
+  const isParticipated = useMemo(() => !!participatedProposal, [participatedProposal])
 
   useEffect(() => {
     if (getProposal) {
-      setProposal(getProposal);
+      setProposal(getProposal)
     }
 
     return () => {
-      setProposal({} as Voting);
+      setProposal({} as Voting)
     }
   }, [getProposal])
 
@@ -148,9 +156,7 @@ const VotingChoice: React.FC = () => {
     if ([TransactionState.SUCCESS, TransactionState.ERROR].includes(trState)) {
       onDismiss()
     }
-    
   }, [trState])
-
 
   useEffect(() => {
     if (isParticipated) {
@@ -190,7 +196,6 @@ const VotingChoice: React.FC = () => {
     }
 
     fetch()
-    
   }, [fastRefresh, proposal.ipfsHash])
 
   const onCheckChange = useCallback(
@@ -395,7 +400,7 @@ const VotingChoice: React.FC = () => {
             isParticipated={isParticipated}
             onCheckChange={onCheckChange}
           />
-      ))}
+        ))}
       <Flex justifyContent="center" mt="22px">
         {mapVoting[0] ? renderVoteButton() : <></>}
       </Flex>

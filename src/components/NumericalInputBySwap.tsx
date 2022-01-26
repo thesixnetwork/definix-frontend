@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { escapeRegExp } from 'utils'
 
 const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string; width?: string }>`
-  width: ${({ width }) => width ? width : '100%'};
+  width: ${({ width }) => (width ? width : '100%')};
   position: relative;
   font-weight: 500;
   outline: none;
@@ -59,7 +59,7 @@ export const Input = React.memo(function InnerInput({
   error?: boolean
   fontSize?: string
   align?: 'right' | 'left'
-  width?: string;
+  width?: string
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) {
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {

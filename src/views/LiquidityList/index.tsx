@@ -62,7 +62,7 @@ const Liquidity: React.FC = () => {
             borderRight="1px solid #ffe5c9"
             style={{ boxShadow: '0 12px 12px 0 rgba(227, 132, 0, 0.1)' }}
           >
-            <Tabs tabs={tabNames} curTab={tabNames[1].id} setCurTab={changeTab} equal={isMobile} />
+            <Tabs tabs={tabNames} curTab={tabNames[1].id} setCurTab={changeTab} equal={isMobile} initTab={false} />
           </Box>
           <Box pb={isMobile ? '40px' : '80px'}>
             <LiquidityList />
