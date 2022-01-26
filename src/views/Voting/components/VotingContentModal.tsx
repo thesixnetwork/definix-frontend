@@ -121,7 +121,12 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
   const handlePercent = useCallback(
     (index: number, percent: number) => {
       // const total = numeral(availableVotes).add(+balances[index] > -1 ? +balances[index] : 0)
-      onUserInput(index, numeral(availableVotes).multiply((percent * 1) / 100).format('0.00'))
+      onUserInput(
+        index,
+        numeral(availableVotes)
+          .multiply((percent * 1) / 100)
+          .format('0.00'),
+      )
     },
     [availableVotes, onUserInput],
   )
@@ -133,13 +138,15 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
       setShowNotis(temp)
     }
 
-    const resultVFinix = numeral(myVFinixBalance).subtract(
-      balances.reduce((sum, cur) => {
-        // eslint-disable-next-line no-param-reassign
-        sum += +cur
-        return sum
-      }, 0),
-    ).value()
+    const resultVFinix = numeral(myVFinixBalance)
+      .subtract(
+        balances.reduce((sum, cur) => {
+          // eslint-disable-next-line no-param-reassign
+          sum += +cur
+          return sum
+        }, 0),
+      )
+      .value()
 
     if (new BigNumber(balances[activeInputIndex]).decimalPlaces() > 18) {
       setShowNoti(activeInputIndex, t('The value entered is out of the valid range'))
@@ -152,9 +159,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
     }
 
     setRemainVFinix(resultVFinix)
-
   }, [balances, myVFinixBalance])
-
 
   return (
     <>
@@ -183,7 +188,9 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
                   {t('Available')}
                 </Text>
                 <Text textStyle="R_14M" color="mediumgrey" ml="6px">
-                  {numeral(remainVFinix).value() < 0 ? numeral('0').format('0,0.00') : numeral(remainVFinix).format('0,0.00')}
+                  {numeral(remainVFinix).value() < 0
+                    ? numeral('0').format('0,0.00')
+                    : numeral(remainVFinix).format('0,0.00')}
                 </Text>
                 <Text textStyle="R_14R" color="mediumgrey" ml="2px">
                   {t('vFINIX')}
@@ -196,7 +203,9 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
               {t('Available')}
             </Text>
             <Text textStyle="R_14M" color="mediumgrey" ml="6px">
-              {numeral(remainVFinix).value() < 0 ? numeral('0').format('0,0.00') : numeral(remainVFinix).format('0,0.00')}
+              {numeral(remainVFinix).value() < 0
+                ? numeral('0').format('0,0.00')
+                : numeral(remainVFinix).format('0,0.00')}
             </Text>
             <Text textStyle="R_14R" color="mediumgrey" ml="6px">
               {t('vFINIX')}

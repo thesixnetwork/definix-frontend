@@ -280,8 +280,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     result.map((value) => {
       canBeUnlock_ =
         Date.now() >
-        (new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() + get(period, '0.periodMap')[value.level]) *
-          1000
+        (new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() + get(period, '0.periodMap')[value.level]) * 1000
       canBeClaim_ =
         Date.now() >
         (new BigNumber(get(value, 'penaltyUnlockTimestamp._hex')).toNumber() +
@@ -374,9 +373,7 @@ const getAllLockPeriods = async ({ vFinix }) => {
       set(
         minimum,
         `${i}`,
-        new BigNumber(get(lockPeriods.param_, `_minimum${i + 1}._hex`))
-          .dividedBy(new BigNumber(10).pow(18))
-          .toNumber(),
+        new BigNumber(get(lockPeriods.param_, `_minimum${i + 1}._hex`)).dividedBy(new BigNumber(10).pow(18)).toNumber(),
       )
       set(multiplier, `${i}`, new BigNumber(get(lockPeriods.param_, `_multiplier${i + 1}._hex`)).toNumber() / 10)
       set(penaltyPeriod, `${i}`, new BigNumber(get(lockPeriods.param_, `_penaltyPeriod${i + 1}._hex`)).toNumber())

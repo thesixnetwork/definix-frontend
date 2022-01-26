@@ -176,7 +176,6 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
     }
 
     return cancel
-    
   }, [account, address, currentPage, myOnly])
 
   useEffect(() => {

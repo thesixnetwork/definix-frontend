@@ -1,17 +1,21 @@
 import React from 'react'
-import { Box, useMatchBreakpoints, Flex, TitleSet,
+import {
+  Box,
+  useMatchBreakpoints,
+  Flex,
+  TitleSet,
   Card,
   ImageSet,
   Text,
   ImgLongtermRepair1x,
   ImgLongtermRepair2x,
   ImgLongtermRepair3x,
-  Button, } from '@fingerlabs/definixswap-uikit-v2'
+  Button,
+} from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
-
 const Voting: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
   return (

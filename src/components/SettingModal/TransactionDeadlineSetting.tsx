@@ -1,54 +1,54 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Input, Text, Flex, Helper, AlertIcon, TextStyles, ColorStyles } from "@fingerlabs/definixswap-uikit-v2";
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { Input, Text, Flex, Helper, AlertIcon, TextStyles, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import useUserDeadline from 'hooks/useUserDeadline'
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
 const StyledTransactionDeadlineSetting = styled.div`
   margin-top: 4px;
-`;
+`
 
 const Label = styled.div`
   align-items: center;
   display: flex;
   margin: 16px 0;
-`;
+`
 
-const MIN_DEADLINE = 1200;
+const MIN_DEADLINE = 1200
 
 const TransactionDeadlineSetting: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const [deadline, setDeadline] = useUserDeadline()
-  const [value, setValue] = useState((deadline / 60).toString()); // deadline in minutes
-  const [error, setError] = useState<string | null>(null);
+  const [value, setValue] = useState((deadline / 60).toString()) // deadline in minutes
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { value: inputValue } = evt.target;
+    const { value: inputValue } = evt.target
 
     if (isNaN(+inputValue) || inputValue.length > 4) {
-      return;
+      return
       // } else if (!inputValue || inputValue === "") {
       //   setValue("20");
     } else {
-      setValue(inputValue);
+      setValue(inputValue)
     }
-  };
+  }
 
   // Updates local storage if value is valid
   useEffect(() => {
     try {
-      const rawValue = +value * 60;
+      const rawValue = +value * 60
       if (!Number.isNaN(rawValue) && rawValue > 0) {
-        setDeadline(rawValue);
-        setError(null);
+        setDeadline(rawValue)
+        setError(null)
       } else {
-        setDeadline(MIN_DEADLINE);
-        setError("Enter a valid number");
+        setDeadline(MIN_DEADLINE)
+        setError('Enter a valid number')
       }
     } catch {
-      setError("Enter a valid number");
+      setError('Enter a valid number')
     }
-  }, [value, setError, setDeadline]);
+  }, [value, setError, setDeadline])
 
   return (
     <StyledTransactionDeadlineSetting>
@@ -64,11 +64,7 @@ const TransactionDeadlineSetting: React.FC = () => {
           value={value}
           placeholder="20"
           onChange={handleChange}
-          endIcon={
-            <Text fontSize="16px">
-              {t('Minutes')}
-            </Text>
-          }
+          endIcon={<Text fontSize="16px">{t('Minutes')}</Text>}
         />
       </Flex>
       {error && (
@@ -80,7 +76,7 @@ const TransactionDeadlineSetting: React.FC = () => {
         </Flex>
       )}
     </StyledTransactionDeadlineSetting>
-  );
-};
+  )
+}
 
-export default TransactionDeadlineSetting;
+export default TransactionDeadlineSetting

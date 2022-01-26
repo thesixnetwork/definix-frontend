@@ -35,7 +35,6 @@ const DetailVoting: React.FC = () => {
     return () => {
       dispatch(setProposalIndex({}))
     }
-  
   }, [])
 
   return (
