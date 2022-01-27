@@ -1,5 +1,5 @@
-import { Currency, Pair } from 'definixswap-sdk'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Currency, Pair } from 'definixswap-sdk'
 import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -50,7 +50,7 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   border: none;
 `
 
-export default React.memo(function CurrencyInputPanel({
+const CurrencyInputPanel = ({
   isMobile,
   value,
   currency,
@@ -67,7 +67,7 @@ export default React.memo(function CurrencyInputPanel({
   onCurrencySelect,
   isInsufficientBalance,
   maxTokenAmount,
-}: CurrencyInputPanelProps) {
+}: CurrencyInputPanelProps) => {
   const { t } = useTranslation()
   const { account } = useWallet()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -208,4 +208,6 @@ export default React.memo(function CurrencyInputPanel({
       </Box>
     </>
   )
-})
+}
+
+export default CurrencyInputPanel;
