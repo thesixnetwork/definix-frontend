@@ -1,7 +1,7 @@
 import { Pair, Token } from 'definixswap-sdk'
 import { flatMap } from 'lodash-es'
 import { useCallback, useMemo } from 'react'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
 
 import useWallet from 'hooks/useWallet'
@@ -9,18 +9,9 @@ import { useAllTokens } from '../../hooks/Tokens'
 import { AppDispatch, AppState } from '../index'
 import {
   addSerializedPair,
-  addSerializedToken,
-  removeSerializedToken,
   SerializedPair,
   SerializedToken,
-  updateUserDarkMode,
-  updateUserDeadline,
-  updateUserExpertMode,
-  updateUserSlippageTolerance,
-  muteAudio,
-  unmuteAudio,
 } from './actions'
-import { setThemeCache } from '../../utils/theme'
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -39,121 +30,6 @@ function deserializeToken(serializedToken: SerializedToken): Token {
     serializedToken.decimals,
     serializedToken.symbol,
     serializedToken.name,
-  )
-}
-
-export function useIsDarkMode(): boolean {
-  const { userDarkMode, matchesDarkMode } = useSelector<
-    AppState,
-    { userDarkMode: boolean | null; matchesDarkMode: boolean }
-  >(
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    ({ user: { matchesDarkMode, userDarkMode } }) => ({
-      userDarkMode,
-      matchesDarkMode,
-    }),
-    shallowEqual,
-  )
-  return userDarkMode === null ? matchesDarkMode : userDarkMode
-}
-
-export function useDarkModeManager(): [boolean, () => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const { userDarkMode } = useSelector<AppState, { userDarkMode: boolean | null }>(
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    ({ user: { userDarkMode } }) => ({
-      userDarkMode,
-    }),
-    shallowEqual,
-  )
-  const darkMode = useIsDarkMode()
-
-  const toggleSetDarkMode = useCallback(() => {
-    setThemeCache(!userDarkMode)
-    dispatch(updateUserDarkMode({ userDarkMode: !userDarkMode }))
-  }, [userDarkMode, dispatch])
-
-  return [darkMode, toggleSetDarkMode]
-}
-
-export function useAudioModeManager(): [boolean, () => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const audioPlay = useSelector<AppState, AppState['user']['audioPlay']>((state) => state.user.audioPlay)
-  const toggleSetAudioMode = useCallback(() => {
-    if (audioPlay) {
-      dispatch(muteAudio())
-    } else {
-      dispatch(unmuteAudio())
-    }
-  }, [audioPlay, dispatch])
-
-  return [audioPlay, toggleSetAudioMode]
-}
-
-export function useIsExpertMode(): boolean {
-  return useSelector<AppState, AppState['user']['userExpertMode']>((state) => state.user.userExpertMode)
-}
-
-export function useExpertModeManager(): [boolean, () => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const expertMode = useIsExpertMode()
-
-  const toggleSetExpertMode = useCallback(() => {
-    dispatch(updateUserExpertMode({ userExpertMode: !expertMode }))
-  }, [expertMode, dispatch])
-
-  return [expertMode, toggleSetExpertMode]
-}
-
-export function useUserSlippageTolerance(): [number, (slippage: number) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userSlippageTolerance = useSelector<AppState, AppState['user']['userSlippageTolerance']>((state) => {
-    return state.user.userSlippageTolerance
-  })
-
-  const setUserSlippageTolerance = useCallback(
-    (slippageTolerance: number) => {
-      dispatch(updateUserSlippageTolerance({ userSlippageTolerance: slippageTolerance }))
-    },
-    [dispatch],
-  )
-
-  return [userSlippageTolerance, setUserSlippageTolerance]
-}
-
-export function useUserDeadline(): [number, (slippage: number) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userDeadline = useSelector<AppState, AppState['user']['userDeadline']>((state) => {
-    return state.user.userDeadline
-  })
-
-  const setUserDeadline = useCallback(
-    (deadline: number) => {
-      dispatch(updateUserDeadline({ userDeadline: deadline }))
-    },
-    [dispatch],
-  )
-
-  return [userDeadline, setUserDeadline]
-}
-
-export function useAddUserToken(): (token: Token) => void {
-  const dispatch = useDispatch<AppDispatch>()
-  return useCallback(
-    (token: Token) => {
-      dispatch(addSerializedToken({ serializedToken: serializeToken(token) }))
-    },
-    [dispatch],
-  )
-}
-
-export function useRemoveUserAddedToken(): (chainId: number, address: string) => void {
-  const dispatch = useDispatch<AppDispatch>()
-  return useCallback(
-    (chainId: number, address: string) => {
-      dispatch(removeSerializedToken({ chainId, address }))
-    },
-    [dispatch],
   )
 }
 
