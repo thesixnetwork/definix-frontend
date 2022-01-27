@@ -78,7 +78,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
           <Flex mt="S_20" flexDirection="column">
             <Flex mb="S_8" justifyContent="space-between">
               <Text textStyle="R_14R" color="mediumgrey">
-                {t('Recall vFINIX')}
+                {t('vFINIX to return')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
                 {getBalanceOverBillion(amount * multiplier)} {t('vFINIX')}
@@ -86,7 +86,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
             </Flex>
             <Flex justifyContent="space-between">
               <Text textStyle="R_14R" color="mediumgrey">
-                {t('Your balance')}
+                {t('Available vFINIX to return')}
               </Text>
               <Text textStyle="R_14M" color="red">
                 {getBalanceOverBillion(Number(availableVotes))} {t('vFINIX')}
