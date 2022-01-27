@@ -135,7 +135,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
               {t('Balance')}
             </Text>
             <Text textStyle="R_14B" color="deepgrey">
-              {hasAccount ? Math.floor(balancefinix * 1000000) / 1000000 : 0}
+              {hasAccount ? Math.floor(balancefinix * 1000000) / 1000000 : '-'}
             </Text>
           </Flex>
           <StyledInput
