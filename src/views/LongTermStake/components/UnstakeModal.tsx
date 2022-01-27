@@ -114,7 +114,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                 </Flex>
                 <Flex mb="S_8" justifyContent="space-between">
                   <Text textStyle="R_14R" color="mediumgrey">
-                    {t('Recall vFINIX')}
+                    {t('vFINIX to return')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
                     {getBalanceOverBillion(amount * multiplier)} {t('vFINIX')}
