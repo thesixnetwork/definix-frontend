@@ -18,17 +18,14 @@ Config.configure(sdkConfig)
 
 window.addEventListener('error', () => {
   localStorage?.removeItem('redux_localstorage_simple_lists')
-})
+});
 
-window.caver = new Caver(window.klaytn)
-
-// window.addEventListener(
-//   'klaytn#initialized',
-//   () => {
-//     window.caver = new Caver(window.klaytn)
-//   },
-//   false,
-// )
+const { klaytn } = window as any;
+if (klaytn && klaytn.isKaikas === true && klaytn.networkVersion === process.env.REACT_APP_CHAIN_ID) {
+  window.caver = new Caver(window.klaytn)
+} else {
+  window.caver = new Caver(process.env.REACT_APP_NETWORK_URL)
+}
 
 ReactDOM.render(
   <React.StrictMode>

@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import { getLpNetwork, allTokens } from 'config/constants/tokens'
 import multicall from 'utils/multicall'
-import _ from 'lodash-es'
+import { get, compact } from 'lodash-es'
 import axios from 'axios'
 
 import {
@@ -115,8 +115,8 @@ export const fetchSixPrice = () => async (dispatch) => {
 
 export const fetchTVL = () => async (dispatch) => {
   const response = await axios.get(process.env.REACT_APP_S3_TVL)
-  const caverTVL = _.get(response, 'data.caverTVL')
-  const web3TVL = _.get(response, 'data.web3TVL')
+  const caverTVL = get(response, 'data.caverTVL')
+  const web3TVL = get(response, 'data.web3TVL')
   dispatch(
     setTVL({
       caverTVL,
@@ -127,7 +127,7 @@ export const fetchTVL = () => async (dispatch) => {
 
 export const fetchKlayPriceFromKlayswap = () => async (dispatch) => {
   const response = await axios.get('https://stat.klayswap.com/klayPrice.json')
-  const usdPrice = _.get(response, 'data.priceUsd')
+  const usdPrice = get(response, 'data.priceUsd')
   dispatch(
     setKlayswapKlayPrice({
       klayPrice: usdPrice,
@@ -160,7 +160,7 @@ const pairObjectCombination = (inputObject) => {
   Object.keys(inputObject).forEach((a) => {
     Object.keys(inputObject).forEach((b) => {
       if (a !== b) {
-        if (!_.get(mark, `${a}.${b}`) && !_.get(mark, `${b}.${a}`)) {
+        if (!get(mark, `${a}.${b}`) && !get(mark, `${b}.${a}`)) {
           if (mark[a]) {
             mark[a][b] = true
           } else {
@@ -193,7 +193,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
   const allFinixPair = allTokenCombinationKeys.filter(
     (item) => item.indexOf('FINIX') >= 0 || item.indexOf('KUSDT') >= 0,
   )
-  const sortedPair = _.compact(allFinixPair.map((pair) => findAndSelectPair(pair)))
+  const sortedPair = compact(allFinixPair.map((pair) => findAndSelectPair(pair)))
   const searchablePair = {}
   sortedPair.forEach((pair, index) => {
     if (!searchablePair[pair[0]]) {
@@ -206,7 +206,6 @@ export const fetchFinixPrice = () => async (dispatch) => {
     const [firstKey, secondKey] = findAndSelectPair(pair)
     const firstTokenAddress = allTokens[firstKey]
     const secondTokenAddress = allTokens[secondKey]
-
     fetchPromise.push(
       getTotalBalanceLp({
         lpAddress: getAddress(getLpNetwork(firstTokenAddress, secondTokenAddress)),
@@ -234,11 +233,10 @@ export const fetchFinixPrice = () => async (dispatch) => {
     }
     return undefined
   })
-  const availAllPrices = _.compact(allPrices)
+  const availAllPrices = compact(allPrices)
   const calPrice = availAllPrices.reduce((sum, pair) => sum + pair[0] * pair[1], 0)
   const quoteSum = availAllPrices.reduce((sum, pair) => sum + pair[1], 0)
   const finixPrice = calPrice / quoteSum || 0
-
   dispatch(
     setFinixPrice({
       price: finixPrice,
