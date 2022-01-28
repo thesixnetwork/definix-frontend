@@ -3,11 +3,12 @@ import numeral from 'numeral'
 import React, { useCallback } from 'react'
 import { Helmet } from 'react-helmet'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
-import { ArrowBackIcon, Button, Card, Link as Text, useMatchBreakpoints, Heading } from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints, Heading } from 'uikit-dev'
 import { Link, useHistory } from 'react-router-dom'
 import { Redirect } from 'react-router'
 import styled from 'styled-components'
 import { useUnstakeId, useUnLock } from 'hooks/useLongTermStake'
+import { useAvailableVotes } from 'hooks/useVoting'
 import warning from '../../uikit-dev/images/for-ui-v2/warning.png'
 
 const MaxWidth = styled.div`
@@ -147,6 +148,8 @@ const Input = styled.div`
 const Unstake: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
   const { id, amount, canBeUnlock, penaltyRate, periodPenalty, multiplier, days, vFinixPrice } = useUnstakeId()
+  const { availableVotes } = useAvailableVotes()
+  const flg = canBeUnlock ? Number(availableVotes) < amount - (penaltyRate * amount) / 100 : Number(availableVotes) < Number(amount)
   const isMobileOrTablet = !isXl
   const { unLock } = useUnLock()
   const navigate = useHistory()
@@ -255,9 +258,16 @@ const Unstake: React.FC = () => {
                       </div>
                     </>
                   )}
-                  <Button fullWidth className="align-self-center" radii="small" onClick={handleUnLock}>
-                    Unstake FINIX
-                  </Button>
+                  {flg && <Text color="red" mb="6px">Your voting power is unclaimed, please claim the voting power</Text>}
+                  {flg ? (
+                    <Button as={Link} to='/voting' fullWidth className="align-self-center" radii="small">
+                      Go to voting
+                    </Button>
+                  ) : (
+                    <Button fullWidth className="align-self-center" radii="small" onClick={handleUnLock}>
+                      Unstake FINIX
+                    </Button>
+                  )}
                 </div>
               </Card>
             </div>
