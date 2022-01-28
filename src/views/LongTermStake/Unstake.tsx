@@ -149,7 +149,9 @@ const Unstake: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
   const { id, amount, canBeUnlock, penaltyRate, periodPenalty, multiplier, days, vFinixPrice } = useUnstakeId()
   const { availableVotes } = useAvailableVotes()
-  const flg = canBeUnlock ? Number(availableVotes) < amount - (penaltyRate * amount) / 100 : Number(availableVotes) < Number(amount)
+  const flg = canBeUnlock
+    ? Number(availableVotes) < amount - (penaltyRate * amount) / 100
+    : Number(availableVotes) < Number(amount)
   const isMobileOrTablet = !isXl
   const { unLock } = useUnLock()
   const navigate = useHistory()
@@ -258,9 +260,13 @@ const Unstake: React.FC = () => {
                       </div>
                     </>
                   )}
-                  {flg && <Text color="red" mb="6px">Your voting power is unclaimed, please claim the voting power</Text>}
+                  {flg && (
+                    <Text color="red" mb="6px">
+                      Your voting power is unclaimed, please claim the voting power
+                    </Text>
+                  )}
                   {flg ? (
-                    <Button as={Link} to='/voting' fullWidth className="align-self-center" radii="small">
+                    <Button as={Link} to="/voting" fullWidth className="align-self-center" radii="small">
                       Go to voting
                     </Button>
                   ) : (
