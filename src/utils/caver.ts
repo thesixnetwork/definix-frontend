@@ -21,7 +21,6 @@ const getCaver = () => {
   return caver
 }
 const getContract = (abi: any, address: string, contractOptions?: ContractOptions) => {
-  // @ts-ignore
   const caver = window.caver || getCaver()
   return new caver.klay.Contract(abi as unknown as AbiItem, address, contractOptions)
 }
