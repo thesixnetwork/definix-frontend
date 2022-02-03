@@ -309,12 +309,15 @@ export const useServiceAllowance = () => {
 }
 
 export const useIsClaimable = async (index: number) => {
+  const { account } = useWallet()
   const [isClaimable, setIsClaimable] = useState<boolean>()
   useMemo(async () => {
-    const call = getContract(IVotingFacet.abi, getVFinixVoting())
-    const claim = await call.methods.isClaimable(index).call()
-    setIsClaimable(claim)
-  }, [index])
+    if (account) {
+      const call = getContract(VotingFacet.abi, getVFinixVoting())
+      const claim = await call.methods.isUserClaimable(index, account).call()
+      setIsClaimable(claim)
+    }
+  }, [index, account])
 
   return isClaimable
 }
