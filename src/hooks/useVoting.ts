@@ -11,6 +11,7 @@ import UsageFacet from '../config/abi/UsageFacet.json'
 import IProposalFacet from '../config/abi/IProposalFacet.json'
 import IUsageFacet from '../config/abi/IUsageFacet.json'
 import IVotingFacet from '../config/abi/IVotingFacet.json'
+import VotingFacet from '../config/abi/VotingFacet.json'
 import IServiceInfoFacet from '../config/abi/IServiceInfoFacet.json'
 import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
@@ -100,8 +101,8 @@ export const useAllProposalOfAddress = () => {
           userProposalsFilter[i].choices = []
           // eslint-disable-next-line
           const [isParticipated, IsClaimable] = await Promise.all([
-            getIsParticipated(userProposalsFilter[i].proposalIndex),
-            getIsClaimable(userProposalsFilter[i].proposalIndex),
+            getIsParticipated(userProposalsFilter[i].proposalIndex, account),
+            getIsClaimable(userProposalsFilter[i].proposalIndex, account),
           ])
           // const [IsClaimable] = await Promise.all([getIsClaimable(userProposalsFilter[i].proposalIndex)])
           isParticipateds.push(isParticipated)
@@ -227,17 +228,17 @@ export const usePropose = (
   return { onPropose: callPropose }
 }
 
-export const getIsParticipated = async (index: number) => {
+export const getIsParticipated = async (index: number, account) => {
   // const { account, connector } = useWallet()
-  const contract = getContract(IVotingFacet.abi, getVFinixVoting())
+  const contract = getContract(VotingFacet.abi, getVFinixVoting())
 
-  return contract.methods.isParticipated(index).call()
+  return contract.methods.isUserParticipated(index, account).call()
 }
 
-export const getIsClaimable = (index: number) => {
-  const contract = getContract(IVotingFacet.abi, getVFinixVoting())
+export const getIsClaimable = (index: number, account) => {
+  const contract = getContract(VotingFacet.abi, getVFinixVoting())
 
-  return contract.methods.isClaimable(index).call()
+  return contract.methods.isUserClaimable(index, account).call()
 }
 
 export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIndex: number, voter: string) => {
@@ -308,12 +309,15 @@ export const useServiceAllowance = () => {
 }
 
 export const useIsClaimable = async (index: number) => {
+  const { account } = useWallet()
   const [isClaimable, setIsClaimable] = useState<boolean>()
   useMemo(async () => {
-    const call = getContract(IVotingFacet.abi, getVFinixVoting())
-    const claim = await call.methods.isClaimable(index).call()
-    setIsClaimable(claim)
-  }, [index])
+    if (account) {
+      const call = getContract(VotingFacet.abi, getVFinixVoting())
+      const claim = await call.methods.isUserClaimable(index, account).call()
+      setIsClaimable(claim)
+    }
+  }, [index, account])
 
   return isClaimable
 }
