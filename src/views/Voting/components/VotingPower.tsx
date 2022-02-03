@@ -74,7 +74,7 @@ const VotingPower = () => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <BoxDetails expand={expanded}>
             <div className="flex justify-space-between">
-              <Text fontSize="16px">Your FINIX held now</Text>
+              <Text fontSize="16px">Your vFINIX held now</Text>
               <Text fontSize="16px" bold color="#30ADFF">
                 {numeral(balancevfinix).format('0,0.00')}{' '}
               </Text>

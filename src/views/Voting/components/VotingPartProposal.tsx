@@ -284,7 +284,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                         <BtnClaim
                           variant="success"
                           size="sm"
-                          disabled={!r.isClaimable}
+                          disabled={!r.IsClaimable}
                           onClick={() => {
                             onHandleClaim(r.proposalIndex)
                           }}
@@ -353,7 +353,7 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
         </div>
 
         <TransactionTable
-          rows={transactions}
+          rows={userProposals}
           isLoading={isLoading}
           empText="Don`t have any transactions in this votes."
           total
