@@ -48,6 +48,11 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   cursor: pointer;
   user-select: none;
   border: none;
+  height: 100px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    height: 90px;
+  }
 `
 
 const CurrencyInputPanel = ({
