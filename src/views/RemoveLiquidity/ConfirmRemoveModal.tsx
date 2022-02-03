@@ -28,7 +28,8 @@ import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { Field } from 'state/burn/actions'
-import { useUserDeadline, useUserSlippageTolerance } from 'state/user/hooks'
+import useUserDeadline from 'hooks/useUserDeadline'
+import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import { KlaytnTransactionResponse } from 'state/transactions/actions'
 import { useToast } from 'state/toasts/hooks'
 

@@ -12,7 +12,8 @@ import { useSwapCallback } from 'hooks/useSwapCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
 import { SWAP_STATE, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
-import { useUserDeadline, useUserSlippageTolerance } from 'state/user/hooks'
+import useUserDeadline from 'hooks/useUserDeadline'
+import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import {
   Button,
   IconButton,

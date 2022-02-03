@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { get } from 'lodash-es'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
-import { Card, CardBody, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
+import { Card, CardBody, Flex, Text, Button, Helper } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { useClaimVote, useAllProposalOfAddress } from 'hooks/useVoting'
 import { useToast } from 'state/hooks'
@@ -69,9 +69,12 @@ const YourVoteList: React.FC = () => {
       {participatedProposal && participatedProposal.IsClaimable && (
         <WrapCardBody>
           <Flex flexDirection="column">
-            <Text textStyle="R_16M" color="deepgrey">
-              {t('Your Vote')}
-            </Text>
+            <Flex alignItems="center" justifyContent="flex-start">
+              <Text textStyle="R_16M" color="deepgrey" mr="4px">
+                {t('Your Vote')}
+              </Text>
+              <Helper text={`${t('Claim will be available after')}`} />
+            </Flex>
             {participatedProposal.choices.map(({ choiceName, votePower }) => (
               <VoteItem key={choiceName}>
                 <VoteOptionLabel label={<Translate text={choiceName} type="opinion" />} />

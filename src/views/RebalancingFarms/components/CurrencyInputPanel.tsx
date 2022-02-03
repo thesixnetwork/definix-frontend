@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable react/require-default-props */
 import React, { useCallback, useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
@@ -109,7 +108,7 @@ const CurrencyInputPanel = ({
             <Text textStyle="R_14R" color="text">
               {isMobile || t('Balance')}
               <Text as="span" textStyle="R_14B" marginLeft="4px">
-                {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[000000]') : ' -'}
+                {!hideBalance && !!currency && balance ? (balance.toNumber() > 0 ? numeral(balance.toNumber()).format('0,0.000000') : '0') : ' -'}
               </Text>
             </Text>
           )}

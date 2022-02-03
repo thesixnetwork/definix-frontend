@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useEffect } from 'react'
 import BigNumber from 'bignumber.js'
 import { Helmet } from 'react-helmet-async'
 
-import { Route, Switch, BrowserRouter } from 'react-router-dom'
+import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom'
 import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData, usePriceFinixUsd } from 'state/hooks'
 import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
@@ -98,7 +98,7 @@ const App: React.FC = () => {
             <Route exact path={ROUTES.BRIDGE}>
               <Bridge />
             </Route>
-            <Route path="/voting">
+            <Route path={ROUTES.VOTING}>
               <Voting />
             </Route>
             {/* <Route path="/voting_prev">
@@ -113,6 +113,9 @@ const App: React.FC = () => {
             </Route>
             <Route exact path={ROUTES.SWAP_REDIRECT_A}>
               <RedirectToSwap />
+            </Route>
+            <Route exact strict path={ROUTES.LIQUIDITY}>
+              <Redirect to={ROUTES.LIQUIDITY_ADD} />
             </Route>
             <Route exact strict path={ROUTES.LIQUIDITY_ADD}>
               <Liquidity />
@@ -136,8 +139,6 @@ const App: React.FC = () => {
               <PoolFinder />
             </Route>
             {/* <Route path="/voting">
-              <Voting />
-            </Route> */}
             {/* 404 */}
             <Route>
               <Error />

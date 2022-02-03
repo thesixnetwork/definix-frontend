@@ -19,7 +19,7 @@ export const links = (t: (key: string) => string, currentLang: string) => {
         },
         {
           label: t('Liquidity'),
-          href: ROUTES.LIQUIDITY_ADD,
+          href: ROUTES.LIQUIDITY,
         },
       ],
     },
