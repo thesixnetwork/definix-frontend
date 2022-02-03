@@ -113,7 +113,7 @@ const StakeModal: React.FC<ModalProps> = ({
     } finally {
       onDismiss()
     }
-  }, [onLockPlus, toastSuccess, toastError, t, onDismiss, setInputBalance])
+  }, [onLockPlus, toastSuccess, toastError, t, onDismiss, setInputBalance, superLoadings])
 
   useEffect(() => {
     return () => setIdLast(0)

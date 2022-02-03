@@ -30,23 +30,23 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
     setStatus(false)
     setLoading('loading')
     if (lockFinix !== '') {
-      try {
-        if (connector === 'klip') {
-          klipProvider.genQRcodeContactInteract(
-            getVFinix(),
-            JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),
-            JSON.stringify([level, idLastMaxLv, lockFinix]),
-            setShowModal,
-          )
-          await klipProvider.checkResponse()
-          setShowModal(false)
-          setLoading('success')
-          setStatus(true)
-          setInterval(() => setLoading(''), 3000)
-          setInterval(() => setStatus(false), 3000)
-        } else {
+      if (connector === 'klip') {
+        klipProvider.genQRcodeContactInteract(
+          getVFinix(),
+          JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),
+          JSON.stringify([level, idLastMaxLv, lockFinix]),
+          setShowModal,
+        )
+        await klipProvider.checkResponse()
+        setShowModal(false)
+        setLoading('success')
+        setStatus(true)
+        setInterval(() => setLoading(''), 3000)
+        setInterval(() => setStatus(false), 3000)
+      } else {
+        await new Promise((resolve, reject) => {
           const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
-          await callContract.methods
+          callContract.methods
             .lockPlus(level, idLastMaxLv, lockFinix)
             .estimateGas({ from: account })
             .then((estimatedGasLimit) => {
@@ -56,17 +56,17 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
                 .then(() => {
                   setLoading('success')
                   setStatus(true)
+                  resolve(true)
                   setInterval(() => setLoading(''), 3000)
                   setInterval(() => setStatus(false), 3000)
                 })
                 .catch(() => {
                   setLoading('')
                   setStatus(false)
+                  reject(false)
                 })
             })
-        }
-      } catch (e) {
-        setStatus(false)
+        })
       }
     } else {
       setStatus(false)

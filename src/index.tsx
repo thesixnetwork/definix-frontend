@@ -24,7 +24,7 @@ const { klaytn } = window as any;
 if (klaytn && klaytn.isKaikas === true && klaytn.networkVersion == process.env.REACT_APP_CHAIN_ID) {
   // window.caver = new Caver(window.klaytn)
 } else {
-  window.caver = new Caver(process.env.REACT_APP_NETWORK_URL)
+  window.caver = new Caver(new Caver.providers.HttpProvider(process.env.REACT_APP_NETWORK_URL))
 }
 
 
