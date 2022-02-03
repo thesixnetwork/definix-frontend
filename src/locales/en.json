@@ -46,7 +46,7 @@
   "Finix Challenge Fund": "Finix Challenge Fund",
   "Q4 2021": "Q4 2021",
   "More to be announced": "More to be announced",
-  "copyright": "Copyright © 2021 <0>SIX Network</0>. All Right Reserved",
+  "copyright": "Copyright © 2022 <0>SIX Network</0>. All Right Reserved",
   "audit": "Audited By <0>Certik</0>",
   "FINIX is a ecosystem token": "FINIX is a ecosystem token within the Definix platform. FINIX can only be earned by staking cryptocurrency supported on the platform. Here are the utility of FINIX:",
   "Investment Privilege": "Investment Privilege",
@@ -479,8 +479,10 @@
   "actionWrap": "Wrap",
   "actionUnwrap": "Unwrap",
   "28days super stake tooltip": "You can stake as much as FINIX you prefer under the same lock period within 28 days",
-  "You can’t unstake due to": "You can’t unstake due to insufficient vFINIX balance.",
+  "You can’t unstake due to": "You can’t unstake due to insufficient vFINIX to return.",
   "Your balance": "Your balance",
+  "vFINIX to return": "vFINIX to return",
+  "Available vFINIX to return": "Available vFINIX to return",
   "Close": "Close",
   "Back to Home": "Back to Home",
   "You cannot use Super Stake.": "You cannot use Super Stake.",
@@ -528,7 +530,7 @@
   "Your Voting Power (vFINIX)": "Your Voting Power (vFINIX) will be locked until the voting time is ended.",
   "Your Vote": "Your Vote",
   "Release notes title": "Definix Update",
-  "Release notes date": "25.Jan.2022",
+  "Release notes date": "08.Feb.2022",
   "Still in progress": "Applying G2 is in progress.\r\nIt is available to use on G1. ",
   "actionImport": "Import",
   "Available": "Available",
@@ -536,5 +538,7 @@
   "Claim will be available after": "Claim will be available after the the voting time is ended",
   "There are no proposals.": "There are no proposals.",
   "no transaction": "Don`t have any transactions in this votes.",
-  "My Voting Power": "My Voting Power"
+  "My Voting Power": "My Voting Power",
+  "This site is optimized for": "This site is optimized for Chrome.",
+  "Removable": "Removable"
 }
