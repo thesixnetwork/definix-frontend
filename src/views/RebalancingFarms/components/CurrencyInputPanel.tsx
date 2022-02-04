@@ -6,7 +6,6 @@ import { rgba } from 'polished'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { AnountButton, Flex, Noti, NotiType, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
-import useToFixedFloor from 'hooks/useToFixedFloor'
 import { getTokenName } from 'utils/getTokenSymbol'
 import useWallet from 'hooks/useWallet'
 import { Input as NumericalInput } from './NumericalInput'
@@ -66,7 +65,6 @@ const CurrencyInputPanel = ({
 }: CurrencyInputPanelProps) => {
   const { t } = useTranslation()
   const { account } = useWallet()
-  const toFixedFloor = useToFixedFloor()
   const { isMaxSm } = useMatchBreakpoints()
   const isMobile = isMaxSm
 
@@ -77,16 +75,16 @@ const CurrencyInputPanel = ({
 
   const handleInput = useCallback(
     (str: string) => {
-      onUserInput(toFixedFloor(str))
+      onUserInput(str)
     },
-    [onUserInput, toFixedFloor],
+    [onUserInput],
   )
 
   const handleClick = useCallback(
     (ratio: number) => {
-      onUserInput(toFixedFloor(ratio === 1 ? max.toJSON() : String(max.times(ratio).toNumber())))
+      onUserInput(ratio === 1 ? max.toJSON() : String(max.times(ratio).toNumber()))
     },
-    [max, onUserInput, toFixedFloor],
+    [max, onUserInput],
   )
 
   useEffect(() => {
@@ -108,7 +106,7 @@ const CurrencyInputPanel = ({
             <Text textStyle="R_14R" color="text">
               {isMobile || t('Balance')}
               <Text as="span" textStyle="R_14B" marginLeft="4px">
-                {!hideBalance && !!currency && balance ? (balance.toNumber() > 0 ? numeral(balance.toNumber()).format('0,0.000000') : '0') : ' -'}
+                {!hideBalance && !!currency && balance ? (balance.toNumber() > 0 ? numeral(balance.toNumber()).format('0,0.0[00000]') : '0') : ' -'}
               </Text>
             </Text>
           )}

@@ -130,6 +130,7 @@ const VotingChoice: React.FC = () => {
       res
         .then(() => {
           setTrState(TransactionState.SUCCESS)
+          !!participatedProposal && setIsVoteMore(true);
           toastSuccess(
             t('{{Action}} Complete', {
               Action: t('actionVote'),
@@ -138,6 +139,7 @@ const VotingChoice: React.FC = () => {
         })
         .catch(() => {
           setTrState(TransactionState.ERROR)
+          !!participatedProposal && setIsVoteMore(true);
           toastError(
             t('{{Action}} Failed', {
               Action: t('actionVote'),
@@ -145,7 +147,7 @@ const VotingChoice: React.FC = () => {
           )
         })
     },
-    [onCastVote, proposal.choices, proposalIndex, selectedIndexs, t, toastError, toastSuccess],
+    [onCastVote, proposal.choices, proposalIndex, selectedIndexs, t, toastError, toastSuccess, participatedProposal],
   )
 
   const [onPresentVotingConfirmModal, onDismiss] = useModal(
