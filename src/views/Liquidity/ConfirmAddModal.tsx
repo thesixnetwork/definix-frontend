@@ -163,7 +163,6 @@ export default function ConfirmAddModal({
     const valueklip = Number.parseFloat(valueNumber).toFixed(6)
 
     if (isKlipConnector(connector)) {
-      setShowModal(true)
       klipProvider.genQRcodeContactInteract(
         router.address,
         JSON.stringify(getAbiByName(methodName)),
