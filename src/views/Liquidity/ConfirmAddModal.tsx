@@ -168,9 +168,8 @@ export default function ConfirmAddModal({
         router.address,
         JSON.stringify(getAbiByName(methodName)),
         JSON.stringify(args),
-        // @ts-ignore
-        +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
         setShowModal,
+        +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
       )
       const tx = await klipProvider.checkResponse()
       setTxHash(tx)
