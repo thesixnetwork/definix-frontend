@@ -1,10 +1,5 @@
 {
   "length/0": "3",
-  "title/1": "Definix on Klaytn Chain G2 launch!",
-  "content/1": "Definix Generation 2 service is launched on Klaytn Chain.\nWe keep trying the best effort to satisfy our holders.",
-  "link/1": "",
-  "linkLabel/1": "",
-  "isShow/1": "Show",
   "title/2": "Voting is launched!",
   "content/2": "If you are a vFINIX holder, you can make your voice to Definix ecosystem. \nCast vote and become a part of Definix.",
   "link/2": "",
@@ -14,5 +9,10 @@
   "content/3": "Definix is always listening to the voices of holders.\nIf there are any inconveniences or improvements to the beta service, please give us feedback.",
   "link/3": "https://forms.gle/x9rfWuzD9Kpa8xa47",
   "linkLabel/3": "Feedback",
-  "isShow/3": "Show"
+  "isShow/3": "Show",
+  "title/1": "Definix on Klaytn Chain G2 launch!",
+  "content/1": "Definix Generation 2 service is launched on Klaytn Chain.\nWe keep trying the best effort to satisfy our holders.",
+  "link/1": "",
+  "linkLabel/1": "",
+  "isShow/1": "Show"
 }
