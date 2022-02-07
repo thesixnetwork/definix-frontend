@@ -134,7 +134,7 @@ export const genQRcodeContactInteract = (
     "type": "execute_contract",
     "transaction": {
       "to": contractAddress,
-      "value": value,
+      "value": value || '0',
       "abi": abi,
       "params": input
     }
