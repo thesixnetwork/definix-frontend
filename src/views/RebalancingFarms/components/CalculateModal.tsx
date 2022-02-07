@@ -32,6 +32,7 @@ import { fetchRebalances } from '../../../state/rebalance'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import CardHeading from './CardHeading'
 import VerticalAssetRatio from './VerticalAssetRatio'
+import { isKlipConnector } from 'hooks/useApprove'
 
 const CalculateModal = ({
   setTx,
@@ -98,7 +99,7 @@ const CalculateModal = ({
         .times(new BigNumber(10).pow(usdToken.decimals))
         .toJSON()
       // const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
-      if (connector === 'klip') {
+      if (isKlipConnector(connector)) {
         const valueNumber = (Number(mainCoinValue) / 10 ** 18).toString()
         const valueklip = Number.parseFloat(valueNumber).toFixed(6)
         let expectValue = `${(Number(valueklip) + 0.00001) * 10 ** 18}`

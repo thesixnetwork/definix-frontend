@@ -2,6 +2,7 @@ import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { ethers } from 'ethers'
 import { useCallback, useContext } from 'react'
+import { KlipConnector } from '@sixnetwork/klip-connector'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
 import { approve } from 'utils/callHelpers'
@@ -9,6 +10,8 @@ import { useHerodotus, useFinix, useSousChef, useLottery } from './useContract'
 import * as klipProvider from './klipProvider'
 import { getAbiERC20ByName } from './hookHelper'
 import useWallet from './useWallet'
+
+export const isKlipConnector = (connector) => connector instanceof KlipConnector
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 // Approve a Farm
@@ -20,7 +23,7 @@ export const useApprove = (lpContract: Contract) => {
 
   const handleApprove = useCallback(async () => {
     let tx
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
         lpContract._address,
         jsonConvert(getAbiERC20ByName('approve')),
@@ -50,7 +53,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
   const herodotusContract = useHerodotus()
   const handleApprove = useCallback(async () => {
     let tx
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       // setShowModal(true)
       klipProvider.genQRcodeContactInteract(
         lpContract._address,

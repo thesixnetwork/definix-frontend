@@ -10,6 +10,7 @@ import { getAbiHerodotusByName } from 'hooks/hookHelper'
 import { useHerodotus, useSousChef } from './useContract'
 import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
+import { isKlipConnector } from './useApprove'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 const useStake = (pid: number) => {
@@ -21,7 +22,7 @@ const useStake = (pid: number) => {
   const handleStake = useCallback(
     async (amount: string) => {
       let tx = null
-      if (connector === 'klip') {
+      if (isKlipConnector(connector)) {
         // setShowModal(true)
         try {
           if (pid === 0) {
@@ -68,7 +69,7 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
   const handleStake = useCallback(
     async (amount: string) => {
       let tx = null
-      if (connector === 'klip') {
+      if (isKlipConnector(connector)) {
         // setShowModal(true)
         try {
           if (sousId === 0) {

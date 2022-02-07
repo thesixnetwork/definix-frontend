@@ -24,6 +24,7 @@ import {
 } from '../state/actions'
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
+import { isKlipConnector } from './useApprove'
 
 export const useAvailableVotes = () => {
   const { fastRefresh } = useRefresh()
@@ -184,7 +185,7 @@ export const usePropose = (
   const { setShowModal } = useContext(KlipModalContext())
 
   const callPropose = async (ipfsHash) => {
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
         getVFinixVoting(),
         JSON.stringify(getAbiIProposalFacetByName('propose')),
@@ -258,7 +259,7 @@ export const useApproveToService = (max) => {
   const onApprove = useCallback(async () => {
     const call = getContract(IServiceInfoFacet.abi, getVFinixVoting())
     const serviceKey = await call.methods.getServiceKey().call()
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
         getFinixAddress(),
         JSON.stringify(getAbiIUsageFacetByName('approveToService')),
@@ -324,7 +325,7 @@ export const useVote = () => {
   const [serviceKey] = useState('')
 
   const callCastVote = async (proposalIndex, votingPowers) => {
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
         getVFinixVoting(),
         JSON.stringify(getAbiIVotingFacetByName('vote')),
@@ -357,7 +358,7 @@ export const useClaimVote = () => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const callClaimVote = async (proposalIndex) => {
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
         getVFinixVoting(),
         JSON.stringify(getAbiIVotingFacetByName('recallVotesFromProposal')),
