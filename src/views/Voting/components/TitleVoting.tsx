@@ -7,9 +7,9 @@ const TitleVoting: React.FC = () => {
 
   const getLink = () => {
     if (i18n.language === 'ko') {
-      return 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/vFINIX/voting'
+      return 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/tokenomics/vfinix/voting'
     }
-    return 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/vFINIX/voting'
+    return 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/tokenomics/vfinix/voting'
   }
 
   return (
