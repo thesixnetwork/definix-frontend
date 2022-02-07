@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Config } from 'definixswap-sdk'
-import Caver from 'caver-js'
+// import Caver from 'caver-js'
 
 import App from './App'
 import Providers from './Providers'
@@ -20,12 +20,15 @@ window.addEventListener('error', () => {
   localStorage?.removeItem('redux_localstorage_simple_lists')
 });
 
-const { klaytn } = window as any;
-if (klaytn && klaytn.isKaikas === true && klaytn.networkVersion == process.env.REACT_APP_CHAIN_ID) {
-  // window.caver = new Caver(window.klaytn)
-} else {
-  window.caver = new Caver(new Caver.providers.HttpProvider(process.env.REACT_APP_NETWORK_URL))
-}
+// /dcent/.test(window.navigator.userAgent)
+// /tokenpocket/.test(window.navigator.userAgent)
+
+// const { klaytn } = window as any;
+// if (klaytn && klaytn.networkVersion == process.env.REACT_APP_CHAIN_ID) {
+//   // window.caver = new Caver(window.klaytn)
+// } else {
+//   window.caver = new Caver(new Caver.providers.HttpProvider(process.env.REACT_APP_NETWORK_URL))
+// }
 
 
 ReactDOM.render(
