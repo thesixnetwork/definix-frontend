@@ -154,7 +154,7 @@ export const genQRcodeContactInteract = (
       })
     }
     return "success"
-  }).catch(e => {
+  }).catch(() => {
     return "error"
   })
 }
