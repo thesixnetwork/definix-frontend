@@ -37,6 +37,7 @@ import CurrencyText from 'components/Text/CurrencyText'
 import CurrencyInputPanel from './CurrencyInputPanel'
 import CalculateModal from './CalculateModal'
 import CoinWrap from './CoinWrap'
+import { isKlipConnector } from 'hooks/useApprove'
 
 interface InvestInputCardProp {
   isMobile?: boolean
@@ -177,7 +178,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
     setApprovingCoin(token.symbol)
     try {
-      if (connector === 'klip') {
+      if (isKlipConnector(connector)) {
         klipProvider.genQRcodeContactInteract(
           getAddress(token.address),
           JSON.stringify(getAbiERC20ByName('approve')),

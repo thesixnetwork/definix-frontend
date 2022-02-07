@@ -29,6 +29,7 @@ import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import CardHeading from './CardHeading'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import InlineAssetRatioLabel from './InlineAssetRatioLabel'
+import { isKlipConnector } from 'hooks/useApprove'
 
 const WithdrawCalculateModal = ({
   setTx,
@@ -95,7 +96,7 @@ const WithdrawCalculateModal = ({
         ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
         : 0
 
-      if (connector === 'klip') {
+        if (isKlipConnector(connector)) {
         klipProvider.genQRcodeContactInteract(
           getAddress(rebalance.address),
           JSON.stringify(getAbiRebalanceByName('removeFund')),

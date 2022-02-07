@@ -11,6 +11,7 @@ import IKIP7 from '../config/abi/IKIP7.json'
 import { getContract } from '../utils/caver'
 import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
 import useWallet from './useWallet'
+import { isKlipConnector } from './useApprove'
 /* eslint no-else-return: "error" */
 
 // @ts-ignore
@@ -30,7 +31,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
     setStatus(false)
     setLoading('loading')
     if (lockFinix !== '') {
-      if (connector === 'klip') {
+      if (isKlipConnector(connector)) {
         klipProvider.genQRcodeContactInteract(
           getVFinix(),
           JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),

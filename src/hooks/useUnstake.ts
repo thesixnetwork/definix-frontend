@@ -14,6 +14,7 @@ import { unstake, sousUnstake, sousEmegencyUnstake } from 'utils/callHelpers'
 import { useHerodotus, useSousChef } from './useContract'
 import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
+import { isKlipConnector } from './useApprove'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 const useUnstake = (pid: number) => {
@@ -25,7 +26,7 @@ const useUnstake = (pid: number) => {
   const handleUnstake = useCallback(
     async (amount: string) => {
       let tx = null
-      if (connector === 'klip') {
+      if (isKlipConnector(connector)) {
         // setShowModal(true)
         try {
           if (pid === 0) {
@@ -75,7 +76,7 @@ export const useSousUnstake = (sousId) => {
   const handleUnstake = useCallback(
     async (amount: string) => {
       let tx = null
-      if (connector === 'klip') {
+      if (isKlipConnector(connector)) {
         // setShowModal(true)
         try {
           if (sousId === 0) {

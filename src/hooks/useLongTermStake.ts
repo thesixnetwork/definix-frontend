@@ -33,6 +33,7 @@ import useRefresh from './useRefresh'
 import { State } from '../state/types'
 import { useHerodotus } from './useContract'
 import useWallet from './useWallet'
+import { isKlipConnector } from './useApprove'
 
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -237,7 +238,7 @@ export const useUnLock = () => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const onUnLock = async (id) => {
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
         getVFinix(),
         JSON.stringify(getAbiVaultFacetByName('unlock')),
@@ -270,7 +271,7 @@ export const useLock = (level, lockFinix) => {
     setLoading('loading')
     if (lockFinix) {
       try {
-        if (connector === 'klip') {
+        if (isKlipConnector(connector)) {
           klipProvider.genQRcodeContactInteract(
             getVFinix(),
             JSON.stringify(getAbiVaultFacetByName('lock')),
@@ -314,7 +315,7 @@ export const useHarvest = () => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleHarvest = useCallback(async () => {
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
         getVFinix(),
         JSON.stringify(getAbiRewardFacetByName('harvest')),
@@ -341,7 +342,7 @@ export const useApprove = (max) => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const onApprove = useCallback(async () => {
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
         getFinixAddress(),
         JSON.stringify(getAbiERC20ByName('approve')),
@@ -571,7 +572,7 @@ export const useClaim = () => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleClaim = async (id) => {
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
         getVFinix(),
         JSON.stringify(getAbiVaultPenaltyFacetByName('claimWithPenalty')),
@@ -602,7 +603,7 @@ export const useSousHarvest = () => {
 
   const handleHarvest = useCallback(
     async (sousId) => {
-      if (connector === 'klip') {
+      if (isKlipConnector(connector)) {
         // setShowModal(true)
 
         if (sousId === 0) {
@@ -662,7 +663,7 @@ export const useSuperHarvest = () => {
 
   const handleHarvest = useCallback(
     async (farmPid) => {
-      if (connector === 'klip') {
+      if (isKlipConnector(connector)) {
         if (farmPid === 0) {
           klipProvider.genQRcodeContactInteract(
             herodotusContract._address,

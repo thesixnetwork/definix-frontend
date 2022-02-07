@@ -8,6 +8,7 @@ import { soushHarvest, soushHarvestBnb, harvest } from 'utils/callHelpers'
 import { useHerodotus, useSousChef } from './useContract'
 import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
+import { isKlipConnector } from './useApprove'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 export const useHarvest = (farmPid: number) => {
@@ -19,7 +20,7 @@ export const useHarvest = (farmPid: number) => {
 
   const handleHarvest = useCallback(async () => {
     let tx = null
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       // setShowModal(true)
       try {
         if (farmPid === 0) {
@@ -140,7 +141,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
   const handleHarvest = useCallback(async () => {
     setHarvestResultList([])
 
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       await harvestAllUsingKlip(farms, 0)
     } else {
       await Promise.all(farms.map((farm) => harvest(herodotusContract, farm.pid, account)))
@@ -164,7 +165,7 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleHarvest = useCallback(async () => {
-    if (connector === 'klip') {
+    if (isKlipConnector(connector)) {
       // setShowModal(true)
 
       if (sousId === 0) {
