@@ -128,18 +128,18 @@ export const genQRcodeContactInteract = (
   clearContractResultInterval()
 
   const mockData = {
-    bapp: {
-      name: 'definix',
+    "bapp": {
+      "name": "definix"
     },
-    type: 'execute_contract',
-    transaction: {
-      to: contractAddress,
-      value: value || '0',
-      abi,
-      params: input,
-    },
+    "type": "execute_contract",
+    "transaction": {
+      "to": contractAddress,
+      "value": value,
+      "abi": abi,
+      "params": input
+    }
   }
-  axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
+  return axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then(async (response) => {
     requestKey = response.data.request_key
     const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
     if (isMobile === true) {
@@ -149,10 +149,13 @@ export const genQRcodeContactInteract = (
       }, 1000)
     } else {
       setShowModal(true)
-      QRcode.toCanvas(document.getElementById('qrcode'), url, () => {
+      await QRcode.toCanvas(document.getElementById('qrcode'), url, () => {
         startContractResultInterval()
       })
     }
+    return "success"
+  }).catch(e => {
+    return "error"
   })
 }
 
