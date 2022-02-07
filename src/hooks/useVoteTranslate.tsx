@@ -14,6 +14,7 @@ export default function useVoteTranslate(text, type) {
 
   const tr = useCallback(() => {
     if (!text) return text
+    text = text.trim()
     const key = `${text.split(' ').slice(0, 5).join(' ')}/${type}`
     return votings[key] ? votings[key] : text
   }, [text, type, votings])
