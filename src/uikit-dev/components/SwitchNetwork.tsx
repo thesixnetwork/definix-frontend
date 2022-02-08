@@ -3,6 +3,7 @@ import React, { memo, useState } from 'react'
 import styled from 'styled-components'
 import klaytnWhite from '../images/for-ui-v2/toggle-icon/Definix-guide2-03.png'
 import klaytn from '../images/for-ui-v2/toggle-icon/Definix-guide2-04.png'
+import klaytnNewLogo from '../images/for-ui-v2/toggle-icon/Definix-New-Klaytn-Logo.png'
 import bscWhite from '../images/for-ui-v2/toggle-icon/Definix-guide2-05.png'
 import bsc from '../images/for-ui-v2/toggle-icon/Definix-guide2-06.png'
 import { IconButton } from './Button'
@@ -110,7 +111,7 @@ const SwitchNetwork = () => {
           window.location.href = 'https://g2.klaytn.definix.com/'
         }}
       >
-        <img src={!isBsc || isDark ? klaytnWhite : klaytn} alt="" width="20px" />
+        <img src={!isBsc || isDark ? klaytnNewLogo : klaytnNewLogo} alt="" width="20px" />
         <Tooltip>Klaytn Chain</Tooltip>
       </IconButton>
     </SwitchStyle>

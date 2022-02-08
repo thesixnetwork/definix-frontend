@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import Button from './Button/Button'
 import bsc from '../images/Logo-BinanceSmartChain.png'
 import klaytn from '../images/Logo-Klaytn.png'
+import klaytnNewLogo from '../images/for-ui-v2/toggle-icon/Definix-New-Klaytn-Logo.png'
 import MenuButton from '../widgets/Menu/MenuButton'
 import Dropdown from './Dropdown/Dropdown'
 import ChevronDownIcon from './Svg/Icons/ChevronDown'
@@ -29,7 +30,7 @@ const DropdownNetwork = () => {
       <MenuButton
         href="https://g2.klaytn.definix.com/"
         variant="text"
-        startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
+        startIcon={<img src={klaytnNewLogo} alt="" width="24" className="mr-2" />}
         className="color-primary text-bold mb-2"
       >
         Klaytn Chain
