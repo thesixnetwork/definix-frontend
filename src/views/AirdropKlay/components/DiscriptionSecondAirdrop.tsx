@@ -34,12 +34,12 @@ export default function DiscriptionSecondAirdrop({ open = false, disable = false
         </Text>
         <Text lineHeight="2">
           2. The airdrop will be automatically distributed 30 KLAY within 48 hours to the wallet address that used on{' '}
-          <a style={{ color: '#0973B9' }} href="https://klaytn.definix.com">
-            klaytn.definix.com
+          <a style={{ color: '#0973B9' }} href="https://g2.klaytn.definix.com/">
+            g2.klaytn.definix.com
           </a>{' '}
           after supply liquidity and received LP token from{' '}
-          <a style={{ color: '#0973B9' }} href="https://klaytn.definix.com">
-            klaytn.definix.com
+          <a style={{ color: '#0973B9' }} href="https://g2.klaytn.definix.com/">
+            g2.klaytn.definix.com
           </a>
         </Text>
         <Text lineHeight="2">

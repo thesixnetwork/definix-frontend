@@ -107,7 +107,7 @@ const SwitchNetwork = () => {
         variant="text"
         onClick={() => {
           // setIsBsc(false)
-          window.location.href = 'https://klaytn.definix.com'
+          window.location.href = 'https://g2.klaytn.definix.com/'
         }}
       >
         <img src={!isBsc || isDark ? klaytnWhite : klaytn} alt="" width="20px" />

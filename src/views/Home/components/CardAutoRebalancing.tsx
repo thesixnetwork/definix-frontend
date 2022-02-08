@@ -460,7 +460,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 Rebalancing Farm.
               </Text>
               <div className="mt-6">
-                <SpecialButton as="a" href="https://klaytn.definix.com/long-term-stake">
+                <SpecialButton as="a" href="https://g2.klaytn.definix.com/long-term-stake">
                   <span>Go to stake</span>
                 </SpecialButton>
               </div>
