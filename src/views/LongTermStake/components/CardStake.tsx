@@ -558,7 +558,7 @@ const CardStake = ({ isShowRightPanel }) => {
               <AprValue
                 style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '52%' : '52%' }}
                 fontSize={`${
-                  isShowRightPanel ? '22px !important' : isMobileOrTablet ? '20px !important' : '26px !important'
+                  isShowRightPanel ? '28px !important' : isMobileOrTablet ? '20px !important' : '32px !important'
                 }`}
                 color="white"
               >{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
