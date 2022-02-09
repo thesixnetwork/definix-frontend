@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useCallback } from 'react'
 import Lottie from 'react-lottie'
 import useTheme from 'hooks/useTheme'
@@ -164,7 +165,7 @@ const CardStake = ({ isShowRightPanel }) => {
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const { allLockPeriod } = useAllLock()
   const [value, setValue] = useState('')
-  const [letvel, setLevel] = useState(0)
+  const [level, setLevel] = useState(0)
   const [vFINIX, setVFINIX] = useState(0)
   const [days, setdays] = useState(28)
   const [percentPenalty, setPercentPenalty] = useState(0)
@@ -233,7 +234,7 @@ const CardStake = ({ isShowRightPanel }) => {
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
   }, [period, value, periodEnd, allLockPeriod, realPenaltyRate])
 
-  const { onStake, status, loadings } = useLock(letvel, lockFinix, click)
+  const { onStake, status, loadings } = useLock(level, lockFinix, click)
   useEffect(() => {
     if (status) {
       setVFINIX(0)
@@ -546,12 +547,12 @@ const CardStake = ({ isShowRightPanel }) => {
           >
             <APRBOX className="px-5 mb-2">
               <img src={badgeLock} alt="" />
-              <Apr fontSize={isShowRightPanel ? '1.2vw !important' : '1.2vw !important'} color="white">
+              <Apr fontSize={`${isShowRightPanel ? '16px !important' : isMobileOrTablet ? '18px !important' : '20px !important'}`} color="white">
                 APR up to
               </Apr>
               <AprValue
                 style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '52%' : '52%' }}
-                fontSize={isShowRightPanel ? '2.2vw !important' : '2.2vw !important'}
+                fontSize={`${isShowRightPanel ? '22px !important' : isMobileOrTablet ? '20px !important' : '26px !important'}`}
                 color="white"
               >{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
             </APRBOX>
