@@ -547,12 +547,19 @@ const CardStake = ({ isShowRightPanel }) => {
           >
             <APRBOX className="px-5 mb-2">
               <img src={badgeLock} alt="" />
-              <Apr fontSize={`${isShowRightPanel ? '16px !important' : isMobileOrTablet ? '18px !important' : '20px !important'}`} color="white">
+              <Apr
+                fontSize={`${
+                  isShowRightPanel ? '16px !important' : isMobileOrTablet ? '18px !important' : '20px !important'
+                }`}
+                color="white"
+              >
                 APR up to
               </Apr>
               <AprValue
                 style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '52%' : '52%' }}
-                fontSize={`${isShowRightPanel ? '22px !important' : isMobileOrTablet ? '20px !important' : '26px !important'}`}
+                fontSize={`${
+                  isShowRightPanel ? '22px !important' : isMobileOrTablet ? '20px !important' : '26px !important'
+                }`}
                 color="white"
               >{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
             </APRBOX>
