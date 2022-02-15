@@ -10,7 +10,6 @@ interface CurrencySearchModalProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
-  // eslint-disable-next-line react/no-unused-prop-types
   showCommonBases?: boolean
 }
 
@@ -27,16 +26,14 @@ export default function CurrencySearchModal({
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
 
   return (
-    <Modal title={t('Select a token')} mobileFull onDismiss={onDismiss}>
-      <ModalBody isBody>
-        <Box width={isMobile ? '100%' : '416px'} height={isMobile ? '100vh' : 'auto'}>
-          <CurrencySearch
-            onCurrencySelect={onCurrencySelect}
-            selectedCurrency={selectedCurrency}
-            otherSelectedCurrency={otherSelectedCurrency}
-            onDismiss={onDismiss}
-          />
-        </Box>
+    <Modal title={t('Select a token')} mobileFull onDismiss={onDismiss} noPadding={true}>
+      <ModalBody isBody width={isMobile ? '100%' : '416px'} height={isMobile ? '100%' : 'auto'} overflow="hidden">
+        <CurrencySearch
+          onCurrencySelect={onCurrencySelect}
+          selectedCurrency={selectedCurrency}
+          otherSelectedCurrency={otherSelectedCurrency}
+          onDismiss={onDismiss}
+        />
       </ModalBody>
     </Modal>
   )
