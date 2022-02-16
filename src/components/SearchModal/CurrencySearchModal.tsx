@@ -1,5 +1,5 @@
 import { Currency } from 'definixswap-sdk'
-import { Modal, Box, ModalBody, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import { Modal, ModalBody, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import React, { useMemo } from 'react'
 import { CurrencySearch } from './CurrencySearch'
