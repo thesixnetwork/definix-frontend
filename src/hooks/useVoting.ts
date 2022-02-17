@@ -222,7 +222,6 @@ export const usePropose = (
 }
 
 export const getIsParticipated = async (index: number, account) => {
-  // const { account, connector } = useWallet()
   const contract = getContract(VotingFacet.abi, getVFinixVoting())
 
   return contract.methods.isUserParticipated(index, account).call()
