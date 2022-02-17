@@ -36,7 +36,7 @@ const Providers: React.FC = ({ children }) => {
   const klipContext = React.useContext(KlipModalContext())
 
   // const onPresent = useCallback(() => {
-  // klipContext?.setShowModal(true)
+// klipContext?.setShowModal(true)
   // }, [klipContext])
   const onHiddenModal = useCallback(() => {
     klipContext?.setShowModal(false)

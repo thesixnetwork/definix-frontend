@@ -305,8 +305,8 @@ export const harvest = async (herodotusContract, pid, account) => {
             })
           })
         })
-        .catch((tx) => {
-          return tx.transactionHash
+        .catch((e) => {
+          throw e;
         })
     }
 
@@ -316,8 +316,8 @@ export const harvest = async (herodotusContract, pid, account) => {
       .then((tx) => {
         return tx.transactionHash
       })
-      .catch((tx) => {
-        return tx.transactionHash
+      .catch((e) => {
+        throw e;
       })
     // .on('transactionHash', (tx) => {
     //   return tx.transactionHash
@@ -345,8 +345,8 @@ export const harvest = async (herodotusContract, pid, account) => {
             })
         })
       })
-      .catch((tx) => {
-        return tx.transactionHash
+      .catch((e) => {
+        throw e;
       })
   }
 
@@ -356,8 +356,8 @@ export const harvest = async (herodotusContract, pid, account) => {
     .then((tx) => {
       return tx.transactionHash
     })
-    .catch((tx) => {
-      return tx.transactionHash
+    .catch((e) => {
+      throw e;
     })
 }
 

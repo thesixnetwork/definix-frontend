@@ -295,11 +295,11 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                   <Checkbox
                     scale="sm"
                     disabled={harvestProgress !== -1}
-                    checked={get(selectedToken, `${18}.checked`) || false}
+                    checked={get(selectedToken, `longterm_${18}.checked`) || false}
                     onChange={(event) => {
                       setSelectedToken({
                         ...selectedToken,
-                        18: {
+                        'longterm_18': {
                           checked: event.target.checked,
                           pools: false,
                           farms: false,
@@ -339,11 +339,11 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                     <Checkbox
                       scale="sm"
                       disabled={harvestProgress !== -1}
-                      checked={get(selectedToken, `${d.pid}.checked`) || false}
+                      checked={get(selectedToken, `farm_${d.pid}.checked`) || false}
                       onChange={(event) => {
                         setSelectedToken({
                           ...selectedToken,
-                          [d.pid]: {
+                          [`farm_${d.pid}`]: {
                             checked: event.target.checked,
                             pools: false,
                             farms: true,
@@ -381,7 +381,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
               )
             })}
 
-            {stackedOnlyPools.map((d, i) => {
+            {stackedOnlyPools.map((d) => {
               const imgs = d.tokenName.split(' ')[0].split('-')
               return (
                 <StyledCheckboxLabel
@@ -389,12 +389,12 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                   control={
                     <Checkbox
                       scale="sm"
-                      checked={get(selectedToken, `${d.sousId}.checked`) || false}
+                      checked={get(selectedToken, `pool_${d.sousId}.checked`) || false}
                       disabled={harvestProgress !== -1}
                       onChange={(event) => {
                         setSelectedToken({
                           ...selectedToken,
-                          [i]: {
+                          [`pool_${d.sousId}`]: {
                             checked: event.target.checked,
                             pools: true,
                             sousId: d.sousId,
