@@ -13,7 +13,7 @@ import IServiceInfoFacet from '../config/abi/IServiceInfoFacet.json'
 import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
 import { ParticipatedVoting, State } from '../state/types'
-import { getFinixAddress, getVFinix, getVFinixVoting } from '../utils/addressHelpers'
+import { getVFinix, getVFinixVoting } from '../utils/addressHelpers'
 import {
   fetchAllProposalOfType,
   fetchProposalIndex,
@@ -261,16 +261,14 @@ export const useApproveToService = (max) => {
     const serviceKey = await call.methods.getServiceKey().call()
     if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
-        getFinixAddress(),
+        getVFinix(),
         JSON.stringify(getAbiIUsageFacetByName('approveToService')),
         JSON.stringify([serviceKey, max]),
         setShowModal,
       )
       const txHash = await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve) => {
-        resolve(txHash)
-      })
+      return txHash;
     }
     const callContract = getContract(IUsageFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
