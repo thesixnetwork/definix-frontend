@@ -94,7 +94,6 @@ export const useAllProposalOfAddress = () => {
         const isParticipateds = []
         for (let i = 0; i < userProposalsFilter.length; i++) {
           userProposalsFilter[i].choices = []
-          // eslint-disable-next-line
           const [isParticipated, IsClaimable] = await Promise.all([
             getIsParticipated(userProposalsFilter[i].proposalIndex, account),
             getIsClaimable(userProposalsFilter[i].proposalIndex, account),
@@ -223,7 +222,6 @@ export const usePropose = (
 
 export const getIsParticipated = async (index: number, account) => {
   const contract = getContract(VotingFacet.abi, getVFinixVoting())
-
   return contract.methods.isUserParticipated(index, account).call()
 }
 
