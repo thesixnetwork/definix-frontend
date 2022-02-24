@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import moment from 'moment'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
@@ -130,6 +131,21 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
   }
 
   const handleUnstake = (item) => {
+    const timeZone = new Date().getTimezoneOffset() / 60
+    const offset = timeZone === -7 && 2
+    let periodPenalty
+    const date = new Date()
+    if (_.get(item, 'level') === 1) {
+      date.setDate(date.getDate() + 7)
+      periodPenalty = new Date(date.getTime() + 3600000 * offset)
+    } else if (_.get(item, 'level') === 2) {
+      date.setDate(date.getDate() + 14)
+      periodPenalty = new Date(date.getTime() + 3600000 * offset)
+    } else if (_.get(item, 'level') === 3) {
+      date.setDate(date.getDate() + 28)
+      periodPenalty = new Date(date.getTime() + 3600000 * offset)
+    }
+
     onUnStake(
       _.get(item, 'id'),
       _.get(item, 'level'),
@@ -137,7 +153,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
       _.get(item, 'isPenalty'),
       !_.get(item, 'canBeUnlock'),
       _.get(item, 'penaltyRate'),
-      _.get(item, 'periodPenalty'),
+      moment(periodPenalty).format(`DD-MMM-YY HH:mm:ss`),
       _.get(item, 'multiplier'),
       _.get(item, 'days'),
     )
