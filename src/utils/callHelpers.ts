@@ -3,12 +3,12 @@ import { ethers } from 'ethers'
 import { getHerodotusAddress } from 'utils/addressHelpers'
 import UseDeParam from 'hooks/useDeParam'
 import Caver from 'caver-js'
+import { getCaver } from './caver'
 
 const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
 const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
-// @ts-ignore
-const caver = new Caver(window.caver)
+const caver = getCaver()
 
 export const approve = async (lpContract, herodotusContract, account) => {
   const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')

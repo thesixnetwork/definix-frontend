@@ -44,6 +44,7 @@ import KlaytnScopeLink from 'components/KlaytnScopeLink'
 
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
 import useWallet from 'hooks/useWallet'
+import { getCaver } from 'utils/caver'
 
 interface IProps extends InjectedModalProps {
   currencyA: Currency
@@ -251,8 +252,7 @@ export default function ConfirmRemoveModal({
           const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
           const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
-          // @ts-ignore
-          const caver = new Caver(window.caver)
+          const caver = getCaver();
 
           await caver.klay
             .signTransaction({

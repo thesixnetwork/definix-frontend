@@ -63,7 +63,7 @@
     "array-sort": "^1.0.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.0",
-    "caver-js": "1.6.3-rc.4",
+    "caver-js": "1.4.1",
     "chart.js": "^2.9.4",
     "cids": "^1.0.0",
     "copy-to-clipboard": "^3.2.0",

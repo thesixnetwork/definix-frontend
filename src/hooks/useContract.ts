@@ -43,13 +43,13 @@ import HERODOTUS_ABI from 'config/constants/abis/herodotus.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from 'config/constants/multicall'
 import { getContract } from 'utils'
 import useWallet from './useWallet'
+import { getCaver } from 'utils/caver'
 
 const intMainnetId = parseInt(process.env.REACT_APP_MAINNET_ID || '')
 const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
-  // @ts-ignore
-  const caver = window.caver || new Caver(process.env.REACT_APP_NODE_3)
+  const caver = getCaver()
   const [contract, setcontract] = useState(new caver.klay.Contract(abi, address, contractOptions))
 
   useEffect(() => {
@@ -62,8 +62,7 @@ const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOp
 
     // const caverEffect = new Caver(process.env.REACT_APP_NODE_3)
     // @ts-ignore
-    const caverEffect = window.caver || new Caver(process.env.REACT_APP_NODE_3)
-    setcontract(new caverEffect.klay.Contract(abi, address, contractOptions))
+    setcontract(new caver.klay.Contract(abi, address, contractOptions))
   }, [abi, address, contractOptions])
 
   return contract
