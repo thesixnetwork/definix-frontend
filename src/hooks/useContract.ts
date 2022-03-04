@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
-import Caver from 'caver-js'
 import {
   getAddress,
   getHerodotusAddress,

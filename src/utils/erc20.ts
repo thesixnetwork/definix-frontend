@@ -8,7 +8,6 @@ import { getCaver } from './caver'
 
 export const getContract = (provider: ProviderType, address: string) => {
   const caver = getCaver()
-  console.log(11, caver)
   return new caver.klay.Contract(erc20 as unknown as AbiItem, address)
 }
 
