@@ -44,6 +44,8 @@ const TextEndDate = styled(Text)`
 
 const BoxContent = styled(Box)`
   margin-top: 32px;
+  width: 100%;
+  overflow-x: auto;
 
   > .text {
     ${({ theme }) => theme.textStyle.R_14R}
