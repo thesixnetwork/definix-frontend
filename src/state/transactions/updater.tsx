@@ -5,6 +5,7 @@ import useWallet from 'hooks/useWallet'
 import { useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import { checkedTransaction, finalizeTransaction } from './actions'
+import { getCaver } from 'utils/caver'
 
 export function shouldCheck(
   lastBlockNumber: number,
@@ -40,8 +41,7 @@ export default function Updater(): null {
     Object.keys(transactions)
       .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
       .forEach((hash) => {
-        // @ts-ignore
-        window.caver?.klay
+        getCaver().klay
           ?.getTransactionReceipt(hash)
           .then((receipt) => {
             if (receipt) {

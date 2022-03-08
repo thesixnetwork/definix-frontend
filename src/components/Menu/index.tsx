@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Menu as UikitMenu, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation, Trans } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
@@ -10,6 +10,7 @@ import SettingsModal from 'components/SettingModal'
 
 const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
   const { account, connect, reset } = useWallet()
+  const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
 
   const { i18n, t } = useTranslation()
 
@@ -22,6 +23,17 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+
+  const onChangeNetwork = useCallback(() => {
+    setIsWrongNetwork((window as any).klaytn && (window as any).klaytn.networkVersion != process.env.REACT_APP_CHAIN_ID)
+  }, []);
+
+  useEffect(() => {
+    onChangeNetwork();
+    (window as any).klaytn.on('networkChanged', function() {
+      onChangeNetwork();
+    })
+  }, [])
 
   return (
     <UikitMenu
@@ -39,6 +51,7 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
       isDark={isDark}
       toggleTheme={toggleTheme}
       links={links(t, i18n.languages[0])}
+      isWrongNetwork={isWrongNetwork}
       {...props}
     />
   )

@@ -540,5 +540,7 @@
   "no transaction": "Don`t have any transactions in this votes.",
   "My Voting Power": "My Voting Power",
   "This site is optimized for": "This site is optimized for Chrome.",
-  "Removable": "Removable"
+  "Removable": "Removable",
+  "The network is not the": "Your wallet network is not connected to mainnet.",
+  "Please change the wallet": "Please connect your wallet again after switching the network to Klaytn mainnet.\nDisconnect your wallet and then you can switch the network. "
 }

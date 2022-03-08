@@ -101,10 +101,6 @@ const App: React.FC = () => {
             <Route path={ROUTES.VOTING}>
               <Voting />
             </Route>
-            {/* <Route path="/voting_prev">
-                <VotingPrev />
-              </Route> */}
-            {/* <Route exact path="/" component={RedirectPathToSwapOnly} /> */}
             <Route exact path={ROUTES.SWAP}>
               <Swap />
             </Route>

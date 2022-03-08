@@ -211,7 +211,7 @@ export const usePropose = (
     return new Promise((resolve, reject) => {
       callContract.methods
         .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
-        .send({ from: account, gas: 5000000 })
+        .send({ from: account, gas: 30 * 5000000 })
         .then(resolve)
         .catch(reject)
     })
@@ -343,7 +343,7 @@ export const useVote = () => {
     return new Promise((resolve, reject) => {
       callContract.methods
         .vote(proposalIndex, votingPowers)
-        .send({ from: account, gas: 5000000 })
+        .send({ from: account, gas: 30 * 5000000 })
         .then(resolve)
         .catch(reject)
     })
@@ -376,7 +376,7 @@ export const useClaimVote = () => {
     return new Promise((resolve, reject) => {
       callContract.methods
         .recallVotesFromProposal(proposalIndex)
-        .send({ from: account, gas: 5000000 })
+        .send({ from: account, gas: 30 * 5000000 })
         .then(resolve)
         .catch(reject)
     })

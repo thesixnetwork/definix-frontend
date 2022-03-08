@@ -34,6 +34,7 @@ import { sendAnalyticsData } from 'utils/definixAnalytics'
 import useWallet from 'hooks/useWallet'
 import ModalHeader from './ModalHeader'
 import ConfirmAddModalBottom from './ConfirmAddModalBottom'
+import { getCaver } from 'utils/caver'
 
 const isKlipConnector = (connector) => connector instanceof KlipConnector
 
@@ -199,7 +200,7 @@ export default function ConfirmAddModal({
             const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
             const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
             // @ts-ignore
-            const caver = new Caver(window.caver)
+            const caver = getCaver()
             caver.klay
               .signTransaction({
                 type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
