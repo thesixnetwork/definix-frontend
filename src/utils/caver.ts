@@ -14,10 +14,10 @@ const web3HttpProvider = new Web3.providers.HttpProvider(process.env.REACT_APP_B
 /**
  * Provides a caver instance using our own private provider httpProver
  */
-let caverInstance;
+let caverInstance
 const getCaver = () => {
   if ((window as any).klaytn && (window as any).klaytn.networkVersion == process.env.REACT_APP_CHAIN_ID) {
-    return window.caver;
+    return window.caver
   } else {
     if (!caverInstance) {
       caverInstance = new Caver(httpProvider)

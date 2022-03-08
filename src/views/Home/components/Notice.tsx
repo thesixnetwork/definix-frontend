@@ -7,7 +7,7 @@ import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
 const NOTICE_LIST = {
   ko: '/notice_ko.json',
-  en: '/notice_en.json'
+  en: '/notice_en.json',
 }
 
 import {
@@ -177,19 +177,23 @@ const HomeNotice: React.FC = () => {
 
   useEffect(() => {
     fetch(NOTICE_LIST[i18n.languages[0]]).then(async (res: any) => {
-      const data = await res.json();
-      setNotices(Object.values(data).reduce<NoticeProps[]>((acc, item) => {
-        if (item[4] === 'TRUE') {
-          acc.push({
-            id: acc.length,
-            title: item[0],
-            content: item[1],
-            link: item[2],
-            linkLabel: item[3]
-          })
-        }
-        return acc;
-      }, []).reverse());
+      const data = await res.json()
+      setNotices(
+        Object.values(data)
+          .reduce<NoticeProps[]>((acc, item) => {
+            if (item[4] === 'TRUE') {
+              acc.push({
+                id: acc.length,
+                title: item[0],
+                content: item[1],
+                link: item[2],
+                linkLabel: item[3],
+              })
+            }
+            return acc
+          }, [])
+          .reverse(),
+      )
     })
   }, [i18n.languages])
 

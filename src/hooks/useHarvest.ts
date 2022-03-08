@@ -145,19 +145,25 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
       await harvestAllUsingKlip(farms, 0)
     } else {
       await farms.map(async (farm) => {
-        await harvest(herodotusContract, farm.pid, account).then(() => setHarvestResultList([
-          {
-            symbol: farm.lpSymbol,
-            isSuccess: true,
-          },
-          ...harvestResultList
-        ])).catch(() => setHarvestResultList([
-          {
-            symbol: farm.lpSymbol,
-            isSuccess: false,
-          },
-          ...harvestResultList
-        ]))
+        await harvest(herodotusContract, farm.pid, account)
+          .then(() =>
+            setHarvestResultList([
+              {
+                symbol: farm.lpSymbol,
+                isSuccess: true,
+              },
+              ...harvestResultList,
+            ]),
+          )
+          .catch(() =>
+            setHarvestResultList([
+              {
+                symbol: farm.lpSymbol,
+                isSuccess: false,
+              },
+              ...harvestResultList,
+            ]),
+          )
       })
     }
     dispatch(fetchFarmUserDataAsync(account))

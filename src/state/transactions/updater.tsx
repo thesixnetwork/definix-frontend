@@ -41,8 +41,8 @@ export default function Updater(): null {
     Object.keys(transactions)
       .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
       .forEach((hash) => {
-        getCaver().klay
-          ?.getTransactionReceipt(hash)
+        getCaver()
+          .klay?.getTransactionReceipt(hash)
           .then((receipt) => {
             if (receipt) {
               dispatch(

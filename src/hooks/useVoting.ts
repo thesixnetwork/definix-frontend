@@ -267,7 +267,7 @@ export const useApproveToService = (max) => {
       )
       const txHash = await klipProvider.checkResponse()
       setShowModal(false)
-      return txHash;
+      return txHash
     }
     const callContract = getContract(IUsageFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {

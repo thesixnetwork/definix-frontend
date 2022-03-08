@@ -306,7 +306,7 @@ export const harvest = async (herodotusContract, pid, account) => {
           })
         })
         .catch((e) => {
-          throw e;
+          throw e
         })
     }
 
@@ -317,7 +317,7 @@ export const harvest = async (herodotusContract, pid, account) => {
         return tx.transactionHash
       })
       .catch((e) => {
-        throw e;
+        throw e
       })
     // .on('transactionHash', (tx) => {
     //   return tx.transactionHash
@@ -346,7 +346,7 @@ export const harvest = async (herodotusContract, pid, account) => {
         })
       })
       .catch((e) => {
-        throw e;
+        throw e
       })
   }
 
@@ -357,7 +357,7 @@ export const harvest = async (herodotusContract, pid, account) => {
       return tx.transactionHash
     })
     .catch((e) => {
-      throw e;
+      throw e
     })
 }
 

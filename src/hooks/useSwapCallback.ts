@@ -219,7 +219,7 @@ export function useSwapCallback(
           const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
           const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
-          const caver = getCaver();
+          const caver = getCaver()
 
           // eslint-disable-next-line consistent-return
           return caver.klay

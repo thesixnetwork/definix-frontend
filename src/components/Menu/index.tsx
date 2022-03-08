@@ -10,7 +10,7 @@ import SettingsModal from 'components/SettingModal'
 
 const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
   const { account, connect, reset } = useWallet()
-  const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
+  const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false)
 
   const { i18n, t } = useTranslation()
 
@@ -26,15 +26,17 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
 
   const onChangeNetwork = useCallback(() => {
     if ((window as any).klaytn) {
-      setIsWrongNetwork((window as any).klaytn && (window as any).klaytn.networkVersion != process.env.REACT_APP_CHAIN_ID)
+      setIsWrongNetwork(
+        (window as any).klaytn && (window as any).klaytn.networkVersion != process.env.REACT_APP_CHAIN_ID,
+      )
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    onChangeNetwork();
+    onChangeNetwork()
     if ((window as any).klaytn) {
-      (window as any).klaytn.on('networkChanged', function() {
-        onChangeNetwork();
+      ;(window as any).klaytn.on('networkChanged', function () {
+        onChangeNetwork()
       })
     }
   }, [])

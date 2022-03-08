@@ -7,11 +7,7 @@ import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
 import useWallet from 'hooks/useWallet'
 import { useAllTokens } from '../../hooks/Tokens'
 import { AppDispatch, AppState } from '../index'
-import {
-  addSerializedPair,
-  SerializedPair,
-  SerializedToken,
-} from './actions'
+import { addSerializedPair, SerializedPair, SerializedToken } from './actions'
 
 function serializeToken(token: Token): SerializedToken {
   return {
