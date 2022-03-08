@@ -16,8 +16,7 @@ const web3HttpProvider = new Web3.providers.HttpProvider(process.env.REACT_APP_B
  */
 let caverInstance;
 const getCaver = () => {
-  const { klaytn } = window as any;
-  if (klaytn && klaytn.networkVersion == process.env.REACT_APP_CHAIN_ID) {
+  if ((window as any).klaytn && (window as any).klaytn.networkVersion == process.env.REACT_APP_CHAIN_ID) {
     return window.caver;
   } else {
     if (!caverInstance) {
