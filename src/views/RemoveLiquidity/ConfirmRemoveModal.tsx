@@ -252,7 +252,7 @@ export default function ConfirmRemoveModal({
           const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
           const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
-          const caver = getCaver();
+          const caver = getCaver()
 
           await caver.klay
             .signTransaction({

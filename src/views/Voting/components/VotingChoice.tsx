@@ -130,7 +130,7 @@ const VotingChoice: React.FC = () => {
       res
         .then(() => {
           setTrState(TransactionState.SUCCESS)
-          !!participatedProposal && setIsVoteMore(true);
+          !!participatedProposal && setIsVoteMore(true)
           toastSuccess(
             t('{{Action}} Complete', {
               Action: t('actionVote'),
@@ -139,7 +139,7 @@ const VotingChoice: React.FC = () => {
         })
         .catch(() => {
           setTrState(TransactionState.ERROR)
-          !!participatedProposal && setIsVoteMore(true);
+          !!participatedProposal && setIsVoteMore(true)
           toastError(
             t('{{Action}} Failed', {
               Action: t('actionVote'),

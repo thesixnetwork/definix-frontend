@@ -96,7 +96,7 @@ const WithdrawCalculateModal = ({
         ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
         : 0
 
-        if (isKlipConnector(connector)) {
+      if (isKlipConnector(connector)) {
         klipProvider.genQRcodeContactInteract(
           getAddress(rebalance.address),
           JSON.stringify(getAbiRebalanceByName('removeFund')),

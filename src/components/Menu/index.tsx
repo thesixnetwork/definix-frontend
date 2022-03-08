@@ -25,14 +25,18 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
   }, [pathname])
 
   const onChangeNetwork = useCallback(() => {
-    setIsWrongNetwork((window as any).klaytn && (window as any).klaytn.networkVersion != process.env.REACT_APP_CHAIN_ID)
+    if ((window as any).klaytn) {
+      setIsWrongNetwork((window as any).klaytn && (window as any).klaytn.networkVersion != process.env.REACT_APP_CHAIN_ID)
+    }
   }, []);
 
   useEffect(() => {
     onChangeNetwork();
-    (window as any).klaytn.on('networkChanged', function() {
-      onChangeNetwork();
-    })
+    if ((window as any).klaytn) {
+      (window as any).klaytn.on('networkChanged', function() {
+        onChangeNetwork();
+      })
+    }
   }, [])
 
   return (

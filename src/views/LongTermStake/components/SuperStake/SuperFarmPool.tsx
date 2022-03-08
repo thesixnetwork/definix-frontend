@@ -299,7 +299,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                     onChange={(event) => {
                       setSelectedToken({
                         ...selectedToken,
-                        'longterm_18': {
+                        longterm_18: {
                           checked: event.target.checked,
                           pools: false,
                           farms: false,
