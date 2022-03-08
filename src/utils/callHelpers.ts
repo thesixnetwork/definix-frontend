@@ -3,12 +3,12 @@ import { ethers } from 'ethers'
 import { getHerodotusAddress } from 'utils/addressHelpers'
 import UseDeParam from 'hooks/useDeParam'
 import Caver from 'caver-js'
+import { getCaver } from './caver'
 
 const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
 const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
-// @ts-ignore
-const caver = new Caver(window.caver)
+const caver = getCaver()
 
 export const approve = async (lpContract, herodotusContract, account) => {
   const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
@@ -19,7 +19,7 @@ export const approve = async (lpContract, herodotusContract, account) => {
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
         from: account,
         to: lpContract._address,
-        gas: 300000,
+        gas: 30 * 300000,
         data: lpContract.methods.approve(herodotusContract.options.address, ethers.constants.MaxUint256).encodeABI(),
       })
       .then((userSignTx) => {
@@ -37,11 +37,11 @@ export const approve = async (lpContract, herodotusContract, account) => {
 
   return lpContract.methods
     .approve(herodotusContract.options.address, ethers.constants.MaxUint256)
-    .send({ from: account, gas: 300000 })
+    .send({ from: account, gas: 30 * 300000 })
 }
 
 export const approveOther = async (lpContract, spender, account) => {
-  return lpContract.methods.approve(spender, ethers.constants.MaxUint256).send({ from: account, gas: 300000 })
+  return lpContract.methods.approve(spender, ethers.constants.MaxUint256).send({ from: account, gas: 30 * 300000 })
 }
 
 export const stake = async (herodotusContract, pid, amount, account) => {
@@ -54,7 +54,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: account,
           to: getHerodotusAddress(),
-          gas: 300000,
+          gas: 30 * 300000,
           data: herodotusContract.methods
             .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
             .encodeABI(),
@@ -76,7 +76,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
 
     return herodotusContract.methods
       .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-      .send({ from: account, gas: 300000 })
+      .send({ from: account, gas: 30 * 300000 })
       .then((tx) => {
         return tx.transactionHash
       })
@@ -91,7 +91,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
         from: account,
         to: getHerodotusAddress(),
-        gas: 300000,
+        gas: 30 * 300000,
         data: herodotusContract.methods
           .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
           .encodeABI(),
@@ -115,7 +115,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
 
   return herodotusContract.methods
     .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: 300000 })
+    .send({ from: account, gas: 30 * 300000 })
     .then((tx) => {
       return tx.transactionHash
     })
@@ -127,7 +127,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
 export const sousStake = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
     .deposit(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: 300000 })
+    .send({ from: account, gas: 30 * 300000 })
     .then((tx) => {
       return tx.transactionHash
     })
@@ -142,7 +142,7 @@ export const sousStake = async (sousChefContract, amount, account) => {
 export const sousStakeBnb = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
     .deposit()
-    .send({ from: account, gas: 300000, value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString() })
+    .send({ from: account, gas: 30 * 300000, value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString() })
     .then((tx) => {
       return tx.transactionHash
     })
@@ -164,7 +164,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: account,
           to: getHerodotusAddress(),
-          gas: 300000,
+          gas: 30 * 300000,
           data: herodotusContract.methods
             .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
             .encodeABI(),
@@ -186,7 +186,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
 
     return herodotusContract.methods
       .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-      .send({ from: account, gas: 300000 })
+      .send({ from: account, gas: 30 * 300000 })
       .then((tx) => {
         return tx.transactionHash
       })
@@ -201,7 +201,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
         from: account,
         to: getHerodotusAddress(),
-        gas: 300000,
+        gas: 30 * 300000,
         data: herodotusContract.methods
           .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
           .encodeABI(),
@@ -225,7 +225,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
 
   return herodotusContract.methods
     .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: 300000 })
+    .send({ from: account, gas: 30 * 300000 })
     .then((tx) => {
       return tx.transactionHash
     })
@@ -261,7 +261,7 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
 
   return sousChefContract.methods
     .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: 300000 })
+    .send({ from: account, gas: 30 * 300000 })
     .then((tx) => {
       return tx.transactionHash
     })
@@ -292,7 +292,7 @@ export const harvest = async (herodotusContract, pid, account) => {
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: account,
           to: getHerodotusAddress(),
-          gas: 300000,
+          gas: 30 * 300000,
           data: herodotusContract.methods.leaveStaking('0').encodeABI(),
         })
         .then((userSignTx) => {
@@ -312,7 +312,7 @@ export const harvest = async (herodotusContract, pid, account) => {
 
     return herodotusContract.methods
       .leaveStaking('0')
-      .send({ from: account, gas: 300000 })
+      .send({ from: account, gas: 30 * 300000 })
       .then((tx) => {
         return tx.transactionHash
       })
@@ -330,7 +330,7 @@ export const harvest = async (herodotusContract, pid, account) => {
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
         from: account,
         to: getHerodotusAddress(),
-        gas: 300000,
+        gas: 30 * 300000,
         data: herodotusContract.methods.deposit(pid, '0').encodeABI(),
       })
       .then((userSignTx) => {
@@ -352,7 +352,7 @@ export const harvest = async (herodotusContract, pid, account) => {
 
   return herodotusContract.methods
     .deposit(pid, '0')
-    .send({ from: account, gas: 400000 })
+    .send({ from: account, gas: 30 * 400000 })
     .then((tx) => {
       return tx.transactionHash
     })
@@ -364,7 +364,7 @@ export const harvest = async (herodotusContract, pid, account) => {
 export const soushHarvest = async (sousChefContract, account) => {
   return sousChefContract.methods
     .deposit('0')
-    .send({ from: account, gas: 300000 })
+    .send({ from: account, gas: 30 * 300000 })
     .then((tx) => {
       return tx.transactionHash
     })
@@ -379,7 +379,7 @@ export const soushHarvest = async (sousChefContract, account) => {
 export const soushHarvestBnb = async (sousChefContract, account) => {
   return sousChefContract.methods
     .deposit()
-    .send({ from: account, gas: 300000, value: new BigNumber(0) })
+    .send({ from: account, gas: 30 * 300000, value: new BigNumber(0) })
     .then((tx) => {
       return tx.transactionHash
     })

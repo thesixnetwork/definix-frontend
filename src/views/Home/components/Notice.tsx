@@ -5,8 +5,10 @@ import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
-import EN_NOTICE from 'assets/notice/en.json'
-import KO_NOTICE from 'assets/notice/ko.json'
+const NOTICE_LIST = {
+  ko: '/notice_ko.json',
+  en: '/notice_en.json'
+}
 
 import {
   Text,
@@ -29,24 +31,6 @@ export interface NoticeProps {
   link?: string
   linkLabel?: string
 }
-
-function convertNotice(list) {
-  const length = +list['length/0']
-  const arr = Object.entries(list)
-  return arr.slice(1).reduce((acc, [key, val]) => {
-    const [noticeKey, noticeIndex] = key.split('/')
-    if (!acc[length - +noticeIndex]) {
-      acc[length - +noticeIndex] = {}
-    }
-    if (val !== '') {
-      acc[length - +noticeIndex][noticeKey] = val
-    }
-    return acc
-  }, [])
-}
-
-const EN_NOTICE_LIST = convertNotice(EN_NOTICE)
-const KO_NOTICE_LIST = convertNotice(KO_NOTICE)
 
 const Wrap = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {
@@ -187,12 +171,26 @@ const SliderOptions = {
 
 const HomeNotice: React.FC = () => {
   const { i18n } = useTranslation()
-  const [notices, setNotices] = useState(i18n.languages[0] === 'ko' ? KO_NOTICE_LIST : EN_NOTICE_LIST)
+  const [notices, setNotices] = useState([])
   const [slideIndex, setSlideIndex] = useState(0)
   const sliderRef = useRef(null)
 
   useEffect(() => {
-    setNotices(i18n.languages[0] === 'ko' ? KO_NOTICE_LIST : EN_NOTICE_LIST)
+    fetch(NOTICE_LIST[i18n.languages[0]]).then(async (res: any) => {
+      const data = await res.json();
+      setNotices(Object.values(data).reduce<NoticeProps[]>((acc, item) => {
+        if (item[4] === 'TRUE') {
+          acc.push({
+            id: acc.length,
+            title: item[0],
+            content: item[1],
+            link: item[2],
+            linkLabel: item[3]
+          })
+        }
+        return acc;
+      }, []).reverse());
+    })
   }, [i18n.languages])
 
   return (
@@ -213,7 +211,6 @@ const HomeNotice: React.FC = () => {
             }}
           >
             {notices.map((notice, index) => (
-              // eslint-disable-next-line react/no-array-index-key
               <NoticeItem key={index} {...notice} />
             ))}
           </NoticeSlider>

@@ -125,7 +125,7 @@ const CalculateModal = ({
         const tx = await rebalanceContract.methods
           // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
           .addFund(arrayTokenAmount, usdTokenAmount, 0)
-          .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
+          .send({ from: account, gas: 30 * 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
         setTx(tx)
         handleLocalStorage(tx)
       }

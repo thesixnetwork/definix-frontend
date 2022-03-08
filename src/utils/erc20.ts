@@ -2,21 +2,17 @@ import { provider as ProviderType } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
 import { AbiItem } from 'web3-utils'
 import erc20 from 'config/abi/erc20.json'
-import Caver from 'caver-js'
+import { getCaver } from './caver'
 // import getRPCHalper from 'utils/getRPCHalper'
 // import caver from '../klaytn/caver'
 
 export const getContract = (provider: ProviderType, address: string) => {
-  // @ts-ignore
-  const caver = window.caver || new Caver(process.env.REACT_APP_NODE_3)
-  // const caver = window.caver || new Caver(await getRPCHalper())
+  const caver = getCaver()
   return new caver.klay.Contract(erc20 as unknown as AbiItem, address)
 }
 
 export const getCustomContract = (provider: ProviderType, abi: AbiItem, address: string) => {
-  // @ts-ignore
-  const caver = window.caver || new Caver(process.env.REACT_APP_NODE_3)
-  // const caver = window.caver || new Caver(await getRPCHalper())
+  const caver = getCaver()
   return new caver.klay.Contract(abi, address)
 }
 
