@@ -109,7 +109,7 @@ const WithdrawCalculateModal = ({
       } else {
         const tx = await rebalanceContract.methods
           .removeFund(lpAmount, toAllAssets, outputRatios, outputUSDRatio)
-          .send({ from: account, gas: 5000000 })
+          .send({ from: account, gas: 30 * 5000000 })
         setTx(tx)
         handleLocalStorage(tx)
       }
