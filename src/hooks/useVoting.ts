@@ -26,6 +26,7 @@ import {
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
+import { getEstimateGas } from 'utils/callHelpers'
 
 export const useAvailableVotes = () => {
   const { fastRefresh } = useRefresh()
@@ -208,10 +209,11 @@ export const usePropose = (
     }
 
     const callContract = getContract(IProposalFacet.abi, getVFinixVoting())
+    const estimatedGas = await getEstimateGas(callContract.methods.propose, account, ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
     return new Promise((resolve, reject) => {
       callContract.methods
         .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
-        .send({ from: account, gas: 30 * 5000000 })
+        .send({ from: account, gas: estimatedGas })
         .then(resolve)
         .catch(reject)
     })
@@ -340,10 +342,11 @@ export const useVote = () => {
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const estimatedGas = await getEstimateGas(callContract.methods.vote, account, proposalIndex, votingPowers)
       callContract.methods
         .vote(proposalIndex, votingPowers)
-        .send({ from: account, gas: 30 * 5000000 })
+        .send({ from: account, gas: estimatedGas })
         .then(resolve)
         .catch(reject)
     })
@@ -373,10 +376,11 @@ export const useClaimVote = () => {
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const estimatedGas = await getEstimateGas(callContract.methods.recallVotesFromProposal, account, proposalIndex)
       callContract.methods
         .recallVotesFromProposal(proposalIndex)
-        .send({ from: account, gas: 30 * 5000000 })
+        .send({ from: account, gas: estimatedGas })
         .then(resolve)
         .catch(reject)
     })
