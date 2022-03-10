@@ -1,8 +1,6 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
 import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAbiIProposalFacetByName, getAbiIUsageFacetByName, getAbiIVotingFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
@@ -13,12 +11,9 @@ import VotingFacet from '../config/abi/VotingFacet.json'
 import IServiceInfoFacet from '../config/abi/IServiceInfoFacet.json'
 import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
-import { ParticipatedVoting, State } from '../state/types'
+import { State } from '../state/types'
 import { getVFinix, getVFinixVoting } from '../utils/addressHelpers'
 import {
-  fetchAllProposalOfType,
-  fetchProposalIndex,
-  fetchProposal,
   fetchVotesByIndex,
   fetchVotesByIpfs,
   fetchAvailableVotes,

@@ -51,7 +51,6 @@ const TextEndDate = styled(Text)`
 
 const VotingItem: React.FC<Props> = ({ item, isStartDate }) => {
   const { t, i18n } = useTranslation()
-  console.log(item.isParticipated)
   return (
     <Item as={Link} to={`/voting/detail/${get(item, 'ipfsHash')}/${get(item, 'proposalIndex')}`}>
       <Flex>

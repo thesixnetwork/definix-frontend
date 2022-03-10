@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import { get } from 'lodash-es'
 import axios from 'axios'
@@ -448,7 +447,6 @@ export const fetchAllProposalOfAddress = (account, proposal) => async (dispatch)
   const fetchPromise = []
   fetchPromise.push(getAllProposalOfAddress(account, proposal))
   const [[allProposalOfAddress]] = await Promise.all(fetchPromise)
-  console.log('allProposalOfAddress', allProposalOfAddress)
   dispatch(setAllProposalOfAddress({ allProposalOfAddress }))
 }
 

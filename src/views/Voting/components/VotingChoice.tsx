@@ -21,7 +21,7 @@ import {
 } from 'hooks/useVoting'
 import useRefresh from 'hooks/useRefresh'
 import { useToast } from 'state/hooks'
-import { ParticipatedVoting, Voting } from 'state/types'
+import { Voting } from 'state/types'
 import VotingConfirmModal from './VotingConfirmModal'
 import { TransactionState } from '../types'
 import VotingChoiceItem from './VotingChoiceItem'
