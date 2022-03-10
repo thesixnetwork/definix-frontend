@@ -87,14 +87,20 @@ const VotingContent: React.FC = () => {
   const { proposalOfAddress } = useAllProposalOfAddress()
   const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const participatedProposal = useMemo(() => {
-    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
+    if (!proposalOfAddress) {
+      return undefined;
+    }
+    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id) || false;
   }, [id, proposalOfAddress])
 
   return (
     <WrapContent>
       <Flex>
         {proposal.proposals_type === 'core' && <Badge type={BadgeType.CORE} />}
-        {participatedProposal && <Badge type={BadgeType.PARTICIPATION} />}
+        {
+          // @ts-ignore
+          participatedProposal === false ? <></> : <Badge type={BadgeType.PARTICIPATION} isLoading={participatedProposal === undefined} />
+        }
       </Flex>
       <TextTitle>{useVoteTranslate(proposal.title, 'title')}</TextTitle>
       <TextEndDate>

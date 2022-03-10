@@ -57,18 +57,25 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const { proposalOfAddress } = useAllProposalOfAddress()
   const listAllProposal: VotingItem[] = get(allProposalMap, 'allProposalMap')
   const participatedVotes = useMemo(() => {
-    return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
+    return proposalOfAddress ? proposalOfAddress.map(({ ipfsHash }) => ipfsHash) : null
   }, [proposalOfAddress])
   const voteList = useMemo(() => {
     if (listAllProposal && listAllProposal.length > 0) {
       const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
+        if (!participatedVotes) {
+          return item;
+        }
         if (participatedVotes.includes(get(item, 'ipfsHash'))) {
           return {
             isParticipated: true,
             ...item,
           }
+        } else {
+          return {
+            isParticipated: false,
+            ...item,
+          }
         }
-        return item
       })
 
       const filterListAllProposal = participatedAllProposal.filter((item) => {

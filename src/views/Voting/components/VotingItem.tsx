@@ -51,11 +51,14 @@ const TextEndDate = styled(Text)`
 
 const VotingItem: React.FC<Props> = ({ item, isStartDate }) => {
   const { t, i18n } = useTranslation()
+  console.log(item.isParticipated)
   return (
     <Item as={Link} to={`/voting/detail/${get(item, 'ipfsHash')}/${get(item, 'proposalIndex')}`}>
       <Flex>
         {item.proposals_type === 'core' && <Badge type={BadgeType.CORE} />}
-        {item.isParticipated && <Badge type={BadgeType.PARTICIPATION} />}
+        {
+          item.isParticipated === false ? <></> : <Badge type={BadgeType.PARTICIPATION} isLoading={item.isParticipated === undefined} />
+        }
       </Flex>
       <Text textStyle="R_14R" color="black" mt="12px">
         {useVoteTranslate(item.title, 'title')}
