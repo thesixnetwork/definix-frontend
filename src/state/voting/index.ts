@@ -8,6 +8,8 @@ import IProposalFacet from '../../config/abi/IProposalFacet.json'
 import IUsageFacet from '../../config/abi/IUsageFacet.json'
 import multicall from '../../utils/multicall'
 import { getVFinix, getVFinixVoting } from '../../utils/addressHelpers'
+import VotingFacet from '../../config/abi/VotingFacet.json'
+import { getContract } from 'utils/caver'
 
 const initialState = {
   allProposal: [],
@@ -18,6 +20,7 @@ const initialState = {
   totalVote: '',
   allVotesByIpfs: [],
   availableVotes: '',
+  allProposalOfAddress: []
 }
 
 export const votingSlice = createSlice({
@@ -50,11 +53,15 @@ export const votingSlice = createSlice({
       const { availableVotes } = action.payload
       state.availableVotes = availableVotes
     },
+    setAllProposalOfAddress: (state, action) => {
+      const { allProposalOfAddress } = action.payload
+      state.allProposalOfAddress = allProposalOfAddress
+    },
   },
 })
 
 // Actions
-export const { setAllProposal, setProposalIndex, setProposal, setAllVoteByIndex, setAllVoteByIpfs, setAvailableVotes } =
+export const { setAllProposal, setProposalIndex, setProposal, setAllVoteByIndex, setAllVoteByIpfs, setAvailableVotes, setAllProposalOfAddress } =
   votingSlice.actions
 
 const getAllProposalOfType = async ({ vFinixVoting }) => {
@@ -374,5 +381,75 @@ export const fetchAvailableVotes = (account) => async (dispatch) => {
   const [[availableVotes]] = await Promise.all(fetchPromise)
   dispatch(setAvailableVotes({ availableVotes }))
 }
+
+export const getIsParticipated = async (index: number, account) => {
+  const contract = getContract(VotingFacet.abi, getVFinixVoting())
+  return process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? contract.methods.isUserParticipated(index, account).call() : contract.methods.isParticipated(index).call();
+}
+
+export const getIsClaimable = (index: number, account) => {
+  const contract = getContract(VotingFacet.abi, getVFinixVoting())
+  return process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? contract.methods.isUserClaimable(index, account).call() : contract.methods.isClaimable(index).call()
+}
+
+export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIndex: number, voter: string) => {
+  // const { account, connector } = useWallet()
+  const contract = getContract(IProposalFacet.abi, getVFinixVoting())
+
+  return contract.methods.getVotingPowersOfAddress(_proposalIndex, _optionIndex, voter).call()
+}
+
+export const getAllProposalOfAddress = async (account, proposal) => {
+  if (!account) return [];
+  let userProposalsFilter = JSON.parse(JSON.stringify(proposal))
+  const isParticipateds = []
+  for (let i = 0; i < userProposalsFilter.length; i++) {
+    userProposalsFilter[i].choices = []
+    const [isParticipated, IsClaimable] = await Promise.all([
+      // Promise.resolve(true),
+      // Promise.resolve(true),
+      getIsParticipated(userProposalsFilter[i].proposalIndex, account),
+      getIsClaimable(userProposalsFilter[i].proposalIndex, account),
+    ])
+    // const [IsClaimable] = await Promise.all([getIsClaimable(userProposalsFilter[i].proposalIndex)])
+    isParticipateds.push(isParticipated)
+    userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
+    userProposalsFilter[i].IsClaimable = IsClaimable
+  }
+
+  userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
+
+  for (let i = 0; i < userProposalsFilter.length; i++) {
+    // eslint-disable-next-line
+    const metaData = (await axios.get(`${process.env.REACT_APP_IPFS}/${userProposalsFilter[i].ipfsHash}`)).data
+
+    userProposalsFilter[i].choices = []
+    userProposalsFilter[i].title = metaData.title
+    userProposalsFilter[i].endDate = +metaData.end_unixtimestamp * 1000
+
+    for (let j = 0; j < userProposalsFilter[i].optionsCount; j++) {
+      // eslint-disable-next-line
+      const votingPower = new BigNumber(
+        // eslint-disable-next-line
+        await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account),
+      )
+        .div(1e18)
+        .toNumber()
+      if (votingPower > 0) {
+        userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
+      }
+    }
+  }
+  return [userProposalsFilter];
+    // setUserProposals(userProposalsFilter as ParticipatedVoting[])
+}
+
+export const fetchAllProposalOfAddress = (account, proposal) => async (dispatch) => {
+  const fetchPromise = []
+  fetchPromise.push(getAllProposalOfAddress(account, proposal))
+  const [[allProposalOfAddress]] = await Promise.all(fetchPromise)
+  dispatch(setAllProposalOfAddress({ allProposalOfAddress }))
+}
+
 
 export default votingSlice.reducer

@@ -83,7 +83,7 @@ const WrapContent = styled(Flex)`
 const VotingContent: React.FC = () => {
   const { t, i18n } = useTranslation()
   const { id }: { id: string; proposalIndex: any } = useParams()
-  const { proposal } = useGetProposal(id)
+  const { proposal } = useGetProposal()
   const { proposalOfAddress } = useAllProposalOfAddress()
   const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const participatedProposal = useMemo(() => {

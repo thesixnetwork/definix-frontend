@@ -313,7 +313,8 @@ export interface VotingState {
   totalVote: ''
   allVotesByIndex: []
   allVotesByIpfs: []
-  availableVotes: ''
+  availableVotes: '',
+  allProposalOfAddress: ParticipatedVoting[]
 }
 
 // Global state

@@ -44,14 +44,8 @@ export const useAvailableVotes = () => {
 }
 
 export const useAllProposalOfType = () => {
-  const { fastRefresh } = useRefresh()
-  const dispatch = useDispatch()
   const allProposal = useSelector((state: State) => state.voting.allProposal)
   const allProposalMap = useSelector((state: State) => state.voting.allProposalMap)
-
-  useEffect(() => {
-    dispatch(fetchAllProposalOfType())
-  }, [fastRefresh, dispatch])
 
   return { allProposal, allProposalMap }
 }
@@ -82,72 +76,12 @@ export const useVotesByIpfs = (ipfs) => {
 }
 
 export const useAllProposalOfAddress = () => {
-  const { fastRefresh } = useRefresh()
-  // const dispatch = useDispatch()
-  const { account } = useWallet()
-  const [proposalOfAddress, setUserProposals] = useState<ParticipatedVoting[]>([])
-  const proposal = useSelector((state: State) => state.voting.allProposal)
-
-  useEffect(() => {
-    const fetch = async () => {
-      if (account) {
-        let userProposalsFilter = JSON.parse(JSON.stringify(proposal))
-        const isParticipateds = []
-        for (let i = 0; i < userProposalsFilter.length; i++) {
-          userProposalsFilter[i].choices = []
-          const [isParticipated, IsClaimable] = await Promise.all([
-            getIsParticipated(userProposalsFilter[i].proposalIndex, account),
-            getIsClaimable(userProposalsFilter[i].proposalIndex, account),
-          ])
-          // const [IsClaimable] = await Promise.all([getIsClaimable(userProposalsFilter[i].proposalIndex)])
-          isParticipateds.push(isParticipated)
-          userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
-          userProposalsFilter[i].IsClaimable = IsClaimable
-        }
-
-        userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
-
-        for (let i = 0; i < userProposalsFilter.length; i++) {
-          // eslint-disable-next-line
-          const metaData = (await axios.get(`${process.env.REACT_APP_IPFS}/${userProposalsFilter[i].ipfsHash}`)).data
-
-          userProposalsFilter[i].choices = []
-          userProposalsFilter[i].title = metaData.title
-          userProposalsFilter[i].endDate = +metaData.end_unixtimestamp * 1000
-
-          for (let j = 0; j < userProposalsFilter[i].optionsCount; j++) {
-            // eslint-disable-next-line
-            const votingPower = new BigNumber(
-              // eslint-disable-next-line
-              await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account),
-            )
-              .div(1e18)
-              .toNumber()
-            if (votingPower > 0) {
-              userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
-            }
-          }
-        }
-
-        setUserProposals(userProposalsFilter as ParticipatedVoting[])
-      }
-    }
-    fetch()
-  }, [fastRefresh, proposal, account])
-
-  return { proposalOfAddress }
+  const allProposalOfAddress = useSelector((state: State) => state.voting.allProposalOfAddress)
+  return { proposalOfAddress: allProposalOfAddress }
 }
 
-export const useProposalIndex = (index) => {
-  const { slowRefresh } = useRefresh()
-  const dispatch = useDispatch()
+export const useProposalIndex = () => {
   const indexProposal = useSelector((state: State) => state.voting.indexProposal)
-
-  useEffect(() => {
-    if (index) {
-      dispatch(fetchProposalIndex(index))
-    }
-  }, [slowRefresh, dispatch])
 
   return { indexProposal }
 }
@@ -240,14 +174,8 @@ export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIn
   return contract.methods.getVotingPowersOfAddress(_proposalIndex, _optionIndex, voter).call()
 }
 
-export const useGetProposal = (proposalId: string) => {
-  const { fastRefresh } = useRefresh()
-  const dispatch = useDispatch()
+export const useGetProposal = () => {
   const proposal = useSelector((state: State) => state.voting.proposals)
-
-  useEffect(() => {
-    dispatch(fetchProposal(proposalId))
-  }, [fastRefresh, dispatch])
 
   return { proposal }
 }
