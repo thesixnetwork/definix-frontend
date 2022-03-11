@@ -22,7 +22,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build
-        run: yarn build:development
+        run: yarn build:stage
 
       - name: Deploy
         uses: jakejarvis/s3-sync-action@master
