@@ -176,25 +176,38 @@ const HomeNotice: React.FC = () => {
   const sliderRef = useRef(null)
 
   useEffect(() => {
-    fetch(NOTICE_LIST[i18n.languages[0]]).then(async (res: any) => {
-      const data = await res.json()
-      setNotices(
-        Object.values(data)
-          .reduce<NoticeProps[]>((acc, item) => {
-            if (item[4] === 'TRUE') {
-              acc.push({
-                id: acc.length,
-                title: item[0],
-                content: item[1],
-                link: item[2],
-                linkLabel: item[3],
-              })
-            }
-            return acc
-          }, [])
-          .reverse(),
-      )
-    })
+    fetch(NOTICE_LIST[i18n.languages[0]])
+      .then(async (res: any) => {
+        const data = await res.json()
+        setNotices(
+          Object.values(data)
+            .reduce<NoticeProps[]>((acc, item) => {
+              if (item[4] === 'TRUE') {
+                acc.push({
+                  id: acc.length,
+                  title: item[0],
+                  content: item[1],
+                  link: item[2],
+                  linkLabel: item[3],
+                })
+              }
+              return acc
+            }, [])
+            .reverse(),
+        )
+      })
+      .catch(() => {
+        setNotices([
+          {
+            id: 1,
+            title: 'Definix - Official DeFi protocol of Klaytn chain',
+            content:
+              'Welcome to the decentralized multi-chain Defi protocol Definix.\nManage your crypto assets safely and enjoy exclusive benefits for Long-term staking!',
+            link: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
+            linkLabel: 'Learn more',
+          },
+        ])
+      })
   }, [i18n.languages])
 
   return (
