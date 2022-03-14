@@ -176,25 +176,29 @@ const HomeNotice: React.FC = () => {
   const sliderRef = useRef(null)
 
   useEffect(() => {
-    fetch(NOTICE_LIST[i18n.languages[0]]).then(async (res: any) => {
-      const data = await res.json()
-      setNotices(
-        Object.values(data)
-          .reduce<NoticeProps[]>((acc, item) => {
-            if (item[4] === 'TRUE') {
-              acc.push({
-                id: acc.length,
-                title: item[0],
-                content: item[1],
-                link: item[2],
-                linkLabel: item[3],
-              })
-            }
-            return acc
-          }, [])
-          .reverse(),
-      )
-    })
+    fetch(NOTICE_LIST[i18n.languages[0]])
+      .then(async (res: any) => {
+        const data = await res.json()
+        setNotices(
+          Object.values(data)
+            .reduce<NoticeProps[]>((acc, item) => {
+              if (item[4] === 'TRUE') {
+                acc.push({
+                  id: acc.length,
+                  title: item[0],
+                  content: item[1],
+                  link: item[2],
+                  linkLabel: item[3],
+                })
+              }
+              return acc
+            }, [])
+            .reverse(),
+        )
+      })
+      .catch(() => {
+        setNotices([])
+      })
   }, [i18n.languages])
 
   return (
