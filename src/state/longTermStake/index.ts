@@ -318,13 +318,13 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
 
       let periodPenalty
       const date = new Date()
-      if (get(value, 'level') === 1) {
+      if (get(value, 'level') === 0) {
         date.setDate(date.getDate() + 7)
         periodPenalty = new Date(date.getTime() + 3600000 * offset)
-      } else if (get(value, 'level') === 2) {
+      } else if (get(value, 'level') === 1) {
         date.setDate(date.getDate() + 14)
         periodPenalty = new Date(date.getTime() + 3600000 * offset)
-      } else if (get(value, 'level') === 3) {
+      } else if (get(value, 'level') === 2) {
         date.setDate(date.getDate() + 28)
         periodPenalty = new Date(date.getTime() + 3600000 * offset)
       }
