@@ -370,7 +370,7 @@
   "Reservation fee for further": "Definix 생태계에서의 특별한 혜택, 추후 개발 활동을 위한 자금으로 사용됩니다.",
   "Learn how to stake in Farm": "팜 예치가 처음이신가요?",
   "Switch to G1": "G1 전환",
-  "Switch to G2 Beta": "G2 Beta 전환",
+  "Switch to G2 Beta": "G2 전환",
   "Your transaction will revert if there": "거래 승인 전 가격 변동이 크거나 불리할 경우 거래를 종료합니다.",
   "The difference between the market": "거래 수량이 많을수록 예상 교환비율과 실제 교환비율에 차이가 발생할 수 있습니다.",
   "For each trade a 0.2%": "거래마다 0.25%의 수수료가 발생하며, 유동성 공급자 보상(0.2%)과 Definix 스왑 관리 비용(0.05%)으로 사용됩니다.",
@@ -540,5 +540,9 @@
   "no transaction": "투표 내역이 없습니다.",
   "My Voting Power": "보유 투표권",
   "This site is optimized for": "본 사이트는 Chrome에 최적화되어 있습니다.",
-  "Removable": "회수 가능 수량"
+  "Removable": "회수 가능 수량",
+  "The network is not the": "네트워크가 메인넷이 아닙니다.\n네트워크 변경 후 새로고침 해주세요.",
+  "Please change the wallet": "지갑 네트워크를 클레이튼 메인넷으로 변경해주세요.\n지갑 연결 해제 후 네트워크를 메인넷으로 변경한 뒤 지갑을 다시 연결해주세요.",
+  "Network Change": "네트워크 변경",
+  "Please wait it is": "복구 중입니다. 잠시만 기다려주세요."
 }

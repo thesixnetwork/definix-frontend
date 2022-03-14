@@ -370,7 +370,7 @@
   "Reservation fee for further": "Reservation fee for further development of the ecosystem.",
   "Learn how to stake in Farm": "Learn how to stake in Farm",
   "Switch to G1": "Switch to G1 ",
-  "Switch to G2 Beta": "Switch to G2 Beta",
+  "Switch to G2 Beta": "Switch to G2",
   "Your transaction will revert if there": "Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.",
   "The difference between the market": "The difference between the market price and estimated price due to trade size.",
   "For each trade a 0.2%": "For each trade a 0.25% fee is paid. 0.2% goes to liquidity providers and 0.05% goes to the Definix Swap treasury.",
@@ -540,5 +540,9 @@
   "no transaction": "Don`t have any transactions in this votes.",
   "My Voting Power": "My Voting Power",
   "This site is optimized for": "This site is optimized for Chrome.",
-  "Removable": "Removable"
+  "Removable": "Removable",
+  "The network is not the": "Your wallet network is not connected to mainnet.\nPlease refresh after network change.",
+  "Please change the wallet": "Please connect your wallet again after switching the network to Klaytn mainnet.\nDisconnect your wallet and then you can switch the network. ",
+  "Network Change": "Network Change",
+  "Please wait it is": "Please wait. It is being fixed."
 }

@@ -1,15 +1,15 @@
 {
   "sheetId": "12-dWTuxdzOkJm5h_fnUZwfL9xmX9ly19SFgLcno4H3w",
-  "sheetName": "Notice",
+  "sheetName": "Notice_v2",
   "defaultValue": "",
   "result": {
-    "en": {
-      "keyCol": ["$B", "$A"],
-      "valueCol": "$D"
+    "notice_en": {
+      "keyCol": "$A",
+      "valueCol": ["$G", "$H", "$I", "$J", "$K"]
     },
-    "ko": {
-      "keyCol": ["$B", "$A"],
-      "valueCol": "$C"
+    "notice_ko": {
+      "keyCol": "$A",
+      "valueCol": ["$B", "$C", "$D", "$E", "$F"]
     }
   }
 }

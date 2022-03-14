@@ -106,7 +106,11 @@ const CurrencyInputPanel = ({
             <Text textStyle="R_14R" color="text">
               {isMobile || t('Balance')}
               <Text as="span" textStyle="R_14B" marginLeft="4px">
-                {!hideBalance && !!currency && balance ? (balance.toNumber() > 0 ? numeral(balance.toNumber()).format('0,0.0[00000]') : '0') : ' -'}
+                {!hideBalance && !!currency && balance
+                  ? balance.toNumber() > 0
+                    ? numeral(balance.toNumber()).format('0,0.0[00000]')
+                    : '0'
+                  : ' -'}
               </Text>
             </Text>
           )}

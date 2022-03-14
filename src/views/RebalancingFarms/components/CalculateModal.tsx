@@ -33,6 +33,7 @@ import SpaceBetweenFormat from './SpaceBetweenFormat'
 import CardHeading from './CardHeading'
 import VerticalAssetRatio from './VerticalAssetRatio'
 import { isKlipConnector } from 'hooks/useApprove'
+import { getEstimateGas } from 'utils/callHelpers'
 
 const CalculateModal = ({
   setTx,
@@ -122,10 +123,17 @@ const CalculateModal = ({
         setTx(tx)
         handleLocalStorage(tx)
       } else {
+        const estimatedGas = await getEstimateGas(
+          rebalanceContract.methods.addFund,
+          account,
+          arrayTokenAmount,
+          usdTokenAmount,
+          0,
+        )
         const tx = await rebalanceContract.methods
           // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
           .addFund(arrayTokenAmount, usdTokenAmount, 0)
-          .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
+          .send({ from: account, gas: estimatedGas, ...(containMainCoin ? { value: mainCoinValue } : {}) })
         setTx(tx)
         handleLocalStorage(tx)
       }

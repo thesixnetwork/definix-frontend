@@ -44,6 +44,8 @@ const TextEndDate = styled(Text)`
 
 const BoxContent = styled(Box)`
   margin-top: 32px;
+  width: 100%;
+  overflow-x: auto;
 
   > .text {
     ${({ theme }) => theme.textStyle.R_14R}
@@ -81,18 +83,28 @@ const WrapContent = styled(Flex)`
 const VotingContent: React.FC = () => {
   const { t, i18n } = useTranslation()
   const { id }: { id: string; proposalIndex: any } = useParams()
-  const { proposal } = useGetProposal(id)
+  const { proposal } = useGetProposal()
   const { proposalOfAddress } = useAllProposalOfAddress()
   const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const participatedProposal = useMemo(() => {
-    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
+    if (!proposalOfAddress) {
+      return undefined
+    }
+    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id) || false
   }, [id, proposalOfAddress])
 
   return (
     <WrapContent>
       <Flex>
         {proposal.proposals_type === 'core' && <Badge type={BadgeType.CORE} />}
-        {participatedProposal && <Badge type={BadgeType.PARTICIPATION} />}
+        {
+          // @ts-ignore
+          participatedProposal === false ? (
+            <></>
+          ) : (
+            <Badge type={BadgeType.PARTICIPATION} isLoading={participatedProposal === undefined} />
+          )
+        }
       </Flex>
       <TextTitle>{useVoteTranslate(proposal.title, 'title')}</TextTitle>
       <TextEndDate>

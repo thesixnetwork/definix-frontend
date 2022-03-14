@@ -77,13 +77,13 @@ const VotingChoice: React.FC = () => {
   const { availableVotes } = useAvailableVotes()
   const [transactionHash, setTransactionHash] = useState('')
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const { proposal: getProposal } = useGetProposal(id)
+  const { proposal: getProposal } = useGetProposal()
   const [proposal, setProposal] = useState<Voting>(getProposal)
   const { proposalOfAddress } = useAllProposalOfAddress()
   const [mapVoting, setMapVoting] = useState([])
   const { onCastVote } = useVote()
   const { fastRefresh } = useRefresh()
-  const { indexProposal } = useProposalIndex(proposalIndex)
+  const { indexProposal } = useProposalIndex()
   const allowance = useServiceAllowance()
   const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
   const isMulti = useMemo(() => proposal.choice_type === 'multiple', [proposal])
@@ -92,7 +92,7 @@ const VotingChoice: React.FC = () => {
   const { toastSuccess, toastError } = useToast()
   const [trState, setTrState] = useState<TransactionState>(TransactionState.NONE)
   const participatedProposal = useMemo(() => {
-    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
+    return proposalOfAddress ? proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id) : null
   }, [id, proposalOfAddress])
   const [isVoteMore, setIsVoteMore] = useState<boolean>(!!participatedProposal)
   const maxVotingValue = useMemo(() => {
@@ -101,7 +101,9 @@ const VotingChoice: React.FC = () => {
     return maxNum
   }, [mapVoting])
   const votedChoices = useMemo(() => {
-    return participatedProposal ? participatedProposal.choices.map(({ choiceName }) => choiceName) : []
+    return participatedProposal && participatedProposal.choices
+      ? participatedProposal.choices.map(({ choiceName }) => choiceName)
+      : []
   }, [participatedProposal])
   const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])
@@ -130,7 +132,7 @@ const VotingChoice: React.FC = () => {
       res
         .then(() => {
           setTrState(TransactionState.SUCCESS)
-          !!participatedProposal && setIsVoteMore(true);
+          !!participatedProposal && setIsVoteMore(true)
           toastSuccess(
             t('{{Action}} Complete', {
               Action: t('actionVote'),
@@ -139,7 +141,7 @@ const VotingChoice: React.FC = () => {
         })
         .catch(() => {
           setTrState(TransactionState.ERROR)
-          !!participatedProposal && setIsVoteMore(true);
+          !!participatedProposal && setIsVoteMore(true)
           toastError(
             t('{{Action}} Failed', {
               Action: t('actionVote'),

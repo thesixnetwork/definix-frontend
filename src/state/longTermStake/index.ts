@@ -310,11 +310,24 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       const utcLock = lockTimes.getTime()
       const utcLockTopup = lockTopup.getTime()
       const utcPenalty = penaltyTimestamp.getTime()
-      const utcUnLock = unLockTime.getTime()
+      // const utcUnLock = unLockTime.getTime()
       const lock = new Date(utcLock + 3600000 * offset)
       const topupTime = new Date(utcLockTopup + 3600000 * offset)
       const penaltyUnlock = new Date(utcPenalty + 3600000 * offset)
-      const unLock = new Date(utcUnLock + 3600000 * offset)
+      // const unLock = new Date(utcUnLock + 3600000 * offset)
+
+      let periodPenalty
+      const date = new Date()
+      if (get(value, 'level') === 0) {
+        date.setDate(date.getDate() + 7)
+        periodPenalty = new Date(date.getTime() + 3600000 * offset)
+      } else if (get(value, 'level') === 1) {
+        date.setDate(date.getDate() + 14)
+        periodPenalty = new Date(date.getTime() + 3600000 * offset)
+      } else if (get(value, 'level') === 2) {
+        date.setDate(date.getDate() + 28)
+        periodPenalty = new Date(date.getTime() + 3600000 * offset)
+      }
 
       locksData.push({
         id: new BigNumber(get(value, 'id._hex')).toNumber(),
@@ -333,7 +346,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         penaltyRate: get(period, '0.realPenaltyRate')[value.level] * 100,
         lockAmount: new BigNumber(get(value, 'lockAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
         voteAmount: new BigNumber(get(value, 'voteAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-        periodPenalty: moment(unLock).format(`DD-MMM-YY HH:mm:ss`),
+        periodPenalty: moment(periodPenalty).format(`DD-MMM-YY HH:mm:ss`),
         multiplier: get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
         topup,

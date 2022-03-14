@@ -29,9 +29,12 @@ const MyInvestments: React.FC = () => {
     <Wrap>
       <Route exact path={`${path}`}>
         <CardSummary products={stakedProducts} />
-        <Card className="mt-s16" style={{
-          overflow: 'visible'
-        }}>
+        <Card
+          className="mt-s16"
+          style={{
+            overflow: 'visible',
+          }}
+        >
           <MyProductsFilter
             onChangeDisplayFilter={(keyword: string) => setCurrentProductType(keyword)}
             onChangeOrderFilter={(orderBy: DropdownOption) => setSelectedOrderBy(orderBy)}

@@ -1,14 +1,10 @@
 /* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
-import Caver from 'caver-js'
 import DefinixPair from './contracts/DefinixPair.json'
 import IERC20 from './contracts/IERC20.json'
-import getRpcUrl from '../utils/getRpcUrl'
+import { getCaver } from 'utils/caver'
 
-const RPC_URL = getRpcUrl()
-const httpProvider = new Caver.providers.HttpProvider(RPC_URL)
-
-const caver = window.caver || new Caver(httpProvider)
+const caver = getCaver()
 
 class Utils {
   static getPairData = async (_pairAddress) => {

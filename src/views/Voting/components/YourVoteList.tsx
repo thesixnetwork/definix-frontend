@@ -42,7 +42,7 @@ const YourVoteList: React.FC = () => {
   const { proposalOfAddress } = useAllProposalOfAddress()
   const { toastSuccess, toastError } = useToast()
   const participatedProposal = useMemo(() => {
-    return proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id)
+    return proposalOfAddress ? proposalOfAddress.find(({ ipfsHash }) => ipfsHash === id) : undefined
   }, [id, proposalOfAddress])
 
   const onClaim = useCallback(() => {
