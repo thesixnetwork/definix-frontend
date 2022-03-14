@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
 const NOTICE_LIST = {
-  ko: '/notice_ko1.json',
+  ko: '/notice_ko.json',
   en: '/notice_en.json',
 }
 
