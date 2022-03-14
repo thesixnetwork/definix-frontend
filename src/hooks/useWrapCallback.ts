@@ -55,10 +55,10 @@ export default function useWrapCallback(
     try {
       if (isKlipConnector(connector)) {
         // console.log("klip test 1",(+inputAmount.toSignificant(6)*1e18))
-        const valueKlip = +inputAmount.toSignificant(6)*1e12
+        const valueKlip = +inputAmount.toSignificant(6) * 1e12
         klipProvider.genQRcodeContactInteract(
           WETH(chainId).address,
-          JSON.stringify(getAbiByNameWETH("deposit")),
+          JSON.stringify(getAbiByNameWETH('deposit')),
           JSON.stringify([]),
           setShowModal,
           `${valueKlip}000000`,
@@ -90,13 +90,13 @@ export default function useWrapCallback(
     try {
       if (isKlipConnector(connector)) {
         // console.log("klip test 1",(+inputAmount.toSignificant(6)*1e18))
-        const valueKlip = +Number.parseFloat(inputAmount.toSignificant(6)).toFixed(6)*1e12
+        const valueKlip = +Number.parseFloat(inputAmount.toSignificant(6)).toFixed(6) * 1e12
         klipProvider.genQRcodeContactInteract(
           WETH(chainId).address,
-          JSON.stringify(getAbiByNameWETH("withdraw")),
+          JSON.stringify(getAbiByNameWETH('withdraw')),
           JSON.stringify([`${valueKlip}000000`]),
           setShowModal,
-          "0",
+          '0',
         )
         await klipProvider.checkResponse()
         setShowModal(false)

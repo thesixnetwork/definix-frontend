@@ -60,8 +60,15 @@ export const votingSlice = createSlice({
 })
 
 // Actions
-export const { setAllProposal, setProposalIndex, setProposal, setAllVoteByIndex, setAllVoteByIpfs, setAvailableVotes, setAllProposalOfAddress } =
-  votingSlice.actions
+export const {
+  setAllProposal,
+  setProposalIndex,
+  setProposal,
+  setAllVoteByIndex,
+  setAllVoteByIpfs,
+  setAvailableVotes,
+  setAllProposalOfAddress,
+} = votingSlice.actions
 
 const getAllProposalOfType = async ({ vFinixVoting }) => {
   let allProposal = []
@@ -383,12 +390,16 @@ export const fetchAvailableVotes = (account) => async (dispatch) => {
 
 export const getIsParticipated = async (index: number, account) => {
   const contract = getContract(VotingFacet.abi, getVFinixVoting())
-  return process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? contract.methods.isUserParticipated(index, account).call() : contract.methods.isParticipated(index).call();
+  return process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID
+    ? contract.methods.isUserParticipated(index, account).call()
+    : contract.methods.isParticipated(index).call()
 }
 
 export const getIsClaimable = (index: number, account) => {
   const contract = getContract(VotingFacet.abi, getVFinixVoting())
-  return process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? contract.methods.isUserClaimable(index, account).call() : contract.methods.isClaimable(index).call()
+  return process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID
+    ? contract.methods.isUserClaimable(index, account).call()
+    : contract.methods.isClaimable(index).call()
 }
 
 export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIndex: number, voter: string) => {
@@ -399,7 +410,7 @@ export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIn
 }
 
 export const getAllProposalOfAddress = async (account, proposal) => {
-  if (!account) return [];
+  if (!account) return []
   let userProposalsFilter = JSON.parse(JSON.stringify(proposal))
   const isParticipateds = []
   for (let i = 0; i < userProposalsFilter.length; i++) {
@@ -439,8 +450,8 @@ export const getAllProposalOfAddress = async (account, proposal) => {
       }
     }
   }
-  return [userProposalsFilter];
-    // setUserProposals(userProposalsFilter as ParticipatedVoting[])
+  return [userProposalsFilter]
+  // setUserProposals(userProposalsFilter as ParticipatedVoting[])
 }
 
 export const fetchAllProposalOfAddress = (account, proposal) => async (dispatch) => {
@@ -449,6 +460,5 @@ export const fetchAllProposalOfAddress = (account, proposal) => async (dispatch)
   const [[allProposalOfAddress]] = await Promise.all(fetchPromise)
   dispatch(setAllProposalOfAddress({ allProposalOfAddress }))
 }
-
 
 export default votingSlice.reducer

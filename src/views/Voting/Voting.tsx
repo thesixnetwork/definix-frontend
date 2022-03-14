@@ -16,7 +16,7 @@ import useWallet from 'hooks/useWallet'
 const Voting: React.FC = () => {
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
-  const { account } = useWallet();
+  const { account } = useWallet()
   const { path } = useRouteMatch()
   const { isMobile } = useMatchBreakpoints()
   const [proposalType, setProposalType] = useState<ProposalType>(ProposalType.ALL)
@@ -31,7 +31,7 @@ const Voting: React.FC = () => {
     if (allProposal.length > 0 && account) {
       dispatch(fetchAllProposalOfAddress(account, allProposal))
     }
-  }, [allProposal]);
+  }, [allProposal])
 
   return (
     <>

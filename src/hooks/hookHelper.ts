@@ -11,7 +11,8 @@ import IVotingFacet from 'config/abi/IVotingFacet.json'
 import WETH_ABI from 'config/abi/weth.json'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 
-export const getAbiByNameWETH = (methodName) => WETH_ABI.find(abi => abi.type === 'function' && abi.name === methodName)
+export const getAbiByNameWETH = (methodName) =>
+  WETH_ABI.find((abi) => abi.type === 'function' && abi.name === methodName)
 export const getAbiHerodotusByName = (methodName: string) =>
   herodotus.find((abi) => abi.type === 'function' && abi.name === methodName)
 

@@ -13,11 +13,7 @@ import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
 import { State } from '../state/types'
 import { getVFinix, getVFinixVoting } from '../utils/addressHelpers'
-import {
-  fetchVotesByIndex,
-  fetchVotesByIpfs,
-  fetchAvailableVotes,
-} from '../state/actions'
+import { fetchVotesByIndex, fetchVotesByIpfs, fetchAvailableVotes } from '../state/actions'
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
@@ -138,7 +134,17 @@ export const usePropose = (
     }
 
     const callContract = getContract(IProposalFacet.abi, getVFinixVoting())
-    const estimatedGas = await getEstimateGas(callContract.methods.propose, account, ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
+    const estimatedGas = await getEstimateGas(
+      callContract.methods.propose,
+      account,
+      ipfsHash,
+      proposalType,
+      startTimestamp,
+      endTimestamp,
+      optionsCount,
+      minimumVotingPower,
+      voteLimit,
+    )
     return new Promise((resolve, reject) => {
       callContract.methods
         .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)

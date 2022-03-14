@@ -101,7 +101,9 @@ const VotingChoice: React.FC = () => {
     return maxNum
   }, [mapVoting])
   const votedChoices = useMemo(() => {
-    return (participatedProposal && participatedProposal.choices) ? participatedProposal.choices.map(({ choiceName }) => choiceName) : []
+    return participatedProposal && participatedProposal.choices
+      ? participatedProposal.choices.map(({ choiceName }) => choiceName)
+      : []
   }, [participatedProposal])
   const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])
