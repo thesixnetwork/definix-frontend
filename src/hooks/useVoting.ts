@@ -1,8 +1,6 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
 import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAbiIProposalFacetByName, getAbiIUsageFacetByName, getAbiIVotingFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
@@ -13,16 +11,9 @@ import VotingFacet from '../config/abi/VotingFacet.json'
 import IServiceInfoFacet from '../config/abi/IServiceInfoFacet.json'
 import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
-import { ParticipatedVoting, State } from '../state/types'
+import { State } from '../state/types'
 import { getVFinix, getVFinixVoting } from '../utils/addressHelpers'
-import {
-  fetchAllProposalOfType,
-  fetchProposalIndex,
-  fetchProposal,
-  fetchVotesByIndex,
-  fetchVotesByIpfs,
-  fetchAvailableVotes,
-} from '../state/actions'
+import { fetchVotesByIndex, fetchVotesByIpfs, fetchAvailableVotes } from '../state/actions'
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
@@ -143,7 +134,17 @@ export const usePropose = (
     }
 
     const callContract = getContract(IProposalFacet.abi, getVFinixVoting())
-    const estimatedGas = await getEstimateGas(callContract.methods.propose, account, ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
+    const estimatedGas = await getEstimateGas(
+      callContract.methods.propose,
+      account,
+      ipfsHash,
+      proposalType,
+      startTimestamp,
+      endTimestamp,
+      optionsCount,
+      minimumVotingPower,
+      voteLimit,
+    )
     return new Promise((resolve, reject) => {
       callContract.methods
         .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)

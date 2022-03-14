@@ -21,7 +21,7 @@ import {
 } from 'hooks/useVoting'
 import useRefresh from 'hooks/useRefresh'
 import { useToast } from 'state/hooks'
-import { ParticipatedVoting, Voting } from 'state/types'
+import { Voting } from 'state/types'
 import VotingConfirmModal from './VotingConfirmModal'
 import { TransactionState } from '../types'
 import VotingChoiceItem from './VotingChoiceItem'
@@ -101,7 +101,9 @@ const VotingChoice: React.FC = () => {
     return maxNum
   }, [mapVoting])
   const votedChoices = useMemo(() => {
-    return (participatedProposal && participatedProposal.choices) ? participatedProposal.choices.map(({ choiceName }) => choiceName) : []
+    return participatedProposal && participatedProposal.choices
+      ? participatedProposal.choices.map(({ choiceName }) => choiceName)
+      : []
   }, [participatedProposal])
   const isStartDate = useMemo(() => dayjs().isBefore(dayjs(proposal.startEpoch)), [proposal.startEpoch])
   const isEndDate = useMemo(() => dayjs().isAfter(dayjs(proposal.endEpoch)), [proposal.endEpoch])

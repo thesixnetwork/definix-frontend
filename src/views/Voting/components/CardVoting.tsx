@@ -63,7 +63,7 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
     if (listAllProposal && listAllProposal.length > 0) {
       const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
         if (!participatedVotes) {
-          return item;
+          return item
         }
         if (participatedVotes.includes(get(item, 'ipfsHash'))) {
           return {

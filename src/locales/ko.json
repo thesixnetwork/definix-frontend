@@ -541,6 +541,8 @@
   "My Voting Power": "보유 투표권",
   "This site is optimized for": "본 사이트는 Chrome에 최적화되어 있습니다.",
   "Removable": "회수 가능 수량",
-  "The network is not the": "네트워크가 메인넷이 아닙니다.",
-  "Please change the wallet": "지갑 네트워크를 클레이튼 메인넷으로 변경해주세요.\n지갑 연결 해제 후 네트워크를 메인넷으로 변경한 뒤 지갑을 다시 연결해주세요."
+  "The network is not the": "네트워크가 메인넷이 아닙니다.\n네트워크 변경 후 새로고침 해주세요.",
+  "Please change the wallet": "지갑 네트워크를 클레이튼 메인넷으로 변경해주세요.\n지갑 연결 해제 후 네트워크를 메인넷으로 변경한 뒤 지갑을 다시 연결해주세요.",
+  "Network Change": "네트워크 변경",
+  "Please wait it is": "복구 중입니다. 잠시만 기다려주세요."
 }

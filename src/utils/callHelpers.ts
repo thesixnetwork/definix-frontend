@@ -18,7 +18,12 @@ export const getEstimateGas = async (method, account, ...args) => {
 export const approve = async (lpContract, herodotusContract, account) => {
   const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
-  const estimatedGas = await getEstimateGas(lpContract.methods.approve, account, herodotusContract.options.address, ethers.constants.MaxUint256)
+  const estimatedGas = await getEstimateGas(
+    lpContract.methods.approve,
+    account,
+    herodotusContract.options.address,
+    ethers.constants.MaxUint256,
+  )
 
   if (flagFeeDelegate === 'Y') {
     return caver.klay
@@ -54,9 +59,12 @@ export const approveOther = async (lpContract, spender, account) => {
 export const stake = async (herodotusContract, pid, amount, account) => {
   const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
-  
   if (pid === 0) {
-    const estimatedGas = await getEstimateGas(herodotusContract.methods.enterStaking, account, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    const estimatedGas = await getEstimateGas(
+      herodotusContract.methods.enterStaking,
+      account,
+      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+    )
 
     if (flagFeeDelegate === 'Y') {
       return caver.klay
@@ -95,7 +103,12 @@ export const stake = async (herodotusContract, pid, amount, account) => {
       })
   }
 
-  const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit, account, pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+  const estimatedGas = await getEstimateGas(
+    herodotusContract.methods.deposit,
+    account,
+    pid,
+    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+  )
 
   if (flagFeeDelegate === 'Y') {
     return caver.klay
@@ -137,7 +150,11 @@ export const stake = async (herodotusContract, pid, amount, account) => {
 }
 
 export const sousStake = async (sousChefContract, amount, account) => {
-  const estimatedGas = await getEstimateGas(sousChefContract.methods.deposit, account, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+  const estimatedGas = await getEstimateGas(
+    sousChefContract.methods.deposit,
+    account,
+    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+  )
   return sousChefContract.methods
     .deposit(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: estimatedGas })
@@ -156,7 +173,11 @@ export const sousStakeBnb = async (sousChefContract, amount, account) => {
   const estimatedGas = await getEstimateGas(sousChefContract.methods.deposit, account)
   return sousChefContract.methods
     .deposit()
-    .send({ from: account, gas: estimatedGas, value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString() })
+    .send({
+      from: account,
+      gas: estimatedGas,
+      value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+    })
     .then((tx) => {
       return tx.transactionHash
     })
@@ -172,7 +193,11 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
   const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
   if (pid === 0) {
-    const estimatedGas = await getEstimateGas(herodotusContract.methods.leaveStaking, account, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    const estimatedGas = await getEstimateGas(
+      herodotusContract.methods.leaveStaking,
+      account,
+      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+    )
     if (flagFeeDelegate === 'Y') {
       return caver.klay
         .signTransaction({
@@ -210,7 +235,12 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
       })
   }
 
-  const estimatedGas = await getEstimateGas(herodotusContract.methods.withdraw, account, pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+  const estimatedGas = await getEstimateGas(
+    herodotusContract.methods.withdraw,
+    account,
+    pid,
+    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+  )
   if (flagFeeDelegate === 'Y') {
     return caver.klay
       .signTransaction({
@@ -275,7 +305,11 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
       })
   }
 
-  const estimatedGas = await getEstimateGas(sousChefContract.methods.withdraw, account, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+  const estimatedGas = await getEstimateGas(
+    sousChefContract.methods.withdraw,
+    account,
+    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+  )
   return sousChefContract.methods
     .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: estimatedGas })
