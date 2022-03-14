@@ -197,13 +197,16 @@ const HomeNotice: React.FC = () => {
         )
       })
       .catch(() => {
-        setNotices([{
-          id: 1,
-          title: 'Definix - Official DeFi protocol of Klaytn chain',
-          content: 'Welcome to the decentralized multi-chain Defi protocol Definix.\nManage your crypto assets safely and enjoy exclusive benefits for Long-term staking!',
-          link: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
-          linkLabel: 'Learn more'
-        }])
+        setNotices([
+          {
+            id: 1,
+            title: 'Definix - Official DeFi protocol of Klaytn chain',
+            content:
+              'Welcome to the decentralized multi-chain Defi protocol Definix.\nManage your crypto assets safely and enjoy exclusive benefits for Long-term staking!',
+            link: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
+            linkLabel: 'Learn more',
+          },
+        ])
       })
   }, [i18n.languages])
 

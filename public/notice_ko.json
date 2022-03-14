@@ -1,9 +1,9 @@
 {
   "notice_1": [
-    "클레이튼 체인 공식 디파이 Definix에 오신 것을 환영합니다!",
-    "탈중앙 멀티 체인 디파이 프로토콜 Definix입니다. \n안전하게 암호화폐 자산을 관리하고, 특별한 장기예치 혜택을 누려보세요!",
-    "https://sixnetwork.gitbook.io/definix-on-klaytn-kr/",
-    "더 알아보기",
+    "APR 조정 투표 안내",
+    "지난 3월 7일 종료된 투표 결과에 따라 APR이 조정되었습니다. \n다음 투표는 3월 14일(월) 오후 6시부터 7주일간 진행됩니다.",
+    "https://g2.klaytn.definix.com/voting",
+    "투표하러 가기",
     "TRUE"
   ],
   "notice_2": [
@@ -14,10 +14,10 @@
     "TRUE"
   ],
   "notice_3": [
-    "APR 조정 투표 안내",
-    "지난 3월 7일 종료된 투표 결과에 따라 APR이 조정되었습니다. \n다음 투표는 3월 14일(월) 오후 6시부터 7주일간 진행됩니다.",
-    "https://g2.klaytn.definix.com/voting",
-    "투표하러 가기",
+    "클레이튼 체인 공식 디파이 Definix에 오신 것을 환영합니다!",
+    "탈중앙 멀티 체인 디파이 프로토콜 Definix입니다. \n안전하게 암호화폐 자산을 관리하고, 특별한 장기예치 혜택을 누려보세요!",
+    "https://sixnetwork.gitbook.io/definix-on-klaytn-kr/",
+    "더 알아보기",
     "TRUE"
   ]
 }
