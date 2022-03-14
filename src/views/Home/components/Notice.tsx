@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
 const NOTICE_LIST = {
-  ko: '/notice_ko.json',
+  ko: '/notice_ko1.json',
   en: '/notice_en.json',
 }
 
@@ -197,7 +197,13 @@ const HomeNotice: React.FC = () => {
         )
       })
       .catch(() => {
-        setNotices([])
+        setNotices([{
+          id: 1,
+          title: 'Definix - Official DeFi protocol of Klaytn chain',
+          content: 'Welcome to the decentralized multi-chain Defi protocol Definix.\nManage your crypto assets safely and enjoy exclusive benefits for Long-term staking!',
+          link: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
+          linkLabel: 'Learn more'
+        }])
       })
   }, [i18n.languages])
 
