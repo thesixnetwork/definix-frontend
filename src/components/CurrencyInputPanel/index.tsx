@@ -215,4 +215,4 @@ const CurrencyInputPanel = ({
   )
 }
 
-export default CurrencyInputPanel;
+export default CurrencyInputPanel

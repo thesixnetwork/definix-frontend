@@ -530,7 +530,7 @@
   "Your Voting Power (vFINIX)": "Your Voting Power (vFINIX) will be locked until the voting time is ended.",
   "Your Vote": "Your Vote",
   "Release notes title": "Definix Update",
-  "Release notes date": "07.Feb.2022",
+  "Release notes date": "15.Mar.2022",
   "Still in progress": "Applying G2 is in progress.\r\nIt is available to use on G1. ",
   "actionImport": "Import",
   "Available": "Available",
@@ -540,5 +540,9 @@
   "no transaction": "Don`t have any transactions in this votes.",
   "My Voting Power": "My Voting Power",
   "This site is optimized for": "This site is optimized for Chrome.",
-  "Removable": "Removable"
+  "Removable": "Removable",
+  "The network is not the": "Your wallet network is not connected to mainnet.\nPlease refresh after network change.",
+  "Please change the wallet": "Please connect your wallet again after switching the network to Klaytn mainnet.\nDisconnect your wallet and then you can switch the network. ",
+  "Network Change": "Network Change",
+  "Please wait it is": "Please wait. It is being fixed."
 }

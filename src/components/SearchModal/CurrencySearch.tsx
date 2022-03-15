@@ -17,6 +17,16 @@ interface CurrencySearchProps {
   otherSelectedCurrency?: Currency | null
 }
 
+const Wrap = styled(Flex)`
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding: 0 24px;
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding: 0 20px;
+  }
+`
+
 const SearchInputWithIcon = styled(Box)`
   position: relative;
   display: flex;
@@ -33,12 +43,24 @@ const SearchInputWithIcon = styled(Box)`
   }
 `
 
-const WrapCurrencyList = styled(Flex)<{ listLength: number }>`
+const WrapCurrencyList = styled(Box)`
+  margin-left: -24px;
+  margin-right: -24px;
+  margin-top: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+`
+
+const ContainerCurrencyList = styled(Flex)<{ listLength: number }>`
   flex-direction: column;
   height: ${({ listLength }) => listLength * 60}px;
-  margin-top: 20px;
   ${({ theme }) => theme.mediaQueries.mobile} {
     height: auto;
+    overflow: auto;
     flex: 1;
   }
 `
@@ -129,7 +151,7 @@ export function CurrencySearch({
   )
 
   return (
-    <Flex flexDirection="column" height="100%">
+    <Wrap>
       <SearchInputWithIcon>
         <SearchInput
           type="text"
@@ -143,22 +165,24 @@ export function CurrencySearch({
         <SearchIcon />
       </SearchInputWithIcon>
 
-      <WrapCurrencyList listLength={Object.keys(allTokens).length + 1}>
-        {currencies.length > 0 && (
-          <CurrencyList
-            currencies={currencies}
-            onCurrencySelect={handleCurrencySelect}
-            otherCurrency={otherSelectedCurrency}
-            selectedCurrency={selectedCurrency}
-          />
-        )}
-        {currencies.length <= 0 && (
-          <Flex mt="-20px" height="100%" alignItems="center" justifyContent="center">
-            {t('No search results')}
-          </Flex>
-        )}
+      <WrapCurrencyList>
+        <ContainerCurrencyList listLength={Object.keys(allTokens).length + 1}>
+          {currencies.length > 0 && (
+            <CurrencyList
+              currencies={currencies}
+              onCurrencySelect={handleCurrencySelect}
+              otherCurrency={otherSelectedCurrency}
+              selectedCurrency={selectedCurrency}
+            />
+          )}
+          {currencies.length <= 0 && (
+            <Flex mt="20vh" alignItems="center" justifyContent="center">
+              {t('No search results')}
+            </Flex>
+          )}
+        </ContainerCurrencyList>
       </WrapCurrencyList>
-    </Flex>
+    </Wrap>
   )
 }
 

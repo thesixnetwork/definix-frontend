@@ -1,30 +1,23 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
 import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAbiIProposalFacetByName, getAbiIUsageFacetByName, getAbiIVotingFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 import IProposalFacet from '../config/abi/IProposalFacet.json'
 import IUsageFacet from '../config/abi/IUsageFacet.json'
 import IVotingFacet from '../config/abi/IVotingFacet.json'
+import VotingFacet from '../config/abi/VotingFacet.json'
 import IServiceInfoFacet from '../config/abi/IServiceInfoFacet.json'
 import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
-import { ParticipatedVoting, State } from '../state/types'
-import { getFinixAddress, getVFinix, getVFinixVoting } from '../utils/addressHelpers'
-import {
-  fetchAllProposalOfType,
-  fetchProposalIndex,
-  fetchProposal,
-  fetchVotesByIndex,
-  fetchVotesByIpfs,
-  fetchAvailableVotes,
-} from '../state/actions'
+import { State } from '../state/types'
+import { getVFinix, getVFinixVoting } from '../utils/addressHelpers'
+import { fetchVotesByIndex, fetchVotesByIpfs, fetchAvailableVotes } from '../state/actions'
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
+import { getEstimateGas } from 'utils/callHelpers'
 
 export const useAvailableVotes = () => {
   const { fastRefresh } = useRefresh()
@@ -42,14 +35,8 @@ export const useAvailableVotes = () => {
 }
 
 export const useAllProposalOfType = () => {
-  const { fastRefresh } = useRefresh()
-  const dispatch = useDispatch()
   const allProposal = useSelector((state: State) => state.voting.allProposal)
   const allProposalMap = useSelector((state: State) => state.voting.allProposalMap)
-
-  useEffect(() => {
-    dispatch(fetchAllProposalOfType())
-  }, [fastRefresh, dispatch])
 
   return { allProposal, allProposalMap }
 }
@@ -80,73 +67,12 @@ export const useVotesByIpfs = (ipfs) => {
 }
 
 export const useAllProposalOfAddress = () => {
-  const { fastRefresh } = useRefresh()
-  // const dispatch = useDispatch()
-  const { account } = useWallet()
-  const [proposalOfAddress, setUserProposals] = useState<ParticipatedVoting[]>([])
-  const proposal = useSelector((state: State) => state.voting.allProposal)
-
-  useEffect(() => {
-    const fetch = async () => {
-      if (account) {
-        let userProposalsFilter = JSON.parse(JSON.stringify(proposal))
-        const isParticipateds = []
-        for (let i = 0; i < userProposalsFilter.length; i++) {
-          userProposalsFilter[i].choices = []
-          // eslint-disable-next-line
-          const [isParticipated, IsClaimable] = await Promise.all([
-            getIsParticipated(userProposalsFilter[i].proposalIndex),
-            getIsClaimable(userProposalsFilter[i].proposalIndex),
-          ])
-          // const [IsClaimable] = await Promise.all([getIsClaimable(userProposalsFilter[i].proposalIndex)])
-          isParticipateds.push(isParticipated)
-          userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
-          userProposalsFilter[i].IsClaimable = IsClaimable
-        }
-
-        userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
-
-        for (let i = 0; i < userProposalsFilter.length; i++) {
-          // eslint-disable-next-line
-          const metaData = (await axios.get(`${process.env.REACT_APP_IPFS}/${userProposalsFilter[i].ipfsHash}`)).data
-
-          userProposalsFilter[i].choices = []
-          userProposalsFilter[i].title = metaData.title
-          userProposalsFilter[i].endDate = +metaData.end_unixtimestamp * 1000
-
-          for (let j = 0; j < userProposalsFilter[i].optionsCount; j++) {
-            // eslint-disable-next-line
-            const votingPower = new BigNumber(
-              // eslint-disable-next-line
-              await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account),
-            )
-              .div(1e18)
-              .toNumber()
-            if (votingPower > 0) {
-              userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
-            }
-          }
-        }
-
-        setUserProposals(userProposalsFilter as ParticipatedVoting[])
-      }
-    }
-    fetch()
-  }, [fastRefresh, proposal, account])
-
-  return { proposalOfAddress }
+  const allProposalOfAddress = useSelector((state: State) => state.voting.allProposalOfAddress)
+  return { proposalOfAddress: allProposalOfAddress }
 }
 
-export const useProposalIndex = (index) => {
-  const { slowRefresh } = useRefresh()
-  const dispatch = useDispatch()
+export const useProposalIndex = () => {
   const indexProposal = useSelector((state: State) => state.voting.indexProposal)
-
-  useEffect(() => {
-    if (index) {
-      dispatch(fetchProposalIndex(index))
-    }
-  }, [slowRefresh, dispatch])
 
   return { indexProposal }
 }
@@ -208,10 +134,21 @@ export const usePropose = (
     }
 
     const callContract = getContract(IProposalFacet.abi, getVFinixVoting())
+    const estimatedGas = await getEstimateGas(
+      callContract.methods.propose,
+      account,
+      ipfsHash,
+      proposalType,
+      startTimestamp,
+      endTimestamp,
+      optionsCount,
+      minimumVotingPower,
+      voteLimit,
+    )
     return new Promise((resolve, reject) => {
       callContract.methods
         .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
-        .send({ from: account, gas: 5000000 })
+        .send({ from: account, gas: estimatedGas })
         .then(resolve)
         .catch(reject)
     })
@@ -220,16 +157,15 @@ export const usePropose = (
   return { onPropose: callPropose }
 }
 
-export const getIsParticipated = async (index: number) => {
-  const contract = getContract(IVotingFacet.abi, getVFinixVoting())
-
-  return contract.methods.isParticipated(index).call()
+export const getIsParticipated = async (index: number, account) => {
+  const contract = getContract(VotingFacet.abi, getVFinixVoting())
+  return contract.methods.isUserParticipated(index, account).call()
 }
 
-export const getIsClaimable = (index: number) => {
-  const contract = getContract(IVotingFacet.abi, getVFinixVoting())
+export const getIsClaimable = (index: number, account) => {
+  const contract = getContract(VotingFacet.abi, getVFinixVoting())
 
-  return contract.methods.isClaimable(index).call()
+  return contract.methods.isUserClaimable(index, account).call()
 }
 
 export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIndex: number, voter: string) => {
@@ -239,14 +175,8 @@ export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIn
   return contract.methods.getVotingPowersOfAddress(_proposalIndex, _optionIndex, voter).call()
 }
 
-export const useGetProposal = (proposalId: string) => {
-  const { fastRefresh } = useRefresh()
-  const dispatch = useDispatch()
+export const useGetProposal = () => {
   const proposal = useSelector((state: State) => state.voting.proposals)
-
-  useEffect(() => {
-    dispatch(fetchProposal(proposalId))
-  }, [fastRefresh, dispatch])
 
   return { proposal }
 }
@@ -261,16 +191,14 @@ export const useApproveToService = (max) => {
     const serviceKey = await call.methods.getServiceKey().call()
     if (isKlipConnector(connector)) {
       klipProvider.genQRcodeContactInteract(
-        getFinixAddress(),
+        getVFinix(),
         JSON.stringify(getAbiIUsageFacetByName('approveToService')),
         JSON.stringify([serviceKey, max]),
         setShowModal,
       )
       const txHash = await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve) => {
-        resolve(txHash)
-      })
+      return txHash
     }
     const callContract = getContract(IUsageFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
@@ -300,12 +228,15 @@ export const useServiceAllowance = () => {
 }
 
 export const useIsClaimable = async (index: number) => {
+  const { account } = useWallet()
   const [isClaimable, setIsClaimable] = useState<boolean>()
   useMemo(async () => {
-    const call = getContract(IVotingFacet.abi, getVFinixVoting())
-    const claim = await call.methods.isClaimable(index).call()
-    setIsClaimable(claim)
-  }, [index])
+    if (account) {
+      const call = getContract(VotingFacet.abi, getVFinixVoting())
+      const claim = await call.methods.isUserClaimable(index, account).call()
+      setIsClaimable(claim)
+    }
+  }, [index, account])
 
   return isClaimable
 }
@@ -340,10 +271,11 @@ export const useVote = () => {
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const estimatedGas = await getEstimateGas(callContract.methods.vote, account, proposalIndex, votingPowers)
       callContract.methods
         .vote(proposalIndex, votingPowers)
-        .send({ from: account, gas: 5000000 })
+        .send({ from: account, gas: estimatedGas })
         .then(resolve)
         .catch(reject)
     })
@@ -373,10 +305,11 @@ export const useClaimVote = () => {
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const estimatedGas = await getEstimateGas(callContract.methods.recallVotesFromProposal, account, proposalIndex)
       callContract.methods
         .recallVotesFromProposal(proposalIndex)
-        .send({ from: account, gas: 5000000 })
+        .send({ from: account, gas: estimatedGas })
         .then(resolve)
         .catch(reject)
     })

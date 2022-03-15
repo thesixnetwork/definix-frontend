@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import finixABI from 'config/abi/finix.json'
-import { getContract, getWeb3Contract } from 'utils/caver'
+import { getCaver, getContract, getWeb3Contract } from 'utils/caver'
 import { getTokenBalance } from 'utils/erc20'
 import { getFinixAddress, getBscFinixAddress, getBscCollecteralAddress } from 'utils/addressHelpers'
-import useCaver from './useCaver'
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
 
@@ -65,7 +64,7 @@ export const useTotalTransfer = () => {
 export const useBurnedBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { slowRefresh } = useRefresh()
-  const caver = useCaver()
+  const caver = getCaver()
 
   useEffect(() => {
     const fetchBalance = async () => {

@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import { BackIcon, Box, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { useAllProposalOfType } from 'hooks/useVoting'
-import { setProposalIndex } from 'state/voting'
+import { Link, useParams } from 'react-router-dom'
+import { fetchProposal, fetchProposalIndex, setProposalIndex } from 'state/voting'
 import CardVotingContent from './CardVotingContent'
 import YourVoteList from './YourVoteList'
 import VotingInfo from './VotingInfo'
+import useRefresh from 'hooks/useRefresh'
 
 const Wrap = styled(Box)`
   margin: 28px 0 80px;
@@ -27,9 +27,20 @@ const TextBack = styled(Text)`
 `
 
 const DetailVoting: React.FC = () => {
-  useAllProposalOfType()
+  const { fastRefresh, slowRefresh } = useRefresh()
+  const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { t } = useTranslation()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchProposal(id))
+  }, [fastRefresh, dispatch])
+
+  useEffect(() => {
+    if (proposalIndex) {
+      dispatch(fetchProposalIndex(proposalIndex))
+    }
+  }, [slowRefresh, dispatch])
 
   useEffect(() => {
     return () => {

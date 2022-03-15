@@ -123,10 +123,10 @@ const HarvestAction: React.FC<{
     try {
       if (pendingTx) return
       setPendingTx(true)
-      const tx = await onReward()
-      if (!tx) {
-        throw new Error()
-      }
+      await onReward()
+      // if (!tx) {
+      //   throw new Error()
+      // }
       showHarvestResult(true)
     } catch {
       showHarvestResult(false)

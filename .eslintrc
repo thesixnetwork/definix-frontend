@@ -13,7 +13,6 @@
     "jest": true
   },
   "extends": [
-    // "@pancakeswap-libs/eslint-config-pancake",
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {

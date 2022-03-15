@@ -128,35 +128,38 @@ export const genQRcodeContactInteract = (
   clearContractResultInterval()
 
   const mockData = {
-    "bapp": {
-      "name": "definix"
+    bapp: {
+      name: 'definix',
     },
-    "type": "execute_contract",
-    "transaction": {
-      "to": contractAddress,
-      "value": value || '0',
-      "abi": abi,
-      "params": input
-    }
+    type: 'execute_contract',
+    transaction: {
+      to: contractAddress,
+      value: value || '0',
+      abi: abi,
+      params: input,
+    },
   }
-  return axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then(async (response) => {
-    requestKey = response.data.request_key
-    const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
-    if (isMobile === true) {
-      startContractResultInterval()
-      setTimeout(() => {
-        openDeeplink(url)
-      }, 1000)
-    } else {
-      setShowModal(true)
-      await QRcode.toCanvas(document.getElementById('qrcode'), url, () => {
+  return axios
+    .post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData)
+    .then(async (response) => {
+      requestKey = response.data.request_key
+      const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
+      if (isMobile === true) {
         startContractResultInterval()
-      })
-    }
-    return "success"
-  }).catch(() => {
-    return "error"
-  })
+        setTimeout(() => {
+          openDeeplink(url)
+        }, 1000)
+      } else {
+        setShowModal(true)
+        await QRcode.toCanvas(document.getElementById('qrcode'), url, () => {
+          startContractResultInterval()
+        })
+      }
+      return 'success'
+    })
+    .catch(() => {
+      return 'error'
+    })
 }
 
 // interface Props {

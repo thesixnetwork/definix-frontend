@@ -34,6 +34,7 @@ import { State } from '../state/types'
 import { useHerodotus } from './useContract'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
+import { getEstimateGas } from 'utils/callHelpers'
 
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -628,15 +629,21 @@ export const useSousHarvest = () => {
         console.info(tx)
       }
       if (sousId === 0) {
-        return new Promise((resolve, reject) => {
-          herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
+        return new Promise(async (resolve, reject) => {
+          const estimatedGas = await getEstimateGas(herodotusContract.methods.leaveStaking, account, '0')
+          herodotusContract.methods
+            .leaveStaking('0')
+            .send({ from: account, gas: estimatedGas })
+            .then(resolve)
+            .catch(reject)
         })
       }
       if (sousId === 1) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
+          const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit, account, sousId, '0')
           herodotusContract.methods
             .deposit(sousId, '0')
-            .send({ from: account, gas: 400000 })
+            .send({ from: account, gas: estimatedGas })
             .then(resolve)
             .catch(reject)
         })
@@ -689,8 +696,13 @@ export const useSuperHarvest = () => {
 
       dispatch(fetchFarmUserDataAsync(account))
 
-      return new Promise((resolve, reject) => {
-        herodotusContract.methods.deposit(farmPid, '0').send({ from: account, gas: 400000 }).then(resolve).catch(reject)
+      return new Promise(async (resolve, reject) => {
+        const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit, account, farmPid, '0')
+        herodotusContract.methods
+          .deposit(farmPid, '0')
+          .send({ from: account, gas: estimatedGas })
+          .then(resolve)
+          .catch(reject)
       })
     },
     [account, dispatch, herodotusContract, setShowModal, connector],

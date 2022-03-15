@@ -10,7 +10,7 @@ import InfoVotes from './InfoVotes'
 const VotingInfo: React.FC = () => {
   const { t } = useTranslation()
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const { proposal } = useGetProposal(id)
+  const { proposal } = useGetProposal()
   const { isMobile } = useMatchBreakpoints()
   const tabs = useMemo(
     () => [

@@ -24,8 +24,10 @@ const Wrap = styled(Flex)`
   }
 `
 const HodlImageWrap = styled(Box)`
+  width: 44px;
   height: 44px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 32px;
     height: 32px;
   }
 `
@@ -95,7 +97,7 @@ const VFinixSummary: React.FC<{
   return (
     <Card cardBg={ColorStyles.DEEPBROWN} mb="S_16">
       <Wrap>
-        <Flex alignItems="center">
+        <Flex alignItems="center" justifyContent="flex-start">
           {grade === '' ? null : <HodlImageWrap>{GradeIcon}</HodlImageWrap>}
           <HodlText>{t(`${grade} Hodl`)}</HodlText>
         </Flex>

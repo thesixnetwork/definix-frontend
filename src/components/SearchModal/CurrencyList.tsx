@@ -2,6 +2,16 @@ import React from 'react'
 import { Currency, currencyEquals } from 'definixswap-sdk'
 import { Box } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyItem from './CurrencyItem'
+import styled from 'styled-components'
+
+const Wrap = styled(Box)`
+  height: auto;
+  padding: 0 24px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding: 0 20px;
+  }
+`
 
 export default function CurrencyList({
   currencies,
@@ -15,7 +25,7 @@ export default function CurrencyList({
   otherCurrency?: Currency | null
 }) {
   return (
-    <Box height="auto">
+    <Wrap>
       {currencies.map((item) => {
         const currency = item
         return (
@@ -28,6 +38,6 @@ export default function CurrencyList({
           />
         )
       })}
-    </Box>
+    </Wrap>
   )
 }

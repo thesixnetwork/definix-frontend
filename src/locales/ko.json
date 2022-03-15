@@ -530,7 +530,7 @@
   "Your Voting Power (vFINIX)": "해당 투표가 종료될 때까지, 투표권(vFINIX)은 회수할 수 없습니다. ",
   "Your Vote": "나의 투표 현황",
   "Release notes title": "업데이트 소식",
-  "Release notes date": "2022.02.07",
+  "Release notes date": "2022.03.15",
   "Still in progress": "G2 적용 작업이 진행 중입니다. \r\nG1 버전에서 정상적으로 서비스 이용이 가능합니다.",
   "actionImport": "추출",
   "Available": "사용 가능",
@@ -540,5 +540,9 @@
   "no transaction": "투표 내역이 없습니다.",
   "My Voting Power": "보유 투표권",
   "This site is optimized for": "본 사이트는 Chrome에 최적화되어 있습니다.",
-  "Removable": "회수 가능 수량"
+  "Removable": "회수 가능 수량",
+  "The network is not the": "네트워크가 메인넷이 아닙니다.\n네트워크 변경 후 새로고침 해주세요.",
+  "Please change the wallet": "지갑 네트워크를 클레이튼 메인넷으로 변경해주세요.\n지갑 연결 해제 후 네트워크를 메인넷으로 변경한 뒤 지갑을 다시 연결해주세요.",
+  "Network Change": "네트워크 변경",
+  "Please wait it is": "복구 중입니다. 잠시만 기다려주세요."
 }

@@ -30,6 +30,7 @@ import CardHeading from './CardHeading'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import InlineAssetRatioLabel from './InlineAssetRatioLabel'
 import { isKlipConnector } from 'hooks/useApprove'
+import { getEstimateGas } from 'utils/callHelpers'
 
 const WithdrawCalculateModal = ({
   setTx,
@@ -96,7 +97,7 @@ const WithdrawCalculateModal = ({
         ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
         : 0
 
-        if (isKlipConnector(connector)) {
+      if (isKlipConnector(connector)) {
         klipProvider.genQRcodeContactInteract(
           getAddress(rebalance.address),
           JSON.stringify(getAbiRebalanceByName('removeFund')),
@@ -107,9 +108,17 @@ const WithdrawCalculateModal = ({
         setTx(tx)
         handleLocalStorage(tx)
       } else {
+        const estimatedGas = await getEstimateGas(
+          rebalanceContract.methods.removeFund,
+          account,
+          lpAmount,
+          toAllAssets,
+          outputRatios,
+          outputUSDRatio,
+        )
         const tx = await rebalanceContract.methods
           .removeFund(lpAmount, toAllAssets, outputRatios, outputUSDRatio)
-          .send({ from: account, gas: 5000000 })
+          .send({ from: account, gas: estimatedGas })
         setTx(tx)
         handleLocalStorage(tx)
       }
