@@ -47,18 +47,18 @@ const App: React.FC = () => {
   const { account, connect } = useWallet()
   const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
 
-  useEffect(() => {
-    if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
-      connect('injected')
-    } else if (
-      !account &&
-      window.localStorage.getItem('accountStatus') &&
-      checkConnector('klip') &&
-      window.localStorage.getItem('userAccount')
-    ) {
-      connect('klip')
-    }
-  }, [account, connect])
+  // useEffect(() => {
+  //   if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
+  //     connect('injected')
+  //   } else if (
+  //     !account &&
+  //     window.localStorage.getItem('accountStatus') &&
+  //     checkConnector('klip') &&
+  //     window.localStorage.getItem('userAccount')
+  //   ) {
+  //     connect('klip')
+  //   }
+  // }, [account, connect])
 
   useFetchPublicData()
   useFetchProfile()

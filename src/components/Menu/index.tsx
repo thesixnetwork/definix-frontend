@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
 import useWallet from 'hooks/useWallet'
-import { links } from './config'
+import { connectors, links } from './config'
 import SettingsModal from 'components/SettingModal'
 
 const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
@@ -57,6 +57,7 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
       isDark={isDark}
       toggleTheme={toggleTheme}
       links={links(t, i18n.languages[0])}
+      connectors={connectors}
       isWrongNetwork={isWrongNetwork}
       {...props}
     />

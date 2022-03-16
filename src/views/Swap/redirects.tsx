@@ -18,22 +18,22 @@ export function RedirectToSwap(props) {
     },
   } = props
   if (currencyIdA && currencyIdB && currencyIdA.toLowerCase() === currencyIdB.toLowerCase()) {
-    if (isInjectConnect()) activate(injected)
+    // if (isInjectConnect()) activate(injected)
     const translateToken = currencyIdA === '0x0000000000000000000000000000000000000000' ? 'KLAY' : currencyIdA
     return <Redirect to={`/swap?inputCurrency=${translateToken}`} />
   }
   if (currencyIdA && !currencyIdB) {
-    if (isInjectConnect()) activate(injected)
+    // if (isInjectConnect()) activate(injected)
     const translateToken = currencyIdA === '0x0000000000000000000000000000000000000000' ? 'KLAY' : currencyIdA
     return <Redirect to={`/swap?inputCurrency=${translateToken}`} />
   }
   if (currencyIdA && currencyIdB) {
-    if (isInjectConnect()) activate(injected)
+    // if (isInjectConnect()) activate(injected)
     const translateToken = currencyIdA === '0x0000000000000000000000000000000000000000' ? 'KLAY' : currencyIdA
     const translateTokenB = currencyIdB === '0x0000000000000000000000000000000000000000' ? 'KLAY' : currencyIdB
     return <Redirect to={`/swap?inputCurrency=${translateToken}&outputCurrency=${translateTokenB}`} />
   }
-  if (isInjectConnect()) activate(injected)
+  // if (isInjectConnect()) activate(injected)
   return <Swap />
 }
 
