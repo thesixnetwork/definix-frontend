@@ -9,7 +9,7 @@ import { connectors, links } from './config'
 import SettingsModal from 'components/SettingModal'
 
 const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
-  const { account, connect, reset } = useWallet()
+  const { account, activate, deactivate } = useWallet()
   const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false)
 
   const { i18n, t } = useTranslation()
@@ -48,8 +48,8 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
       Link={Link}
       onPresentSettingModal={onPresentSettingModal}
       account={account}
-      login={connect}
-      logout={reset}
+      login={activate}
+      logout={deactivate}
       Trans={Trans}
       currentLang={i18n.languages[0]}
       langs={supportedLanguages}

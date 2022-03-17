@@ -44,8 +44,7 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-  const { account, connect } = useWallet()
-  const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
+  const { account } = useWallet()
 
   // useEffect(() => {
   //   if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {

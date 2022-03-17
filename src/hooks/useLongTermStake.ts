@@ -35,6 +35,7 @@ import { useHerodotus } from './useContract'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
 import { getEstimateGas } from 'utils/callHelpers'
+import { useModal } from '@fingerlabs/definixswap-uikit-v2'
 
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))

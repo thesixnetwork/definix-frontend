@@ -1,6 +1,3 @@
-/* eslint eqeqeq: 0 */
-/* eslint camelcase: 0 */
-
 import QRcode from 'qrcode'
 import axios from 'axios'
 import { isMobile } from 'react-device-detect'
