@@ -47,7 +47,7 @@ const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, totalFin
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
-              {getEndDay(days)}
+              {getEndDay(28)}
             </Text>
             <Text textStyle="R_12R" color="mediumgrey">
               *GMT +9 {t('Asia/Seoul')}
