@@ -232,35 +232,39 @@ const HomeNotice: React.FC = () => {
             ))}
           </NoticeSlider>
         )}
-        {notices.length === 1 ? <></> : <WrapIndicator>
-          <IconButton
-            width="16px"
-            onClick={() => {
-              sliderRef.current.slickPrev()
-            }}
-          >
-            <StyledArrowLeftGIcon />
-          </IconButton>
-          <WrapPage>
-            <Text color="brown" textStyle="R_12M">
-              {slideIndex + 1}
-            </Text>
-            <Text mx="4px" color="lightbrown" textStyle="R_12R">
-              /
-            </Text>
-            <Text color="lightbrown" textStyle="R_12R">
-              {notices.length}
-            </Text>
-          </WrapPage>
-          <IconButton
-            width="16px"
-            onClick={() => {
-              sliderRef.current.slickNext()
-            }}
-          >
-            <StyledArrowRightGIcon />
-          </IconButton>
-        </WrapIndicator>}
+        {notices.length === 1 ? (
+          <></>
+        ) : (
+          <WrapIndicator>
+            <IconButton
+              width="16px"
+              onClick={() => {
+                sliderRef.current.slickPrev()
+              }}
+            >
+              <StyledArrowLeftGIcon />
+            </IconButton>
+            <WrapPage>
+              <Text color="brown" textStyle="R_12M">
+                {slideIndex + 1}
+              </Text>
+              <Text mx="4px" color="lightbrown" textStyle="R_12R">
+                /
+              </Text>
+              <Text color="lightbrown" textStyle="R_12R">
+                {notices.length}
+              </Text>
+            </WrapPage>
+            <IconButton
+              width="16px"
+              onClick={() => {
+                sliderRef.current.slickNext()
+              }}
+            >
+              <StyledArrowRightGIcon />
+            </IconButton>
+          </WrapIndicator>
+        )}
       </NoticeBox>
       <Character srcSet={[ImgHomeTopFinix1x, ImgHomeTopFinix2x, ImgHomeTopFinix3x]} alt="" width={434} height={200} />
     </Wrap>
