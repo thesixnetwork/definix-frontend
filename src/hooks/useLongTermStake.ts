@@ -35,7 +35,7 @@ import { useHerodotus } from './useContract'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
 import { getEstimateGas } from 'utils/callHelpers'
-import { useModal } from '@fingerlabs/definixswap-uikit-v2'
+import useKlipModal from './useKlipModal'
 
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -237,7 +237,11 @@ const handleContractExecute = (_executeFunction, _account) => {
 
 export const useUnLock = () => {
   const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
+    onHide: () => {
+      console.log(123)
+    }
+  })
 
   const onUnLock = async (id) => {
     if (isKlipConnector(connector)) {
@@ -245,10 +249,10 @@ export const useUnLock = () => {
         getVFinix(),
         JSON.stringify(getAbiVaultFacetByName('unlock')),
         JSON.stringify([id]),
-        setShowModal,
+        onPresentKlipModal,
       )
       await klipProvider.checkResponse()
-      setShowModal(false)
+      onDismissKlipModal()
       return new Promise((resolve) => {
         resolve('')
       })
@@ -266,7 +270,11 @@ export const useLock = (level, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
+    onHide: () => {
+      console.log(123)
+    }
+  })
 
   const stake = useCallback(async () => {
     setStatus(false)
@@ -278,10 +286,10 @@ export const useLock = (level, lockFinix) => {
             getVFinix(),
             JSON.stringify(getAbiVaultFacetByName('lock')),
             JSON.stringify([level, lockFinix]),
-            setShowModal,
+            onPresentKlipModal,
           )
           await klipProvider.checkResponse()
-          setShowModal(false)
+          onDismissKlipModal()
           setLoading('success')
           setStatus(true)
           setTimeout(() => setLoading(''), 5000)
@@ -307,14 +315,18 @@ export const useLock = (level, lockFinix) => {
     }
 
     return status
-  }, [account, level, lockFinix, status, connector, setShowModal])
+  }, [account, level, lockFinix, status, connector, onPresentKlipModal, onDismissKlipModal])
 
   return { onStake: stake, status, loadings }
 }
 
 export const useHarvest = () => {
   const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
+    onHide: () => {
+      console.log(123)
+    }
+  })
 
   const handleHarvest = useCallback(async () => {
     if (isKlipConnector(connector)) {
@@ -322,10 +334,10 @@ export const useHarvest = () => {
         getVFinix(),
         JSON.stringify(getAbiRewardFacetByName('harvest')),
         JSON.stringify([account]),
-        setShowModal,
+        onPresentKlipModal,
       )
       await klipProvider.checkResponse()
-      setShowModal(false)
+      onDismissKlipModal()
       return new Promise((resolve) => {
         resolve('ok')
       })
@@ -334,14 +346,18 @@ export const useHarvest = () => {
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.harvest(account), account).then(resolve).catch(reject)
     })
-  }, [account, connector, setShowModal])
+  }, [account, connector, onPresentKlipModal, onDismissKlipModal])
 
   return { handleHarvest }
 }
 
 export const useApprove = (max) => {
   const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
+    onHide: () => {
+      console.log(123)
+    }
+  })
 
   const onApprove = useCallback(async () => {
     if (isKlipConnector(connector)) {
@@ -349,10 +365,10 @@ export const useApprove = (max) => {
         getFinixAddress(),
         JSON.stringify(getAbiERC20ByName('approve')),
         JSON.stringify([getVFinix(), klipProvider.MAX_UINT_256_KLIP]),
-        setShowModal,
+        onPresentKlipModal,
       )
       const txHash = await klipProvider.checkResponse()
-      setShowModal(false)
+      onDismissKlipModal()
       return new Promise((resolve) => {
         resolve(txHash)
       })
@@ -361,7 +377,7 @@ export const useApprove = (max) => {
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.approve(getVFinix(), max), account).then(resolve).catch(reject)
     })
-  }, [account, max, connector, setShowModal])
+  }, [account, max, connector, onPresentKlipModal, onDismissKlipModal])
 
   return { onApprove }
 }
@@ -571,7 +587,11 @@ export const useUnstakeId = () => {
 
 export const useClaim = () => {
   const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
+    onHide: () => {
+      console.log(123)
+    }
+  })
 
   const handleClaim = async (id) => {
     if (isKlipConnector(connector)) {
@@ -579,10 +599,10 @@ export const useClaim = () => {
         getVFinix(),
         JSON.stringify(getAbiVaultPenaltyFacetByName('claimWithPenalty')),
         JSON.stringify([id]),
-        setShowModal,
+        onPresentKlipModal,
       )
       const txHash = await klipProvider.checkResponse()
-      setShowModal(false)
+      onDismissKlipModal()
       return new Promise((resolve) => {
         resolve(txHash)
       })
@@ -601,31 +621,34 @@ export const useSousHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
-  const { setShowModal } = useContext(KlipModalContext())
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
+    onHide: () => {
+      console.log(123)
+    }
+  })
 
   const handleHarvest = useCallback(
     async (sousId) => {
       if (isKlipConnector(connector)) {
-        // setShowModal(true)
 
         if (sousId === 0) {
           klipProvider.genQRcodeContactInteract(
             herodotusContract._address,
             jsonConvert(getAbiHerodotusByName('leaveStaking')),
             jsonConvert(['0']),
-            setShowModal,
+            onPresentKlipModal,
           )
         } else {
           klipProvider.genQRcodeContactInteract(
             herodotusContract._address,
             jsonConvert(getAbiHerodotusByName('deposit')),
             jsonConvert([sousId, '0']),
-            setShowModal,
+            onPresentKlipModal,
           )
         }
         const tx = await klipProvider.checkResponse()
 
-        setShowModal(false)
+        onDismissKlipModal()
         dispatch(fetchFarmUserDataAsync(account))
         console.info(tx)
       }
@@ -654,7 +677,7 @@ export const useSousHarvest = () => {
       dispatch(updateUserBalance(sousId, account))
       return handleHarvest
     },
-    [account, dispatch, herodotusContract, connector, setShowModal],
+    [account, dispatch, herodotusContract, connector, onPresentKlipModal, onDismissKlipModal],
   )
 
   return { onReward: handleHarvest }
@@ -667,7 +690,11 @@ export const useSuperHarvest = () => {
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
 
-  const { setShowModal } = useContext(KlipModalContext())
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
+    onHide: () => {
+      console.log(123)
+    }
+  })
 
   const handleHarvest = useCallback(
     async (farmPid) => {
@@ -677,19 +704,19 @@ export const useSuperHarvest = () => {
             herodotusContract._address,
             jsonConvert(getAbiHerodotusByName('leaveStaking')),
             jsonConvert(['0']),
-            setShowModal,
+            onPresentKlipModal,
           )
         } else {
           klipProvider.genQRcodeContactInteract(
             herodotusContract._address,
             jsonConvert(getAbiHerodotusByName('deposit')),
             jsonConvert([farmPid, '0']),
-            setShowModal,
+            onPresentKlipModal,
           )
         }
         const tx = await klipProvider.checkResponse()
 
-        setShowModal(false)
+        onDismissKlipModal()
         dispatch(fetchFarmUserDataAsync(account))
         console.info(tx)
         return tx
@@ -706,7 +733,7 @@ export const useSuperHarvest = () => {
           .catch(reject)
       })
     },
-    [account, dispatch, herodotusContract, setShowModal, connector],
+    [account, dispatch, herodotusContract, onPresentKlipModal, onDismissKlipModal, connector],
   )
 
   return { onSuperHarvest: handleHarvest }

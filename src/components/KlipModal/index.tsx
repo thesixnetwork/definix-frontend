@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Modal, ModalBody, Text, LogoWalletKlipIcon, CloseWIcon, IconButton, Box, ModalFooter, ArrowRightGIcon, InjectedModalProps } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Modal, ModalBody, Text, /*LogoWalletKlipIcon, CloseWIcon,*/ IconButton, Box, ModalFooter, ArrowRightGIcon, InjectedModalProps } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -110,14 +110,14 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
       <StyledModalBody isBody>
         <WrapHeader>
           <Flex>
-            <LogoWalletKlipIcon />
+            {/* <LogoWalletKlipIcon /> */}
             <Title>{t('Connect to Kakao Klip via QR Code')}</Title>
           </Flex>
           <CloseButton onClick={() => {
             onDismiss();
             onHide();
           }}>
-            <CloseWIcon />
+            {/* <CloseWIcon /> */}
           </CloseButton>
         </WrapHeader>
         <WrapBody>

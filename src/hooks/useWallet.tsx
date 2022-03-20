@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import getLibrary from 'utils/getLibrary'
 import KlaytnWallet, { AvailableConnectors } from 'klaytn-wallets';
-import { useModal } from '@fingerlabs/definixswap-uikit-v2';
-import KlipModal from 'components/KlipModal';
 import dayjs from 'dayjs';
+import useKlipModal from './useKlipModal';
 
 const useWallet = () => {
   const [account, setAccount] = useState<string>('');
   const [connector, setConnector] = useState<string>('');
   const wallet = useRef(new KlaytnWallet([AvailableConnectors.KAIKAS, AvailableConnectors.KLIP, AvailableConnectors.METAMASK]))
 
-  const [onPresentKlipModal, onDismissKlipModal] = useModal(<KlipModal onHide={() => {
-    wallet.current.closeKlip();
-  }} />)
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
+    onHide: () => {
+      wallet.current.closeKlip();
+    }
+  })
 
   useEffect(() => {
     if (!wallet.current) return;
@@ -26,6 +27,9 @@ const useWallet = () => {
     }, {
       show: () => onPresentKlipModal(),
       hide: () => onDismissKlipModal(),
+      interval: (remainTime) => {
+        console.log('interval', remainTime)
+      }
     });
   }, [wallet.current])
 
@@ -46,7 +50,7 @@ const useWallet = () => {
 
   return {
     account,
-    chainId: 1001 || parseInt(process.env.REACT_APP_CHAIN_ID),
+    chainId: parseInt(process.env.REACT_APP_CHAIN_ID) || 1001,
     library,
     klaytn,
     connector,
