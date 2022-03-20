@@ -23,9 +23,7 @@ const Providers: React.FC = ({ children }) => {
             <ThemeContextProvider>
               <BlockContextProvider>
                 <RefreshContextProvider>
-                  <ModalProvider>
-                    {children}
-                  </ModalProvider>
+                  <ModalProvider>{children}</ModalProvider>
                 </RefreshContextProvider>
               </BlockContextProvider>
             </ThemeContextProvider>

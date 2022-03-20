@@ -240,7 +240,7 @@ export const useUnLock = () => {
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
     onHide: () => {
       console.log(123)
-    }
+    },
   })
 
   const onUnLock = async (id) => {
@@ -273,7 +273,7 @@ export const useLock = (level, lockFinix) => {
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
     onHide: () => {
       console.log(123)
-    }
+    },
   })
 
   const stake = useCallback(async () => {
@@ -325,7 +325,7 @@ export const useHarvest = () => {
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
     onHide: () => {
       console.log(123)
-    }
+    },
   })
 
   const handleHarvest = useCallback(async () => {
@@ -356,7 +356,7 @@ export const useApprove = (max) => {
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
     onHide: () => {
       console.log(123)
-    }
+    },
   })
 
   const onApprove = useCallback(async () => {
@@ -590,7 +590,7 @@ export const useClaim = () => {
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
     onHide: () => {
       console.log(123)
-    }
+    },
   })
 
   const handleClaim = async (id) => {
@@ -624,13 +624,12 @@ export const useSousHarvest = () => {
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
     onHide: () => {
       console.log(123)
-    }
+    },
   })
 
   const handleHarvest = useCallback(
     async (sousId) => {
       if (isKlipConnector(connector)) {
-
         if (sousId === 0) {
           klipProvider.genQRcodeContactInteract(
             herodotusContract._address,
@@ -693,7 +692,7 @@ export const useSuperHarvest = () => {
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
     onHide: () => {
       console.log(123)
-    }
+    },
   })
 
   const handleHarvest = useCallback(

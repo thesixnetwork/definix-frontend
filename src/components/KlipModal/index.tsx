@@ -1,10 +1,20 @@
 import React from 'react'
-import { Flex, Modal, ModalBody, Text, /*LogoWalletKlipIcon, CloseWIcon,*/ IconButton, Box, ModalFooter, ArrowRightGIcon, InjectedModalProps } from '@fingerlabs/definixswap-uikit-v2'
+import {
+  Flex,
+  Modal,
+  ModalBody,
+  Text,
+  /*LogoWalletKlipIcon, CloseWIcon,*/ IconButton,
+  Box,
+  ModalFooter,
+  ArrowRightGIcon,
+  InjectedModalProps,
+} from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 interface Props extends InjectedModalProps {
-  onHide: () => void;
+  onHide: () => void
 }
 
 const StyledModalBody = styled(ModalBody)`
@@ -24,9 +34,7 @@ const Title = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
 `
 
-const CloseButton = styled(IconButton)`
-
-`
+const CloseButton = styled(IconButton)``
 
 const WrapBody = styled(Flex)`
   align-items: center;
@@ -55,7 +63,7 @@ const WrapTime = styled(Flex)`
     color: ${({ theme }) => theme.colors.orange};
   }
 `
-  
+
 const DescText = styled(Text)`
   margin-top: 16px;
   ${({ theme }) => theme.textStyle.R_14R}
@@ -101,7 +109,6 @@ const GuideText = styled(Text)`
   text-align: center;
 `
 
-
 const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
   const { t } = useTranslation()
 
@@ -113,10 +120,12 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
             {/* <LogoWalletKlipIcon /> */}
             <Title>{t('Connect to Kakao Klip via QR Code')}</Title>
           </Flex>
-          <CloseButton onClick={() => {
-            onDismiss();
-            onHide();
-          }}>
+          <CloseButton
+            onClick={() => {
+              onDismiss()
+              onHide()
+            }}
+          >
             {/* <CloseWIcon /> */}
           </CloseButton>
         </WrapHeader>
@@ -133,26 +142,17 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
         <WrapGuide>
           <GuideItem>
             <img src="" />
-            <Text className="text">
-              Open
-              Kakaotalk
-            </Text>
+            <Text className="text">Open Kakaotalk</Text>
           </GuideItem>
           <StyledArrowRightGIcon />
           <GuideItem>
             <img src="" />
-            <Text className="text">
-              Open
-              Kakaotalk
-            </Text>
+            <Text className="text">Open Kakaotalk</Text>
           </GuideItem>
           <StyledArrowRightGIcon />
           <GuideItem>
             <img src="" />
-            <Text className="text">
-              Open
-              Kakaotalk
-            </Text>
+            <Text className="text">Open Kakaotalk</Text>
           </GuideItem>
         </WrapGuide>
         <GuideText>Klip Code Scan (from side menu) can be used</GuideText>

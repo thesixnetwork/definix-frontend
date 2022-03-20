@@ -1,5 +1,5 @@
 import { ROUTES } from 'config/constants/routes'
-import { AvailableConnectors } from 'klaytn-wallets';
+import { AvailableConnectors } from 'klaytn-wallets'
 
 export const links = (t: (key: string) => string, currentLang: string) => {
   return [
@@ -89,7 +89,8 @@ export const links = (t: (key: string) => string, currentLang: string) => {
   ]
 }
 
-export const connectors = [{
+export const connectors = [
+  {
     title: 'Kaikas',
     icon: 'Kaikas',
     connectorId: AvailableConnectors.KAIKAS,
@@ -112,8 +113,8 @@ export const connectors = [{
     width: 48,
     height: 24,
     connectorId: AvailableConnectors.KLIP,
-  }
-];
+  },
+]
 
 export const socials = [
   {
