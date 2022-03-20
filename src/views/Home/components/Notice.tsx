@@ -232,7 +232,7 @@ const HomeNotice: React.FC = () => {
             ))}
           </NoticeSlider>
         )}
-        <WrapIndicator>
+        {notices.length === 1 ? <></> : <WrapIndicator>
           <IconButton
             width="16px"
             onClick={() => {
@@ -260,7 +260,7 @@ const HomeNotice: React.FC = () => {
           >
             <StyledArrowRightGIcon />
           </IconButton>
-        </WrapIndicator>
+        </WrapIndicator>}
       </NoticeBox>
       <Character srcSet={[ImgHomeTopFinix1x, ImgHomeTopFinix2x, ImgHomeTopFinix3x]} alt="" width={434} height={200} />
     </Wrap>
