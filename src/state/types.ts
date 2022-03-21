@@ -201,6 +201,9 @@ export interface WalletState {
   userSlippage?: number
   isFetched: boolean
   isRebalanceFetched: boolean
+
+  account: string;
+  connector: string;
 }
 
 export interface FinixPriceState {

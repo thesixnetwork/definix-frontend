@@ -3,10 +3,18 @@ import getLibrary from 'utils/getLibrary'
 import KlaytnWallet, { AvailableConnectors } from 'klaytn-wallets'
 import dayjs from 'dayjs'
 import useKlipModal from './useKlipModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { setAccount, setConnector } from '../state/wallet'
+import { State } from '../state/types'
 
 const useWallet = () => {
-  const [account, setAccount] = useState<string>('')
-  const [connector, setConnector] = useState<string>('')
+  const dispatch = useDispatch();
+  const account = useSelector((state: State) => {
+    return state.wallet.account
+  })
+  const connector = useSelector((state: State) => {
+    return state.wallet.connector
+  })
   const wallet = useRef(
     new KlaytnWallet([AvailableConnectors.KAIKAS, AvailableConnectors.KLIP, AvailableConnectors.METAMASK]),
   )
@@ -41,16 +49,16 @@ const useWallet = () => {
   const onActivate = useCallback(
     async (connectorId: string) => {
       await wallet.current.activate(connectorId)
-      setAccount(wallet.current.account)
-      setConnector(wallet.current.connectorId)
+      dispatch(setAccount(wallet.current.account))
+      dispatch(setConnector(wallet.current.connectorId))
     },
     [wallet.current],
   )
 
   const onDeactivate = useCallback(() => {
     wallet.current.deactivate()
-    setAccount(wallet.current.account)
-    setConnector(wallet.current.connectorId)
+    dispatch(setAccount(wallet.current.account))
+    dispatch(setConnector(wallet.current.connectorId))
   }, [wallet.current])
 
   const library = useMemo(() => getLibrary(window.klaytn), [])
