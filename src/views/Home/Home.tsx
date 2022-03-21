@@ -98,6 +98,7 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
 
 const Home: React.FC = () => {
   const { account } = useWallet()
+  /** @Todo Rebalancing */
   const { t } = useTranslation()
   const [onPresentAlertModal] = useModal(
     <AlertModal
