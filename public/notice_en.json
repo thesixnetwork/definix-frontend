@@ -4,20 +4,27 @@
     "APR is adjusted, followed by the result of the vote that was ended at 7th, Mar.\nNext voting is beginning at 6 pm, 14th Mar(GMT +9) for 7days.",
     "https://g2.klaytn.definix.com/voting ",
     "Go to Vote",
-    "TRUE"
+    "FALSE"
   ],
   "notice_2": [
     "Let your voice be heard",
     "Definix is always listening to the voices of holders.\nIf there are any inconveniences or improvements to the beta service, please give us feedback.",
     "https://forms.gle/x9rfWuzD9Kpa8xa47",
     "Feedback",
-    "TRUE"
+    "FALSE"
   ],
   "notice_3": [
     "Definix - Official DeFi protocol of Klaytn chain",
     "Welcome to the decentralized multi-chain Defi protocol Definix.\nManage your crypto assets safely and enjoy exclusive benefits for Long-term staking!",
     "https://sixnetwork.gitbook.io/definix-on-klaytn-en/",
     "Learn more",
+    "FALSE"
+  ],
+  "notice_4": [
+    "리벨런싱 팜 점검 중입니다.",
+    "현재 리밸런싱팜이 점검중입니다. \n입출금에 가격 영향이 있을 수 있으니 주의 부탁드리며, 자세한 내용은 아래버튼을 눌러주세요!",
+    "https://twitter.com/fingerlabs_io/status/1505604747671134211?t=MWoD-yk-_IcBHY2zoO8pYw&s=19",
+    "자세히보기",
     "TRUE"
   ]
 }
