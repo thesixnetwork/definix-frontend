@@ -491,7 +491,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               (Since inception)
             </Text>
           </div>
-          <div className="flex align-baseline" >
+          <div className="flex align-baseline">
             <Skeleton
               animation="pulse"
               variant="rect"
@@ -504,7 +504,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               variant="rect"
               height="29px"
               width="40%"
-              className='ml-2'
+              className="ml-2"
               style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
             />
           </div>
@@ -512,7 +512,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       </div>
 
       {/* <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} /> */}
-      <div className='px-4'>
+      <div className="px-4">
         <Skeleton
           animation="pulse"
           variant="rect"

@@ -37,7 +37,10 @@ const BannerEllipsis = () => {
         {isEllipsis ? (
           <Text color="white" fontSize="13px">
             <strong>Rebalancing Farm :</strong>{' '}
-            <span className="mr-1">The rebalancing feature on Definix Klaytn is under maintenance. The deposit feature of rebalancing farm has been temporary close for a while.</span>
+            <span className="mr-1">
+              The rebalancing feature on Definix Klaytn is under maintenance. The deposit feature of rebalancing farm
+              has been temporary close for a while.
+            </span>
           </Text>
         ) : (
           <Text color="white" fontSize="13px">

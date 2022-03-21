@@ -648,12 +648,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       //     return ''
                       //   })()}
                       // />
-                      <div className='flex-shrink'>
+                      <div className="flex-shrink">
                         <div className="flex align-baseline" style={{ lineHeight: '0' }}>
                           <Text fontSize="14px" color="textSubtle">
                             Share price
                           </Text>
-                          <Text fontSize="11px" className='ml-1'>
+                          <Text fontSize="11px" className="ml-1">
                             (Since inception)
                           </Text>
                         </div>
@@ -715,7 +715,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       //   })()}
                       // />
                       <div>
-                        <div className={`${isMobile ? 'col-12 mt-2' : 'col-3'} flex align-baseline`} style={{ lineHeight: '0' }}>
+                        <div
+                          className={`${isMobile ? 'col-12 mt-2' : 'col-3'} flex align-baseline`}
+                          style={{ lineHeight: '0' }}
+                        >
                           <Text fontSize="14px" color="textSubtle">
                             Share price
                           </Text>
@@ -846,7 +849,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     value={`${numeral(sharpRatio).format('0,0.00')}`}
                     hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
                   /> */}
-                  <div className='px-4 py-3 col-4 bd-r'>
+                  <div className="px-4 py-3 col-4 bd-r">
                     <TwoLineFormat
                       title="Sharpe ratio"
                       value=""
@@ -866,7 +869,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
                     hint="The differentiation between the historical peak and low point through the portfolio."
                   /> */}
-                  <div className='px-4 py-3 col-4'>
+                  <div className="px-4 py-3 col-4">
                     <TwoLineFormat
                       title="Max Drawdown"
                       value=""

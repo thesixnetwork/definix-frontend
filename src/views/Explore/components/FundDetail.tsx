@@ -79,12 +79,12 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
                 {/* <img src={`/images/coins/${r.symbol || ''}.png`} alt="" width={32} height={32} className="mr-3" />
                 <Text bold>{thisName}</Text> */}
                 <Skeleton
-                    animation="pulse"
-                    variant="rect"
-                    height="29px"
-                    width="100%"
-                    style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-                  />
+                  animation="pulse"
+                  variant="rect"
+                  height="29px"
+                  width="100%"
+                  style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                />
               </div>
             </TD>
             <TD align="center">
@@ -125,8 +125,8 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
             </TD>
             <TD align="center">
               {/* <Text color={selectClass(changeNumber)}> */}
-                {/* {selectSymbolChange(changeNumber)} */}
-                {/* {`${Number.isFinite(changeNumber) ? `${numeral(changeNumber).format('0,0.[00]')} %` : '-'}`} */}
+              {/* {selectSymbolChange(changeNumber)} */}
+              {/* {`${Number.isFinite(changeNumber) ? `${numeral(changeNumber).format('0,0.[00]')} %` : '-'}`} */}
               {/* </Text> */}
               <Skeleton
                 animation="pulse"
