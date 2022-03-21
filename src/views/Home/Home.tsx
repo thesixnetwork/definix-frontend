@@ -98,14 +98,21 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
 
 const Home: React.FC = () => {
   const { account } = useWallet()
-  const { t } = useTranslation();
-  const [onPresentAlertModal] =  useModal(<AlertModal title={t('Instant notice')} content={t('Maintenance work including smart contract')} buttonLabel={t('Confirm')} callback={() => {
-    return;
-  }} />)
+  const { t } = useTranslation()
+  const [onPresentAlertModal] = useModal(
+    <AlertModal
+      title={t('Instant notice')}
+      content={t('Maintenance work including smart contract')}
+      buttonLabel={t('Confirm')}
+      callback={() => {
+        return
+      }}
+    />,
+  )
 
   useEffect(() => {
-    onPresentAlertModal();
-  }, []);
+    onPresentAlertModal()
+  }, [])
   return (
     <WrapGrid isAccount={!!account}>
       <FullColumnGrid area="notice">
