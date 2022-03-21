@@ -44,7 +44,7 @@ const Overlay = styled(Flex)`
 
 const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMobile = false }) => {
   const { t } = useTranslation()
-  const history = useHistory();
+  const history = useHistory()
   const { account } = useWallet()
   const balances = useBalances(account)
   const rebalanceBalances = useRebalanceBalances(account)
@@ -75,7 +75,7 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
           width="100%"
           minWidth="auto"
           onClick={() => {
-            history.push("/rebalancing/invest")
+            history.push('/rebalancing/invest')
           }}
           className={isMobile ? 'mr-s12' : 'mb-s12'}
           variant="red"
