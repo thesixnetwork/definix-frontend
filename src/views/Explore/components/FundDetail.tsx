@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import styled from 'styled-components'
-import { Card, Text } from 'uikit-dev'
+import { Card, Text, Skeleton } from 'uikit-dev'
+import useTheme from 'hooks/useTheme'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import _ from 'lodash'
 import { Table, TD, TH, TR } from './Table'
@@ -21,6 +22,7 @@ const Overflow = styled.div`
 const AssetDetail = ({ rebalance, periodPriceTokens }) => {
   const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
   let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+  const themes = useTheme()
 
   if (tokens.length === 0) tokens = rebalance.ratio
   const selectClass = (inputNumber) => {
@@ -74,33 +76,75 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
           <TR>
             <TD>
               <div className="flex align-center">
-                <img src={`/images/coins/${r.symbol || ''}.png`} alt="" width={32} height={32} className="mr-3" />
-                <Text bold>{thisName}</Text>
+                {/* <img src={`/images/coins/${r.symbol || ''}.png`} alt="" width={32} height={32} className="mr-3" />
+                <Text bold>{thisName}</Text> */}
+                <Skeleton
+                    animation="pulse"
+                    variant="rect"
+                    height="29px"
+                    width="100%"
+                    style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                  />
               </div>
             </TD>
             <TD align="center">
-              <Text>
+              {/* <Text>
                 {numeral(
                   _.get(r, 'totalBalance', new BigNumber(0))
                     .div(new BigNumber(10).pow(_.get(r, 'decimals', 18)))
                     .toNumber(),
                 ).format('0,0.[000]')}
-              </Text>
+              </Text> */}
+              <Skeleton
+                animation="pulse"
+                variant="rect"
+                height="29px"
+                width="100%"
+                style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+              />
             </TD>
             <TD align="center">
-              <Text>$ {numeral(tokenPrice.toNumber()).format('0,0.[00]')}</Text>
+              {/* <Text>$ {numeral(tokenPrice.toNumber()).format('0,0.[00]')}</Text> */}
+              <Skeleton
+                animation="pulse"
+                variant="rect"
+                height="29px"
+                width="100%"
+                style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+              />
             </TD>
             <TD align="center">
-              <Text>$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
+              {/* <Text>$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text> */}
+              <Skeleton
+                animation="pulse"
+                variant="rect"
+                height="29px"
+                width="100%"
+                style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+              />
             </TD>
             <TD align="center">
-              <Text color={selectClass(changeNumber)}>
+              {/* <Text color={selectClass(changeNumber)}> */}
                 {/* {selectSymbolChange(changeNumber)} */}
-                {`${Number.isFinite(changeNumber) ? `${numeral(changeNumber).format('0,0.[00]')} %` : '-'}`}
-              </Text>
+                {/* {`${Number.isFinite(changeNumber) ? `${numeral(changeNumber).format('0,0.[00]')} %` : '-'}`} */}
+              {/* </Text> */}
+              <Skeleton
+                animation="pulse"
+                variant="rect"
+                height="29px"
+                width="100%"
+                style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+              />
             </TD>
             <TD align="center">
-              <Text>{ratio ? ratio[index] : 0} %</Text>
+              {/* <Text>{ratio ? ratio[index] : 0} %</Text> */}
+              <Skeleton
+                animation="pulse"
+                variant="rect"
+                height="29px"
+                width="100%"
+                style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+              />
             </TD>
           </TR>
         )

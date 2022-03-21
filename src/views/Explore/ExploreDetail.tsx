@@ -6,9 +6,10 @@ import moment from 'moment'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import useTheme from 'hooks/useTheme'
 import { useDispatch } from 'react-redux'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints, Skeleton } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
 import { getAddress } from 'utils/addressHelpers'
@@ -86,6 +87,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const prevRebalance = usePrevious(rebalance, {})
   const prevTimeframe = usePrevious(timeframe, '')
   const [periodPriceTokens, setPeriodPriceTokens] = useState([])
+  const themes = useTheme()
 
   const [sharpRatio, setSharpRatio] = useState(0)
 
@@ -629,52 +631,118 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <div className="flex justify-space-between align-end mb-3">
                     <CardHeading rebalance={rebalance} className="pr-4" />
                     {!isMobile && (
-                      <TwoLineFormat
-                        className="flex-shrink"
-                        title="Share price"
-                        subTitle="(Since inception)"
-                        subTitleFontSize="11px"
-                        value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
-                            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
-                        percentClass={(() => {
-                          if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                          if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                          return ''
-                        })()}
-                      />
+                      // <TwoLineFormat
+                      //   className="flex-shrink"
+                      //   title="Share price"
+                      //   subTitle="(Since inception)"
+                      //   subTitleFontSize="11px"
+                      //   value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                      //   percent={`${
+                      //     rebalance.sharedPricePercentDiff >= 0
+                      //       ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                      //       : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                      //   }%`}
+                      //   percentClass={(() => {
+                      //     if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+                      //     if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                      //     return ''
+                      //   })()}
+                      // />
+                      <div className='flex-shrink'>
+                        <div className="flex align-baseline" style={{ lineHeight: '0' }}>
+                          <Text fontSize="14px" color="textSubtle">
+                            Share price
+                          </Text>
+                          <Text fontSize="11px" className='ml-1'>
+                            (Since inception)
+                          </Text>
+                        </div>
+                        <div className="flex align-baseline">
+                          <Skeleton
+                            animation="pulse"
+                            variant="rect"
+                            height="29px"
+                            width="40%"
+                            style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                          />
+                          <Skeleton
+                            animation="pulse"
+                            variant="rect"
+                            height="29px"
+                            width="40%"
+                            className="ml-2"
+                            style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                          />
+                        </div>
+                      </div>
                     )}
                   </div>
 
                   <div className="flex flex-wrap">
-                    <TwoLineFormat
+                    {/* <TwoLineFormat
                       className={isMobile ? 'col-6 my-2' : 'col-3'}
                       title="Total asset value"
                       value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
-                    />
-                    {isMobile && (
-                      <TwoLineFormat
-                        className={isMobile ? 'col-6 my-2' : 'col-3'}
-                        title="Share price"
-                        subTitle="(Since inception)"
-                        subTitleFontSize="11px"
-                        value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
-                            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
-                        percentClass={(() => {
-                          if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                          if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                          return ''
-                        })()}
+                    /> */}
+                    <div className={isMobile ? 'col-6 my-2' : 'col-3'}>
+                      <Text fontSize="14px" color="textSubtle">
+                        Total asset value
+                      </Text>
+                      <Skeleton
+                        animation="pulse"
+                        variant="rect"
+                        height="29px"
+                        width="80%"
+                        style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
                       />
+                    </div>
+                    {isMobile && (
+                      // <TwoLineFormat
+                      //   className={isMobile ? 'col-6 my-2' : 'col-3'}
+                      //   title="Share price"
+                      //   subTitle="(Since inception)"
+                      //   subTitleFontSize="11px"
+                      //   value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                      //   percent={`${
+                      //     rebalance.sharedPricePercentDiff >= 0
+                      //       ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                      //       : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                      //   }%`}
+                      //   percentClass={(() => {
+                      //     if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+                      //     if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                      //     return ''
+                      //   })()}
+                      // />
+                      <div>
+                        <div className={`${isMobile ? 'col-12 mt-2' : 'col-3'} flex align-baseline`} style={{ lineHeight: '0' }}>
+                          <Text fontSize="14px" color="textSubtle">
+                            Share price
+                          </Text>
+                          <Text fontSize="11px" className="ml-1">
+                            (Since inception)
+                          </Text>
+                        </div>
+                        <div className="flex align-baseline">
+                          <Skeleton
+                            animation="pulse"
+                            variant="rect"
+                            height="29px"
+                            width="40%"
+                            style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                          />
+                          <Skeleton
+                            animation="pulse"
+                            variant="rect"
+                            height="29px"
+                            width="40%"
+                            className="ml-2"
+                            style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                          />
+                        </div>
+                      </div>
                     )}
-                    <TwoLineFormat
+                    {/* <TwoLineFormat
                       className={isMobile ? 'col-6' : 'col-3'}
                       title="Yield APR"
                       value={`${numeral(
@@ -685,7 +753,21 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                           .toFixed(2),
                       ).format('0,0.[00]')}%`}
                       hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-                    />
+                    /> */}
+                    <div className={isMobile ? 'col-6' : 'col-3'}>
+                      <TwoLineFormat
+                        title="Yield APR"
+                        value=""
+                        hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+                      />
+                      <Skeleton
+                        animation="pulse"
+                        variant="rect"
+                        height="29px"
+                        width="80%"
+                        style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                      />
+                    </div>
                     {/* <TwoLineFormat
                       className={isMobile ? 'col-6' : 'col-3'}
                       title="Investors"
@@ -718,36 +800,86 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         />
                       )}
 
-                      <TwoLineFormat
+                      {/* <TwoLineFormat
                         title="Return"
                         value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
                         hint="Estimated return on investment measures approximately over a period of time."
                         hintPosition="left"
-                      />
+                      /> */}
+                      <div>
+                        <TwoLineFormat
+                          title="Return"
+                          value=""
+                          hint="Estimated return on investment measures approximately over a period of time."
+                          hintPosition="left"
+                        />
+                        <Skeleton
+                          animation="pulse"
+                          variant="rect"
+                          height="29px"
+                          width="100%"
+                          style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  <FullChart
+                  {/* <FullChart
                     isLoading={isLoading}
                     graphData={graphData}
                     tokens={[...rebalance.ratio.filter((rt) => rt.value)]}
+                  /> */}
+                  <Skeleton
+                    animation="pulse"
+                    variant="rect"
+                    height="320px"
+                    width="100%"
+                    style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
                   />
                 </div>
 
                 <div className="flex bd-t">
                   <TwoLineFormat className="px-4 py-3 col-4 bd-r" title="Risk-O-Meter" value="Medium" />
-                  <TwoLineFormat
+                  {/* <TwoLineFormat
                     className="px-4 py-3 col-4 bd-r"
                     title="Sharpe ratio"
                     value={`${numeral(sharpRatio).format('0,0.00')}`}
                     hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
-                  />
-                  <TwoLineFormat
+                  /> */}
+                  <div className='px-4 py-3 col-4 bd-r'>
+                    <TwoLineFormat
+                      title="Sharpe ratio"
+                      value=""
+                      hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
+                    />
+                    <Skeleton
+                      animation="pulse"
+                      variant="rect"
+                      height="29px"
+                      width="60%"
+                      style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                    />
+                  </div>
+                  {/* <TwoLineFormat
                     className="px-4 py-3 col-4"
                     title="Max Drawdown"
                     value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
                     hint="The differentiation between the historical peak and low point through the portfolio."
-                  />
+                  /> */}
+                  <div className='px-4 py-3 col-4'>
+                    <TwoLineFormat
+                      title="Max Drawdown"
+                      value=""
+                      hint="The differentiation between the historical peak and low point through the portfolio."
+                    />
+                    <Skeleton
+                      animation="pulse"
+                      variant="rect"
+                      height="29px"
+                      width="60%"
+                      style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
+                    />
+                  </div>
                 </div>
               </Card>
 
