@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { Box } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, useModal, AlertModal } from '@fingerlabs/definixswap-uikit-v2'
 import useWallet from 'hooks/useWallet'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
@@ -10,6 +10,7 @@ import CardHighAPR from './components/CardHighAPR'
 import CardAudit from './components/CardAudit'
 import CardInvestment from './components/CardInvestment'
 import CardRelease from './components/CardRelease'
+import { useTranslation } from 'react-i18next'
 
 const WrapGrid = styled.div<{ isAccount: boolean }>`
   position: relative;
@@ -97,6 +98,14 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
 
 const Home: React.FC = () => {
   const { account } = useWallet()
+  const { t } = useTranslation();
+  const [onPresentAlertModal] =  useModal(<AlertModal title={t('Instant notice')} content={t('Maintenance work including smart contract')} buttonLabel={t('Confirm')} callback={() => {
+    return;
+  }} />)
+
+  useEffect(() => {
+    onPresentAlertModal();
+  }, []);
   return (
     <WrapGrid isAccount={!!account}>
       <FullColumnGrid area="notice">

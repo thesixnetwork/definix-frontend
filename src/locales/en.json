@@ -544,5 +544,7 @@
   "The network is not the": "Your wallet network is not connected to mainnet.\nPlease refresh after network change.",
   "Please change the wallet": "Please connect your wallet again after switching the network to Klaytn mainnet.\nDisconnect your wallet and then you can switch the network. ",
   "Network Change": "Network Change",
-  "Please wait it is": "Please wait. It is being fixed."
+  "Please wait it is": "Please wait. It is being fixed.",
+  "Instant notice": "Instant notice",
+  "Maintenance work including smart contract": "Maintenance work including smart contract is in progress for the rebalancing farm currently. Withdrawing money while the work is in progress may cause large losses so please mind depositing and withdrawing until the maintenance is completed. Apologize for the inconvenience."
 }
