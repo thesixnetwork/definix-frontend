@@ -8,7 +8,7 @@ import { setAccount, setConnector } from '../state/wallet'
 import { State } from '../state/types'
 
 const useWallet = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const account = useSelector((state: State) => {
     return state.wallet.account
   })

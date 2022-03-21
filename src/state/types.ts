@@ -202,8 +202,8 @@ export interface WalletState {
   isFetched: boolean
   isRebalanceFetched: boolean
 
-  account: string;
-  connector: string;
+  account: string
+  connector: string
 }
 
 export interface FinixPriceState {

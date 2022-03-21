@@ -64,13 +64,21 @@ export const walletSlice = createSlice({
     },
     setUserConnector: (state, action) => {
       state.connector = action.payload
-    }
+    },
   },
 })
 
 // Actions
-export const { setUserRabalanceBalance, setBalance, setAllowance, setUserDeadline, setUserSlippage, setDecimals, setUserAccount, setUserConnector } =
-  walletSlice.actions
+export const {
+  setUserRabalanceBalance,
+  setBalance,
+  setAllowance,
+  setUserDeadline,
+  setUserSlippage,
+  setDecimals,
+  setUserAccount,
+  setUserConnector,
+} = walletSlice.actions
 
 export const setDeadline = (slippage: number) => async (dispatch) => {
   return dispatch(setUserDeadline(slippage))
