@@ -109,7 +109,7 @@ export const usePropose = (
   voteLimit,
 ) => {
   const { account } = useWallet()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const callPropose = async (ipfsHash) => {
     if (isKlip()) {
@@ -179,7 +179,7 @@ export const useGetProposal = () => {
 // eslint-disable-next-line
 export const useApproveToService = (max) => {
   const { account } = useWallet()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const onApprove = useCallback(async () => {
     const call = getContract(IServiceInfoFacet.abi, getVFinixVoting())
@@ -244,7 +244,7 @@ const handleContractExecute = (_executeFunction, _account) => {
 // Add vote
 export const useVote = () => {
   const { account } = useWallet()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
   const [serviceKey] = useState('')
 
   const callCastVote = async (proposalIndex, votingPowers) => {
@@ -254,7 +254,7 @@ export const useVote = () => {
         abi: JSON.stringify(getAbiIVotingFacetByName('vote')),
         input: JSON.stringify([proposalIndex, votingPowers]),
       })
-      return Promise.resolve();
+      return Promise.resolve()
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
@@ -274,7 +274,7 @@ export const useVote = () => {
 // Claim vote
 export const useClaimVote = () => {
   const { account } = useWallet()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const callClaimVote = async (proposalIndex) => {
     if (isKlip()) {
@@ -283,7 +283,7 @@ export const useClaimVote = () => {
         abi: JSON.stringify(getAbiIVotingFacetByName('recallVotesFromProposal')),
         input: JSON.stringify([proposalIndex]),
       })
-      return Promise.resolve();
+      return Promise.resolve()
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())

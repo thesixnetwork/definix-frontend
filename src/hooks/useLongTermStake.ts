@@ -342,10 +342,9 @@ export const useHarvest = () => {
 export const useApprove = (max) => {
   const { account, connector } = useWallet()
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const onApprove = useCallback(async () => {
-
     if (isKlip()) {
       const txHash = await request({
         contractAddress: getFinixAddress(),

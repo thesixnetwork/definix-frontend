@@ -28,7 +28,7 @@ enum RESPONSE_STATE {
 enum ERROR_STATE {
   TIMEOUT = 'timeout',
   CANCELED = 'canceled',
-  UNKNOWN = 'unknown'
+  UNKNOWN = 'unknown',
 }
 
 class KlipConnector {
@@ -43,20 +43,26 @@ class KlipConnector {
     this._onCloseReponse()
   }
 
-  async requestContract(props: KlipContractProps, { onShow, onHide }: {
-    onShow: () => void;
-    onHide: () => void;
-  }): Promise<string> {
+  async requestContract(
+    props: KlipContractProps,
+    {
+      onShow,
+      onHide,
+    }: {
+      onShow: () => void
+      onHide: () => void
+    },
+  ): Promise<string> {
     this._onCloseReponse()
     try {
-      onShow();
+      onShow()
       await this._getRequestKey(props)
       this._onRenderingQR()
       return await this._onWaitResponse()
     } catch (e) {
-      throw e;
+      throw e
     } finally {
-      onHide();
+      onHide()
     }
   }
 
@@ -64,8 +70,8 @@ class KlipConnector {
     status: RESPONSE_STATE
     expiration_time: number
     result?: {
-      tx_hash: string;
-      stats: string;
+      tx_hash: string
+      stats: string
     }
   }> {
     return axios.get(`${KLIP_BASE_URL}/result?request_key=${klipRequestKey}`).then(({ data }) => data)
@@ -89,7 +95,7 @@ class KlipConnector {
         this._klipRequestKey = data.request_key
       })
     } catch (e) {
-      throw e;
+      throw e
     }
   }
 
@@ -97,7 +103,7 @@ class KlipConnector {
     const url = `https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}`
     const elem = document.createElement('canvas')
     QRcode.toCanvas(elem, url)
-    document.querySelector('.klip-qr').appendChild(elem);
+    document.querySelector('.klip-qr').appendChild(elem)
   }
 
   private _onRenderingInterval(expireDuration: Dayjs) {
@@ -117,7 +123,7 @@ class KlipConnector {
           this._onRenderingInterval(expireDuration)
           if (expireDuration.unix() < 0) {
             reject({
-              status: ERROR_STATE.TIMEOUT
+              status: ERROR_STATE.TIMEOUT,
             })
             this._onCloseReponse()
           }
@@ -126,7 +132,7 @@ class KlipConnector {
             this._onCloseReponse()
           } else if (res?.status === RESPONSE_STATE.CANCELED) {
             reject({
-              status: ERROR_STATE.CANCELED
+              status: ERROR_STATE.CANCELED,
             })
             this._onCloseReponse()
           }
@@ -134,7 +140,7 @@ class KlipConnector {
           console.error(e)
           reject({
             status: ERROR_STATE.UNKNOWN,
-            e
+            e,
           })
           this._onCloseReponse()
         }
@@ -145,7 +151,7 @@ class KlipConnector {
   private _onCloseReponse() {
     this._klipRequestKey = undefined
     this._interval && clearInterval(this._interval)
-    this._interval = null;
+    this._interval = null
   }
 }
 
@@ -158,10 +164,11 @@ const useKlipContract = () => {
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
   return {
     isKlip: () => klipConnector.isKlip(connector),
-    request: (props) => klipConnector.requestContract(props, {
-      onShow: () => onPresentKlipModal(),
-      onHide: () => onDismissKlipModal()
-    }),
+    request: (props) =>
+      klipConnector.requestContract(props, {
+        onShow: () => onPresentKlipModal(),
+        onHide: () => onDismissKlipModal(),
+      }),
     close: () => klipConnector.closeRequest(),
   }
 }

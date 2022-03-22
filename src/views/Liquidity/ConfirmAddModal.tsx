@@ -75,7 +75,7 @@ export default function ConfirmAddModal({
 }: Props) {
   const { t } = useTranslation()
   const { chainId, account, connector, library } = useWallet()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
   const [txHash, setTxHash] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>(undefined)

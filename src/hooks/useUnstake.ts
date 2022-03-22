@@ -22,7 +22,7 @@ const useUnstake = (pid: number) => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const handleUnstake = useCallback(
     async (amount: string) => {
@@ -66,7 +66,7 @@ export const useSousUnstake = (sousId) => {
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
   const isOldSyrup = SYRUPIDS.includes(sousId)
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const handleUnstake = useCallback(
     async (amount: string) => {

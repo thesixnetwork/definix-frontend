@@ -26,7 +26,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const stake = useCallback(async () => {
     setStatus(false)

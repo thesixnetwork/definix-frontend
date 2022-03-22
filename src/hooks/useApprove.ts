@@ -19,7 +19,7 @@ const jsonConvert = (data: any) => JSON.stringify(data)
 export const useApprove = (lpContract: Contract) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
   const herodotusContract = useHerodotus()
 
   const handleApprove = useCallback(async () => {
@@ -28,7 +28,7 @@ export const useApprove = (lpContract: Contract) => {
       tx = await request({
         contractAddress: lpContract._address,
         abi: jsonConvert(getAbiERC20ByName('approve')),
-        input: jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP])
+        input: jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
       })
     } else {
       tx = await approve(lpContract, herodotusContract, account)
@@ -44,7 +44,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
   const sousChefContract = useSousChef(sousId)
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const herodotusContract = useHerodotus()
   const handleApprove = useCallback(async () => {

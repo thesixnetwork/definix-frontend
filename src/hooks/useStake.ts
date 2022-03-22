@@ -18,7 +18,7 @@ const useStake = (pid: number) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
   const herodotusContract = useHerodotus()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const handleStake = useCallback(
     async (amount: string) => {
@@ -59,7 +59,7 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const handleStake = useCallback(
     async (amount: string) => {

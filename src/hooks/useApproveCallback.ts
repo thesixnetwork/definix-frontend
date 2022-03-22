@@ -39,7 +39,7 @@ export function useApproveCallback(
 ): [ApprovalState, () => Promise<void>] {
   const { account, chainId } = useWallet()
 
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
 
@@ -97,10 +97,10 @@ export function useApproveCallback(
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
       ])
       await request({
-        contractAddress: tokenContract.address, 
-        abi, 
+        contractAddress: tokenContract.address,
+        abi,
         input,
-        value: '0'
+        value: '0',
       })
     } else {
       const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {

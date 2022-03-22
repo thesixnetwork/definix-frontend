@@ -91,7 +91,7 @@ export default function ConfirmRemoveModal({
     parsedAmounts[Field.LIQUIDITY],
     ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
   )
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
   const { toastSuccess, toastError } = useToast()
 
   const [attemptingTxn, setAttemptingTxn] = useState(false)

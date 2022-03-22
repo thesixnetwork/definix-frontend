@@ -16,27 +16,23 @@ export const useHarvest = (farmPid: number) => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const handleHarvest = useCallback(async () => {
     let tx = null
     if (isKlip()) {
-      try {
-        if (farmPid === 0) {
-          tx = await request({
-            contractAddress: herodotusContract._address,
-            abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
-            input: jsonConvert(['0']),
-          })
-        } else {
-          tx = await request({
-            contractAddress: herodotusContract._address,
-            abi: jsonConvert(getAbiHerodotusByName('deposit')),
-            input: jsonConvert([farmPid, '0']),
-          })
-        }
-      } catch (error) {
-        console.warn('useHarvest/handleHarvest] tx failed')
+      if (farmPid === 0) {
+        tx = await request({
+          contractAddress: herodotusContract._address,
+          abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
+          input: jsonConvert(['0']),
+        })
+      } else {
+        tx = await request({
+          contractAddress: herodotusContract._address,
+          abi: jsonConvert(getAbiHerodotusByName('deposit')),
+          input: jsonConvert([farmPid, '0']),
+        })
       }
     } else {
       tx = await harvest(herodotusContract, farmPid, account)
@@ -52,7 +48,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
   const dispatch = useDispatch()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
   const [harvestResultList, setHarvestResultList] = useState([])
 
   const harvestUsingKlip = useCallback(
@@ -171,11 +167,11 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
   const { account, connector } = useWallet()
   const sousChefContract = useSousChef(sousId)
   const herodotusContract = useHerodotus()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const handleHarvest = useCallback(async () => {
     if (isKlip()) {
-      let tx;
+      let tx
       if (sousId === 0) {
         tx = await request({
           contractAddress: herodotusContract._address,

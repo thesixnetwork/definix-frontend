@@ -41,7 +41,7 @@ export default function useWrapCallback(
   const [loading, setLoading] = useState<boolean>(false)
 
   const { account, chainId, connector } = useWallet()
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
 
   const wethContract = useWETHContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)

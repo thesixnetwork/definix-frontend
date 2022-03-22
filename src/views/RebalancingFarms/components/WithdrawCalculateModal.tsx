@@ -52,7 +52,7 @@ const WithdrawCalculateModal = ({
 
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
-  const { isKlip, request } = useKlipContract();
+  const { isKlip, request } = useKlipContract()
   const { account, klaytn, connector } = useWallet()
   const [isWithdrawing, setIsWithdrawing] = useState(false)
 
