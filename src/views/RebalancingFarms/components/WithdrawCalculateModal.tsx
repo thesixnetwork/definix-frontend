@@ -24,6 +24,7 @@ import { getCustomContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
 import { useToast } from 'state/hooks'
 import useWallet from 'hooks/useWallet'
+import useKlipContract from 'hooks/useKlipContract'
 import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 
 import CardHeading from './CardHeading'
@@ -51,7 +52,7 @@ const WithdrawCalculateModal = ({
 
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
-  const { setShowModal } = React.useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
   const { account, klaytn, connector } = useWallet()
   const [isWithdrawing, setIsWithdrawing] = useState(false)
 
@@ -97,14 +98,12 @@ const WithdrawCalculateModal = ({
         ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
         : 0
 
-      if (isKlipConnector(connector)) {
-        klipProvider.genQRcodeContactInteract(
-          getAddress(rebalance.address),
-          JSON.stringify(getAbiRebalanceByName('removeFund')),
-          JSON.stringify([lpAmount, toAllAssets, outputRatios, outputUSDRatio]),
-          setShowModal,
-        )
-        const tx = await klipProvider.checkResponse()
+      if (isKlip()) {
+        const tx = await request({
+          contractAddress: getAddress(rebalance.address),
+          abi: JSON.stringify(getAbiRebalanceByName('removeFund')),
+          input: JSON.stringify([lpAmount, toAllAssets, outputRatios, outputUSDRatio]),
+        })
         setTx(tx)
         handleLocalStorage(tx)
       } else {

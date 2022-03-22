@@ -9,47 +9,41 @@ import { useHerodotus, useSousChef } from './useContract'
 import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
+import useKlipContract from './useKlipContract'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 export const useHarvest = (farmPid: number) => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
-
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
 
   const handleHarvest = useCallback(async () => {
     let tx = null
-    if (isKlipConnector(connector)) {
-      // setShowModal(true)
+    if (isKlip()) {
       try {
         if (farmPid === 0) {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('leaveStaking')),
-            jsonConvert(['0']),
-            setShowModal,
-          )
+          tx = await request({
+            contractAddress: herodotusContract._address,
+            abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
+            input: jsonConvert(['0']),
+          })
         } else {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('deposit')),
-            jsonConvert([farmPid, '0']),
-            setShowModal,
-          )
+          tx = await request({
+            contractAddress: herodotusContract._address,
+            abi: jsonConvert(getAbiHerodotusByName('deposit')),
+            input: jsonConvert([farmPid, '0']),
+          })
         }
-        tx = await klipProvider.checkResponse()
       } catch (error) {
         console.warn('useHarvest/handleHarvest] tx failed')
-      } finally {
-        setShowModal(false)
       }
     } else {
       tx = await harvest(herodotusContract, farmPid, account)
     }
     dispatch(fetchFarmUserDataAsync(account))
     return tx
-  }, [account, dispatch, farmPid, herodotusContract, setShowModal, connector])
+  }, [account, dispatch, farmPid, herodotusContract, connector])
 
   return { onReward: handleHarvest }
 }
@@ -58,29 +52,26 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
   const dispatch = useDispatch()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
   const [harvestResultList, setHarvestResultList] = useState([])
 
   const harvestUsingKlip = useCallback(
     async (farmPid: number) => {
       if (farmPid === 0) {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('leaveStaking')),
-          jsonConvert(['0']),
-          setShowModal,
-        )
+        return await request({
+          contractAddress: herodotusContract._address,
+          abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
+          input: jsonConvert(['0']),
+        })
       } else {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('deposit')),
-          jsonConvert([farmPid, '0']),
-          setShowModal,
-        )
+        return await request({
+          contractAddress: herodotusContract._address,
+          abi: jsonConvert(getAbiHerodotusByName('deposit')),
+          input: jsonConvert([farmPid, '0']),
+        })
       }
-      return klipProvider.checkResponse()
     },
-    [setShowModal, herodotusContract._address],
+    [herodotusContract._address],
   )
 
   const harvestAllUsingKlip = useCallback(
@@ -103,7 +94,6 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
           },
           ...prev,
         ])
-        setShowModal(false)
       }
 
       if (txIndex < txs.length - 1) {
@@ -111,7 +101,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
       }
       return Promise.resolve()
     },
-    [harvestUsingKlip, setShowModal],
+    [harvestUsingKlip],
   )
 
   // const harvestUsingOthers = useCallback((farm) => {
@@ -141,7 +131,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
   const handleHarvest = useCallback(async () => {
     setHarvestResultList([])
 
-    if (isKlipConnector(connector)) {
+    if (isKlip()) {
       await harvestAllUsingKlip(farms, 0)
     } else {
       await farms.map(async (farm) => {
@@ -181,32 +171,26 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
   const { account, connector } = useWallet()
   const sousChefContract = useSousChef(sousId)
   const herodotusContract = useHerodotus()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
 
   const handleHarvest = useCallback(async () => {
-    if (isKlipConnector(connector)) {
-      // setShowModal(true)
-
+    if (isKlip()) {
+      let tx;
       if (sousId === 0) {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('leaveStaking')),
-          jsonConvert(['0']),
-          setShowModal,
-        )
+        tx = await request({
+          contractAddress: herodotusContract._address,
+          abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
+          input: jsonConvert(['0']),
+        })
       } else {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('deposit')),
-          jsonConvert([sousId, '0']),
-          setShowModal,
-        )
+        tx = await request({
+          contractAddress: herodotusContract._address,
+          abi: jsonConvert(getAbiHerodotusByName('deposit')),
+          input: jsonConvert([sousId, '0']),
+        })
       }
-      const tx = await klipProvider.checkResponse()
 
-      setShowModal(false)
       dispatch(fetchFarmUserDataAsync(account))
-      console.info(tx)
       return tx
     }
 
@@ -223,7 +207,7 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
     dispatch(updateUserPendingReward(sousId, account))
     dispatch(updateUserBalance(sousId, account))
     return tx
-  }, [account, dispatch, isUsingKlay, herodotusContract, sousChefContract, sousId, connector, setShowModal])
+  }, [account, dispatch, isUsingKlay, herodotusContract, sousChefContract, sousId, connector])
 
   return { onReward: handleHarvest }
 }

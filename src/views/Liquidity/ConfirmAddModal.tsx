@@ -32,6 +32,7 @@ import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { sendAnalyticsData } from 'utils/definixAnalytics'
 import useWallet from 'hooks/useWallet'
+import useKlipContract from 'hooks/useKlipContract'
 import ModalHeader from './ModalHeader'
 import ConfirmAddModalBottom from './ConfirmAddModalBottom'
 import { getCaver } from 'utils/caver'
@@ -74,7 +75,7 @@ export default function ConfirmAddModal({
 }: Props) {
   const { t } = useTranslation()
   const { chainId, account, connector, library } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
   const [txHash, setTxHash] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>(undefined)
@@ -163,18 +164,15 @@ export default function ConfirmAddModal({
     const valueNumber = (Number(value ? (+value).toString() : '0') / 10 ** 18).toString()
     const valueklip = Number.parseFloat(valueNumber).toFixed(6)
 
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        router.address,
-        JSON.stringify(getAbiByName(methodName)),
-        JSON.stringify(args),
-        setShowModal,
-        +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
-      )
-      const tx = await klipProvider.checkResponse()
+    if (isKlip()) {
+      const tx = await request({
+        contractAddress: router.address,
+        abi: JSON.stringify(getAbiByName(methodName)),
+        input: JSON.stringify(args),
+        value: +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
+      })
       setTxHash(tx)
       setAttemptingTxn(false)
-      setShowModal(false)
 
       addTransaction(undefined, {
         type: 'removeLiquidity',
@@ -296,7 +294,6 @@ export default function ConfirmAddModal({
   }, [
     account,
     chainId,
-    connector,
     addTransaction,
     allowedSlippage,
     currencies,
@@ -307,7 +304,6 @@ export default function ConfirmAddModal({
     noLiquidity,
     parsedAmounts,
     sendDefinixAnalytics,
-    setShowModal,
   ])
 
   useEffect(() => {

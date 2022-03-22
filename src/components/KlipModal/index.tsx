@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 interface Props extends InjectedModalProps {
-  onHide: () => void
+  onHide?: () => void
 }
 
 const StyledModalBody = styled(ModalBody)`
@@ -123,7 +123,7 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
           <CloseButton
             onClick={() => {
               onDismiss()
-              onHide()
+              onHide && onHide()
             }}
           >
             {/* <CloseWIcon /> */}

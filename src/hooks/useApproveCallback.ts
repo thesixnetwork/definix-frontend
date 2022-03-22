@@ -22,6 +22,7 @@ import { getApproveAbi } from './hookHelper'
 
 import { calculateGasMargin } from '../utils'
 import useWallet from './useWallet'
+import useKlipContract from './useKlipContract'
 import { getCaver } from 'utils/caver'
 
 export enum ApprovalState {
@@ -36,9 +37,9 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
-  const { account, chainId, connector } = useWallet()
+  const { account, chainId } = useWallet()
 
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
 
@@ -46,8 +47,6 @@ export function useApproveCallback(
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
-  // const { setShowModal } = useContext(KlipModalContext())
-  // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
     if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED
@@ -91,16 +90,18 @@ export function useApproveCallback(
     }
 
     let useExact = false
-    if (isKlipConnector(connector)) {
+    if (isKlip()) {
       const abi = JSON.stringify(getApproveAbi())
       const input = JSON.stringify([
         spender,
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
       ])
-      // setShowModal(true)
-      await klipProvider.genQRcodeContactInteract(tokenContract.address, abi, input, setShowModal, '0')
-      await klipProvider.checkResponse()
-      setShowModal(false)
+      await request({
+        contractAddress: tokenContract.address, 
+        abi, 
+        input,
+        value: '0'
+      })
     } else {
       const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
         // general fallback for tokens who restrict approval amounts
@@ -183,8 +184,6 @@ export function useApproveCallback(
     tokenContract,
     amountToApprove,
     spender,
-    connector,
-    setShowModal,
     chainId,
     account,
     addTransaction,

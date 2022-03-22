@@ -17,6 +17,7 @@ import useENS from './useENS'
 import { getAbiByName } from './hookHelper'
 import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
+import useKlipContract from './useKlipContract'
 import { getCaver } from 'utils/caver'
 
 enum SwapCallbackState {
@@ -106,7 +107,7 @@ export function useSwapCallback(
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { connector, account, chainId, library } = useWallet()
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, deadline, recipientAddressOrName)
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request }  = useKlipContract();
   const addTransaction = useTransactionAdder()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
@@ -186,29 +187,20 @@ export function useSwapCallback(
           },
           gasEstimate,
         } = successfulEstimation
-        if (isKlipConnector(connector)) {
+        if (isKlip()) {
           // console.log("swapCalls", successfulEstimation)
           const valueNumber = (Number(value ? (+value).toString() : '0') / 10 ** 18).toString()
           const valueklip = Number.parseFloat(valueNumber).toFixed(6)
           const abi = JSON.stringify(getAbiByName(methodName))
           const input = JSON.stringify(convertArgKlip(args, abi))
           if (ROUTER_ADDRESS[chainId]) {
-            // setShowModal(true)
-            const statusCallKlip = await klipProvider.genQRcodeContactInteract(
-              ROUTER_ADDRESS[chainId],
+            await request({
+              contractAddress: ROUTER_ADDRESS[chainId],
               abi,
               input,
-              setShowModal,
-              +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
-            )
-            // @ts-ignore
-            if (statusCallKlip === 'success') {
-              const klipTx = await klipProvider.checkResponse()
-              setShowModal(false)
-              return klipTx
-            }
-            setShowModal(false)
-            throw new Error('error dont have gas')
+              value: +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
+            })
+            return Promise.resolve('')
           }
         }
         const iface = new ethers.utils.Interface(IUniswapV2Router02ABI)
@@ -337,19 +329,16 @@ export function useSwapCallback(
     trade,
     library,
     account,
-    connector,
     chainId,
     recipient,
     recipientAddressOrName,
     swapCalls,
     addTransaction,
-    setShowModal,
   ])
 }
 
 export default useSwapCallback
 
-const isKlipConnector = (connector) => connector instanceof KlipConnector
 const convertArgKlip = (args: (string[] | string)[], abi) => {
   const argToString: (string[] | string)[] = []
   const abiArr = JSON.parse(abi)

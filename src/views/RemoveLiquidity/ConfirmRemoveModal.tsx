@@ -44,6 +44,7 @@ import KlaytnScopeLink from 'components/KlaytnScopeLink'
 
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
 import useWallet from 'hooks/useWallet'
+import useKlipContract from 'hooks/useKlipContract'
 import { getCaver } from 'utils/caver'
 
 interface IProps extends InjectedModalProps {
@@ -90,7 +91,7 @@ export default function ConfirmRemoveModal({
     parsedAmounts[Field.LIQUIDITY],
     ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
   )
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
   const { toastSuccess, toastError } = useToast()
 
   const [attemptingTxn, setAttemptingTxn] = useState(false)
@@ -217,18 +218,15 @@ export default function ConfirmRemoveModal({
 
       setAttemptingTxn(true)
 
-      if (isKlipConnector(connector)) {
-        klipProvider.genQRcodeContactInteract(
-          router.address,
-          JSON.stringify(getAbiByName(methodName)),
-          JSON.stringify(args),
-          setShowModal,
-          '0',
-        )
-        const tx = await klipProvider.checkResponse()
+      if (isKlip()) {
+        const tx = await request({
+          contractAddress: router.address,
+          abi: JSON.stringify(getAbiByName(methodName)),
+          input: JSON.stringify(args),
+          value: '0',
+        })
         setTxHash(tx)
         setAttemptingTxn(false)
-        setShowModal(false)
 
         addTransaction(undefined, {
           type: 'removeLiquidity',
@@ -342,13 +340,11 @@ export default function ConfirmRemoveModal({
     allowedSlippage,
     approval,
     chainId,
-    connector,
     currencyA,
     currencyB,
     deadline,
     library,
     parsedAmounts,
-    setShowModal,
     signatureData,
     tokenA,
     tokenB,

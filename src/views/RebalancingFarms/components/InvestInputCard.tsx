@@ -25,6 +25,7 @@ import { fetchAllowances, fetchBalances } from 'state/wallet'
 import { simulateInvest, getReserves } from 'offline-pool'
 
 import useWallet from 'hooks/useWallet'
+import useKlipContract from 'hooks/useKlipContract'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiERC20ByName } from 'hooks/hookHelper'
 import { getAddress } from 'utils/addressHelpers'
@@ -57,7 +58,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
   const [, setTx] = useState({})
   const dispatch = useDispatch()
   const { account, klaytn, connector } = useWallet()
-  const { setShowModal } = React.useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
   const { toastSuccess, toastError } = useToast()
   const balances = useBalances(account)
   const mBalances = useDeepEqualMemo(balances)
@@ -178,15 +179,12 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
     setApprovingCoin(token.symbol)
     try {
-      if (isKlipConnector(connector)) {
-        klipProvider.genQRcodeContactInteract(
-          getAddress(token.address),
-          JSON.stringify(getAbiERC20ByName('approve')),
-          JSON.stringify([getAddress(mRebalance.address), klipProvider.MAX_UINT_256_KLIP]),
-          setShowModal,
-        )
-        await klipProvider.checkResponse()
-        setShowModal(false)
+      if (isKlip()) {
+        await request({
+          contractAddress: getAddress(token.address),
+          abi: JSON.stringify(getAbiERC20ByName('approve')),
+          input: JSON.stringify([getAddress(mRebalance.address), klipProvider.MAX_UINT_256_KLIP]),
+        })
       } else {
         await approveOther(tokenContract, getAddress(mRebalance.address), account)
       }

@@ -27,6 +27,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { useToast } from 'state/hooks'
 import CurrencyText from 'components/Text/CurrencyText'
 import useWallet from 'hooks/useWallet'
+import useKlipContract from 'hooks/useKlipContract'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import { fetchRebalances } from '../../../state/rebalance'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
@@ -52,7 +53,7 @@ const CalculateModal = ({
   const [isInvesting, setIsInvesting] = useState(false)
   const isMobile = !isXl && !isXxl
   // const slippage = useSlippage()
-  const { setShowModal } = React.useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
   const { account, klaytn, connector } = useWallet()
   const dispatch = useDispatch()
   // const balances = useBalances(account)
@@ -99,26 +100,21 @@ const CalculateModal = ({
         .times(new BigNumber(10).pow(usdToken.decimals))
         .toJSON()
       // const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
-      if (isKlipConnector(connector)) {
+      if (isKlip()) {
         const valueNumber = (Number(mainCoinValue) / 10 ** 18).toString()
         const valueklip = Number.parseFloat(valueNumber).toFixed(6)
         let expectValue = `${(Number(valueklip) + 0.00001) * 10 ** 18}`
         expectValue = expectValue.slice(0, -13)
         const valueKlipParam = mainCoinValue !== '0' ? `${expectValue}0000000000000` : '0'
 
-        klipProvider.genQRcodeContactInteract(
-          getAddress(rebalance.address),
-          JSON.stringify(getAbiRebalanceByName('addFund')),
+        const tx = await request({
+          contractAddress: getAddress(rebalance.address),
+          abi: JSON.stringify(getAbiRebalanceByName('addFund')),
           // JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
-          JSON.stringify([arrayTokenAmount, usdTokenAmount, 0]),
-          setShowModal,
-          valueKlipParam,
-        )
+          input: JSON.stringify([arrayTokenAmount, usdTokenAmount, 0]),
+          value: valueKlipParam,
+        })
 
-        const tx = {
-          transactionHash: await klipProvider.checkResponse(),
-        }
-        setShowModal(false)
         setTx(tx)
         handleLocalStorage(tx)
       } else {

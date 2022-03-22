@@ -1,8 +1,7 @@
 /* eslint-disable no-shadow */
-import { useEffect, useState, useCallback, useContext } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import {
   getAbiERC20ByName,
   getAbiVaultPenaltyFacetByName,
@@ -36,6 +35,7 @@ import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
 import { getEstimateGas } from 'utils/callHelpers'
 import useKlipModal from './useKlipModal'
+import useKlipContract from './useKlipContract'
 
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -237,11 +237,7 @@ const handleContractExecute = (_executeFunction, _account) => {
 
 export const useUnLock = () => {
   const { account, connector } = useWallet()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
-    onHide: () => {
-      console.log(123)
-    },
-  })
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const onUnLock = async (id) => {
     if (isKlipConnector(connector)) {
@@ -270,11 +266,7 @@ export const useLock = (level, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
-    onHide: () => {
-      console.log(123)
-    },
-  })
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const stake = useCallback(async () => {
     setStatus(false)
@@ -322,11 +314,7 @@ export const useLock = (level, lockFinix) => {
 
 export const useHarvest = () => {
   const { account, connector } = useWallet()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
-    onHide: () => {
-      console.log(123)
-    },
-  })
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const handleHarvest = useCallback(async () => {
     if (isKlipConnector(connector)) {
@@ -353,22 +341,19 @@ export const useHarvest = () => {
 
 export const useApprove = (max) => {
   const { account, connector } = useWallet()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
-    onHide: () => {
-      console.log(123)
-    },
-  })
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
+  const { isKlip, request } = useKlipContract();
 
   const onApprove = useCallback(async () => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getFinixAddress(),
-        JSON.stringify(getAbiERC20ByName('approve')),
-        JSON.stringify([getVFinix(), klipProvider.MAX_UINT_256_KLIP]),
-        onPresentKlipModal,
-      )
-      const txHash = await klipProvider.checkResponse()
-      onDismissKlipModal()
+
+    if (isKlip()) {
+      const txHash = await request({
+        contractAddress: getFinixAddress(),
+        abi: JSON.stringify(getAbiERC20ByName('approve')),
+        input: JSON.stringify([getVFinix(), klipProvider.MAX_UINT_256_KLIP]),
+      })
+      // const txHash = await klipProvider.checkResponse()
+      // onDismissKlipModal()
       return new Promise((resolve) => {
         resolve(txHash)
       })
@@ -377,7 +362,7 @@ export const useApprove = (max) => {
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.approve(getVFinix(), max), account).then(resolve).catch(reject)
     })
-  }, [account, max, connector, onPresentKlipModal, onDismissKlipModal])
+  }, [account, max, onPresentKlipModal, onDismissKlipModal])
 
   return { onApprove }
 }
@@ -587,11 +572,7 @@ export const useUnstakeId = () => {
 
 export const useClaim = () => {
   const { account, connector } = useWallet()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
-    onHide: () => {
-      console.log(123)
-    },
-  })
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const handleClaim = async (id) => {
     if (isKlipConnector(connector)) {
@@ -621,11 +602,7 @@ export const useSousHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
-    onHide: () => {
-      console.log(123)
-    },
-  })
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const handleHarvest = useCallback(
     async (sousId) => {
@@ -689,11 +666,7 @@ export const useSuperHarvest = () => {
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
 
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
-    onHide: () => {
-      console.log(123)
-    },
-  })
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const handleHarvest = useCallback(
     async (farmPid) => {

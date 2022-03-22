@@ -16,6 +16,7 @@ import { getVFinix, getVFinixVoting } from '../utils/addressHelpers'
 import { fetchVotesByIndex, fetchVotesByIpfs, fetchAvailableVotes } from '../state/actions'
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
+import useKlipContract from './useKlipContract'
 import { isKlipConnector } from './useApprove'
 import { getEstimateGas } from 'utils/callHelpers'
 
@@ -107,15 +108,15 @@ export const usePropose = (
   minimumVotingPower,
   voteLimit,
 ) => {
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract();
 
   const callPropose = async (ipfsHash) => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinixVoting(),
-        JSON.stringify(getAbiIProposalFacetByName('propose')),
-        JSON.stringify([
+    if (isKlip()) {
+      return await request({
+        contractAddress: getVFinixVoting(),
+        abi: JSON.stringify(getAbiIProposalFacetByName('propose')),
+        input: JSON.stringify([
           ipfsHash,
           proposalType,
           startTimestamp,
@@ -124,12 +125,6 @@ export const usePropose = (
           minimumVotingPower,
           voteLimit,
         ]),
-        setShowModal,
-      )
-      await klipProvider.checkResponse()
-      setShowModal(false)
-      return new Promise((resolve) => {
-        resolve('')
       })
     }
 
@@ -183,28 +178,25 @@ export const useGetProposal = () => {
 
 // eslint-disable-next-line
 export const useApproveToService = (max) => {
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract();
 
   const onApprove = useCallback(async () => {
     const call = getContract(IServiceInfoFacet.abi, getVFinixVoting())
     const serviceKey = await call.methods.getServiceKey().call()
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinix(),
-        JSON.stringify(getAbiIUsageFacetByName('approveToService')),
-        JSON.stringify([serviceKey, max]),
-        setShowModal,
-      )
-      const txHash = await klipProvider.checkResponse()
-      setShowModal(false)
+    if (isKlip()) {
+      const txHash = await request({
+        contractAddress: getVFinix(),
+        abi: JSON.stringify(getAbiIUsageFacetByName('approveToService')),
+        input: JSON.stringify([serviceKey, max]),
+      })
       return txHash
     }
     const callContract = getContract(IUsageFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.approveToService(serviceKey, max), account).then(resolve).catch(reject)
     })
-  }, [account, connector, setShowModal, max])
+  }, [account, max])
 
   return { onApprove }
 }
@@ -251,23 +243,18 @@ const handleContractExecute = (_executeFunction, _account) => {
 
 // Add vote
 export const useVote = () => {
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract();
   const [serviceKey] = useState('')
 
   const callCastVote = async (proposalIndex, votingPowers) => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinixVoting(),
-        JSON.stringify(getAbiIVotingFacetByName('vote')),
-        JSON.stringify([proposalIndex, votingPowers]),
-        setShowModal,
-      )
-      await klipProvider.checkResponse()
-      setShowModal(false)
-      return new Promise((resolve) => {
-        resolve('')
+    if (isKlip()) {
+      await request({
+        contractAddress: getVFinixVoting(),
+        abi: JSON.stringify(getAbiIVotingFacetByName('vote')),
+        input: JSON.stringify([proposalIndex, votingPowers]),
       })
+      return Promise.resolve();
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
@@ -286,22 +273,17 @@ export const useVote = () => {
 
 // Claim vote
 export const useClaimVote = () => {
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract();
 
   const callClaimVote = async (proposalIndex) => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinixVoting(),
-        JSON.stringify(getAbiIVotingFacetByName('recallVotesFromProposal')),
-        JSON.stringify([proposalIndex]),
-        setShowModal,
-      )
-      await klipProvider.checkResponse()
-      setShowModal(false)
-      return new Promise((resolve) => {
-        resolve('')
+    if (isKlip()) {
+      await request({
+        contractAddress: getVFinixVoting(),
+        abi: JSON.stringify(getAbiIVotingFacetByName('recallVotesFromProposal')),
+        input: JSON.stringify([proposalIndex]),
       })
+      return Promise.resolve();
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())

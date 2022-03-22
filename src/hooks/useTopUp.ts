@@ -12,6 +12,7 @@ import { getContract } from '../utils/caver'
 import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
+import useKlipContract from './useKlipContract'
 /* eslint no-else-return: "error" */
 
 // @ts-ignore
@@ -25,21 +26,18 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
 
   const stake = useCallback(async () => {
     setStatus(false)
     setLoading('loading')
     if (lockFinix !== '') {
-      if (isKlipConnector(connector)) {
-        klipProvider.genQRcodeContactInteract(
-          getVFinix(),
-          JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),
-          JSON.stringify([level, idLastMaxLv, lockFinix]),
-          setShowModal,
-        )
-        await klipProvider.checkResponse()
-        setShowModal(false)
+      if (isKlip()) {
+        await request({
+          contractAddress: getVFinix(),
+          abi: JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),
+          input: JSON.stringify([level, idLastMaxLv, lockFinix]),
+        })
         setLoading('success')
         setStatus(true)
         setInterval(() => setLoading(''), 3000)
@@ -74,7 +72,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
     }
 
     return status
-  }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv])
+  }, [account, lockFinix, level, status, idLastMaxLv])
 
   return { onLockPlus: stake, status, loadings }
 }

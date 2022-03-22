@@ -15,40 +15,35 @@ import { useHerodotus, useSousChef } from './useContract'
 import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
 import { isKlipConnector } from './useApprove'
+import useKlipContract from './useKlipContract'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 const useUnstake = (pid: number) => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
 
   const handleUnstake = useCallback(
     async (amount: string) => {
       let tx = null
-      if (isKlipConnector(connector)) {
-        // setShowModal(true)
+      if (isKlip()) {
         try {
           if (pid === 0) {
-            klipProvider.genQRcodeContactInteract(
-              herodotusContract._address,
-              jsonConvert(getAbiHerodotusByName('leaveStaking')),
-              jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-              setShowModal,
-            )
+            tx = await request({
+              contractAddress: herodotusContract._address,
+              abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
+              input: jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+            })
           } else {
-            klipProvider.genQRcodeContactInteract(
-              herodotusContract._address,
-              jsonConvert(getAbiHerodotusByName('withdraw')),
-              jsonConvert([pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-              setShowModal,
-            )
+            tx = await request({
+              contractAddress: herodotusContract._address,
+              abi: jsonConvert(getAbiHerodotusByName('withdraw')),
+              input: jsonConvert([pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+            })
           }
-          tx = await klipProvider.checkResponse()
         } catch (error) {
           console.warn('useUnstake/handleUnstake] tx failed')
-        } finally {
-          setShowModal(false)
         }
       } else {
         tx = await unstake(herodotusContract, pid, amount, account)
@@ -57,7 +52,7 @@ const useUnstake = (pid: number) => {
       console.info(tx)
       return tx
     },
-    [account, dispatch, herodotusContract, pid, setShowModal, connector],
+    [account, dispatch, herodotusContract, pid],
   )
 
   return { onUnstake: handleUnstake }
@@ -71,34 +66,28 @@ export const useSousUnstake = (sousId) => {
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
   const isOldSyrup = SYRUPIDS.includes(sousId)
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
 
   const handleUnstake = useCallback(
     async (amount: string) => {
       let tx = null
-      if (isKlipConnector(connector)) {
-        // setShowModal(true)
+      if (isKlip()) {
         try {
           if (sousId === 0) {
-            klipProvider.genQRcodeContactInteract(
-              herodotusContract._address,
-              jsonConvert(getAbiHerodotusByName('leaveStaking')),
-              jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-              setShowModal,
-            )
+            tx = await request({
+              contractAddress: herodotusContract._address,
+              abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
+              input: jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+            })
           } else {
-            klipProvider.genQRcodeContactInteract(
-              herodotusContract._address,
-              jsonConvert(getAbiHerodotusByName('withdraw')),
-              jsonConvert([sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-              setShowModal,
-            )
+            tx = await request({
+              contractAddress: herodotusContract._address,
+              abi: jsonConvert(getAbiHerodotusByName('withdraw')),
+              input: jsonConvert([sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+            })
           }
-          tx = await klipProvider.checkResponse()
         } catch (error) {
           console.warn('useUnstake/handleUnStake] tx failed')
-        } finally {
-          setShowModal(false)
         }
         dispatch(fetchFarmUserDataAsync(account))
       } else {
@@ -117,7 +106,7 @@ export const useSousUnstake = (sousId) => {
       dispatch(updateUserPendingReward(sousId, account))
       return tx
     },
-    [account, dispatch, isOldSyrup, herodotusContract, sousChefContract, sousId, setShowModal, connector],
+    [account, dispatch, isOldSyrup, herodotusContract, sousChefContract, sousId],
   )
 
   return { onUnstake: handleUnstake }

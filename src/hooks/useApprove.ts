@@ -10,6 +10,7 @@ import { useHerodotus, useFinix, useSousChef, useLottery } from './useContract'
 import * as klipProvider from './klipProvider'
 import { getAbiERC20ByName } from './hookHelper'
 import useWallet from './useWallet'
+import useKlipContract from './useKlipContract'
 
 export const isKlipConnector = (connector) => connector instanceof KlipConnector
 
@@ -17,59 +18,49 @@ const jsonConvert = (data: any) => JSON.stringify(data)
 // Approve a Farm
 export const useApprove = (lpContract: Contract) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract();
   const herodotusContract = useHerodotus()
 
   const handleApprove = useCallback(async () => {
     let tx
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        lpContract._address,
-        jsonConvert(getAbiERC20ByName('approve')),
-        jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
-        setShowModal,
-      )
-      tx = await klipProvider.checkResponse()
-
-      setShowModal(false)
+    if (isKlip()) {
+      tx = await request({
+        contractAddress: lpContract._address,
+        abi: jsonConvert(getAbiERC20ByName('approve')),
+        input: jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP])
+      })
     } else {
-      // is inject
       tx = await approve(lpContract, herodotusContract, account)
     }
     dispatch(fetchFarmUserDataAsync(account))
     return tx
-  }, [account, dispatch, lpContract, herodotusContract, setShowModal, connector])
+  }, [account, dispatch, lpContract, herodotusContract])
   return { onApprove: handleApprove }
 }
 
 // Approve a Pool
 export const useSousApprove = (lpContract: Contract, sousId) => {
   const dispatch = useDispatch()
-  const { account, connector }: { account: string; connector: string } = useWallet()
+  const { account } = useWallet()
   const sousChefContract = useSousChef(sousId)
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract();
 
   const herodotusContract = useHerodotus()
   const handleApprove = useCallback(async () => {
     let tx
-    if (isKlipConnector(connector)) {
-      // setShowModal(true)
-      klipProvider.genQRcodeContactInteract(
-        lpContract._address,
-        jsonConvert(getAbiERC20ByName('approve')),
-        jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
-        setShowModal,
-      )
-      tx = await klipProvider.checkResponse()
-      dispatch(updateUserAllowance(sousId, account))
-      setShowModal(false)
+    if (isKlip()) {
+      tx = await request({
+        contractAddress: lpContract._address,
+        abi: jsonConvert(getAbiERC20ByName('approve')),
+        input: jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
+      })
     } else {
       tx = await approve(lpContract, sousChefContract, account)
-      dispatch(updateUserAllowance(sousId, account))
     }
+    dispatch(updateUserAllowance(sousId, account))
     return tx
-  }, [account, dispatch, lpContract, sousChefContract, sousId, connector, setShowModal, herodotusContract])
+  }, [account, dispatch, lpContract, sousChefContract, sousId, herodotusContract])
 
   return { onApprove: handleApprove }
 }
