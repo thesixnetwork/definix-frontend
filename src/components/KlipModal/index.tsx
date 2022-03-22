@@ -4,7 +4,9 @@ import {
   Modal,
   ModalBody,
   Text,
-  /*LogoWalletKlipIcon, CloseWIcon,*/ IconButton,
+  // LogoWalletKlipIcon,
+  CloseWIcon,
+  IconButton,
   Box,
   ModalFooter,
   ArrowRightGIcon,
@@ -126,14 +128,14 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
               onHide && onHide()
             }}
           >
-            {/* <CloseWIcon /> */}
+            <CloseWIcon />
           </CloseButton>
         </WrapHeader>
         <WrapBody>
           <QrBox className="klip-qr"></QrBox>
           <WrapTime>
             <Text className="time">{t('Time Remaining')}</Text>
-            <Text className="interval klip-interval">{t('Time Remaining')}</Text>
+            <Text className="interval klip-interval"></Text>
           </WrapTime>
           <DescText>{t('Scan the QR code through a QR code reader or the KakaoTalk app.')}</DescText>
         </WrapBody>
@@ -141,17 +143,17 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
       <StyledModalFooter isFooter>
         <WrapGuide>
           <GuideItem>
-            <img src="" />
+            <img src="./images/klip/Connect-to-KLIP-02.png" />
             <Text className="text">Open Kakaotalk</Text>
           </GuideItem>
           <StyledArrowRightGIcon />
           <GuideItem>
-            <img src="" />
+            <img src="./images/klip/Connect-to-KLIP-03.png" />
             <Text className="text">Open Kakaotalk</Text>
           </GuideItem>
           <StyledArrowRightGIcon />
           <GuideItem>
-            <img src="" />
+            <img src="./images/klip/Connect-to-KLIP-04.png" />
             <Text className="text">Open Kakaotalk</Text>
           </GuideItem>
         </WrapGuide>

@@ -236,21 +236,18 @@ const handleContractExecute = (_executeFunction, _account) => {
 }
 
 export const useUnLock = () => {
-  const { account, connector } = useWallet()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   const onUnLock = async (id) => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinix(),
-        JSON.stringify(getAbiVaultFacetByName('unlock')),
-        JSON.stringify([id]),
-        onPresentKlipModal,
-      )
-      await klipProvider.checkResponse()
-      onDismissKlipModal()
+    if (isKlip()) {
+      const tx = await request({
+        contractAddress: getVFinix(),
+        abi: JSON.stringify(getAbiVaultFacetByName('unlock')),
+        input: JSON.stringify([id]),
+      })
       return new Promise((resolve) => {
-        resolve('')
+        resolve(tx)
       })
     }
     const callContract = getContract(VaultFacet.abi, getVFinix())
@@ -266,6 +263,7 @@ export const useLock = (level, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()
+  const { isKlip, request } = useKlipContract()
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const stake = useCallback(async () => {
@@ -273,15 +271,12 @@ export const useLock = (level, lockFinix) => {
     setLoading('loading')
     if (lockFinix) {
       try {
-        if (isKlipConnector(connector)) {
-          klipProvider.genQRcodeContactInteract(
-            getVFinix(),
-            JSON.stringify(getAbiVaultFacetByName('lock')),
-            JSON.stringify([level, lockFinix]),
-            onPresentKlipModal,
-          )
-          await klipProvider.checkResponse()
-          onDismissKlipModal()
+        if (isKlip()) {
+          await request({
+            contractAddress: getVFinix(),
+            abi: JSON.stringify(getAbiVaultFacetByName('lock')),
+            input: JSON.stringify([level, lockFinix]),
+          })
           setLoading('success')
           setStatus(true)
           setTimeout(() => setLoading(''), 5000)
@@ -307,40 +302,37 @@ export const useLock = (level, lockFinix) => {
     }
 
     return status
-  }, [account, level, lockFinix, status, connector, onPresentKlipModal, onDismissKlipModal])
+  }, [account, level, lockFinix, status])
 
   return { onStake: stake, status, loadings }
 }
 
 export const useHarvest = () => {
-  const { account, connector } = useWallet()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   const handleHarvest = useCallback(async () => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinix(),
-        JSON.stringify(getAbiRewardFacetByName('harvest')),
-        JSON.stringify([account]),
-        onPresentKlipModal,
-      )
-      await klipProvider.checkResponse()
-      onDismissKlipModal()
+    if (isKlip()) {
+      const tx = await request({
+        contractAddress: getVFinix(),
+        abi: JSON.stringify(getAbiRewardFacetByName('harvest')),
+        input: JSON.stringify([account]),
+      })
       return new Promise((resolve) => {
-        resolve('ok')
+        resolve(tx)
       })
     }
     const callContract = getContract(RewardFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.harvest(account), account).then(resolve).catch(reject)
     })
-  }, [account, connector, onPresentKlipModal, onDismissKlipModal])
+  }, [account])
 
   return { handleHarvest }
 }
 
 export const useApprove = (max) => {
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
   const { isKlip, request } = useKlipContract()
 
@@ -351,8 +343,6 @@ export const useApprove = (max) => {
         abi: JSON.stringify(getAbiERC20ByName('approve')),
         input: JSON.stringify([getVFinix(), klipProvider.MAX_UINT_256_KLIP]),
       })
-      // const txHash = await klipProvider.checkResponse()
-      // onDismissKlipModal()
       return new Promise((resolve) => {
         resolve(txHash)
       })
@@ -570,19 +560,16 @@ export const useUnstakeId = () => {
 }
 
 export const useClaim = () => {
-  const { account, connector } = useWallet()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   const handleClaim = async (id) => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinix(),
-        JSON.stringify(getAbiVaultPenaltyFacetByName('claimWithPenalty')),
-        JSON.stringify([id]),
-        onPresentKlipModal,
-      )
-      const txHash = await klipProvider.checkResponse()
-      onDismissKlipModal()
+    if (isKlip()) {
+      const txHash = await request({
+        contractAddress: getVFinix(),
+        abi: JSON.stringify(getAbiVaultPenaltyFacetByName('claimWithPenalty')),
+        input: JSON.stringify([id]),
+      })
       return new Promise((resolve) => {
         resolve(txHash)
       })
@@ -602,30 +589,25 @@ export const useSousHarvest = () => {
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
+  const { isKlip, request } = useKlipContract()
 
   const handleHarvest = useCallback(
     async (sousId) => {
-      if (isKlipConnector(connector)) {
+      if (isKlip()) {
         if (sousId === 0) {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('leaveStaking')),
-            jsonConvert(['0']),
-            onPresentKlipModal,
-          )
+          await request({
+            contractAddress: herodotusContract._address,
+            abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
+            input: jsonConvert(['0']),
+          })
         } else {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('deposit')),
-            jsonConvert([sousId, '0']),
-            onPresentKlipModal,
-          )
+          await request({
+            contractAddress: herodotusContract._address,
+            abi: jsonConvert(getAbiHerodotusByName('deposit')),
+            input: jsonConvert([sousId, '0']),
+          })
         }
-        const tx = await klipProvider.checkResponse()
-
-        onDismissKlipModal()
         dispatch(fetchFarmUserDataAsync(account))
-        console.info(tx)
       }
       if (sousId === 0) {
         return new Promise(async (resolve, reject) => {
@@ -665,31 +647,27 @@ export const useSuperHarvest = () => {
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
 
+  const { isKlip, request } = useKlipContract()
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const handleHarvest = useCallback(
     async (farmPid) => {
-      if (isKlipConnector(connector)) {
+      if (isKlip()) {
+        let tx
         if (farmPid === 0) {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('leaveStaking')),
-            jsonConvert(['0']),
-            onPresentKlipModal,
-          )
+          tx = await request({
+            contractAddress: herodotusContract._address,
+            abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
+            input: jsonConvert(['0']),
+          })
         } else {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('deposit')),
-            jsonConvert([farmPid, '0']),
-            onPresentKlipModal,
-          )
+          tx = await request({
+            contractAddress: herodotusContract._address,
+            abi: jsonConvert(getAbiHerodotusByName('deposit')),
+            input: jsonConvert([farmPid, '0']),
+          })
         }
-        const tx = await klipProvider.checkResponse()
-
-        onDismissKlipModal()
         dispatch(fetchFarmUserDataAsync(account))
-        console.info(tx)
         return tx
       }
 

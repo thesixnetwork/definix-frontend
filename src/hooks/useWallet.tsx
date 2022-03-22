@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { useEffect, useMemo, useRef, useCallback } from 'react'
 import getLibrary from 'utils/getLibrary'
 import KlaytnWallet, { AvailableConnectors } from 'klaytn-wallets'
-import dayjs from 'dayjs'
-import useKlipModal from './useKlipModal'
+import useKlipModal, { renderKlipTimeFormat } from './useKlipModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAccount, setConnector } from '../state/wallet'
 import { State } from '../state/types'
@@ -30,10 +29,7 @@ const useWallet = () => {
     wallet.current.initKlip(
       {
         renderTimeFormat(time: number) {
-          const expireDuration = dayjs(time)
-          return `
-          ${expireDuration.minute()} min ${expireDuration.second()} sec
-        `
+          return renderKlipTimeFormat(time)
         },
       },
       {

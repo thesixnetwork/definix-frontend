@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { useSelector } from 'react-redux'
 import { State } from '../state/types'
-import useKlipModal from './useKlipModal'
+import useKlipModal, { renderKlipTimeFormat } from './useKlipModal'
 
 dayjs.extend(utc)
 
@@ -107,10 +107,9 @@ class KlipConnector {
   }
 
   private _onRenderingInterval(expireDuration: Dayjs) {
-    console.log(expireDuration)
     // this._callback.interval(expireDuration.valueOf())
     // @ts-ignore
-    document.querySelector('.klip-interval').innerHTML = expireDuration.valueOf()
+    document.querySelector('.klip-interval').innerHTML = renderKlipTimeFormat(expireDuration.valueOf())
   }
 
   private _onWaitResponse(): Promise<string> {
