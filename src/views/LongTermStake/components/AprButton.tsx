@@ -11,12 +11,12 @@ import { IsMobileType, DataType } from './types'
 
 interface VFinixProps extends IsMobileType {
   days: number
-  setDays: React.Dispatch<React.SetStateAction<number>>
+  setSelectedSuperStakOption: any
   data: DataType[]
   setPossibleSuperStake: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const AprButton: React.FC<VFinixProps> = ({ isMobile, days, setDays, data, setPossibleSuperStake }) => {
+const AprButton: React.FC<VFinixProps> = ({ isMobile, days, setSelectedSuperStakOption, data, setPossibleSuperStake }) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const isSuperStake = useMemo(() => pathname.indexOf('super') > -1, [pathname])
@@ -47,18 +47,16 @@ const AprButton: React.FC<VFinixProps> = ({ isMobile, days, setDays, data, setPo
       setSuperStakeData(array)
     }
 
-    if (isSuperStake) {
+    
       const maxDay = Math.max(...array)
-      if (maxDay === 1) setDays(90)
-      if (maxDay === 2) setDays(180)
-      if (maxDay === 3) setDays(365)
-    }
+      setSelectedSuperStakOption(data[maxDay])
+    
 
     if (array.length !== 0) setPossibleSuperStake(true)
     else setPossibleSuperStake(false)
 
     return () => setSuperStakeData([])
-  }, [lockTopUp, allLock, setDays, setPossibleSuperStake, isSuperStake])
+  }, [lockTopUp, allLock, setSelectedSuperStakOption, setPossibleSuperStake, isSuperStake])
 
   return (
     <>
@@ -73,9 +71,9 @@ const AprButton: React.FC<VFinixProps> = ({ isMobile, days, setDays, data, setPo
         )}
         <Flex>
           {isMobile ? (
-            <AprButtonMobile days={days} setDays={setDays} data={data} superStakeData={superStakeData} />
+            <AprButtonMobile days={days} setSelectedSuperStakOption={setSelectedSuperStakOption} data={data} superStakeData={superStakeData} />
           ) : (
-            <AprButtonPc days={days} setDays={setDays} data={data} superStakeData={superStakeData} />
+            <AprButtonPc days={days} setSelectedSuperStakOption={setSelectedSuperStakOption} data={data} superStakeData={superStakeData} />
           )}
         </Flex>
       </Flex>

@@ -1,17 +1,16 @@
 import React from 'react'
-import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import { IsMobileType } from '../types'
-
 interface EstimateVFinixProps extends IsMobileType {
   days: number
+  endDay: string
   totalFinix: number
 }
 
-const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, totalFinix }) => {
+const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, endDay, totalFinix }) => {
   const { t, i18n } = useTranslation()
 
   const getVFinix = (day: number, balance: number) => {
@@ -29,15 +28,6 @@ const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, totalFin
     }
   }
 
-  const getEndDay = (day: number) => {
-    const today = new Date()
-
-    if (i18n.language === 'ko') {
-      return moment(today.setDate(today.getDate() + day)).format(`YYYY-MM-DD HH:mm:ss`)
-    }
-    return moment(today.setDate(today.getDate() + day)).format(`DD-MMM-YYYY HH:mm:ss`)
-  }
-
   return (
     <>
       <Flex width="100%" mt={isMobile ? 'S_40' : 'S_32'} flexDirection="column">
@@ -47,7 +37,7 @@ const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, totalFin
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
-              {getEndDay(days)}
+              {endDay}
             </Text>
             <Text textStyle="R_12R" color="mediumgrey">
               *GMT +9 {t('Asia/Seoul')}

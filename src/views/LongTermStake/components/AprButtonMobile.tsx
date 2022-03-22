@@ -9,7 +9,7 @@ import { DataType } from './types'
 
 interface AprButtonProps {
   days: number
-  setDays: React.Dispatch<React.SetStateAction<number>>
+  setSelectedSuperStakOption: any
   data: DataType[]
   superStakeData: number[]
 }
@@ -71,7 +71,7 @@ const TextApr = styled(Text)`
   }
 `
 
-const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data, superStakeData }) => {
+const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setSelectedSuperStakOption, data, superStakeData }) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
 
@@ -81,9 +81,9 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data, superS
 
   const onClickAPR = (item) => {
     if (isSuperStake) {
-      if (myLongTerm(item)) setDays(item.day)
+      if (myLongTerm(item)) setSelectedSuperStakOption(item)
     } else {
-      setDays(item.day)
+      setSelectedSuperStakOption(item)
     }
   }
   return (

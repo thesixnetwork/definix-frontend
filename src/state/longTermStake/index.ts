@@ -290,7 +290,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       asPenaltyDays = moment.duration({ seconds: get(period, '0.penaltyPeriod')[value.level] }).asDays()
 
       let lockTimes = new Date(new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() * 1000)
-      lockTimes.setDate(lockTimes.getDate() + asDays)
+      lockTimes.setDate(lockTimes.getDate() + days[get(value, 'level')])
       lockTimes = new Date(lockTimes)
 
       let lockTopup = new Date(new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() * 1000)
@@ -328,12 +328,14 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         date.setDate(date.getDate() + 28)
         periodPenalty = new Date(date.getTime() + 3600000 * offset)
       }
+      const isTopup = topup.indexOf(new BigNumber(get(value, 'id._hex')).toString()) > -1
 
       locksData.push({
         id: new BigNumber(get(value, 'id._hex')).toNumber(),
         level: value.level * 1 + 1,
         isUnlocked: value.isUnlocked,
         isPenalty: value.isPenalty,
+        isTopup,
         flg: value.isPenalty && value.isUnlocked,
         penaltyFinixAmount: new BigNumber(get(value, 'penaltyFinixAmount._hex'))
           .dividedBy(new BigNumber(10).pow(18))

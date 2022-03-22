@@ -76,7 +76,7 @@ const SuperConfirmStake: React.FC<SuperConfirmStakeProps> = ({ totalFinix, days 
         <Flex mb="S_8" justifyContent="space-between">
           <Text textStyle="R_14R" color="mediumgrey">
             {t('Period End')}
-          </Text>
+          </Text> 
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
               {getEndDay(days)}

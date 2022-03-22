@@ -8,7 +8,7 @@ import { DataType } from '../types'
 
 interface AprButtonProps {
   days: number
-  setDays: React.Dispatch<React.SetStateAction<number>>
+  setSelectedSuperStakOption: any
   data: DataType[]
   superStakeData: number[]
 }
@@ -56,14 +56,14 @@ const TextApr = styled(Text)`
   }
 `
 
-const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data, superStakeData }) => {
+const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setSelectedSuperStakOption, data, superStakeData }) => {
   const { t } = useTranslation()
 
   const focusDays = useMemo(() => data.find((item) => item.day === days), [days, data])
   const myLongTerm = useCallback((item) => superStakeData.some((v: number) => v === item.level), [superStakeData])
 
   const onClickAPR = (item) => {
-    if (myLongTerm(item)) setDays(item.day)
+    if (myLongTerm(item)) setSelectedSuperStakOption(item)
   }
 
   return (
