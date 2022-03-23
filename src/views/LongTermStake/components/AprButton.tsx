@@ -54,7 +54,7 @@ const AprButton: React.FC<VFinixProps> = ({
     }
 
     const maxDay = Math.max(...array)
-    setSelectedSuperStakOption(data[maxDay-1])
+    setSelectedSuperStakOption(data[maxDay - 1])
 
     if (array.length !== 0) setPossibleSuperStake(true)
     else setPossibleSuperStake(false)

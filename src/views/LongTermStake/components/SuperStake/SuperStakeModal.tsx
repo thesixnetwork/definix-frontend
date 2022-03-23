@@ -36,7 +36,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const { isMobile } = useMatchBreakpoints()
 
   const [selectedSuperStakOption, setSelectedSuperStakOption] = useState<SelectedSuperStakOption>({})
-  
+
   const [error, setError] = useState<string>('')
   const [next, setNext] = useState<boolean>(false)
   const [inputFinix, setInputFinix] = useState<string>('')

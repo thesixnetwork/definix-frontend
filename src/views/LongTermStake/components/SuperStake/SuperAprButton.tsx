@@ -45,7 +45,7 @@ const SuperAprButton: React.FC<SuperAprButtonProps> = ({ isMobile, days, setSele
 
     const maxDay = Math.max(...array)
 
-    setSelectedSuperStakOption(data[maxDay-1])
+    setSelectedSuperStakOption(data[maxDay - 1])
 
     return () => setSuperStakeData([])
   }, [lockTopUp, allLock, setSelectedSuperStakOption])
