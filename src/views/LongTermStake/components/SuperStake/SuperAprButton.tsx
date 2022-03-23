@@ -10,11 +10,11 @@ import { IsMobileType, DataType } from '../types'
 
 interface SuperAprButtonProps extends IsMobileType {
   days: number
-  setDays: React.Dispatch<React.SetStateAction<number>>
+  setSelectedSuperStakOption: any
   data: DataType[]
 }
 
-const SuperAprButton: React.FC<SuperAprButtonProps> = ({ isMobile, days, setDays, data }) => {
+const SuperAprButton: React.FC<SuperAprButtonProps> = ({ isMobile, days, setSelectedSuperStakOption, data }) => {
   const { t } = useTranslation()
   const [superStakeData, setSuperStakeData] = useState<number[]>([])
   const lockTopUp = useLockTopup()
@@ -44,12 +44,11 @@ const SuperAprButton: React.FC<SuperAprButtonProps> = ({ isMobile, days, setDays
     }
 
     const maxDay = Math.max(...array)
-    if (maxDay === 1) setDays(90)
-    if (maxDay === 2) setDays(180)
-    if (maxDay === 3) setDays(365)
+
+    setSelectedSuperStakOption(data[maxDay - 1])
 
     return () => setSuperStakeData([])
-  }, [lockTopUp, allLock, setDays])
+  }, [lockTopUp, allLock, setSelectedSuperStakOption])
 
   return (
     <>
@@ -62,9 +61,19 @@ const SuperAprButton: React.FC<SuperAprButtonProps> = ({ isMobile, days, setDays
         </Flex>
         <Flex>
           {isMobile ? (
-            <AprButtonMobile days={days} setDays={setDays} data={data} superStakeData={superStakeData} />
+            <AprButtonMobile
+              days={days}
+              setSelectedSuperStakOption={setSelectedSuperStakOption}
+              data={data}
+              superStakeData={superStakeData}
+            />
           ) : (
-            <AprButtonPc days={days} setDays={setDays} data={data} superStakeData={superStakeData} />
+            <AprButtonPc
+              days={days}
+              setSelectedSuperStakOption={setSelectedSuperStakOption}
+              data={data}
+              superStakeData={superStakeData}
+            />
           )}
         </Flex>
       </Flex>

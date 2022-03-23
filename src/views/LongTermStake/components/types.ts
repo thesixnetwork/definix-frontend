@@ -27,6 +27,7 @@ export interface AllDataLockType {
   penaltyUnlockTimestamp: string
   periodPenalty: string
   voteAmount: number
+  isTopup: boolean
   topup: any
   topupTimeStamp: string
   lockTopupTimes: string

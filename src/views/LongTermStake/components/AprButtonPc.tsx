@@ -9,7 +9,7 @@ import { DataType } from './types'
 
 interface AprButtonProps {
   days: number
-  setDays: React.Dispatch<React.SetStateAction<number>>
+  setSelectedSuperStakOption: any
   data: DataType[]
   superStakeData: number[]
 }
@@ -83,11 +83,12 @@ const FlexApr = styled(Flex)<{ $focus: boolean; $isSuperStake: boolean; $myLongT
   border-top: none;
 `
 
-const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data, superStakeData }) => {
+const AprButtonPc: React.FC<AprButtonProps> = ({ days, setSelectedSuperStakOption, data, superStakeData }) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const isSuperStake = useMemo(() => pathname.indexOf('super') > -1, [pathname])
   const myLongTerm = useCallback((item) => superStakeData.some((v: number) => v === item.level), [superStakeData])
+  //todo:: super stake
   const APRColor = useCallback(
     (item) => {
       if (isSuperStake && !myLongTerm(item)) return 'black'
@@ -102,9 +103,9 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data, superStake
 
   const onClickAPR = (item) => {
     if (isSuperStake) {
-      if (myLongTerm(item)) setDays(item.day)
+      if (myLongTerm(item)) setSelectedSuperStakOption(item)
     } else {
-      setDays(item.day)
+      setSelectedSuperStakOption(item)
     }
   }
 
