@@ -113,7 +113,7 @@ class KlipConnector {
       } else if (isAndroid) {
         url = `intent://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}#Intent;scheme=kakaotalk;package=com.kakao.talk;end`
       }
-      ;(window as any).location.href = url
+      window.location.href = url
     }
   }
 
