@@ -1,13 +1,17 @@
 import { useEffect, useMemo, useRef, useCallback } from 'react'
 import getLibrary from 'utils/getLibrary'
-import KlaytnWallet, { AvailableConnectors } from 'klaytn-wallets'
+import KlaytnWallet, { AvailableConnectors, WalletError } from 'klaytn-wallets'
 import useKlipModal, { renderKlipTimeFormat } from './useKlipModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAccount, setConnector } from '../state/wallet'
 import { State } from '../state/types'
+import { useToast } from '../state/toasts/hooks'
+import { useTranslation } from 'react-i18next'
 
 const useWallet = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch()
+  const { toastError } = useToast();
   const account = useSelector((state: State) => {
     return state.wallet.account
   })
@@ -15,7 +19,7 @@ const useWallet = () => {
     return state.wallet.connector
   })
   const wallet = useRef(
-    new KlaytnWallet([AvailableConnectors.KAIKAS, AvailableConnectors.KLIP, AvailableConnectors.METAMASK]),
+    new KlaytnWallet([AvailableConnectors.KAIKAS, AvailableConnectors.KLIP, AvailableConnectors.METAMASK, AvailableConnectors.DCENT, AvailableConnectors.TOKENPOCKET]),
   )
 
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
@@ -44,9 +48,24 @@ const useWallet = () => {
 
   const onActivate = useCallback(
     async (connectorId: string) => {
-      await wallet.current.activate(connectorId)
-      dispatch(setAccount(wallet.current.account))
-      dispatch(setConnector(wallet.current.connectorId))
+      try {
+        if (wallet.current.isAvailable(connectorId)) {
+          await wallet.current.activate(connectorId)
+          dispatch(setAccount(wallet.current.account))
+          dispatch(setConnector(wallet.current.connectorId))
+        } else {
+          toastError(
+            t('Provider Error'),
+          )
+        }
+      } catch (e: any) {
+        if (e.message === WalletError.USER_DENIED) {
+          toastError(
+            t('Authorization Error'),
+          )
+        }
+        console.error(e.message);
+      }
     },
     [wallet.current],
   )
@@ -57,7 +76,7 @@ const useWallet = () => {
     dispatch(setConnector(wallet.current.connectorId))
   }, [wallet.current])
 
-  const library = useMemo(() => getLibrary(window.klaytn), [])
+  const library = useMemo(() => window.caver ? getLibrary(window.klaytn) : undefined, [])
   const klaytn = useMemo(() => library?.provider || undefined, [library])
 
   return {

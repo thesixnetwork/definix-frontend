@@ -3,6 +3,7 @@ import axios from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { useSelector } from 'react-redux'
+import { isAndroid, isIOS, isMobile } from 'react-device-detect'
 import { State } from '../state/types'
 import useKlipModal, { renderKlipTimeFormat } from './useKlipModal'
 
@@ -55,9 +56,8 @@ class KlipConnector {
   ): Promise<string> {
     this._onCloseReponse()
     try {
-      onShow()
       await this._getRequestKey(props)
-      this._onRenderingQR()
+      this._onRenderingQR(onShow)
       return await this._onWaitResponse()
     } catch (e) {
       throw e
@@ -99,17 +99,30 @@ class KlipConnector {
     }
   }
 
-  private _onRenderingQR() {
-    const url = `https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}`
-    const elem = document.createElement('canvas')
-    QRcode.toCanvas(elem, url)
-    document.querySelector('.klip-qr').appendChild(elem)
+  private _onRenderingQR(onShow: () => void) {
+    let url;
+    if (!isMobile) {
+      onShow()
+      const elem = document.createElement('canvas');
+      url = `https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}`;
+      QRcode.toCanvas(elem, url);
+      document.querySelector('.klip-qr').appendChild(elem)
+    } else {
+      if (isIOS) {
+        url = `kakaotalk://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}`;
+      } else if (isAndroid) {
+        url = `intent://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}#Intent;scheme=kakaotalk;package=com.kakao.talk;end`;
+      }
+      (window as any).location.href = url
+    }
   }
 
   private _onRenderingInterval(expireDuration: Dayjs) {
     // this._callback.interval(expireDuration.valueOf())
     // @ts-ignore
-    document.querySelector('.klip-interval').innerHTML = renderKlipTimeFormat(expireDuration.valueOf())
+    if (!isMobile) {
+      document.querySelector('.klip-interval').innerHTML = renderKlipTimeFormat(expireDuration.valueOf())
+    }
   }
 
   private _onWaitResponse(): Promise<string> {
