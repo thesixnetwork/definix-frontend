@@ -10,7 +10,7 @@ import SuperAprButton from './SuperAprButton'
 import SuperFarmPool from './SuperFarmPool'
 import SuperInput from './SuperInput'
 import SuperEstimate from './SuperEstimate'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 interface ModalProps {
   onDismiss?: () => any
 }
@@ -35,8 +35,8 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const { t, i18n } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
-  const [selectedSuperStakOption, setSelectedSuperStakOption] = useState<SelectedSuperStakOption>({});
-  console.log(selectedSuperStakOption);
+  const [selectedSuperStakOption, setSelectedSuperStakOption] = useState<SelectedSuperStakOption>({})
+  
   const [error, setError] = useState<string>('')
   const [next, setNext] = useState<boolean>(false)
   const [inputFinix, setInputFinix] = useState<string>('')
@@ -48,26 +48,33 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const { allLockPeriod } = useAllLock()
   const minimum = get(allLockPeriod, '0.minimum')
   const { balancefinix, allDataLock } = usePrivateData()
-  
+
   const getEndDay = (level) => {
-    const myPeriodSuperStakes = allDataLock.filter(e => get(e, 'isTopup') && !get(e, 'isUnlocked') && !get(e, 'isPenalty') && level === get(e, 'level'));
-    
+    const myPeriodSuperStakes = allDataLock.filter(
+      (e) => get(e, 'isTopup') && !get(e, 'isUnlocked') && !get(e, 'isPenalty') && level === get(e, 'level'),
+    )
+
     const levelByDay = {
       1: 90,
       2: 180,
-      3: 365
+      3: 365,
     }
-    let day;
-    if(myPeriodSuperStakes) {
-      myPeriodSuperStakes.forEach(e => {
-        const topupTimeStamp = get(e, 'topupTimeStamp');
-        const lockTimestamp = get(e, 'lockTimestamp');
-        if( moment(topupTimeStamp).diff(moment(), 'milliseconds') > 0 && moment(lockTimestamp).diff(moment(), 'milliseconds') > 0) {
-          day = moment(lockTimestamp);
+    let day
+    if (myPeriodSuperStakes) {
+      myPeriodSuperStakes.forEach((e) => {
+        const topupTimeStamp = get(e, 'topupTimeStamp')
+        const lockTimestamp = get(e, 'lockTimestamp')
+        if (
+          moment(topupTimeStamp).diff(moment(), 'milliseconds') > 0 &&
+          moment(lockTimestamp).diff(moment(), 'milliseconds') > 0
+        ) {
+          day = moment(lockTimestamp)
         }
       })
     }
-    return (day || moment().add(levelByDay[level], 'days')).format(i18n.language === 'ko' ? `YYYY-MM-DD HH:mm:ss` : `DD-MMM-YYYY HH:mm:ss`);
+    return (day || moment().add(levelByDay[level], 'days')).format(
+      i18n.language === 'ko' ? `YYYY-MM-DD HH:mm:ss` : `DD-MMM-YYYY HH:mm:ss`,
+    )
   }
 
   const data = [
@@ -98,7 +105,6 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   ]
 
   useEffect(() => {
-
     return () => {
       setError('')
       setInputFinix('')
@@ -113,8 +119,15 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
           {next && <SuperConfirmStake totalFinix={totalFinix} days={selectedSuperStakOption?.day} />}
 
           <>
-            {!next && <SuperAprButton isMobile={isMobile} days={selectedSuperStakOption?.day} setSelectedSuperStakOption={setSelectedSuperStakOption} data={data} />}
-            
+            {!next && (
+              <SuperAprButton
+                isMobile={isMobile}
+                days={selectedSuperStakOption?.day}
+                setSelectedSuperStakOption={setSelectedSuperStakOption}
+                data={data}
+              />
+            )}
+
             <SuperFarmPool
               days={selectedSuperStakOption?.day}
               inputFinix={inputFinix}
@@ -137,7 +150,12 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   setError={setError}
                   balancefinix={balancefinix}
                 />
-                <SuperEstimate isMobile={isMobile} days={selectedSuperStakOption?.day} endDay={selectedSuperStakOption?.endDay} totalFinix={totalFinix} />
+                <SuperEstimate
+                  isMobile={isMobile}
+                  days={selectedSuperStakOption?.day}
+                  endDay={selectedSuperStakOption?.endDay}
+                  totalFinix={totalFinix}
+                />
               </>
             )}
           </>

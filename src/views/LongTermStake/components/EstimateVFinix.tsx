@@ -1,5 +1,4 @@
 import React from 'react'
-import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 
@@ -10,7 +9,7 @@ interface EstimateVFinixProps {
 }
 
 const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, endDay, earn }) => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <>

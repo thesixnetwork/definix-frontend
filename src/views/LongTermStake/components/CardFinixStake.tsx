@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -57,7 +57,7 @@ type SelectedSuperStakOption = {
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const { t, i18n } = useTranslation()
   const { pathname } = useLocation()
-  const [selectedSuperStakOption, setSelectedSuperStakOption] = useState<SelectedSuperStakOption>({});
+  const [selectedSuperStakOption, setSelectedSuperStakOption] = useState<SelectedSuperStakOption>({})
   const [inputBalance, setInputBalance] = useState<string>('')
   const [error, setError] = useState<string>('')
   const [possibleSuperStake, setPossibleSuperStake] = useState<boolean>(false)
@@ -72,24 +72,31 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const isApproved = useMemo(() => account && allowance && allowance.isGreaterThan(0), [account, allowance])
 
   const getEndDay = (level) => {
-    const myPeriodSuperStakes = allDataLock.filter(e => get(e, 'isTopup') && !get(e, 'isUnlocked') && !get(e, 'isPenalty') && level === get(e, 'level'));
-    
+    const myPeriodSuperStakes = allDataLock.filter(
+      (e) => get(e, 'isTopup') && !get(e, 'isUnlocked') && !get(e, 'isPenalty') && level === get(e, 'level'),
+    )
+
     const levelByDay = {
       1: 90,
       2: 180,
-      3: 365
+      3: 365,
     }
-    let day;
-    if(myPeriodSuperStakes) {
-      myPeriodSuperStakes.forEach(e => {
-        const topupTimeStamp = get(e, 'topupTimeStamp');
-        const lockTimestamp = get(e, 'lockTimestamp');
-        if( moment(topupTimeStamp).diff(moment(), 'milliseconds') > 0 && moment(lockTimestamp).diff(moment(), 'milliseconds') > 0) {
+    let day
+    if (myPeriodSuperStakes) {
+      myPeriodSuperStakes.forEach((e) => {
+        const topupTimeStamp = get(e, 'topupTimeStamp')
+        const lockTimestamp = get(e, 'lockTimestamp')
+        if (
+          moment(topupTimeStamp).diff(moment(), 'milliseconds') > 0 &&
+          moment(lockTimestamp).diff(moment(), 'milliseconds') > 0
+        ) {
           day = moment(lockTimestamp)
         }
       })
     }
-    return (day || moment().add(levelByDay[level], 'days')).format(i18n.language === 'ko' ? `YYYY-MM-DD HH:mm:ss` : `DD-MMM-YYYY HH:mm:ss`);
+    return (day || moment().add(levelByDay[level], 'days')).format(
+      i18n.language === 'ko' ? `YYYY-MM-DD HH:mm:ss` : `DD-MMM-YYYY HH:mm:ss`,
+    )
   }
 
   const data = [
@@ -168,7 +175,11 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
               isError={!!error}
               possibleSuperStake={possibleSuperStake}
             />
-            <EstimateVFinix hasAccount={hasAccount} endDay={selectedSuperStakOption?.endDay} earn={getVFinix(selectedSuperStakOption?.day, inputBalance)} />
+            <EstimateVFinix
+              hasAccount={hasAccount}
+              endDay={selectedSuperStakOption?.endDay}
+              earn={getVFinix(selectedSuperStakOption?.day, inputBalance)}
+            />
           </FlexCard>
 
           {pathname.indexOf('super') > -1 && (!hasAccount || !balancevfinix) && (

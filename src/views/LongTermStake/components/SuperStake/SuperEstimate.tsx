@@ -11,7 +11,7 @@ interface EstimateVFinixProps extends IsMobileType {
 }
 
 const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, endDay, totalFinix }) => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const getVFinix = (day: number, balance: number) => {
     if (!balance) return 0

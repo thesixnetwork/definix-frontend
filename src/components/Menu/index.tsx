@@ -33,7 +33,7 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
   }, [])
 
   useEffect(() => {
-    onChangeNetwork();
+    onChangeNetwork()
     if ((window as any).klaytn) {
       (window as any).klaytn.on('networkChanged', () => {
         onChangeNetwork()

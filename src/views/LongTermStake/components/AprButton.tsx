@@ -16,7 +16,13 @@ interface VFinixProps extends IsMobileType {
   setPossibleSuperStake: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const AprButton: React.FC<VFinixProps> = ({ isMobile, days, setSelectedSuperStakOption, data, setPossibleSuperStake }) => {
+const AprButton: React.FC<VFinixProps> = ({
+  isMobile,
+  days,
+  setSelectedSuperStakOption,
+  data,
+  setPossibleSuperStake,
+}) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const isSuperStake = useMemo(() => pathname.indexOf('super') > -1, [pathname])
@@ -47,10 +53,8 @@ const AprButton: React.FC<VFinixProps> = ({ isMobile, days, setSelectedSuperStak
       setSuperStakeData(array)
     }
 
-    
-      const maxDay = Math.max(...array)
-      setSelectedSuperStakOption(data[maxDay])
-    
+    const maxDay = Math.max(...array)
+    setSelectedSuperStakOption(data[maxDay-1])
 
     if (array.length !== 0) setPossibleSuperStake(true)
     else setPossibleSuperStake(false)
@@ -71,9 +75,19 @@ const AprButton: React.FC<VFinixProps> = ({ isMobile, days, setSelectedSuperStak
         )}
         <Flex>
           {isMobile ? (
-            <AprButtonMobile days={days} setSelectedSuperStakOption={setSelectedSuperStakOption} data={data} superStakeData={superStakeData} />
+            <AprButtonMobile
+              days={days}
+              setSelectedSuperStakOption={setSelectedSuperStakOption}
+              data={data}
+              superStakeData={superStakeData}
+            />
           ) : (
-            <AprButtonPc days={days} setSelectedSuperStakOption={setSelectedSuperStakOption} data={data} superStakeData={superStakeData} />
+            <AprButtonPc
+              days={days}
+              setSelectedSuperStakOption={setSelectedSuperStakOption}
+              data={data}
+              superStakeData={superStakeData}
+            />
           )}
         </Flex>
       </Flex>
