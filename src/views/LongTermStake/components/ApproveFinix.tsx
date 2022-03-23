@@ -57,12 +57,12 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
       setIsLoadingApprove(true)
       await onApprove()
       toastSuccess(t('{{Action}} Complete', { Action: t('actionApprove') }))
-      setIsApproved(true);
+      setIsApproved(true)
     } catch (e) {
       toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
-      setIsApproved(false);
+      setIsApproved(false)
     } finally {
-      setIsApproved(true);
+      setIsApproved(true)
       setIsLoadingApprove(false)
     }
   }, [onApprove, toastSuccess, toastError, t, setIsApproved])

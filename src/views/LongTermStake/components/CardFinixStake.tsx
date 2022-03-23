@@ -70,8 +70,8 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const allowance = useAllowance()
   const hasAccount = useMemo(() => !!account, [account])
 
-  const [isApproved, setIsApproved] = useState<boolean>(false) 
-  
+  const [isApproved, setIsApproved] = useState<boolean>(false)
+
   const getEndDay = (level) => {
     const myPeriodSuperStakes = allDataLock.filter(
       (e) => get(e, 'isTopup') && !get(e, 'isUnlocked') && !get(e, 'isPenalty') && level === get(e, 'level'),
@@ -127,10 +127,8 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
     },
   ]
 
-
-
   useEffect(() => {
-    if(account && allowance && allowance.isGreaterThan(0)) {
+    if (account && allowance && allowance.isGreaterThan(0)) {
       // setIsApproved(true);
     }
   }, [account, allowance])
