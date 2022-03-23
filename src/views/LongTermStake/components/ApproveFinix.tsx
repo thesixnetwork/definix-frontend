@@ -15,6 +15,7 @@ interface ApproveFinixProps extends IsMobileType {
   hasAccount: boolean
   isApproved: boolean
   inputBalance: string
+  setIsApproved: React.Dispatch<React.SetStateAction<boolean>>
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
   days: number
   earn: number
@@ -30,6 +31,7 @@ const FlexApprove = styled(Flex)`
 const ApproveFinix: React.FC<ApproveFinixProps> = ({
   hasAccount,
   isApproved,
+  setIsApproved,
   inputBalance,
   setInputBalance,
   days,
@@ -55,12 +57,15 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
       setIsLoadingApprove(true)
       await onApprove()
       toastSuccess(t('{{Action}} Complete', { Action: t('actionApprove') }))
+      setIsApproved(true);
     } catch (e) {
       toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
+      setIsApproved(false);
     } finally {
+      setIsApproved(true);
       setIsLoadingApprove(false)
     }
-  }, [onApprove, toastSuccess, toastError, t])
+  }, [onApprove, toastSuccess, toastError, t, setIsApproved])
 
   const disabledStakeButton = () => {
     if (!isApproved || isError) return true

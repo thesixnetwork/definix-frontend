@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -69,8 +69,9 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const { account } = useWallet()
   const allowance = useAllowance()
   const hasAccount = useMemo(() => !!account, [account])
-  const isApproved = useMemo(() => account && allowance && allowance.isGreaterThan(0), [account, allowance])
 
+  const [isApproved, setIsApproved] = useState<boolean>(false) 
+  
   const getEndDay = (level) => {
     const myPeriodSuperStakes = allDataLock.filter(
       (e) => get(e, 'isTopup') && !get(e, 'isUnlocked') && !get(e, 'isPenalty') && level === get(e, 'level'),
@@ -126,6 +127,14 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
     },
   ]
 
+
+
+  useEffect(() => {
+    if(account && allowance && allowance.isGreaterThan(0)) {
+      // setIsApproved(true);
+    }
+  }, [account, allowance])
+
   const getVFinix = (day: number, balance: string) => {
     if (!balance) return 0
 
@@ -168,6 +177,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
               isMobile={isMobile}
               hasAccount={hasAccount}
               isApproved={isApproved}
+              setIsApproved={setIsApproved}
               inputBalance={inputBalance}
               setInputBalance={setInputBalance}
               days={selectedSuperStakOption?.day}

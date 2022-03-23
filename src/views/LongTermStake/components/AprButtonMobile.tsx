@@ -125,15 +125,15 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setSelectedSuperStakO
               </Flex>
               <Flex flexDirection="column" alignItems="flex-end">
                 <TextApr textStyle="R_14B" color={isSuperStake ? 'yellow' : 'red'}>
-                  {numeral(focusDays.apr).format('0,0.[00]')}%
+                  {numeral(focusDays?.apr).format('0,0.[00]')}%
                 </TextApr>
                 {!isSuperStake && (
                   <TextApr textStyle="R_14B" color="black">
-                    {numeral(focusDays.minStake).format('0,0')} {t('FINIX')}
+                    {numeral(focusDays?.minStake).format('0,0')} {t('FINIX')}
                   </TextApr>
                 )}
                 <TextApr textStyle="R_14B" color="black">
-                  {focusDays.multiple}X
+                  {focusDays?.multiple}X
                 </TextApr>
               </Flex>
             </FlexApr>
