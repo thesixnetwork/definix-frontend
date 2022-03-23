@@ -18,8 +18,8 @@ const initialState: WalletState = {
   isFetched: false,
   isRebalanceFetched: false,
 
-  account: '',
-  connector: '',
+  account: null,
+  connector: null,
 }
 
 export const walletSlice = createSlice({
