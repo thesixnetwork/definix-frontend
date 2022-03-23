@@ -30,7 +30,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
                 <Text textStyle="R_14R" color="black">
                   {t(`${item.days} days`)}
                 </Text>
-                {item.isTopup && (
+                {item.isTopup && 
                   <Flex alignItems="center">
                     <Text mt={`${i18n.language === 'en' && 'S_2'}`} mr="S_4" textStyle="R_12R" color="yellow">
                       {t('Super Stake')}
@@ -41,7 +41,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
                       color="yellow"
                     />
                   </Flex>
-                )}
+                }
               </Flex>
               <Text width="22%" textStyle="R_14R" color="black">
                 {getBalanceOverBillion(item.lockAmount)}
@@ -49,7 +49,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
               <Flex width="52%" justifyContent="space-between">
                 <Flex flexDirection="column" justifyContent="center">
                   <Text textStyle="R_14R" color="black">
-                    {item.isPenalty ? getEndDay(item.penaltyUnlockTimestamp) : getEndDay(item.lockTimestamp)}
+                    {item.isPenalty ? getEndDay(item.penaltyUnlockTimestamp) :  getEndDay(item.isTopup ? item.topupTimeStamp : item.lockTimestamp)}
                   </Text>
                   <Text textStyle="R_12R" color="mediumgrey">
                     *GMT +9 {t('Asia/Seoul')}

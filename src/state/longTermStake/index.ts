@@ -328,6 +328,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         date.setDate(date.getDate() + 28)
         periodPenalty = new Date(date.getTime() + 3600000 * offset)
       }
+      
       const isTopup = topup.indexOf(new BigNumber(get(value, 'id._hex')).toString()) > -1
 
       locksData.push({
@@ -350,7 +351,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         voteAmount: new BigNumber(get(value, 'voteAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
         periodPenalty: moment(periodPenalty).format(`DD-MMM-YY HH:mm:ss`),
         multiplier: get(period, '0.multiplier')[value.level * 1 + 1 - 1],
-        days: days[value.level * 1 + 1 - 1],
+        days: isTopup ? 28 : days[value.level * 1 + 1 - 1],
         topup,
         topupTimeStamp: moment(new Date(topupTime.setDate(topupTime.getDate() + 28))).format(`DD-MMM-YY HH:mm:ss`),
       })
