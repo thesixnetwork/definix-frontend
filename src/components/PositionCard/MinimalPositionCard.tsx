@@ -50,7 +50,7 @@ const MinimalPositionCard: React.FC<IProps> = React.memo(({ pair, showUnwrapped 
                 {t('Balance LP')}
               </Text>
               <Flex mt={isMobile ? '14px' : '12px'}>
-                <Box width={isMobile ? '48px' : '43px'} mr={isMobile ? '12px' : '10px'}>
+                <Box width={isMobile ? '48px' : '43px'} mr={isMobile ? '10px' : '10px'}>
                   <Lp size="24px" lpSymbols={[currency0?.symbol, currency1?.symbol]} />
                 </Box>
                 <Flex flexDirection="column" width="100%">
