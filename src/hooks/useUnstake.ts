@@ -1,6 +1,4 @@
-/* eslint no-lonely-if: 0 */
-import { useCallback, useContext } from 'react'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   fetchFarmUserDataAsync,
@@ -12,15 +10,13 @@ import BigNumber from 'bignumber.js'
 import { getAbiHerodotusByName } from 'hooks/hookHelper'
 import { unstake, sousUnstake, sousEmegencyUnstake } from 'utils/callHelpers'
 import { useHerodotus, useSousChef } from './useContract'
-import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
-import { isKlipConnector } from './useApprove'
 import useKlipContract from './useKlipContract'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 const useUnstake = (pid: number) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const herodotusContract = useHerodotus()
   const { isKlip, request } = useKlipContract()
 
@@ -62,7 +58,7 @@ const SYRUPIDS = []
 
 export const useSousUnstake = (sousId) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
   const isOldSyrup = SYRUPIDS.includes(sousId)

@@ -2,9 +2,7 @@ import Caver from 'caver-js'
 import { ethers } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
 import { Trade, TokenAmount, CurrencyAmount, ETHER } from 'definixswap-sdk'
-import { KlipConnector } from '@sixnetwork/klip-connector'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import { useCallback, useMemo, useContext } from 'react'
+import { useCallback, useMemo } from 'react'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/toasts/hooks'
@@ -17,7 +15,6 @@ import { KlaytnTransactionResponse } from '../state/transactions/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { useTokenContract } from './useContract'
-import * as klipProvider from './klipProvider'
 import { getApproveAbi } from './hookHelper'
 
 import { calculateGasMargin } from '../utils'
@@ -202,5 +199,3 @@ export function useApproveCallbackFromTrade(chainId, trade?: Trade, allowedSlipp
   )
   return useApproveCallback(amountToApprove, ROUTER_ADDRESS[chainId])
 }
-
-const isKlipConnector = (connector) => connector instanceof KlipConnector

@@ -1,16 +1,13 @@
 /* eslint no-lonely-if: 0 */
 
-import { useCallback, useContext } from 'react'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { fetchFarmUserDataAsync, updateUserStakedBalance, updateUserBalance } from 'state/actions'
 import { stake, sousStake, sousStakeBnb } from 'utils/callHelpers'
 import { getAbiHerodotusByName } from 'hooks/hookHelper'
 import { useHerodotus, useSousChef } from './useContract'
-import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
-import { isKlipConnector } from './useApprove'
 import useKlipContract from './useKlipContract'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
@@ -56,7 +53,7 @@ const useStake = (pid: number) => {
 
 export const useSousStake = (sousId, isUsingBnb = false) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
   const { isKlip, request } = useKlipContract()

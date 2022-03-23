@@ -1,7 +1,5 @@
 import React from 'react'
 import { Redirect, RouteComponentProps } from 'react-router-dom'
-import { injected } from 'connectors'
-import useWallet from 'hooks/useWallet'
 import Swap from './index'
 
 // Redirects to swap but only replace the pathname
@@ -10,8 +8,6 @@ export function RedirectPathToSwapOnly({ location }: RouteComponentProps) {
 }
 
 export function RedirectToSwap(props) {
-  const isInjectConnect = () => window.localStorage.getItem('connector') === 'injected'
-  const { activate } = useWallet()
   const {
     match: {
       params: { currencyIdA, currencyIdB },

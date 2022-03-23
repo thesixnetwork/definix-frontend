@@ -1,6 +1,5 @@
-import { useCallback, useMemo, useState, useContext } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Currency, currencyEquals, ETHER, WETH } from 'definixswap-sdk'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/toasts/hooks'
 import { tryParseAmount } from '../state/swap/hooks'
@@ -9,8 +8,6 @@ import { useCurrencyBalance } from '../state/wallet/hooks'
 import { useWETHContract } from './useContract'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
-import { isKlipConnector } from './useApprove'
-import * as klipProvider from './klipProvider'
 import { getAbiByNameWETH } from './hookHelper'
 
 export enum WrapType {
@@ -40,7 +37,7 @@ export default function useWrapCallback(
 ): IProps {
   const [loading, setLoading] = useState<boolean>(false)
 
-  const { account, chainId, connector } = useWallet()
+  const { account, chainId } = useWallet()
   const { isKlip, request } = useKlipContract()
 
   const wethContract = useWETHContract()

@@ -1,11 +1,9 @@
-import React, { useCallback, useState, useContext, useEffect, useMemo } from 'react'
+import React, { useCallback, useState, useEffect, useMemo } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ethers } from 'ethers'
 import tp from 'tp-js-sdk'
 import Caver from 'caver-js'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
-import { KlipConnector } from '@sixnetwork/klip-connector'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import {
   Modal,
   Box,
@@ -16,7 +14,6 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import { Currency, CurrencyAmount, Percent, Price, TokenAmount, ETHER } from 'definixswap-sdk'
 import { useTranslation } from 'react-i18next'
-import * as klipProvider from 'hooks/klipProvider'
 import { getAbiByName } from 'hooks/hookHelper'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
 import farms from 'config/constants/farm'
@@ -36,8 +33,6 @@ import useKlipContract from 'hooks/useKlipContract'
 import ModalHeader from './ModalHeader'
 import ConfirmAddModalBottom from './ConfirmAddModalBottom'
 import { getCaver } from 'utils/caver'
-
-const isKlipConnector = (connector) => connector instanceof KlipConnector
 
 interface Props extends InjectedModalProps {
   noLiquidity: boolean
@@ -74,7 +69,7 @@ export default function ConfirmAddModal({
   onFieldBInput,
 }: Props) {
   const { t } = useTranslation()
-  const { chainId, account, connector, library } = useWallet()
+  const { chainId, account, library } = useWallet()
   const { isKlip, request } = useKlipContract()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
   const [txHash, setTxHash] = useState<string>('')

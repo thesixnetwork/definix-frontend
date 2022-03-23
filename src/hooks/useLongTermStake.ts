@@ -32,7 +32,6 @@ import useRefresh from './useRefresh'
 import { State } from '../state/types'
 import { useHerodotus } from './useContract'
 import useWallet from './useWallet'
-import { isKlipConnector } from './useApprove'
 import { getEstimateGas } from 'utils/callHelpers'
 import useKlipModal from './useKlipModal'
 import useKlipContract from './useKlipContract'
@@ -262,9 +261,8 @@ export const useUnLock = () => {
 export const useLock = (level, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const { isKlip, request } = useKlipContract()
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const stake = useCallback(async () => {
     setStatus(false)

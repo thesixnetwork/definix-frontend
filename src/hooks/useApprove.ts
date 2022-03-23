@@ -1,7 +1,6 @@
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { ethers } from 'ethers'
-import { useCallback, useContext } from 'react'
+import { useCallback } from 'react'
 import { KlipConnector } from '@sixnetwork/klip-connector'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'

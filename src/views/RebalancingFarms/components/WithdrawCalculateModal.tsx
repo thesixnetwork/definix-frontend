@@ -17,8 +17,6 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { getCustomContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
@@ -30,7 +28,6 @@ import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import CardHeading from './CardHeading'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import InlineAssetRatioLabel from './InlineAssetRatioLabel'
-import { isKlipConnector } from 'hooks/useApprove'
 import { getEstimateGas } from 'utils/callHelpers'
 
 const WithdrawCalculateModal = ({
@@ -53,7 +50,7 @@ const WithdrawCalculateModal = ({
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
   const { isKlip, request } = useKlipContract()
-  const { account, klaytn, connector } = useWallet()
+  const { account, klaytn } = useWallet()
   const [isWithdrawing, setIsWithdrawing] = useState(false)
 
   const handleLocalStorage = async (tx) => {

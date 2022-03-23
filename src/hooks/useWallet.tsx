@@ -9,9 +9,9 @@ import { useToast } from '../state/toasts/hooks'
 import { useTranslation } from 'react-i18next'
 
 const useWallet = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { toastError } = useToast();
+  const { toastError } = useToast()
   const account = useSelector((state: State) => {
     return state.wallet.account
   })
@@ -19,7 +19,13 @@ const useWallet = () => {
     return state.wallet.connector
   })
   const wallet = useRef(
-    new KlaytnWallet([AvailableConnectors.KAIKAS, AvailableConnectors.KLIP, AvailableConnectors.METAMASK, AvailableConnectors.DCENT, AvailableConnectors.TOKENPOCKET]),
+    new KlaytnWallet([
+      AvailableConnectors.KAIKAS,
+      AvailableConnectors.KLIP,
+      AvailableConnectors.METAMASK,
+      AvailableConnectors.DCENT,
+      AvailableConnectors.TOKENPOCKET,
+    ]),
   )
 
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
@@ -54,17 +60,13 @@ const useWallet = () => {
           dispatch(setAccount(wallet.current.account))
           dispatch(setConnector(wallet.current.connectorId))
         } else {
-          toastError(
-            t('Provider Error'),
-          )
+          toastError(t('Provider Error'))
         }
       } catch (e: any) {
         if (e.message === WalletError.USER_DENIED) {
-          toastError(
-            t('Authorization Error'),
-          )
+          toastError(t('Authorization Error'))
         }
-        console.error(e.message);
+        console.error(e.message)
       }
     },
     [wallet.current],
@@ -76,7 +78,7 @@ const useWallet = () => {
     dispatch(setConnector(wallet.current.connectorId))
   }, [wallet.current])
 
-  const library = useMemo(() => window.caver ? getLibrary(window.klaytn) : undefined, [])
+  const library = useMemo(() => (window.caver ? getLibrary(window.klaytn) : undefined), [])
   const klaytn = useMemo(() => library?.provider || undefined, [library])
 
   return {

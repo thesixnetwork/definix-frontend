@@ -1,9 +1,7 @@
 /* eslint-disable no-shadow */
-import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAbiIProposalFacetByName, getAbiIUsageFacetByName, getAbiIVotingFacetByName } from 'hooks/hookHelper'
-import * as klipProvider from 'hooks/klipProvider'
 import IProposalFacet from '../config/abi/IProposalFacet.json'
 import IUsageFacet from '../config/abi/IUsageFacet.json'
 import IVotingFacet from '../config/abi/IVotingFacet.json'
@@ -17,7 +15,6 @@ import { fetchVotesByIndex, fetchVotesByIpfs, fetchAvailableVotes } from '../sta
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
-import { isKlipConnector } from './useApprove'
 import { getEstimateGas } from 'utils/callHelpers'
 
 export const useAvailableVotes = () => {

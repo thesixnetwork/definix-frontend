@@ -19,8 +19,6 @@ import {
   ModalFooter,
   ModalBody,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { getCustomContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
@@ -33,7 +31,6 @@ import { fetchRebalances } from '../../../state/rebalance'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import CardHeading from './CardHeading'
 import VerticalAssetRatio from './VerticalAssetRatio'
-import { isKlipConnector } from 'hooks/useApprove'
 
 const CalculateModal = ({
   setTx,
@@ -54,7 +51,7 @@ const CalculateModal = ({
   const isMobile = !isXl && !isXxl
   // const slippage = useSlippage()
   const { isKlip, request } = useKlipContract()
-  const { account, klaytn, connector } = useWallet()
+  const { account, klaytn } = useWallet()
   const dispatch = useDispatch()
   // const balances = useBalances(account)
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}

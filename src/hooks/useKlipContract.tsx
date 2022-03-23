@@ -100,20 +100,20 @@ class KlipConnector {
   }
 
   private _onRenderingQR(onShow: () => void) {
-    let url;
+    let url
     if (!isMobile) {
       onShow()
-      const elem = document.createElement('canvas');
-      url = `https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}`;
-      QRcode.toCanvas(elem, url);
+      const elem = document.createElement('canvas')
+      url = `https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}`
+      QRcode.toCanvas(elem, url)
       document.querySelector('.klip-qr').appendChild(elem)
     } else {
       if (isIOS) {
-        url = `kakaotalk://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}`;
+        url = `kakaotalk://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}`
       } else if (isAndroid) {
-        url = `intent://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}#Intent;scheme=kakaotalk;package=com.kakao.talk;end`;
+        url = `intent://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${this._klipRequestKey}#Intent;scheme=kakaotalk;package=com.kakao.talk;end`
       }
-      (window as any).location.href = url
+      ;(window as any).location.href = url
     }
   }
 
