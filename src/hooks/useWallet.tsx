@@ -1,8 +1,22 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { WalletContext } from 'contexts/WalletContext'
+import useKlipModal from './useKlipModal'
 
 const useWallet = () => {
-  return useContext(WalletContext)
+  const context = useContext(WalletContext);
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
+    onHide: () => {
+      // wallet.closeKlip()
+    },
+  })
+
+  useEffect(() => {
+    context.initKlip({
+      show: () => onPresentKlipModal(),
+      hide: () => onDismissKlipModal()
+    });
+  })
+  return context
 }
 
 export default useWallet

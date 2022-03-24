@@ -3,7 +3,7 @@ import KlaytnWallet, { AvailableConnectors, WalletError } from 'klaytn-wallets'
 import { useToast } from 'state/toasts/hooks';
 import { useTranslation } from 'react-i18next';
 import getLibrary from 'utils/getLibrary';
-import useKlipModal, { renderKlipTimeFormat } from 'hooks/useKlipModal';
+import { renderKlipTimeFormat } from 'hooks/useKlipModal';
 
 interface WalletState {
   account: string;
@@ -13,6 +13,10 @@ interface WalletState {
   klaytn: any;
   activate: (connectorId: string) => Promise<void>
   deactivate: () => void
+  initKlip: (callback: {
+    show: () => void;
+    hide: () => void;
+  }) => void;
 }
 
 const WalletContext = createContext<WalletState>({
@@ -25,22 +29,20 @@ const WalletContext = createContext<WalletState>({
   deactivate: () => {
     return;
   },
+  initKlip: () => {
+    return;
+  }
 })
 
 const WalletContextProvider = ({ children }) => {
   const { t } = useTranslation()
-  const [account, setAccount] = useState();
-  const [connector, setConnector] = useState();
+  const [isInit, setIsInit] = useState<boolean>(false);
+  const [account, setAccount] = useState<string>();
+  const [connector, setConnector] = useState<string>();
   const { toastError } = useToast()
   const wallet = useRef<KlaytnWallet>();
 
-  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
-    onHide: () => {
-      // wallet.closeKlip()
-    },
-  })
-
-  const onActivate = useCallback(
+  const onActivate = 
     async (connectorId: string) => {
       try {
         if (wallet.current.isAvailable(connectorId)) {
@@ -56,18 +58,17 @@ const WalletContextProvider = ({ children }) => {
         }
         console.error(e.message)
       }
-    },
-    [wallet],
-  )
+    }
 
   const onDeactivate = useCallback(() => {
     wallet.current.deactivate()
     setAccount(wallet.current.account)
     setConnector(wallet.current.connectorId)
-  }, [wallet])
+  }, [wallet.current])
 
 
   useEffect(() => {
+    if (wallet.current) return;
     // dcent inapp browser 관련 처리
     setTimeout(() => {
       wallet.current = new KlaytnWallet([
@@ -78,27 +79,30 @@ const WalletContextProvider = ({ children }) => {
         AvailableConnectors.TOKENPOCKET,
       ]);
   
-      wallet.current.initKlip(
-        {
-          renderTimeFormat(time: number) {
-            return renderKlipTimeFormat(time)
-          },
-        },
-        {
-          show: () => onPresentKlipModal(),
-          hide: () => onDismissKlipModal(),
-        },
-      )
-  
       if (!wallet.current.isConnected()) {
         onActivate(wallet.current.connectorId)
       }
     }, 100);
-
-  }, [])
+  }, [wallet.current])
 
   const library = useMemo(() => (window.caver ? getLibrary(window.klaytn) : undefined), [])
   const klaytn = useMemo(() => library?.provider || undefined, [library])
+
+  const initKlip = (callback: {
+    show: () => void;
+    hide: () => void;
+  }) => {
+    if (isInit || !wallet.current) return;
+    wallet.current.initKlip(
+      {
+        renderTimeFormat(time: number) {
+          return renderKlipTimeFormat(time)
+        },
+      },
+      callback,
+    )
+    setIsInit(true);
+  }
 
   return (
     <WalletContext.Provider value={{
@@ -109,6 +113,7 @@ const WalletContextProvider = ({ children }) => {
       connector,
       activate: onActivate,
       deactivate: onDeactivate,
+      initKlip,
     }}>
       {children}
     </WalletContext.Provider>

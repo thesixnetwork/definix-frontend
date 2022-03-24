@@ -18,11 +18,11 @@ const Web3ProviderNetwork = createCaverJsReactRoot(NetworkContextName)
 const Providers: React.FC = ({ children }) => {
   return (
     <Provider store={store}>
-      <ThemeContextProvider>
-        <ModalProvider>
-          <WalletContextProvider>
-            <Web3ProviderNetwork getLibrary={getLibrary}>
-              <CaverJsReactProvider getLibrary={getLibrary}>
+      <WalletContextProvider>
+        <Web3ProviderNetwork getLibrary={getLibrary}>
+          <CaverJsReactProvider getLibrary={getLibrary}>
+            <ThemeContextProvider>
+              <ModalProvider>
                 <HelmetProvider>
                   <BlockContextProvider>
                     <RefreshContextProvider>
@@ -30,11 +30,11 @@ const Providers: React.FC = ({ children }) => {
                     </RefreshContextProvider>
                   </BlockContextProvider>
                 </HelmetProvider>
-              </CaverJsReactProvider>
-            </Web3ProviderNetwork>
-          </WalletContextProvider>
-        </ModalProvider>
-      </ThemeContextProvider>
+              </ModalProvider>
+            </ThemeContextProvider>
+          </CaverJsReactProvider>
+        </Web3ProviderNetwork>
+      </WalletContextProvider>
     </Provider>
   )
 }
