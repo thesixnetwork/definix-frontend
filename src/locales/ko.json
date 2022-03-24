@@ -544,5 +544,7 @@
   "The network is not the": "네트워크가 메인넷이 아닙니다.\n네트워크 변경 후 새로고침 해주세요.",
   "Please change the wallet": "지갑 네트워크를 클레이튼 메인넷으로 변경해주세요.\n지갑 연결 해제 후 네트워크를 메인넷으로 변경한 뒤 지갑을 다시 연결해주세요.",
   "Network Change": "네트워크 변경",
-  "Please wait it is": "복구 중입니다. 잠시만 기다려주세요."
+  "Please wait it is": "복구 중입니다. 잠시만 기다려주세요.",
+  "Instant notice": "긴급 공지",
+  "Maintenance work including smart contract": "현재 리밸런싱팜은 스마트 컨트랙트를 포함한 유지보수 작업이 진행 중입니다. \n작업 기간 내 출금 시 큰 손실이 발생할 수 있으니 점검 완료 이후에 입, 출금 이용 부탁드립니다.\n이용에 불편을 드려 죄송합니다."
 }
