@@ -1,50 +1,41 @@
 /* eslint no-lonely-if: 0 */
 
-import { useCallback, useContext } from 'react'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { fetchFarmUserDataAsync, updateUserStakedBalance, updateUserBalance } from 'state/actions'
 import { stake, sousStake, sousStakeBnb } from 'utils/callHelpers'
 import { getAbiHerodotusByName } from 'hooks/hookHelper'
 import { useHerodotus, useSousChef } from './useContract'
-import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
-import { isKlipConnector } from './useApprove'
+import useKlipContract from './useKlipContract'
 
-const jsonConvert = (data: any) => JSON.stringify(data)
 const useStake = (pid: number) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const herodotusContract = useHerodotus()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract()
 
   const handleStake = useCallback(
     async (amount: string) => {
       let tx = null
-      if (isKlipConnector(connector)) {
-        // setShowModal(true)
+      if (isKlip()) {
         try {
           if (pid === 0) {
-            klipProvider.genQRcodeContactInteract(
-              herodotusContract._address,
-              jsonConvert(getAbiHerodotusByName('enterStaking')),
-              jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-              setShowModal,
-            )
+            tx = await request({
+              contractAddress: herodotusContract._address,
+              abi: getAbiHerodotusByName('enterStaking'),
+              input: [new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
+            })
           } else {
-            klipProvider.genQRcodeContactInteract(
-              herodotusContract._address,
-              jsonConvert(getAbiHerodotusByName('deposit')),
-              jsonConvert([pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-              setShowModal,
-            )
+            tx = await request({
+              contractAddress: herodotusContract._address,
+              abi: getAbiHerodotusByName('deposit'),
+              input: [pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
+            })
           }
-          tx = await klipProvider.checkResponse()
         } catch (error) {
           console.warn('useStake/handleStake] tx failed')
-        } finally {
-          setShowModal(false)
         }
       } else {
         tx = await stake(herodotusContract, pid, amount, account)
@@ -53,7 +44,7 @@ const useStake = (pid: number) => {
       console.info(tx)
       return tx
     },
-    [account, dispatch, herodotusContract, pid, setShowModal, connector],
+    [account, dispatch, herodotusContract, pid],
   )
 
   return { onStake: handleStake }
@@ -61,39 +52,32 @@ const useStake = (pid: number) => {
 
 export const useSousStake = (sousId, isUsingBnb = false) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract()
 
   const handleStake = useCallback(
     async (amount: string) => {
       let tx = null
-      if (isKlipConnector(connector)) {
-        // setShowModal(true)
+      if (isKlip()) {
         try {
           if (sousId === 0) {
-            klipProvider.genQRcodeContactInteract(
-              herodotusContract._address,
-              jsonConvert(getAbiHerodotusByName('enterStaking')),
-              jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-              setShowModal,
-            )
+            tx = await request({
+              contractAddress: herodotusContract._address,
+              abi: getAbiHerodotusByName('enterStaking'),
+              input: [new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
+            })
           } else {
-            klipProvider.genQRcodeContactInteract(
-              herodotusContract._address,
-              jsonConvert(getAbiHerodotusByName('deposit')),
-              jsonConvert([sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-              setShowModal,
-            )
+            tx = await request({
+              contractAddress: herodotusContract._address,
+              abi: getAbiHerodotusByName('deposit'),
+              input: [sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
+            })
           }
-          tx = await klipProvider.checkResponse()
         } catch (error) {
           console.warn('useStake/handleStake] tx failed')
-        } finally {
-          setShowModal(false)
         }
-        // dispatch(fetchFarmUserDataAsync(account))
       } else {
         if (sousId === 0) {
           tx = await stake(herodotusContract, 0, amount, account)
@@ -109,7 +93,7 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
       dispatch(updateUserBalance(sousId, account))
       return tx
     },
-    [account, dispatch, isUsingBnb, herodotusContract, sousChefContract, sousId, setShowModal, connector],
+    [account, dispatch, isUsingBnb, herodotusContract, sousChefContract, sousId],
   )
 
   return { onStake: handleStake }

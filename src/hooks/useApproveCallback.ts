@@ -2,9 +2,7 @@ import Caver from 'caver-js'
 import { ethers } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
 import { Trade, TokenAmount, CurrencyAmount, ETHER } from 'definixswap-sdk'
-import { KlipConnector } from '@sixnetwork/klip-connector'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import { useCallback, useMemo, useContext } from 'react'
+import { useCallback, useMemo } from 'react'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/toasts/hooks'
@@ -17,11 +15,11 @@ import { KlaytnTransactionResponse } from '../state/transactions/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { useTokenContract } from './useContract'
-import * as klipProvider from './klipProvider'
 import { getApproveAbi } from './hookHelper'
 
 import { calculateGasMargin } from '../utils'
 import useWallet from './useWallet'
+import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
 import { getCaver } from 'utils/caver'
 
 export enum ApprovalState {
@@ -36,9 +34,9 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
-  const { account, chainId, connector } = useWallet()
+  const { account, chainId } = useWallet()
 
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract()
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
 
@@ -46,8 +44,6 @@ export function useApproveCallback(
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
-  // const { setShowModal } = useContext(KlipModalContext())
-  // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
     if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED
@@ -91,16 +87,16 @@ export function useApproveCallback(
     }
 
     let useExact = false
-    if (isKlipConnector(connector)) {
-      const abi = JSON.stringify(getApproveAbi())
-      const input = JSON.stringify([
-        spender,
-        '115792089237316195423570985008687907853269984665640564039457584007913129639935',
-      ])
-      // setShowModal(true)
-      await klipProvider.genQRcodeContactInteract(tokenContract.address, abi, input, setShowModal, '0')
-      await klipProvider.checkResponse()
-      setShowModal(false)
+    if (isKlip()) {
+      await request({
+        contractAddress: tokenContract.address,
+        abi: getApproveAbi(),
+        input: [
+          spender,
+          MAX_UINT_256_KLIP,
+        ],
+        value: '0',
+      })
     } else {
       const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
         // general fallback for tokens who restrict approval amounts
@@ -183,8 +179,6 @@ export function useApproveCallback(
     tokenContract,
     amountToApprove,
     spender,
-    connector,
-    setShowModal,
     chainId,
     account,
     addTransaction,
@@ -203,5 +197,3 @@ export function useApproveCallbackFromTrade(chainId, trade?: Trade, allowedSlipp
   )
   return useApproveCallback(amountToApprove, ROUTER_ADDRESS[chainId])
 }
-
-const isKlipConnector = (connector) => connector instanceof KlipConnector

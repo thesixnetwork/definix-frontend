@@ -5,8 +5,8 @@ import useWallet from 'hooks/useWallet'
 
 const UnlockButton = (props) => {
   const { t } = useTranslation()
-  const { connect, reset } = useWallet()
-  const { onPresentConnectModal } = useWalletModal(Trans, connect as Login, reset)
+  const { activate, deactivate } = useWallet()
+  const { onPresentConnectModal } = useWalletModal(Trans, activate as Login, deactivate)
 
   return (
     <Button width="100%" variant={ButtonVariants.BROWN} md onClick={onPresentConnectModal} {...props}>

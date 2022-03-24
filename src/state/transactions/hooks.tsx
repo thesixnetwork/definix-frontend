@@ -56,7 +56,6 @@ export function useTransactionAdder(): (
 
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
-  // const { chainId } = useActiveWeb3React()
   const { chainId } = useWallet()
 
   const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)

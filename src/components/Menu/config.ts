@@ -1,4 +1,5 @@
 import { ROUTES } from 'config/constants/routes'
+import { AvailableConnectors } from '@fingerlabs/klaytn-wallets'
 
 export const links = (t: (key: string) => string, currentLang: string) => {
   return [
@@ -87,6 +88,33 @@ export const links = (t: (key: string) => string, currentLang: string) => {
     },
   ]
 }
+
+export const connectors = [
+  {
+    title: 'Kaikas',
+    icon: 'Kaikas',
+    connectorId: AvailableConnectors.KAIKAS,
+  },
+  {
+    title: 'D`CENT',
+    icon: 'Dcent',
+    connectorId: AvailableConnectors.DCENT,
+  },
+  // {
+  //   title: 'TokenPocket',
+  //   icon: 'TokenPocket',
+  //   width: 52,
+  //   height: 52,
+  //   connectorId: AvailableConnectors.Injected,
+  // },
+  {
+    title: 'Klip',
+    icon: 'KlipConnect',
+    width: 48,
+    height: 24,
+    connectorId: AvailableConnectors.KLIP,
+  },
+]
 
 export const socials = [
   {

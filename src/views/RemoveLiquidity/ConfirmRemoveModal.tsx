@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext, useEffect, useMemo } from 'react'
+import React, { useCallback, useState, useEffect, useMemo } from 'react'
 import Caver from 'caver-js'
 import { useTranslation } from 'react-i18next'
 import { ethers } from 'ethers'
@@ -23,9 +23,6 @@ import {
 import { Currency, Percent, TokenAmount, CurrencyAmount, Pair, Token, ETHER } from 'definixswap-sdk'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 
-import { KlipConnector } from '@sixnetwork/klip-connector'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { Field } from 'state/burn/actions'
 import useUserDeadline from 'hooks/useUserDeadline'
@@ -33,7 +30,6 @@ import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import { KlaytnTransactionResponse } from 'state/transactions/actions'
 import { useToast } from 'state/toasts/hooks'
 
-import * as klipProvider from 'hooks/klipProvider'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { getAbiByName } from 'hooks/hookHelper'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
@@ -44,6 +40,7 @@ import KlaytnScopeLink from 'components/KlaytnScopeLink'
 
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
 import useWallet from 'hooks/useWallet'
+import useKlipContract from 'hooks/useKlipContract'
 import { getCaver } from 'utils/caver'
 
 interface IProps extends InjectedModalProps {
@@ -68,8 +65,6 @@ const StyledNotiIcon = styled(NotiIcon)`
   flex-shrink: 0;
 `
 
-const isKlipConnector = (connector) => connector instanceof KlipConnector
-
 export default function ConfirmRemoveModal({
   onDismiss,
   currencyA,
@@ -85,12 +80,12 @@ export default function ConfirmRemoveModal({
 }: IProps) {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
-  const { account, chainId, connector, library } = useWallet()
+  const { account, chainId, library } = useWallet()
   const [approval] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
     ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
   )
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract()
   const { toastSuccess, toastError } = useToast()
 
   const [attemptingTxn, setAttemptingTxn] = useState(false)
@@ -217,18 +212,15 @@ export default function ConfirmRemoveModal({
 
       setAttemptingTxn(true)
 
-      if (isKlipConnector(connector)) {
-        klipProvider.genQRcodeContactInteract(
-          router.address,
-          JSON.stringify(getAbiByName(methodName)),
-          JSON.stringify(args),
-          setShowModal,
-          '0',
-        )
-        const tx = await klipProvider.checkResponse()
+      if (isKlip()) {
+        const tx = await request({
+          contractAddress: router.address,
+          abi: getAbiByName(methodName),
+          input: args,
+          value: '0',
+        })
         setTxHash(tx)
         setAttemptingTxn(false)
-        setShowModal(false)
 
         addTransaction(undefined, {
           type: 'removeLiquidity',
@@ -342,13 +334,11 @@ export default function ConfirmRemoveModal({
     allowedSlippage,
     approval,
     chainId,
-    connector,
     currencyA,
     currencyB,
     deadline,
     library,
     parsedAmounts,
-    setShowModal,
     signatureData,
     tokenA,
     tokenB,

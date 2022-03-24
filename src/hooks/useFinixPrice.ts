@@ -3,7 +3,6 @@ import { useCallback, useState, useEffect } from 'react'
 import { get, compact } from 'lodash-es'
 import { allTokenAddresses, getLpNetwork, MULTICALL_ADDRESS } from 'config/constants'
 import erc20 from 'config/constants/abis/erc20.json'
-import { useActiveWeb3React } from './index'
 import { multicallForExchange } from '../utils/multicall'
 
 const getTotalBalanceLp = async (input) => {
@@ -84,7 +83,6 @@ const findAndSelectPair = (pair) => {
 export default function useFinixPrice(): number {
   const [currentPrice, setCurrentPrice] = useState(0)
   const chainId = parseInt(process.env.REACT_APP_CHAIN_ID)
-  // const { chainId = parseInt(process.env.REACT_APP_CHAIN_ID || '0') } = useActiveWeb3React()
   const multicallContractAddress = MULTICALL_ADDRESS[chainId || process.env.REACT_APP_CHAIN_ID || '56']
   const getAddress = useCallback(
     (input) => {

@@ -8,7 +8,7 @@ import { DataType } from '../types'
 
 interface AprButtonProps {
   days: number
-  setDays: React.Dispatch<React.SetStateAction<number>>
+  setSelectedSuperStakOption: any
   data: DataType[]
   superStakeData: number[]
 }
@@ -62,7 +62,7 @@ const FlexApr = styled(Flex)<{ $focus: boolean; $myLongTerm: boolean }>`
   border-top: none;
 `
 
-const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data, superStakeData }) => {
+const AprButtonPc: React.FC<AprButtonProps> = ({ days, setSelectedSuperStakOption, data, superStakeData }) => {
   const { t } = useTranslation()
   const myLongTerm = useCallback((item) => superStakeData.some((v: number) => v === item.level), [superStakeData])
   const APRColor = useCallback(
@@ -74,9 +74,9 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data, superStake
   )
   const onClickAPR = useCallback(
     (item) => {
-      if (myLongTerm(item)) setDays(item.day)
+      if (myLongTerm(item)) setSelectedSuperStakOption(item)
     },
-    [myLongTerm, setDays],
+    [myLongTerm, setSelectedSuperStakOption],
   )
 
   return (

@@ -4,10 +4,8 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from 'definixswap-sdk'
-import { useMemo, useContext } from 'react'
+import { useMemo } from 'react'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import { KlipConnector } from '@sixnetwork/klip-connector'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE, ROUTER_ADDRESS } from 'config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { KlaytnTransactionResponse } from '../state/transactions/actions'
@@ -15,8 +13,8 @@ import { calculateGasMargin, getRouterContract, isAddress, shortenAddress } from
 import isZero from '../utils/isZero'
 import useENS from './useENS'
 import { getAbiByName } from './hookHelper'
-import * as klipProvider from './klipProvider'
 import useWallet from './useWallet'
+import useKlipContract from './useKlipContract'
 import { getCaver } from 'utils/caver'
 
 enum SwapCallbackState {
@@ -104,9 +102,9 @@ export function useSwapCallback(
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { connector, account, chainId, library } = useWallet()
+  const { account, chainId, library } = useWallet()
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, deadline, recipientAddressOrName)
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract()
   const addTransaction = useTransactionAdder()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
@@ -186,29 +184,19 @@ export function useSwapCallback(
           },
           gasEstimate,
         } = successfulEstimation
-        if (isKlipConnector(connector)) {
+        if (isKlip()) {
           // console.log("swapCalls", successfulEstimation)
           const valueNumber = (Number(value ? (+value).toString() : '0') / 10 ** 18).toString()
           const valueklip = Number.parseFloat(valueNumber).toFixed(6)
           const abi = JSON.stringify(getAbiByName(methodName))
-          const input = JSON.stringify(convertArgKlip(args, abi))
           if (ROUTER_ADDRESS[chainId]) {
-            // setShowModal(true)
-            const statusCallKlip = await klipProvider.genQRcodeContactInteract(
-              ROUTER_ADDRESS[chainId],
-              abi,
-              input,
-              setShowModal,
-              +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
-            )
-            // @ts-ignore
-            if (statusCallKlip === 'success') {
-              const klipTx = await klipProvider.checkResponse()
-              setShowModal(false)
-              return klipTx
-            }
-            setShowModal(false)
-            throw new Error('error dont have gas')
+            await request({
+              contractAddress: ROUTER_ADDRESS[chainId],
+              abi: getAbiByName(methodName),
+              input: convertArgKlip(args, abi),
+              value: +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
+            })
+            return Promise.resolve('')
           }
         }
         const iface = new ethers.utils.Interface(IUniswapV2Router02ABI)
@@ -333,23 +321,11 @@ export function useSwapCallback(
       },
       error: null,
     }
-  }, [
-    trade,
-    library,
-    account,
-    connector,
-    chainId,
-    recipient,
-    recipientAddressOrName,
-    swapCalls,
-    addTransaction,
-    setShowModal,
-  ])
+  }, [trade, library, account, chainId, recipient, recipientAddressOrName, swapCalls, addTransaction])
 }
 
 export default useSwapCallback
 
-const isKlipConnector = (connector) => connector instanceof KlipConnector
 const convertArgKlip = (args: (string[] | string)[], abi) => {
   const argToString: (string[] | string)[] = []
   const abiArr = JSON.parse(abi)

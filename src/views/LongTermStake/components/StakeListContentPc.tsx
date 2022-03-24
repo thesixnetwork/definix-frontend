@@ -13,7 +13,6 @@ interface ContentProps extends IsMobileType {
 
 const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) => {
   const { t, i18n } = useTranslation()
-
   const getEndDay = (endDay: string) => {
     if (i18n.language === 'ko') {
       return moment(endDay).format(`YYYY-MM-DD HH:mm:ss`)
