@@ -1,5 +1,5 @@
 import { ROUTES } from 'config/constants/routes'
-import { AvailableConnectors } from 'klaytn-wallets'
+import { AvailableConnectors } from '@fingerlabs/klaytn-wallets'
 
 export const links = (t: (key: string) => string, currentLang: string) => {
   return [

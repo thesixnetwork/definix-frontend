@@ -4,7 +4,7 @@ import {
   Modal,
   ModalBody,
   Text,
-  // LogoWalletKlipIcon,
+  LogoWalletKlipIcon,
   CloseWIcon,
   IconButton,
   Box,
@@ -119,7 +119,7 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
       <StyledModalBody isBody>
         <WrapHeader>
           <Flex>
-            {/* <LogoWalletKlipIcon /> */}
+            <LogoWalletKlipIcon />
             <Title>{t('Connect to Kakao Klip via QR Code')}</Title>
           </Flex>
           <CloseButton

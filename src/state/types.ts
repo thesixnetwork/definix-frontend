@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import KlaytnWallet from 'klaytn-wallets'
 import {
   CampaignType,
   FarmConfig,
