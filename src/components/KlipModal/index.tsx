@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Flex,
   Modal,
@@ -14,10 +14,7 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-
-interface Props extends InjectedModalProps {
-  onHide?: () => void
-}
+import { WalletContext } from 'contexts/WalletContext'
 
 const StyledModalBody = styled(ModalBody)`
   padding: 24px;
@@ -111,8 +108,9 @@ const GuideText = styled(Text)`
   text-align: center;
 `
 
-const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
+const KlipModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
+  const { wallet } = useContext(WalletContext)
 
   return (
     <Modal hideHeader noPadding>
@@ -125,7 +123,7 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
           <CloseButton
             onClick={() => {
               onDismiss()
-              onHide && onHide()
+              wallet.closeKlip();
             }}
           >
             <CloseWIcon />

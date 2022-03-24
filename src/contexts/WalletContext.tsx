@@ -6,6 +6,7 @@ import getLibrary from 'utils/getLibrary'
 import { renderKlipTimeFormat } from 'hooks/useKlipModal'
 
 interface WalletState {
+  wallet: KlaytnWallet
   account: string
   connector: string
   chainId: number
@@ -17,6 +18,7 @@ interface WalletState {
 }
 
 const WalletContext = createContext<WalletState>({
+  wallet: null,
   account: null,
   connector: null,
   chainId: parseInt(process.env.REACT_APP_CHAIN_ID) || 1001,
@@ -104,6 +106,7 @@ const WalletContextProvider = ({ children }) => {
   return (
     <WalletContext.Provider
       value={{
+        wallet: wallet.current,
         account,
         chainId: parseInt(process.env.REACT_APP_CHAIN_ID) || 1001,
         library,
