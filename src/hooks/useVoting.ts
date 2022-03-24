@@ -113,15 +113,7 @@ export const usePropose = (
       return await request({
         contractAddress: getVFinixVoting(),
         abi: getAbiIProposalFacetByName('propose'),
-        input: [
-          ipfsHash,
-          proposalType,
-          startTimestamp,
-          endTimestamp,
-          optionsCount,
-          minimumVotingPower,
-          voteLimit,
-        ],
+        input: [ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit],
       })
     }
 

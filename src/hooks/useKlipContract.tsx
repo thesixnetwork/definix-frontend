@@ -169,7 +169,7 @@ class KlipConnector {
 const klipConnector = new KlipConnector()
 
 const useKlipContract = () => {
-  const { connector } = useWallet();
+  const { connector } = useWallet()
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
   return {
     isKlip: () => klipConnector.isKlip(connector),

@@ -3,7 +3,7 @@ import { WalletContext } from 'contexts/WalletContext'
 import useKlipModal from './useKlipModal'
 
 const useWallet = () => {
-  const context = useContext(WalletContext);
+  const context = useContext(WalletContext)
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal({
     onHide: () => {
       // wallet.closeKlip()
@@ -13,8 +13,8 @@ const useWallet = () => {
   useEffect(() => {
     context.initKlip({
       show: () => onPresentKlipModal(),
-      hide: () => onDismissKlipModal()
-    });
+      hide: () => onDismissKlipModal(),
+    })
   })
   return context
 }

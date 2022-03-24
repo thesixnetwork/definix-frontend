@@ -241,7 +241,7 @@ export const useUnLock = () => {
       const tx = await request({
         contractAddress: getVFinix(),
         abi: getAbiVaultFacetByName('unlock'),
-        input: [id]
+        input: [id],
       })
       return new Promise((resolve) => {
         resolve(tx)
@@ -600,7 +600,7 @@ export const useSousHarvest = () => {
           await request({
             contractAddress: herodotusContract._address,
             abi: getAbiHerodotusByName('deposit'),
-            input: [sousId, '0']
+            input: [sousId, '0'],
           })
         }
         dispatch(fetchFarmUserDataAsync(account))
@@ -653,13 +653,13 @@ export const useSuperHarvest = () => {
           tx = await request({
             contractAddress: herodotusContract._address,
             abi: getAbiHerodotusByName('leaveStaking'),
-            input: ['0']
+            input: ['0'],
           })
         } else {
           tx = await request({
             contractAddress: herodotusContract._address,
             abi: getAbiHerodotusByName('deposit'),
-            input: [farmPid, '0']
+            input: [farmPid, '0'],
           })
         }
         dispatch(fetchFarmUserDataAsync(account))
