@@ -162,8 +162,8 @@ export default function ConfirmAddModal({
     if (isKlip()) {
       const tx = await request({
         contractAddress: router.address,
-        abi: JSON.stringify(getAbiByName(methodName)),
-        input: JSON.stringify(args),
+        abi: getAbiByName(methodName),
+        input: args,
         value: +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
       })
       setTxHash(tx)

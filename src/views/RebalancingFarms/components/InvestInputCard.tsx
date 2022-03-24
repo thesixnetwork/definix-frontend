@@ -24,8 +24,7 @@ import { fetchAllowances, fetchBalances } from 'state/wallet'
 import { simulateInvest, getReserves } from 'offline-pool'
 
 import useWallet from 'hooks/useWallet'
-import useKlipContract from 'hooks/useKlipContract'
-import * as klipProvider from 'hooks/klipProvider'
+import useKlipContract, { MAX_UINT_256_KLIP } from 'hooks/useKlipContract'
 import { getAbiERC20ByName } from 'hooks/hookHelper'
 import { getAddress } from 'utils/addressHelpers'
 import { approveOther } from 'utils/callHelpers'
@@ -180,8 +179,8 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
       if (isKlip()) {
         await request({
           contractAddress: getAddress(token.address),
-          abi: JSON.stringify(getAbiERC20ByName('approve')),
-          input: JSON.stringify([getAddress(mRebalance.address), klipProvider.MAX_UINT_256_KLIP]),
+          abi: getAbiERC20ByName('approve'),
+          input: [getAddress(mRebalance.address), MAX_UINT_256_KLIP],
         })
       } else {
         await approveOther(tokenContract, getAddress(mRebalance.address), account)

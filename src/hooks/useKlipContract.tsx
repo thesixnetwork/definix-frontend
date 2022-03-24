@@ -2,10 +2,9 @@ import QRcode from 'qrcode'
 import axios from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { useSelector } from 'react-redux'
 import { isAndroid, isIOS, isMobile } from 'react-device-detect'
-import { State } from '../state/types'
 import useKlipModal, { renderKlipTimeFormat } from './useKlipModal'
+import useWallet from './useWallet'
 
 dayjs.extend(utc)
 
@@ -14,8 +13,8 @@ const KLIP_BASE_URL = 'https://a2a-api.klipwallet.com/v2/a2a'
 
 interface KlipContractProps {
   contractAddress: string
-  abi: string
-  input: string
+  abi: any
+  input: any
   value?: string
 }
 
@@ -87,8 +86,8 @@ class KlipConnector {
         transaction: {
           to: contractAddress,
           value: value || '0',
-          abi: abi,
-          params: input,
+          abi: abi ? JSON.stringify(abi) : '',
+          params: input ? JSON.stringify(input) : '',
         },
       }
       return axios.post(`${KLIP_BASE_URL}/prepare`, data).then(({ data }) => {
@@ -170,9 +169,7 @@ class KlipConnector {
 const klipConnector = new KlipConnector()
 
 const useKlipContract = () => {
-  const connector = useSelector((state: State) => {
-    return state.wallet.connector
-  })
+  const { connector } = useWallet();
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
   return {
     isKlip: () => klipConnector.isKlip(connector),
@@ -184,5 +181,7 @@ const useKlipContract = () => {
     close: () => klipConnector.closeRequest(),
   }
 }
+
+export const MAX_UINT_256_KLIP = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
 
 export default useKlipContract

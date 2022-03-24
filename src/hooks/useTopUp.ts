@@ -29,8 +29,8 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
       if (isKlip()) {
         await request({
           contractAddress: getVFinix(),
-          abi: JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),
-          input: JSON.stringify([level, idLastMaxLv, lockFinix]),
+          abi: VaultTopUpFeatureFacetByName('lockPlus'),
+          input: [level, idLastMaxLv, lockFinix],
         })
         setLoading('success')
         setStatus(true)

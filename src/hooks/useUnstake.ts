@@ -13,7 +13,6 @@ import { useHerodotus, useSousChef } from './useContract'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
 
-const jsonConvert = (data: any) => JSON.stringify(data)
 const useUnstake = (pid: number) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -28,14 +27,14 @@ const useUnstake = (pid: number) => {
           if (pid === 0) {
             tx = await request({
               contractAddress: herodotusContract._address,
-              abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
-              input: jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              abi: getAbiHerodotusByName('leaveStaking'),
+              input: [new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
             })
           } else {
             tx = await request({
               contractAddress: herodotusContract._address,
-              abi: jsonConvert(getAbiHerodotusByName('withdraw')),
-              input: jsonConvert([pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              abi: getAbiHerodotusByName('withdraw'),
+              input: [pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
             })
           }
         } catch (error) {
@@ -72,14 +71,14 @@ export const useSousUnstake = (sousId) => {
           if (sousId === 0) {
             tx = await request({
               contractAddress: herodotusContract._address,
-              abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
-              input: jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              abi: getAbiHerodotusByName('leaveStaking'),
+              input: [new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
             })
           } else {
             tx = await request({
               contractAddress: herodotusContract._address,
-              abi: jsonConvert(getAbiHerodotusByName('withdraw')),
-              input: jsonConvert([sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              abi: getAbiHerodotusByName('withdraw'),
+              input: [sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
             })
           }
         } catch (error) {

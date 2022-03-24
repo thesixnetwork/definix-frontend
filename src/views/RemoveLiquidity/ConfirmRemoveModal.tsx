@@ -215,8 +215,8 @@ export default function ConfirmRemoveModal({
       if (isKlip()) {
         const tx = await request({
           contractAddress: router.address,
-          abi: JSON.stringify(getAbiByName(methodName)),
-          input: JSON.stringify(args),
+          abi: getAbiByName(methodName),
+          input: args,
           value: '0',
         })
         setTxHash(tx)

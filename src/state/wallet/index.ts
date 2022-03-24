@@ -17,9 +17,6 @@ const initialState: WalletState = {
   userSlippage: 50,
   isFetched: false,
   isRebalanceFetched: false,
-
-  account: null,
-  connector: null,
 }
 
 export const walletSlice = createSlice({
@@ -59,12 +56,6 @@ export const walletSlice = createSlice({
     setUserSlippage: (state, action) => {
       state.userSlippage = action.payload
     },
-    setUserAccount: (state, action) => {
-      state.account = action.payload
-    },
-    setUserConnector: (state, action) => {
-      state.connector = action.payload
-    },
   },
 })
 
@@ -76,8 +67,6 @@ export const {
   setUserDeadline,
   setUserSlippage,
   setDecimals,
-  setUserAccount,
-  setUserConnector,
 } = walletSlice.actions
 
 export const setDeadline = (slippage: number) => async (dispatch) => {
@@ -86,14 +75,6 @@ export const setDeadline = (slippage: number) => async (dispatch) => {
 
 export const setSlippage = (slippage: number) => async (dispatch) => {
   return dispatch(setUserSlippage(slippage))
-}
-
-export const setAccount = (account: string) => async (dispatch) => {
-  return dispatch(setUserAccount(account))
-}
-
-export const setConnector = (connector: string) => async (dispatch) => {
-  return dispatch(setUserConnector(connector))
 }
 
 export const fetchAllowances = (account: string, addresses: string[], spender: string) => async (dispatch) => {

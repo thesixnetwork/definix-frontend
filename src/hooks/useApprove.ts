@@ -1,19 +1,14 @@
 import { Contract } from 'web3-eth-contract'
 import { ethers } from 'ethers'
 import { useCallback } from 'react'
-import { KlipConnector } from '@sixnetwork/klip-connector'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
 import { approve } from 'utils/callHelpers'
 import { useHerodotus, useFinix, useSousChef, useLottery } from './useContract'
-import * as klipProvider from './klipProvider'
 import { getAbiERC20ByName } from './hookHelper'
 import useWallet from './useWallet'
-import useKlipContract from './useKlipContract'
+import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
 
-export const isKlipConnector = (connector) => connector instanceof KlipConnector
-
-const jsonConvert = (data: any) => JSON.stringify(data)
 // Approve a Farm
 export const useApprove = (lpContract: Contract) => {
   const dispatch = useDispatch()
@@ -26,8 +21,8 @@ export const useApprove = (lpContract: Contract) => {
     if (isKlip()) {
       tx = await request({
         contractAddress: lpContract._address,
-        abi: jsonConvert(getAbiERC20ByName('approve')),
-        input: jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
+        abi: getAbiERC20ByName('approve'),
+        input: [herodotusContract._address, MAX_UINT_256_KLIP],
       })
     } else {
       tx = await approve(lpContract, herodotusContract, account)
@@ -51,8 +46,8 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
     if (isKlip()) {
       tx = await request({
         contractAddress: lpContract._address,
-        abi: jsonConvert(getAbiERC20ByName('approve')),
-        input: jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
+        abi: getAbiERC20ByName('approve'),
+        input: [herodotusContract._address, MAX_UINT_256_KLIP],
       })
     } else {
       tx = await approve(lpContract, sousChefContract, account)

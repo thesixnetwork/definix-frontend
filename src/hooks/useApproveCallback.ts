@@ -19,7 +19,7 @@ import { getApproveAbi } from './hookHelper'
 
 import { calculateGasMargin } from '../utils'
 import useWallet from './useWallet'
-import useKlipContract from './useKlipContract'
+import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
 import { getCaver } from 'utils/caver'
 
 export enum ApprovalState {
@@ -88,15 +88,13 @@ export function useApproveCallback(
 
     let useExact = false
     if (isKlip()) {
-      const abi = JSON.stringify(getApproveAbi())
-      const input = JSON.stringify([
-        spender,
-        '115792089237316195423570985008687907853269984665640564039457584007913129639935',
-      ])
       await request({
         contractAddress: tokenContract.address,
-        abi,
-        input,
+        abi: getApproveAbi(),
+        input: [
+          spender,
+          MAX_UINT_256_KLIP,
+        ],
         value: '0',
       })
     } else {

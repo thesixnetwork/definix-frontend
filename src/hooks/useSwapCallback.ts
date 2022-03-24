@@ -189,12 +189,11 @@ export function useSwapCallback(
           const valueNumber = (Number(value ? (+value).toString() : '0') / 10 ** 18).toString()
           const valueklip = Number.parseFloat(valueNumber).toFixed(6)
           const abi = JSON.stringify(getAbiByName(methodName))
-          const input = JSON.stringify(convertArgKlip(args, abi))
           if (ROUTER_ADDRESS[chainId]) {
             await request({
               contractAddress: ROUTER_ADDRESS[chainId],
-              abi,
-              input,
+              abi: getAbiByName(methodName),
+              input: convertArgKlip(args, abi),
               value: +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
             })
             return Promise.resolve('')

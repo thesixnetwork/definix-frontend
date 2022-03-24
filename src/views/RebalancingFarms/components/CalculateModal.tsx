@@ -106,9 +106,9 @@ const CalculateModal = ({
 
         const tx = await request({
           contractAddress: getAddress(rebalance.address),
-          abi: JSON.stringify(getAbiRebalanceByName('addFund')),
-          // JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
-          input: JSON.stringify([arrayTokenAmount, usdTokenAmount, 0]),
+          abi: getAbiRebalanceByName('addFund'),
+          // [arrayTokenAmount, usdTokenAmount, minUsdAmount],
+          input: [arrayTokenAmount, usdTokenAmount, 0],
           value: valueKlipParam,
         })
 

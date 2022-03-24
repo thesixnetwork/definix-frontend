@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import KlaytnWallet from 'klaytn-wallets'
 import {
   CampaignType,
   FarmConfig,
@@ -201,9 +202,6 @@ export interface WalletState {
   userSlippage?: number
   isFetched: boolean
   isRebalanceFetched: boolean
-
-  account: string
-  connector: string
 }
 
 export interface FinixPriceState {

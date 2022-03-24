@@ -15,7 +15,6 @@ import {
 import MinimalPositionCard from 'components/PositionCard/MinimalPositionCard'
 import { PairState, usePair } from 'hooks/usePairs'
 import { Currency, ETHER, JSBI, TokenAmount } from 'definixswap-sdk'
-import { useActiveWeb3React } from 'hooks'
 import { useHistory } from 'react-router-dom'
 import { usePairAdder } from 'state/user/hooks'
 import { useTokenBalance } from 'state/wallet/hooks'
@@ -23,10 +22,11 @@ import { currencyId } from 'utils/currencyId'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/toasts/hooks'
 import SelectCurrencyPanel from './SelectCurrencyPanel'
+import useWallet from 'hooks/useWallet'
 
 export default function PoolFinder() {
   const history = useHistory()
-  const { account } = useActiveWeb3React()
+  const { account } = useWallet()
 
   const { t } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()

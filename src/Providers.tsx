@@ -11,25 +11,30 @@ import { ModalProvider } from '@fingerlabs/definixswap-uikit-v2'
 import { createCaverJsReactRoot, CaverJsReactProvider } from '@sixnetwork/caverjs-react-core'
 import { NetworkContextName } from './config/constants'
 import getLibrary from './utils/getLibrary'
+import { WalletContextProvider } from 'contexts/WalletContext'
 
 const Web3ProviderNetwork = createCaverJsReactRoot(NetworkContextName)
 
 const Providers: React.FC = ({ children }) => {
   return (
     <Provider store={store}>
-      <Web3ProviderNetwork getLibrary={getLibrary}>
-        <CaverJsReactProvider getLibrary={getLibrary}>
-          <HelmetProvider>
-            <ThemeContextProvider>
-              <BlockContextProvider>
-                <RefreshContextProvider>
-                  <ModalProvider>{children}</ModalProvider>
-                </RefreshContextProvider>
-              </BlockContextProvider>
-            </ThemeContextProvider>
-          </HelmetProvider>
-        </CaverJsReactProvider>
-      </Web3ProviderNetwork>
+      <ThemeContextProvider>
+        <ModalProvider>
+          <WalletContextProvider>
+            <Web3ProviderNetwork getLibrary={getLibrary}>
+              <CaverJsReactProvider getLibrary={getLibrary}>
+                <HelmetProvider>
+                  <BlockContextProvider>
+                    <RefreshContextProvider>
+                      {children}
+                    </RefreshContextProvider>
+                  </BlockContextProvider>
+                </HelmetProvider>
+              </CaverJsReactProvider>
+            </Web3ProviderNetwork>
+          </WalletContextProvider>
+        </ModalProvider>
+      </ThemeContextProvider>
     </Provider>
   )
 }

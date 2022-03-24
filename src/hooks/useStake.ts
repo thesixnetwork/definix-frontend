@@ -10,7 +10,6 @@ import { useHerodotus, useSousChef } from './useContract'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
 
-const jsonConvert = (data: any) => JSON.stringify(data)
 const useStake = (pid: number) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -25,14 +24,14 @@ const useStake = (pid: number) => {
           if (pid === 0) {
             tx = await request({
               contractAddress: herodotusContract._address,
-              abi: jsonConvert(getAbiHerodotusByName('enterStaking')),
-              input: jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              abi: getAbiHerodotusByName('enterStaking'),
+              input: [new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
             })
           } else {
             tx = await request({
               contractAddress: herodotusContract._address,
-              abi: jsonConvert(getAbiHerodotusByName('deposit')),
-              input: jsonConvert([pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              abi: getAbiHerodotusByName('deposit'),
+              input: [pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
             })
           }
         } catch (error) {
@@ -66,14 +65,14 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
           if (sousId === 0) {
             tx = await request({
               contractAddress: herodotusContract._address,
-              abi: jsonConvert(getAbiHerodotusByName('enterStaking')),
-              input: jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              abi: getAbiHerodotusByName('enterStaking'),
+              input: [new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
             })
           } else {
             tx = await request({
               contractAddress: herodotusContract._address,
-              abi: jsonConvert(getAbiHerodotusByName('deposit')),
-              input: jsonConvert([sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              abi: getAbiHerodotusByName('deposit'),
+              input: [sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()],
             })
           }
         } catch (error) {

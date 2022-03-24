@@ -112,8 +112,8 @@ export const usePropose = (
     if (isKlip()) {
       return await request({
         contractAddress: getVFinixVoting(),
-        abi: JSON.stringify(getAbiIProposalFacetByName('propose')),
-        input: JSON.stringify([
+        abi: getAbiIProposalFacetByName('propose'),
+        input: [
           ipfsHash,
           proposalType,
           startTimestamp,
@@ -121,7 +121,7 @@ export const usePropose = (
           optionsCount,
           minimumVotingPower,
           voteLimit,
-        ]),
+        ],
       })
     }
 
@@ -184,8 +184,8 @@ export const useApproveToService = (max) => {
     if (isKlip()) {
       const txHash = await request({
         contractAddress: getVFinix(),
-        abi: JSON.stringify(getAbiIUsageFacetByName('approveToService')),
-        input: JSON.stringify([serviceKey, max]),
+        abi: getAbiIUsageFacetByName('approveToService'),
+        input: [serviceKey, max],
       })
       return txHash
     }
@@ -248,8 +248,8 @@ export const useVote = () => {
     if (isKlip()) {
       await request({
         contractAddress: getVFinixVoting(),
-        abi: JSON.stringify(getAbiIVotingFacetByName('vote')),
-        input: JSON.stringify([proposalIndex, votingPowers]),
+        abi: getAbiIVotingFacetByName('vote'),
+        input: [proposalIndex, votingPowers],
       })
       return Promise.resolve()
     }
@@ -277,8 +277,8 @@ export const useClaimVote = () => {
     if (isKlip()) {
       await request({
         contractAddress: getVFinixVoting(),
-        abi: JSON.stringify(getAbiIVotingFacetByName('recallVotesFromProposal')),
-        input: JSON.stringify([proposalIndex]),
+        abi: getAbiIVotingFacetByName('recallVotesFromProposal'),
+        input: [proposalIndex],
       })
       return Promise.resolve()
     }

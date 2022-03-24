@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
@@ -11,7 +10,6 @@ import {
 } from 'hooks/hookHelper'
 import { set, get } from 'lodash-es'
 import { useSelector, useDispatch } from 'react-redux'
-import * as klipProvider from 'hooks/klipProvider'
 import {
   fetchPrivateData,
   fetchPendingReward,
@@ -34,7 +32,7 @@ import { useHerodotus } from './useContract'
 import useWallet from './useWallet'
 import { getEstimateGas } from 'utils/callHelpers'
 import useKlipModal from './useKlipModal'
-import useKlipContract from './useKlipContract'
+import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
 
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -242,8 +240,8 @@ export const useUnLock = () => {
     if (isKlip()) {
       const tx = await request({
         contractAddress: getVFinix(),
-        abi: JSON.stringify(getAbiVaultFacetByName('unlock')),
-        input: JSON.stringify([id]),
+        abi: getAbiVaultFacetByName('unlock'),
+        input: [id]
       })
       return new Promise((resolve) => {
         resolve(tx)
@@ -272,8 +270,8 @@ export const useLock = (level, lockFinix) => {
         if (isKlip()) {
           await request({
             contractAddress: getVFinix(),
-            abi: JSON.stringify(getAbiVaultFacetByName('lock')),
-            input: JSON.stringify([level, lockFinix]),
+            abi: getAbiVaultFacetByName('lock'),
+            input: [level, lockFinix],
           })
           setLoading('success')
           setStatus(true)
@@ -313,8 +311,8 @@ export const useHarvest = () => {
     if (isKlip()) {
       const tx = await request({
         contractAddress: getVFinix(),
-        abi: JSON.stringify(getAbiRewardFacetByName('harvest')),
-        input: JSON.stringify([account]),
+        abi: getAbiRewardFacetByName('harvest'),
+        input: [account],
       })
       return new Promise((resolve) => {
         resolve(tx)
@@ -338,8 +336,8 @@ export const useApprove = (max) => {
     if (isKlip()) {
       const txHash = await request({
         contractAddress: getFinixAddress(),
-        abi: JSON.stringify(getAbiERC20ByName('approve')),
-        input: JSON.stringify([getVFinix(), klipProvider.MAX_UINT_256_KLIP]),
+        abi: getAbiERC20ByName('approve'),
+        input: [getVFinix(), MAX_UINT_256_KLIP],
       })
       return new Promise((resolve) => {
         resolve(txHash)
@@ -565,8 +563,8 @@ export const useClaim = () => {
     if (isKlip()) {
       const txHash = await request({
         contractAddress: getVFinix(),
-        abi: JSON.stringify(getAbiVaultPenaltyFacetByName('claimWithPenalty')),
-        input: JSON.stringify([id]),
+        abi: getAbiVaultPenaltyFacetByName('claimWithPenalty'),
+        input: [id],
       })
       return new Promise((resolve) => {
         resolve(txHash)
@@ -595,14 +593,14 @@ export const useSousHarvest = () => {
         if (sousId === 0) {
           await request({
             contractAddress: herodotusContract._address,
-            abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
-            input: jsonConvert(['0']),
+            abi: getAbiHerodotusByName('leaveStaking'),
+            input: ['0'],
           })
         } else {
           await request({
             contractAddress: herodotusContract._address,
-            abi: jsonConvert(getAbiHerodotusByName('deposit')),
-            input: jsonConvert([sousId, '0']),
+            abi: getAbiHerodotusByName('deposit'),
+            input: [sousId, '0']
           })
         }
         dispatch(fetchFarmUserDataAsync(account))
@@ -638,7 +636,6 @@ export const useSousHarvest = () => {
   return { onReward: handleHarvest }
 }
 
-const jsonConvert = (data: any) => JSON.stringify(data)
 // FARMS
 export const useSuperHarvest = () => {
   const dispatch = useDispatch()
@@ -655,14 +652,14 @@ export const useSuperHarvest = () => {
         if (farmPid === 0) {
           tx = await request({
             contractAddress: herodotusContract._address,
-            abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
-            input: jsonConvert(['0']),
+            abi: getAbiHerodotusByName('leaveStaking'),
+            input: ['0']
           })
         } else {
           tx = await request({
             contractAddress: herodotusContract._address,
-            abi: jsonConvert(getAbiHerodotusByName('deposit')),
-            input: jsonConvert([farmPid, '0']),
+            abi: getAbiHerodotusByName('deposit'),
+            input: [farmPid, '0']
           })
         }
         dispatch(fetchFarmUserDataAsync(account))

@@ -98,8 +98,8 @@ const WithdrawCalculateModal = ({
       if (isKlip()) {
         const tx = await request({
           contractAddress: getAddress(rebalance.address),
-          abi: JSON.stringify(getAbiRebalanceByName('removeFund')),
-          input: JSON.stringify([lpAmount, toAllAssets, outputRatios, outputUSDRatio]),
+          abi: getAbiRebalanceByName('removeFund'),
+          input: [lpAmount, toAllAssets, outputRatios, outputUSDRatio],
         })
         setTx(tx)
         handleLocalStorage(tx)

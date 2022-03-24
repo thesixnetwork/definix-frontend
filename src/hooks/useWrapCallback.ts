@@ -56,8 +56,8 @@ export default function useWrapCallback(
         const valueKlip = +inputAmount.toSignificant(6) * 1e12
         await request({
           contractAddress: WETH(chainId).address,
-          abi: JSON.stringify(getAbiByNameWETH('deposit')),
-          input: JSON.stringify([]),
+          abi: getAbiByNameWETH('deposit'),
+          input: [],
           value: `${valueKlip}000000`,
         })
       } else {
@@ -88,8 +88,8 @@ export default function useWrapCallback(
         const valueKlip = +Number.parseFloat(inputAmount.toSignificant(6)).toFixed(6) * 1e12
         await request({
           contractAddress: WETH(chainId).address,
-          abi: JSON.stringify(getAbiByNameWETH('withdraw')),
-          input: JSON.stringify([`${valueKlip}000000`]),
+          abi: getAbiByNameWETH('withdraw'),
+          input: [`${valueKlip}000000`],
           value: '0',
         })
       } else {

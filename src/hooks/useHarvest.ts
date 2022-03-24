@@ -8,7 +8,6 @@ import { useHerodotus, useSousChef } from './useContract'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
 
-const jsonConvert = (data: any) => JSON.stringify(data)
 export const useHarvest = (farmPid: number) => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
@@ -21,14 +20,14 @@ export const useHarvest = (farmPid: number) => {
       if (farmPid === 0) {
         tx = await request({
           contractAddress: herodotusContract._address,
-          abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
-          input: jsonConvert(['0']),
+          abi: getAbiHerodotusByName('leaveStaking'),
+          input: ['0'],
         })
       } else {
         tx = await request({
           contractAddress: herodotusContract._address,
-          abi: jsonConvert(getAbiHerodotusByName('deposit')),
-          input: jsonConvert([farmPid, '0']),
+          abi: getAbiHerodotusByName('deposit'),
+          input: [farmPid, '0'],
         })
       }
     } else {
@@ -53,14 +52,14 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
       if (farmPid === 0) {
         return await request({
           contractAddress: herodotusContract._address,
-          abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
-          input: jsonConvert(['0']),
+          abi: getAbiHerodotusByName('leaveStaking'),
+          input: ['0'],
         })
       } else {
         return await request({
           contractAddress: herodotusContract._address,
-          abi: jsonConvert(getAbiHerodotusByName('deposit')),
-          input: jsonConvert([farmPid, '0']),
+          abi: getAbiHerodotusByName('deposit'),
+          input: [farmPid, '0'],
         })
       }
     },
@@ -172,14 +171,14 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
       if (sousId === 0) {
         tx = await request({
           contractAddress: herodotusContract._address,
-          abi: jsonConvert(getAbiHerodotusByName('leaveStaking')),
-          input: jsonConvert(['0']),
+          abi: getAbiHerodotusByName('leaveStaking'),
+          input: ['0'],
         })
       } else {
         tx = await request({
           contractAddress: herodotusContract._address,
-          abi: jsonConvert(getAbiHerodotusByName('deposit')),
-          input: jsonConvert([sousId, '0']),
+          abi: getAbiHerodotusByName('deposit'),
+          input: [sousId, '0'],
         })
       }
 
