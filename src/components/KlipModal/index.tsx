@@ -123,7 +123,7 @@ const KlipModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
           <CloseButton
             onClick={() => {
               onDismiss()
-              wallet.closeKlip();
+              wallet.closeKlip()
             }}
           >
             <CloseWIcon />
