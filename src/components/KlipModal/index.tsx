@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Flex,
   Modal,
@@ -14,10 +14,7 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-
-interface Props extends InjectedModalProps {
-  onHide?: () => void
-}
+import { WalletContext } from 'contexts/WalletContext'
 
 const StyledModalBody = styled(ModalBody)`
   padding: 24px;
@@ -111,8 +108,9 @@ const GuideText = styled(Text)`
   text-align: center;
 `
 
-const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
+const KlipModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
+  const { wallet } = useContext(WalletContext)
 
   return (
     <Modal hideHeader noPadding>
@@ -120,12 +118,12 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
         <WrapHeader>
           <Flex>
             <LogoWalletKlipIcon />
-            <Title>{t('Connect to Kakao Klip via QR Code')}</Title>
+            <Title>{t('Connect to Kakao Klip')}</Title>
           </Flex>
           <CloseButton
             onClick={() => {
               onDismiss()
-              onHide && onHide()
+              wallet.closeKlip()
             }}
           >
             <CloseWIcon />
@@ -137,27 +135,27 @@ const KlipModal: React.FC<Props> = ({ onDismiss, onHide }) => {
             <Text className="time">{t('Time Remaining')}</Text>
             <Text className="interval klip-interval"></Text>
           </WrapTime>
-          <DescText>{t('Scan the QR code through a QR code reader or the KakaoTalk app.')}</DescText>
+          <DescText>{t('Scan the QR code through')}</DescText>
         </WrapBody>
       </StyledModalBody>
       <StyledModalFooter isFooter>
         <WrapGuide>
           <GuideItem>
             <img src="./images/klip/Connect-to-KLIP-02.png" />
-            <Text className="text">Open Kakaotalk</Text>
+            <Text className="text">{t('Open Kakaotalk')}</Text>
           </GuideItem>
           <StyledArrowRightGIcon />
           <GuideItem>
             <img src="./images/klip/Connect-to-KLIP-03.png" />
-            <Text className="text">Open Kakaotalk</Text>
+            <Text className="text">{t('Click the search bar')}</Text>
           </GuideItem>
           <StyledArrowRightGIcon />
           <GuideItem>
             <img src="./images/klip/Connect-to-KLIP-04.png" />
-            <Text className="text">Open Kakaotalk</Text>
+            <Text className="text">{t('Click the search bar')}</Text>
           </GuideItem>
         </WrapGuide>
-        <GuideText>Klip Code Scan (from side menu) can be used</GuideText>
+        <GuideText>{t('*Klip > Code Scan')}</GuideText>
       </StyledModalFooter>
     </Modal>
   )

@@ -91,10 +91,7 @@ export function useApproveCallback(
       await request({
         contractAddress: tokenContract.address,
         abi: getApproveAbi(),
-        input: [
-          spender,
-          MAX_UINT_256_KLIP,
-        ],
+        input: [spender, MAX_UINT_256_KLIP],
         value: '0',
       })
     } else {
