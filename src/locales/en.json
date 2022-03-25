@@ -334,7 +334,7 @@
   "No provider was found": "No provider was found.",
   "Already processing.": "Already processing",
   "Please wait": "Please wait",
-  "Authorization Error": "Authorization Error",
+  "Authorization Error": "Connection failed",
   "Please authorize to access your account": "Please authorize to access your account.",
   "Transaction Submitted": "Transaction Submitted",
   "{{Action}} Complete": "{{Action}} Complete",
@@ -548,7 +548,7 @@
   "Instant notice": "Instant notice",
   "Maintenance work including smart contract": "Maintenance work including smart contract is in progress for the rebalancing farm currently. \nWithdrawing money while the work is in progress may cause large losses so please mind depositing and withdrawing until the maintenance is completed. \nApologize for the inconvenience.",
   "Connect to Kakao Klip": "Connect to Kakao Klip via QR Code",
-  "Time Remaining": "Time Remaining {{number}} min {{number}} sec",
+  "Time Remaining": "Time Remaining",
   "Scan the QR code through": "Scan the QR code through a QR code reader or the Kakao Talk app.",
   "Open Kakaotalk": "Open Kakaotalk",
   "Click the search bar": "Click the search bar",
@@ -560,7 +560,6 @@
   "Allocation": "Allocation",
   "vFINIX Staking Start": "vFINIX Staking Start",
   "There is no project ended": "There is no project ended.",
-  "Days": "Days",
   "Hours": "Hours",
   "Seconds": "Seconds",
   "vFINIX Staking End": "vFINIX Staking End",
@@ -611,5 +610,6 @@
   "Purchase": "Purchase",
   "The amount is over the": "The amount is over the purchase available amount.",
   "Confirm Purchase": "Confirm Purchase",
-  "actionPurchase": "Purchase"
+  "actionPurchase": "Purchase",
+  "The app does not support": "The app does not support klip."
 }

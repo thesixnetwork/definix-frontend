@@ -9,7 +9,7 @@ const useKlipModal = () => {
 export const renderKlipTimeFormat = (time: number) => {
   const expireDuration = dayjs(time)
   return `
-    ${expireDuration.minute()} min ${expireDuration.second()} sec
+    ${expireDuration.minute()} : ${expireDuration.second()}
   `
 }
 
