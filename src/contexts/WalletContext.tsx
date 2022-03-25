@@ -4,6 +4,7 @@ import { useToast } from 'state/toasts/hooks'
 import { useTranslation } from 'react-i18next'
 import getLibrary from 'utils/getLibrary'
 import { renderKlipTimeFormat } from 'hooks/useKlipModal'
+import { Text } from '@fingerlabs/definixswap-uikit-v2'
 
 interface WalletState {
   wallet: KlaytnWallet
@@ -38,7 +39,7 @@ const WalletContextProvider = ({ children }) => {
   const [isInit, setIsInit] = useState<boolean>(false)
   const [account, setAccount] = useState<string>()
   const [connector, setConnector] = useState<AvailableConnectors>()
-  const { toastError } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const wallet = useRef<KlaytnWallet>()
 
   const onActivate = async (connectorId: AvailableConnectors) => {
@@ -48,12 +49,13 @@ const WalletContextProvider = ({ children }) => {
         setAccount(wallet.current.account)
         // @ts-ignore
         setConnector(wallet.current.connectorId as AvailableConnectors)
+        toastSuccess(t('Wallet Connected'))
       } else {
-        toastError(t('Provider Error'))
+        toastError(t('Provider Error'), <Text textStyle="R_12R" color="mediumgrey">{t('No provider was found')}</Text>)
       }
     } catch (e: any) {
       if (e.message === WalletError.USER_DENIED) {
-        toastError(t('Authorization Error'))
+        toastError(t('Authorization Error'), <Text textStyle="R_12R" color="mediumgrey">{t('Please authorize to access your account')}</Text>)
       }
       console.error(e.message)
     }
