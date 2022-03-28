@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import getLibrary from 'utils/getLibrary'
 import { renderKlipTimeFormat } from 'hooks/useKlipModal'
 import { Text } from '@fingerlabs/definixswap-uikit-v2'
+import { getCaver } from 'utils/caver'
 
 interface WalletState {
   wallet: KlaytnWallet
@@ -97,7 +98,7 @@ const WalletContextProvider = ({ children }) => {
     }, 100)
   }, [wallet.current])
 
-  const library = useMemo(() => (window.caver ? getLibrary(window.klaytn) : undefined), [])
+  const library = useMemo(() => getLibrary(window.caver ? window.klaytn : getCaver().currentProvider), [])
   const klaytn = useMemo(() => library?.provider || undefined, [library])
 
   const initKlip = (callback: { show: () => void; hide: () => void }) => {
