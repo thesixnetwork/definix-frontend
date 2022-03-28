@@ -61,12 +61,17 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
     }
     let day
     if (myPeriodSuperStakes) {
+      
       myPeriodSuperStakes.forEach((e) => {
+        const lockTopupTimes = get(e, 'lockTopupTimes')
+        //시작일
         const topupTimeStamp = get(e, 'topupTimeStamp')
+        //슈퍼스테이크 추가 예치 만료일
         const lockTimestamp = get(e, 'lockTimestamp')
+        //슈퍼스테이크 만료일
         if (
-          moment(topupTimeStamp).diff(moment(), 'milliseconds') > 0 &&
-          moment(lockTimestamp).diff(moment(), 'milliseconds') > 0
+          moment(lockTopupTimes).diff(moment(), 'milliseconds') <= 0 &&
+          moment(topupTimeStamp).diff(moment(), 'milliseconds') > 0
         ) {
           day = moment(lockTimestamp)
         }
