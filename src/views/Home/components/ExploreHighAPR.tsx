@@ -40,7 +40,6 @@ const ExploreHighAPR: React.FC = () => {
       }
 
       if (!acc.apr || acc.apr < temp.apr) {
-        console.log(temp)
         acc = temp
       }
 
