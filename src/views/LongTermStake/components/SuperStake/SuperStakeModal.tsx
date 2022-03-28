@@ -61,7 +61,6 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
     }
     let day
     if (myPeriodSuperStakes) {
-      
       myPeriodSuperStakes.forEach((e) => {
         const lockTopupTimes = get(e, 'lockTopupTimes')
         //시작일
