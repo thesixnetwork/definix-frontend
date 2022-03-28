@@ -49,7 +49,11 @@ export const approve = async (lpContract, herodotusContract, account) => {
 
   return lpContract.methods
     .approve(herodotusContract.options.address, ethers.constants.MaxUint256)
-    .send({ from: account, gas: estimatedGas })
+    .send({ from: account, gasPrice: '20000000000' }).then(() => {
+      console.log('done')
+    }).catch((e) => {
+      console.log(2, e)
+    })
 }
 
 export const approveOther = async (lpContract, spender, account) => {

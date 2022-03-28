@@ -8,12 +8,13 @@ import { getCaver } from './caver'
 
 export const getContract = (provider: ProviderType, address: string) => {
   const caver = getCaver()
+  return new caver.eth.Contract(erc20 as unknown as AbiItem, address)
   return new caver.klay.Contract(erc20 as unknown as AbiItem, address)
 }
 
 export const getCustomContract = (provider: ProviderType, abi: AbiItem, address: string) => {
   const caver = getCaver()
-  return new caver.klay.Contract(abi, address)
+  return new caver.eth.Contract(abi, address)
 }
 
 export const getAllowance = async (

@@ -49,7 +49,7 @@ const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const caver = getCaver()
-  const [contract, setcontract] = useState(new caver.klay.Contract(abi, address, contractOptions))
+  const [contract, setcontract] = useState(new caver.eth.Contract(abi, address, contractOptions))
 
   useEffect(() => {
     // const fetchData = async () => {
@@ -61,7 +61,7 @@ const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOp
 
     // const caverEffect = new Caver(process.env.REACT_APP_NODE_3)
     // @ts-ignore
-    setcontract(new caver.klay.Contract(abi, address, contractOptions))
+    setcontract(new caver.eth.Contract(abi, address, contractOptions))
   }, [abi, address, contractOptions])
 
   return contract

@@ -10,7 +10,7 @@ const BlockContextProvider = ({ children }) => {
   useEffect(() => {
     const caver = getCaver()
     const interval = setInterval(async () => {
-      const blockNumber = await caver.klay.getBlockNumber()
+      const blockNumber = await caver.eth.getBlockNumber()
       if (blockNumber !== previousBlock.current) {
         previousBlock.current = blockNumber
         setBlock(blockNumber)

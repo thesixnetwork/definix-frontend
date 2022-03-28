@@ -16,7 +16,9 @@ const web3HttpProvider = new Web3.providers.HttpProvider(process.env.REACT_APP_B
  */
 let caverInstance
 const getCaver = () => {
-  if ((window as any).klaytn && (window as any).klaytn.networkVersion == process.env.REACT_APP_CHAIN_ID) {
+  if ((window as any).ethereum) {
+    return new Web3((window as any).ethereum)
+  } else if ((window as any).klaytn && (window as any).klaytn.networkVersion == process.env.REACT_APP_CHAIN_ID) {
     return window.caver
   } else {
     if (!caverInstance) {
@@ -30,6 +32,9 @@ const getCaver = () => {
 
 const getContract = (abi: any, address: string, contractOptions?: ContractOptions) => {
   const caver = getCaver()
+  if ((window as any).ethereum) {
+    return new caver.eth.Contract(abi as unknown as AbiItem, address, contractOptions)
+  }
   return new caver.klay.Contract(abi as unknown as AbiItem, address, contractOptions)
 }
 
