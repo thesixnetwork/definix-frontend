@@ -51,7 +51,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
                   <Text textStyle="R_14R" color="black">
                     {item.isPenalty
                       ? getEndDay(item.penaltyUnlockTimestamp)
-                      : getEndDay(item.isTopup ? item.topupTimeStamp : item.lockTimestamp)}
+                      : getEndDay(item.lockTimestamp)}
                   </Text>
                   <Text textStyle="R_12R" color="mediumgrey">
                     *GMT +9 {t('Asia/Seoul')}
