@@ -3,7 +3,7 @@ import UnlockButton from 'components/UnlockButton'
 import { get } from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Button, Card, Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
@@ -44,6 +44,7 @@ const Overlay = styled(Flex)`
 
 const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMobile = false }) => {
   const { t } = useTranslation()
+  const history = useHistory()
   const { account } = useWallet()
   const balances = useBalances(account)
   const rebalanceBalances = useRebalanceBalances(account)
@@ -73,10 +74,13 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
           scale="md"
           width="100%"
           minWidth="auto"
-          as={Link}
-          to="/rebalancing/invest"
+          onClick={() => {
+            history.push('/rebalancing/invest')
+          }}
           className={isMobile ? 'mr-s12' : 'mb-s12'}
           variant="red"
+          /** @Todo Rebalancing 
+          disabled={true}*/
         >
           {t('Invest')}
         </Button>
