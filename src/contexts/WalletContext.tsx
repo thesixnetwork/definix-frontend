@@ -51,11 +51,21 @@ const WalletContextProvider = ({ children }) => {
         setConnector(wallet.current.connectorId as AvailableConnectors)
         toastSuccess(t('Wallet Connected'))
       } else {
-        toastError(t('Provider Error'), <Text textStyle="R_12R" color="mediumgrey">{t('No provider was found')}</Text>)
+        toastError(
+          t('Provider Error'),
+          <Text textStyle="R_12R" color="mediumgrey">
+            {t('No provider was found')}
+          </Text>,
+        )
       }
     } catch (e: any) {
       if (e.message === WalletError.USER_DENIED) {
-        toastError(t('Authorization Error'), <Text textStyle="R_12R" color="mediumgrey">{t('Please authorize to access your account')}</Text>)
+        toastError(
+          t('Authorization Error'),
+          <Text textStyle="R_12R" color="mediumgrey">
+            {t('Please authorize to access your account')}
+          </Text>,
+        )
       }
       console.error(e.message)
     }
