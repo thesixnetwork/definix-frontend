@@ -7,6 +7,7 @@ import { VotingItem } from 'state/types'
 import VotingList from './VotingList'
 import { useAllProposalOfType, useAllProposalOfAddress } from '../../../hooks/useVoting'
 import { FilterId, ProposalType } from '../types'
+import useWallet from 'hooks/useWallet'
 
 interface Props {
   proposalType: ProposalType
@@ -52,6 +53,7 @@ function getFilterList(filterListAllProposal, filterId: FilterId) {
 
 const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const { t } = useTranslation()
+  const { account } = useWallet();
   const { isMobile } = useMatchBreakpoints()
   const allProposalMap = useAllProposalOfType()
   const { proposalOfAddress } = useAllProposalOfAddress()
@@ -62,6 +64,12 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const voteList = useMemo(() => {
     if (listAllProposal && listAllProposal.length > 0) {
       const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
+        if (!account) {
+          return {
+            isParticipated: false,
+            ...item,
+          }
+        }
         if (!participatedVotes) {
           return item
         }
@@ -92,7 +100,7 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
       ]
     }
     return []
-  }, [isParticipated, listAllProposal, participatedVotes, proposalType])
+  }, [isParticipated, listAllProposal, participatedVotes, proposalType, account])
 
   const tabs = useMemo(
     () => [
