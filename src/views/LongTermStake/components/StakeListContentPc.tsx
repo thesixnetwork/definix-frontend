@@ -49,9 +49,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
               <Flex width="52%" justifyContent="space-between">
                 <Flex flexDirection="column" justifyContent="center">
                   <Text textStyle="R_14R" color="black">
-                    {item.isPenalty
-                      ? getEndDay(item.penaltyUnlockTimestamp)
-                      : getEndDay(item.isTopup ? item.topupTimeStamp : item.lockTimestamp)}
+                    {item.isPenalty ? getEndDay(item.penaltyUnlockTimestamp) : getEndDay(item.lockTimestamp)}
                   </Text>
                   <Text textStyle="R_12R" color="mediumgrey">
                     *GMT +9 {t('Asia/Seoul')}

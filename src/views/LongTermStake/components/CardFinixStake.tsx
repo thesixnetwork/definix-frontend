@@ -65,11 +65,10 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const { allLockPeriod } = useAllLock()
   const minimum = get(allLockPeriod, '0.minimum')
   const { balancefinix, balancevfinix, allDataLock } = usePrivateData()
-
   const { account } = useWallet()
   const allowance = useAllowance()
   const hasAccount = useMemo(() => !!account, [account])
-
+  const [data, setData] = useState([])
   const [isApproved, setIsApproved] = useState<boolean>(false)
 
   const getEndDay = (level) => {
@@ -83,13 +82,17 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
       3: 365,
     }
     let day
-    if (myPeriodSuperStakes) {
+    if (myPeriodSuperStakes && pathname.indexOf('super') > -1) {
       myPeriodSuperStakes.forEach((e) => {
+        const lockTopupTimes = get(e, 'lockTopupTimes')
+        //시작일
         const topupTimeStamp = get(e, 'topupTimeStamp')
+        //슈퍼스테이크 추가 예치 만료일
         const lockTimestamp = get(e, 'lockTimestamp')
+        //슈퍼스테이크 만료일
         if (
-          moment(topupTimeStamp).diff(moment(), 'milliseconds') > 0 &&
-          moment(lockTimestamp).diff(moment(), 'milliseconds') > 0
+          moment(lockTopupTimes).diff(moment(), 'milliseconds') <= 0 &&
+          moment(topupTimeStamp).diff(moment(), 'milliseconds') > 0
         ) {
           day = moment(lockTimestamp)
         }
@@ -99,39 +102,6 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
       i18n.language === 'ko' ? `YYYY-MM-DD HH:mm:ss` : `DD-MMM-YYYY HH:mm:ss`,
     )
   }
-
-  const data = [
-    {
-      multiple: 1,
-      day: 90,
-      endDay: getEndDay(1),
-      apr: apr * 1,
-      minStake: get(minimum, '0'),
-      level: 1,
-    },
-    {
-      multiple: 2,
-      day: 180,
-      endDay: getEndDay(2),
-      apr: apr * 2,
-      minStake: get(minimum, '1'),
-      level: 2,
-    },
-    {
-      multiple: 4,
-      day: 365,
-      endDay: getEndDay(3),
-      apr: apr * 4,
-      minStake: get(minimum, '2'),
-      level: 3,
-    },
-  ]
-
-  useEffect(() => {
-    if (account && allowance && allowance.isGreaterThan(0)) {
-      setIsApproved(true)
-    }
-  }, [account, allowance])
 
   const getVFinix = (day: number, balance: string) => {
     if (!balance) return 0
@@ -147,6 +117,43 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
         return 0
     }
   }
+
+  useEffect(() => {
+    const data = [
+      {
+        multiple: 1,
+        day: 90,
+        endDay: getEndDay(1),
+        apr: apr * 1,
+        minStake: get(minimum, '0'),
+        level: 1,
+      },
+      {
+        multiple: 2,
+        day: 180,
+        endDay: getEndDay(2),
+        apr: apr * 2,
+        minStake: get(minimum, '1'),
+        level: 2,
+      },
+      {
+        multiple: 4,
+        day: 365,
+        endDay: getEndDay(3),
+        apr: apr * 4,
+        minStake: get(minimum, '2'),
+        level: 3,
+      },
+    ]
+    setSelectedSuperStakOption(data[2])
+    setData(data)
+  }, [pathname])
+
+  useEffect(() => {
+    if (account && allowance && allowance.isGreaterThan(0)) {
+      setIsApproved(true)
+    }
+  }, [account, allowance])
 
   return (
     <>
