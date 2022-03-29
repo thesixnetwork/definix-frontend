@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import axios from 'axios'
@@ -7,7 +6,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button, useMatchBreakpoints, Skeleton, Text } from 'uikit-dev'
+import { Button, useMatchBreakpoints } from 'uikit-dev'
 import numeral from 'numeral'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
@@ -60,12 +59,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   onClickViewDetail,
 }) => {
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { ratio } = rebalance
   const finixPrice = usePriceFinixUsd()
-  const themes = useTheme()
 
   useEffect(() => {
     return () => {
@@ -152,15 +149,6 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   }
 
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
-  const value = (
-    <Skeleton
-      animation="pulse"
-      variant="rect"
-      height="29px"
-      width="60%"
-      // style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
-    />
-  )
   if (isHorizontal) {
     if (isMobile) {
       return (
@@ -177,23 +165,11 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
           <div style={{ display: isOpenAccordion ? 'block' : 'none' }}>
             <div className="flex justify-space-between pa-4 pt-0">
-              {/* <TwoLineFormat
+              <TwoLineFormat
                 title="Total asset value"
                 value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
-              /> */}
-              <div>
-                <Text fontSize="14px" color="textSubtle">
-                  Total asset value
-                </Text>
-                <Skeleton
-                  animation="pulse"
-                  variant="rect"
-                  height="29px"
-                  width="80%"
-                  style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-                />
-              </div>
-              {/* <TwoLineFormat
+              />
+              <TwoLineFormat
                 title="Share price"
                 subTitle="(Since inception)"
                 subTitleFontSize="11px"
@@ -208,50 +184,14 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                   if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
                   return ''
                 })()}
-              /> */}
-              <div>
-                <div className="flex align-baseline" style={{ lineHeight: '0' }}>
-                  <Text fontSize="14px" color="textSubtle">
-                    Share price
-                  </Text>
-                  <Text fontSize="11px" className="ml-1">
-                    (Since inception)
-                  </Text>
-                </div>
-                <div className="flex align-baseline">
-                  <Skeleton
-                    animation="pulse"
-                    variant="rect"
-                    height="29px"
-                    width="40%"
-                    style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-                  />
-                  <Skeleton
-                    animation="pulse"
-                    variant="rect"
-                    height="29px"
-                    width="40%"
-                    className="ml-2"
-                    style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="pa-4 pt-0">
-              <Skeleton
-                animation="pulse"
-                variant="rect"
-                height="60px"
-                width="100%"
-                style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
               />
             </div>
-            {/* <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} /> */}
+
+            <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} />
 
             <div className="pa-4">
               <div className="flex align-end justify-space-between mb-3">
-                {/* <TwoLineFormat
+                <TwoLineFormat
                   title="Yield APR"
                   value={`${numeral(
                     finixPrice
@@ -261,21 +201,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                       .toFixed(2),
                   ).format('0,0.[00]')}%`}
                   hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-                /> */}
-                <div>
-                  <TwoLineFormat
-                    title="Yield APR"
-                    value=""
-                    hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-                  />
-                  <Skeleton
-                    animation="pulse"
-                    variant="rect"
-                    height="29px"
-                    width="80%"
-                    style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-                  />
-                </div>
+                />
                 <TwoLineFormat
                   title="Current investment"
                   value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
@@ -315,24 +241,12 @@ const ExploreCard: React.FC<ExploreCardType> = ({
         <div className="col-9 flex">
           <div className="col-6 flex flex-column justify-space-between px-4 bd-r">
             <div className="flex justify-space-between mb-2">
-              {/* <TwoLineFormat
+              <TwoLineFormat
                 className="col-5"
                 title="Total asset value"
                 value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
-              /> */}
-              <div className="col-5">
-                <Text fontSize="14px" color="textSubtle">
-                  Total asset value
-                </Text>
-                <Skeleton
-                  animation="pulse"
-                  variant="rect"
-                  height="29px"
-                  width="80%"
-                  style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-                />
-              </div>
-              {/* <TwoLineFormat
+              />
+              <TwoLineFormat
                 className="col-5"
                 title="Yield APR"
                 value={`${numeral(
@@ -343,60 +257,13 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                     .toFixed(2),
                 ).format('0,0.[00]')}%`}
                 hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-              /> */}
-              <div className="col-5">
-                <TwoLineFormat
-                  title="Yield APR"
-                  value=""
-                  hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-                />
-                <Skeleton
-                  animation="pulse"
-                  variant="rect"
-                  height="29px"
-                  width="60%"
-                  style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-                />
-              </div>
+              />
             </div>
             <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
           </div>
 
           <div className="col-3 pl-4 pr-2 flex flex-column justify-space-between">
-            <div className="flex align-baseline" style={{ lineHeight: '0' }}>
-              <Text fontSize="14px" color="textSubtle">
-                Share price
-              </Text>
-              <Text fontSize="11px" className="ml-1">
-                (Since inception)
-              </Text>
-            </div>
-            <div className="flex align-baseline">
-              <Skeleton
-                animation="pulse"
-                variant="rect"
-                height="29px"
-                width="40%"
-                style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-              />
-              <Skeleton
-                animation="pulse"
-                variant="rect"
-                height="29px"
-                width="40%"
-                className="ml-2"
-                style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-              />
-            </div>
-            <Skeleton
-              animation="pulse"
-              variant="rect"
-              height="60px"
-              width="100%"
-              className="mt-2"
-              style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-            />
-            {/* <TwoLineFormat
+            <TwoLineFormat
               title="Share price"
               subTitle="(Since inception)"
               subTitleFontSize="11px"
@@ -412,7 +279,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 return ''
               })()}
             />
-            <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={60} /> */}
+            <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={60} />
           </div>
 
           <div className="col-3 pl-2 flex flex-column justify-space-between">
@@ -450,23 +317,11 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       <CardHeading className="pa-4" isSkew isHorizontal={isHorizontal} rebalance={rebalance} />
 
       <div className="flex justify-space-between pa-4 pt-0">
-        {/* <TwoLineFormat
+        <TwoLineFormat
           title="Total asset value"
           value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
-        /> */}
-        <div>
-          <Text fontSize="14px" color="textSubtle">
-            Total asset value
-          </Text>
-          <Skeleton
-            animation="pulse"
-            variant="rect"
-            height="29px"
-            width="80%"
-            style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-          />
-        </div>
-        {/* <TwoLineFormat
+        />
+        <TwoLineFormat
           title="Share price"
           subTitle="(Since inception)"
           subTitleFontSize="11px"
@@ -481,51 +336,14 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
             return ''
           })()}
-        /> */}
-        <div>
-          <div className="flex align-baseline" style={{ lineHeight: '0' }}>
-            <Text fontSize="14px" color="textSubtle">
-              Share price
-            </Text>
-            <Text fontSize="11px" className="ml-1">
-              (Since inception)
-            </Text>
-          </div>
-          <div className="flex align-baseline">
-            <Skeleton
-              animation="pulse"
-              variant="rect"
-              height="29px"
-              width="40%"
-              style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-            />
-            <Skeleton
-              animation="pulse"
-              variant="rect"
-              height="29px"
-              width="40%"
-              className="ml-2"
-              style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} /> */}
-      <div className="px-4">
-        <Skeleton
-          animation="pulse"
-          variant="rect"
-          height="60px"
-          width="100%"
-          className="mt-2"
-          style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
         />
       </div>
 
+      <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} />
+
       <div className="pa-4">
         <div className="flex align-end justify-space-between mb-3">
-          {/* <TwoLineFormat
+          <TwoLineFormat
             title="Yield APR"
             value={`${numeral(
               finixPrice
@@ -535,31 +353,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 .toFixed(2),
             ).format('0,0.[00]')}%`}
             hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-          /> */}
-          <div>
-            <TwoLineFormat
-              title="Yield APR"
-              value=""
-              hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-            />
-            <Skeleton
-              animation="pulse"
-              variant="rect"
-              height="29px"
-              width="80%"
-              style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-            />
-          </div>
-          {/* <div>
-            <Text fontSize="14px" color="textSubtle">Yield APR</Text>
-            <Skeleton
-              animation="pulse"
-              variant="rect"
-              height="29px"
-              width="80%"
-              style={{ background: themes.theme.colors.grayBlue, borderRadius: themes.theme.radii.card }}
-            />
-          </div> */}
+          />
           <TwoLineFormat
             title="Current investment"
             value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}

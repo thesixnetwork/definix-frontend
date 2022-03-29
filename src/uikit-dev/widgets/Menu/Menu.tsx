@@ -300,13 +300,12 @@ const Menu: React.FC<NavProps> = ({
                         <Text color="white" fontSize="13px">
                           <strong>Rebalancing Farm :</strong>{' '}
                           <span className="mr-1">
-                            The rebalancing feature on Definix Klaytn is under maintenance. The deposit feature of
-                            rebalancing farm has been temporary close for a while. Please do not withdraw your fund
-                            while the maintenance is happening. We will keep update about the maintenance process and
-                            timeline.
+                            Rebalancing farm is a special farm that implements rebalancing strategy. The advantage of
+                            the strategy is that it can help you minimize risk and get favored positions for your
+                            investment in the long run.
                           </span>
-                          {/* <strong className="mr-1">About the disclosures of the rebalancing farm, you can</strong> */}
-                          {/* <span
+                          <strong className="mr-1">About the disclosures of the rebalancing farm, you can</strong>
+                          <span
                             role="none"
                             style={{
                               color: '#ffd157',
@@ -317,11 +316,11 @@ const Menu: React.FC<NavProps> = ({
                             onClick={onPresentDisclaimersModal}
                           >
                             read more here.
-                          </span> */}
-                          {/* <span style={{ fontSize: '11px', display: 'block', opacity: '0.7' }}>
+                          </span>
+                          <span style={{ fontSize: '11px', display: 'block', opacity: '0.7' }}>
                             Definix is solely a marketplace which provides a tool. The rebalancing farm has been managed
                             by a 3rd party called Enigma.
-                          </span> */}
+                          </span>
                         </Text>
                       </>
                     }
