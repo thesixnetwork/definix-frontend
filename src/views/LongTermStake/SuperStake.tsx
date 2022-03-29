@@ -12,7 +12,7 @@ const SuperStake: React.FC = () => {
   const { isMobile } = useMatchBreakpoints()
   const { account } = useWallet()
   const hasAccount = useMemo(() => !!account, [account])
-  
+
   return (
     <>
       <Box
