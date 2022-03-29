@@ -12,7 +12,7 @@ const SuperStake: React.FC = () => {
   const { isMobile } = useMatchBreakpoints()
   const { account } = useWallet()
   const hasAccount = useMemo(() => !!account, [account])
-  const dd = false;
+  
   return (
     <>
       <Box
@@ -22,7 +22,7 @@ const SuperStake: React.FC = () => {
         mb={`${isMobile ? 'S_40' : 'S_80'}`}
       >
         <TitleStake />
-        <CardFinixStake isMobile={isMobile}/>
+        <CardFinixStake isMobile={isMobile} />
         {hasAccount && <CardTotalEarn isMobile={isMobile} />}
         {hasAccount && <CardStakeList isMobile={isMobile} />}
         <CardTotalStake isMobile={isMobile} />

@@ -68,7 +68,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const { account } = useWallet()
   const allowance = useAllowance()
   const hasAccount = useMemo(() => !!account, [account])
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([])
   const [isApproved, setIsApproved] = useState<boolean>(false)
 
   const getEndDay = (level) => {
@@ -102,7 +102,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
       i18n.language === 'ko' ? `YYYY-MM-DD HH:mm:ss` : `DD-MMM-YYYY HH:mm:ss`,
     )
   }
-  
+
   const getVFinix = (day: number, balance: string) => {
     if (!balance) return 0
 
@@ -117,7 +117,6 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
         return 0
     }
   }
-
 
   useEffect(() => {
     const data = [
@@ -146,7 +145,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
         level: 3,
       },
     ]
-    setSelectedSuperStakOption(data[2]);
+    setSelectedSuperStakOption(data[2])
     setData(data)
   }, [pathname])
 
@@ -156,7 +155,6 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
     }
   }, [account, allowance])
 
-  
   return (
     <>
       <Card>

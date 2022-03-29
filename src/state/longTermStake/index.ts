@@ -286,9 +286,10 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         (new BigNumber(get(value, 'penaltyUnlockTimestamp._hex')).toNumber() +
           get(period, '0.penaltyPeriod')[value.level]) *
           1000
-      asDays = process.env.REACT_APP_CHAIN_ID === '1001' ?
-        days[value.level] :
-        moment.duration({ seconds: get(period, '0.periodMap')[value.level] }).asDays()
+      asDays =
+        process.env.REACT_APP_CHAIN_ID === '1001'
+          ? days[value.level]
+          : moment.duration({ seconds: get(period, '0.periodMap')[value.level] }).asDays()
       asPenaltyDays = moment.duration({ seconds: get(period, '0.penaltyPeriod')[value.level] }).asDays()
 
       let lockTimes = new Date(new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() * 1000)
