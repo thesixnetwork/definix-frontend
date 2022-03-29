@@ -119,35 +119,37 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   }
 
   useEffect(() => {
-    const data = [
-      {
-        multiple: 1,
-        day: 90,
-        endDay: getEndDay(1),
-        apr: apr * 1,
-        minStake: get(minimum, '0'),
-        level: 1,
-      },
-      {
-        multiple: 2,
-        day: 180,
-        endDay: getEndDay(2),
-        apr: apr * 2,
-        minStake: get(minimum, '1'),
-        level: 2,
-      },
-      {
-        multiple: 4,
-        day: 365,
-        endDay: getEndDay(3),
-        apr: apr * 4,
-        minStake: get(minimum, '2'),
-        level: 3,
-      },
-    ]
-    setSelectedSuperStakOption(data[2])
-    setData(data)
-  }, [pathname])
+    if(apr) {
+      const data = [
+        {
+          multiple: 1,
+          day: 90,
+          endDay: getEndDay(1),
+          apr: apr * 1,
+          minStake: get(minimum, '0'),
+          level: 1,
+        },
+        {
+          multiple: 2,
+          day: 180,
+          endDay: getEndDay(2),
+          apr: apr * 2,
+          minStake: get(minimum, '1'),
+          level: 2,
+        },
+        {
+          multiple: 4,
+          day: 365,
+          endDay: getEndDay(3),
+          apr: apr * 4,
+          minStake: get(minimum, '2'),
+          level: 3,
+        },
+      ]
+      setSelectedSuperStakOption(data[2])
+      setData(data)
+    }
+  }, [pathname, apr])
 
   useEffect(() => {
     if (account && allowance && allowance.isGreaterThan(0)) {
