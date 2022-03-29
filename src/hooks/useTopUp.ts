@@ -1,20 +1,15 @@
-/* eslint-disable no-shadow */
-import { useEffect, useState, useCallback, useContext } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { VaultTopUpFeatureFacetByName } from 'hooks/hookHelper'
-import * as klipProvider from 'hooks/klipProvider'
 
 import VaultTopUpFeatureFacetAbi from '../config/abi/VaultTopUpFeatureFacet.json'
 import IKIP7 from '../config/abi/IKIP7.json'
 import { getContract } from '../utils/caver'
 import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
 import useWallet from './useWallet'
-import { isKlipConnector } from './useApprove'
-/* eslint no-else-return: "error" */
+import useKlipContract from './useKlipContract'
 
-// @ts-ignore
 const useTopUp = () => {
   const [balance] = useState(new BigNumber(0))
 
@@ -24,22 +19,19 @@ const useTopUp = () => {
 export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   const stake = useCallback(async () => {
     setStatus(false)
     setLoading('loading')
     if (lockFinix !== '') {
-      if (isKlipConnector(connector)) {
-        klipProvider.genQRcodeContactInteract(
-          getVFinix(),
-          JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),
-          JSON.stringify([level, idLastMaxLv, lockFinix]),
-          setShowModal,
-        )
-        await klipProvider.checkResponse()
-        setShowModal(false)
+      if (isKlip()) {
+        await request({
+          contractAddress: getVFinix(),
+          abi: VaultTopUpFeatureFacetByName('lockPlus'),
+          input: [level, idLastMaxLv, lockFinix],
+        })
         setLoading('success')
         setStatus(true)
         setInterval(() => setLoading(''), 3000)
@@ -74,7 +66,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
     }
 
     return status
-  }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv])
+  }, [account, lockFinix, level, status, idLastMaxLv])
 
   return { onLockPlus: stake, status, loadings }
 }

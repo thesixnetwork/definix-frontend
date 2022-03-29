@@ -64,7 +64,11 @@ const TransactionDeadlineSetting: React.FC = () => {
           value={value}
           placeholder="20"
           onChange={handleChange}
-          endIcon={<Text fontSize="16px">{t('Minutes')}</Text>}
+          endIcon={
+            <Text fontSize="16px" textStyle={TextStyles.R_16M} color={ColorStyles.DEEPGREY}>
+              {t('Minutes')}
+            </Text>
+          }
         />
       </Flex>
       {error && (

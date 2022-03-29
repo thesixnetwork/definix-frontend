@@ -40,7 +40,6 @@ const ExploreHighAPR: React.FC = () => {
       }
 
       if (!acc.apr || acc.apr < temp.apr) {
-        // eslint-disable-next-line no-param-reassign
         acc = temp
       }
 
@@ -52,7 +51,7 @@ const ExploreHighAPR: React.FC = () => {
     <FormAPR
       isFarm={false}
       title={highAprRebalance.title}
-      totalAssetValue={numeral(get(highAprRebalance, 'totalAssetValue', 0)).format('0,0.00')}
+      totalAssetValue={get(highAprRebalance, 'totalAssetValue', 0).valueOf() as number}
       apr={numeral(highAprRebalance.apr).format('0,0.00')}
       Images={
         <WrapImage>

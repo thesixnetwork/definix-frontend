@@ -186,8 +186,8 @@ const Slide: React.FC<{
               }}
               {...commonSlideOptions}
             >
-              {slideList.map((slideGroup) => (
-                <Box>{renderItems(slideGroup)}</Box>
+              {slideList.map((slideGroup, index) => (
+                <Box key={index}>{renderItems(slideGroup)}</Box>
               ))}
             </Slider>
           ) : (

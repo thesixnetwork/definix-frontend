@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react'
+import React, { lazy, Suspense } from 'react'
 import BigNumber from 'bignumber.js'
 import { Helmet } from 'react-helmet-async'
 
@@ -44,21 +44,7 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-  const { account, connect } = useWallet()
-  const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
-
-  useEffect(() => {
-    if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
-      connect('injected')
-    } else if (
-      !account &&
-      window.localStorage.getItem('accountStatus') &&
-      checkConnector('klip') &&
-      window.localStorage.getItem('userAccount')
-    ) {
-      connect('klip')
-    }
-  }, [account, connect])
+  const { account } = useWallet()
 
   useFetchPublicData()
   useFetchProfile()

@@ -19,20 +19,18 @@ import {
   ModalFooter,
   ModalBody,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { getCustomContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
 import { useToast } from 'state/hooks'
 import CurrencyText from 'components/Text/CurrencyText'
 import useWallet from 'hooks/useWallet'
+import useKlipContract from 'hooks/useKlipContract'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import { fetchRebalances } from '../../../state/rebalance'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import CardHeading from './CardHeading'
 import VerticalAssetRatio from './VerticalAssetRatio'
-import { isKlipConnector } from 'hooks/useApprove'
 
 const CalculateModal = ({
   setTx,
@@ -52,8 +50,8 @@ const CalculateModal = ({
   const [isInvesting, setIsInvesting] = useState(false)
   const isMobile = !isXl && !isXxl
   // const slippage = useSlippage()
-  const { setShowModal } = React.useContext(KlipModalContext())
-  const { account, klaytn, connector } = useWallet()
+  const { isKlip, request } = useKlipContract()
+  const { account, klaytn } = useWallet()
   const dispatch = useDispatch()
   // const balances = useBalances(account)
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
@@ -99,26 +97,21 @@ const CalculateModal = ({
         .times(new BigNumber(10).pow(usdToken.decimals))
         .toJSON()
       // const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
-      if (isKlipConnector(connector)) {
+      if (isKlip()) {
         const valueNumber = (Number(mainCoinValue) / 10 ** 18).toString()
         const valueklip = Number.parseFloat(valueNumber).toFixed(6)
         let expectValue = `${(Number(valueklip) + 0.00001) * 10 ** 18}`
         expectValue = expectValue.slice(0, -13)
         const valueKlipParam = mainCoinValue !== '0' ? `${expectValue}0000000000000` : '0'
 
-        klipProvider.genQRcodeContactInteract(
-          getAddress(rebalance.address),
-          JSON.stringify(getAbiRebalanceByName('addFund')),
-          // JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
-          JSON.stringify([arrayTokenAmount, usdTokenAmount, 0]),
-          setShowModal,
-          valueKlipParam,
-        )
+        const tx = await request({
+          contractAddress: getAddress(rebalance.address),
+          abi: getAbiRebalanceByName('addFund'),
+          // [arrayTokenAmount, usdTokenAmount, minUsdAmount],
+          input: [arrayTokenAmount, usdTokenAmount, 0],
+          value: valueKlipParam,
+        })
 
-        const tx = {
-          transactionHash: await klipProvider.checkResponse(),
-        }
-        setShowModal(false)
         setTx(tx)
         handleLocalStorage(tx)
       } else {

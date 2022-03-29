@@ -63,8 +63,8 @@ const MyBalanceSection: React.FC<{
   return (
     <>
       <TitleSection hasMb>{title}</TitleSection>
-      {Object.entries(myBalances).map(([tokenName, balanceValue]) => (
-        <Flex alignItems="center">
+      {Object.entries(myBalances).map(([tokenName, balanceValue], index) => (
+        <Flex alignItems="center" key={index}>
           <TokenLabel type="token">{tokenName}</TokenLabel>
           <BalanceText>
             {!BigNumber.isBigNumber(balanceValue) ? '-' : convertToBalanceFormat(balanceValue.toNumber())}
