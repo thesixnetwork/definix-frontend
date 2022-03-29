@@ -51,11 +51,14 @@ const WrapTime = styled(Flex)`
   align-items: center;
 
   .time {
+    text-align: right;
     ${({ theme }) => theme.textStyle.R_12R}
     color: ${({ theme }) => theme.colors.white80};
   }
 
   .interval {
+    width: 50px;
+    text-align: left;
     white-space: normal;
     margin-left: 8px;
     ${({ theme }) => theme.textStyle.R_12B}
