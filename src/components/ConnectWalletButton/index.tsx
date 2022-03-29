@@ -5,7 +5,7 @@ import useWallet from 'hooks/useWallet'
 
 const ConnectWalletButton: React.FC<ButtonProps> = (props) => {
   const { t } = useTranslation()
-  const { account, connect: login, reset: logout } = useWallet()
+  const { account, activate: login, deactivate: logout } = useWallet()
 
   const { onPresentConnectModal } = useWalletModal(Trans, login, logout, account)
 

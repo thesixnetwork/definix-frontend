@@ -19,13 +19,12 @@ import {
   Text,
   useModal,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useBalances, useAllowances, useToast } from 'state/hooks'
 import { fetchAllowances, fetchBalances } from 'state/wallet'
 import { simulateInvest, getReserves } from 'offline-pool'
 
 import useWallet from 'hooks/useWallet'
-import * as klipProvider from 'hooks/klipProvider'
+import useKlipContract, { MAX_UINT_256_KLIP } from 'hooks/useKlipContract'
 import { getAbiERC20ByName } from 'hooks/hookHelper'
 import { getAddress } from 'utils/addressHelpers'
 import { approveOther } from 'utils/callHelpers'
@@ -37,7 +36,6 @@ import CurrencyText from 'components/Text/CurrencyText'
 import CurrencyInputPanel from './CurrencyInputPanel'
 import CalculateModal from './CalculateModal'
 import CoinWrap from './CoinWrap'
-import { isKlipConnector } from 'hooks/useApprove'
 
 interface InvestInputCardProp {
   isMobile?: boolean
@@ -56,8 +54,8 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
   const [inputError, setInputError] = useState<Record<string, boolean>>({})
   const [, setTx] = useState({})
   const dispatch = useDispatch()
-  const { account, klaytn, connector } = useWallet()
-  const { setShowModal } = React.useContext(KlipModalContext())
+  const { account, klaytn } = useWallet()
+  const { isKlip, request } = useKlipContract()
   const { toastSuccess, toastError } = useToast()
   const balances = useBalances(account)
   const mBalances = useDeepEqualMemo(balances)
@@ -178,15 +176,12 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
     setApprovingCoin(token.symbol)
     try {
-      if (isKlipConnector(connector)) {
-        klipProvider.genQRcodeContactInteract(
-          getAddress(token.address),
-          JSON.stringify(getAbiERC20ByName('approve')),
-          JSON.stringify([getAddress(mRebalance.address), klipProvider.MAX_UINT_256_KLIP]),
-          setShowModal,
-        )
-        await klipProvider.checkResponse()
-        setShowModal(false)
+      if (isKlip()) {
+        await request({
+          contractAddress: getAddress(token.address),
+          abi: getAbiERC20ByName('approve'),
+          input: [getAddress(mRebalance.address), MAX_UINT_256_KLIP],
+        })
       } else {
         await approveOther(tokenContract, getAddress(mRebalance.address), account)
       }

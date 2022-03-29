@@ -1,6 +1,5 @@
-import { useCallback, useMemo, useState, useContext } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Currency, currencyEquals, ETHER, WETH } from 'definixswap-sdk'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/toasts/hooks'
 import { tryParseAmount } from '../state/swap/hooks'
@@ -8,8 +7,7 @@ import { useTransactionAdder } from '../state/transactions/hooks'
 import { useCurrencyBalance } from '../state/wallet/hooks'
 import { useWETHContract } from './useContract'
 import useWallet from './useWallet'
-import { isKlipConnector } from './useApprove'
-import * as klipProvider from './klipProvider'
+import useKlipContract from './useKlipContract'
 import { getAbiByNameWETH } from './hookHelper'
 
 export enum WrapType {
@@ -39,8 +37,8 @@ export default function useWrapCallback(
 ): IProps {
   const [loading, setLoading] = useState<boolean>(false)
 
-  const { account, chainId, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account, chainId } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   const wethContract = useWETHContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
@@ -53,18 +51,15 @@ export default function useWrapCallback(
   const executeWrap = useCallback(async () => {
     setLoading(true)
     try {
-      if (isKlipConnector(connector)) {
+      if (isKlip()) {
         // console.log("klip test 1",(+inputAmount.toSignificant(6)*1e18))
         const valueKlip = +inputAmount.toSignificant(6) * 1e12
-        klipProvider.genQRcodeContactInteract(
-          WETH(chainId).address,
-          JSON.stringify(getAbiByNameWETH('deposit')),
-          JSON.stringify([]),
-          setShowModal,
-          `${valueKlip}000000`,
-        )
-        await klipProvider.checkResponse()
-        setShowModal(false)
+        await request({
+          contractAddress: WETH(chainId).address,
+          abi: getAbiByNameWETH('deposit'),
+          input: [],
+          value: `${valueKlip}000000`,
+        })
       } else {
         const txReceipt = await wethContract.deposit({ value: `0x${inputAmount.raw.toString(16)}` })
         addTransaction(txReceipt, { summary: `Wrap ${inputAmount.toSignificant(6)} KLAY to WKLAY` })
@@ -88,18 +83,15 @@ export default function useWrapCallback(
   const executeUnWrap = useCallback(async () => {
     setLoading(true)
     try {
-      if (isKlipConnector(connector)) {
+      if (isKlip()) {
         // console.log("klip test 1",(+inputAmount.toSignificant(6)*1e18))
         const valueKlip = +Number.parseFloat(inputAmount.toSignificant(6)).toFixed(6) * 1e12
-        klipProvider.genQRcodeContactInteract(
-          WETH(chainId).address,
-          JSON.stringify(getAbiByNameWETH('withdraw')),
-          JSON.stringify([`${valueKlip}000000`]),
-          setShowModal,
-          '0',
-        )
-        await klipProvider.checkResponse()
-        setShowModal(false)
+        await request({
+          contractAddress: WETH(chainId).address,
+          abi: getAbiByNameWETH('withdraw'),
+          input: [`${valueKlip}000000`],
+          value: '0',
+        })
       } else {
         const txReceipt = await wethContract.withdraw(`0x${inputAmount.raw.toString(16)}`)
         addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WKLAY to KLAY` })

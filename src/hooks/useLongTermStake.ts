@@ -1,8 +1,6 @@
-/* eslint-disable no-shadow */
-import { useEffect, useState, useCallback, useContext } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import {
   getAbiERC20ByName,
   getAbiVaultPenaltyFacetByName,
@@ -12,7 +10,6 @@ import {
 } from 'hooks/hookHelper'
 import { set, get } from 'lodash-es'
 import { useSelector, useDispatch } from 'react-redux'
-import * as klipProvider from 'hooks/klipProvider'
 import {
   fetchPrivateData,
   fetchPendingReward,
@@ -33,8 +30,9 @@ import useRefresh from './useRefresh'
 import { State } from '../state/types'
 import { useHerodotus } from './useContract'
 import useWallet from './useWallet'
-import { isKlipConnector } from './useApprove'
 import { getEstimateGas } from 'utils/callHelpers'
+import useKlipModal from './useKlipModal'
+import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
 
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -235,21 +233,18 @@ const handleContractExecute = (_executeFunction, _account) => {
 }
 
 export const useUnLock = () => {
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   const onUnLock = async (id) => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinix(),
-        JSON.stringify(getAbiVaultFacetByName('unlock')),
-        JSON.stringify([id]),
-        setShowModal,
-      )
-      await klipProvider.checkResponse()
-      setShowModal(false)
+    if (isKlip()) {
+      const tx = await request({
+        contractAddress: getVFinix(),
+        abi: getAbiVaultFacetByName('unlock'),
+        input: [id],
+      })
       return new Promise((resolve) => {
-        resolve('')
+        resolve(tx)
       })
     }
     const callContract = getContract(VaultFacet.abi, getVFinix())
@@ -264,23 +259,20 @@ export const useUnLock = () => {
 export const useLock = (level, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   const stake = useCallback(async () => {
     setStatus(false)
     setLoading('loading')
     if (lockFinix) {
       try {
-        if (isKlipConnector(connector)) {
-          klipProvider.genQRcodeContactInteract(
-            getVFinix(),
-            JSON.stringify(getAbiVaultFacetByName('lock')),
-            JSON.stringify([level, lockFinix]),
-            setShowModal,
-          )
-          await klipProvider.checkResponse()
-          setShowModal(false)
+        if (isKlip()) {
+          await request({
+            contractAddress: getVFinix(),
+            abi: getAbiVaultFacetByName('lock'),
+            input: [level, lockFinix],
+          })
           setLoading('success')
           setStatus(true)
           setTimeout(() => setLoading(''), 5000)
@@ -306,52 +298,47 @@ export const useLock = (level, lockFinix) => {
     }
 
     return status
-  }, [account, level, lockFinix, status, connector, setShowModal])
+  }, [account, level, lockFinix, status])
 
   return { onStake: stake, status, loadings }
 }
 
 export const useHarvest = () => {
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   const handleHarvest = useCallback(async () => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinix(),
-        JSON.stringify(getAbiRewardFacetByName('harvest')),
-        JSON.stringify([account]),
-        setShowModal,
-      )
-      await klipProvider.checkResponse()
-      setShowModal(false)
+    if (isKlip()) {
+      const tx = await request({
+        contractAddress: getVFinix(),
+        abi: getAbiRewardFacetByName('harvest'),
+        input: [account],
+      })
       return new Promise((resolve) => {
-        resolve('ok')
+        resolve(tx)
       })
     }
     const callContract = getContract(RewardFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.harvest(account), account).then(resolve).catch(reject)
     })
-  }, [account, connector, setShowModal])
+  }, [account])
 
   return { handleHarvest }
 }
 
 export const useApprove = (max) => {
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
+  const { isKlip, request } = useKlipContract()
 
   const onApprove = useCallback(async () => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getFinixAddress(),
-        JSON.stringify(getAbiERC20ByName('approve')),
-        JSON.stringify([getVFinix(), klipProvider.MAX_UINT_256_KLIP]),
-        setShowModal,
-      )
-      const txHash = await klipProvider.checkResponse()
-      setShowModal(false)
+    if (isKlip()) {
+      const txHash = await request({
+        contractAddress: getFinixAddress(),
+        abi: getAbiERC20ByName('approve'),
+        input: [getVFinix(), MAX_UINT_256_KLIP],
+      })
       return new Promise((resolve) => {
         resolve(txHash)
       })
@@ -360,7 +347,7 @@ export const useApprove = (max) => {
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.approve(getVFinix(), max), account).then(resolve).catch(reject)
     })
-  }, [account, max, connector, setShowModal])
+  }, [account, max, onPresentKlipModal, onDismissKlipModal])
 
   return { onApprove }
 }
@@ -569,19 +556,16 @@ export const useUnstakeId = () => {
 }
 
 export const useClaim = () => {
-  const { account, connector } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { account } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   const handleClaim = async (id) => {
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        getVFinix(),
-        JSON.stringify(getAbiVaultPenaltyFacetByName('claimWithPenalty')),
-        JSON.stringify([id]),
-        setShowModal,
-      )
-      const txHash = await klipProvider.checkResponse()
-      setShowModal(false)
+    if (isKlip()) {
+      const txHash = await request({
+        contractAddress: getVFinix(),
+        abi: getAbiVaultPenaltyFacetByName('claimWithPenalty'),
+        input: [id],
+      })
       return new Promise((resolve) => {
         resolve(txHash)
       })
@@ -600,33 +584,26 @@ export const useSousHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
-  const { setShowModal } = useContext(KlipModalContext())
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
+  const { isKlip, request } = useKlipContract()
 
   const handleHarvest = useCallback(
     async (sousId) => {
-      if (isKlipConnector(connector)) {
-        // setShowModal(true)
-
+      if (isKlip()) {
         if (sousId === 0) {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('leaveStaking')),
-            jsonConvert(['0']),
-            setShowModal,
-          )
+          await request({
+            contractAddress: herodotusContract._address,
+            abi: getAbiHerodotusByName('leaveStaking'),
+            input: ['0'],
+          })
         } else {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('deposit')),
-            jsonConvert([sousId, '0']),
-            setShowModal,
-          )
+          await request({
+            contractAddress: herodotusContract._address,
+            abi: getAbiHerodotusByName('deposit'),
+            input: [sousId, '0'],
+          })
         }
-        const tx = await klipProvider.checkResponse()
-
-        setShowModal(false)
         dispatch(fetchFarmUserDataAsync(account))
-        console.info(tx)
       }
       if (sousId === 0) {
         return new Promise(async (resolve, reject) => {
@@ -653,44 +630,39 @@ export const useSousHarvest = () => {
       dispatch(updateUserBalance(sousId, account))
       return handleHarvest
     },
-    [account, dispatch, herodotusContract, connector, setShowModal],
+    [account, dispatch, herodotusContract, connector, onPresentKlipModal, onDismissKlipModal],
   )
 
   return { onReward: handleHarvest }
 }
 
-const jsonConvert = (data: any) => JSON.stringify(data)
 // FARMS
 export const useSuperHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
 
-  const { setShowModal } = useContext(KlipModalContext())
+  const { isKlip, request } = useKlipContract()
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
   const handleHarvest = useCallback(
     async (farmPid) => {
-      if (isKlipConnector(connector)) {
+      if (isKlip()) {
+        let tx
         if (farmPid === 0) {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('leaveStaking')),
-            jsonConvert(['0']),
-            setShowModal,
-          )
+          tx = await request({
+            contractAddress: herodotusContract._address,
+            abi: getAbiHerodotusByName('leaveStaking'),
+            input: ['0'],
+          })
         } else {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('deposit')),
-            jsonConvert([farmPid, '0']),
-            setShowModal,
-          )
+          tx = await request({
+            contractAddress: herodotusContract._address,
+            abi: getAbiHerodotusByName('deposit'),
+            input: [farmPid, '0'],
+          })
         }
-        const tx = await klipProvider.checkResponse()
-
-        setShowModal(false)
         dispatch(fetchFarmUserDataAsync(account))
-        console.info(tx)
         return tx
       }
 
@@ -705,7 +677,7 @@ export const useSuperHarvest = () => {
           .catch(reject)
       })
     },
-    [account, dispatch, herodotusContract, setShowModal, connector],
+    [account, dispatch, herodotusContract, onPresentKlipModal, onDismissKlipModal, connector],
   )
 
   return { onSuperHarvest: handleHarvest }

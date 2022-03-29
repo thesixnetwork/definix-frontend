@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import BigNumber from 'bignumber.js'
 import IKIP7 from '../../config/abi/IKIP7.json'
 import multicall from '../../utils/multicall'

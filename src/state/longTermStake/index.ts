@@ -329,11 +329,14 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         periodPenalty = new Date(date.getTime() + 3600000 * offset)
       }
 
+      const isTopup = topup.indexOf(new BigNumber(get(value, 'id._hex')).toString()) > -1
+
       locksData.push({
         id: new BigNumber(get(value, 'id._hex')).toNumber(),
         level: value.level * 1 + 1,
         isUnlocked: value.isUnlocked,
         isPenalty: value.isPenalty,
+        isTopup,
         flg: value.isPenalty && value.isUnlocked,
         penaltyFinixAmount: new BigNumber(get(value, 'penaltyFinixAmount._hex'))
           .dividedBy(new BigNumber(10).pow(18))

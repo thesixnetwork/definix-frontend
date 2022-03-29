@@ -1,25 +1,18 @@
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
-import { useMemo } from 'react'
-import useCaverJsReactForWallet from './useCaverJsReactForWallet'
+import { useContext, useEffect } from 'react'
+import { WalletContext } from 'contexts/WalletContext'
+import useKlipModal from './useKlipModal'
 
 const useWallet = () => {
-  const { library, account, chainId, connector, active, activate, deactivate } = useCaverJsReact()
-  const { login, logout } = useCaverJsReactForWallet()
+  const context = useContext(WalletContext)
+  const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
 
-  const klaytn = useMemo(() => library?.provider || undefined, [library])
-
-  return {
-    account,
-    chainId: chainId || parseInt(process.env.REACT_APP_CHAIN_ID),
-    library: library || undefined,
-    klaytn,
-    connect: login,
-    reset: logout,
-    connector,
-    active,
-    activate,
-    deactivate,
-  }
+  useEffect(() => {
+    context.initKlip({
+      show: () => onPresentKlipModal(),
+      hide: () => onDismissKlipModal(),
+    })
+  })
+  return context
 }
 
 export default useWallet

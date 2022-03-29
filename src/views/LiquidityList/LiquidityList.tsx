@@ -4,7 +4,6 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import usePairs from 'hooks/usePairs'
 import { Pair } from 'definixswap-sdk'
-import { useActiveWeb3React } from 'hooks'
 import {
   Flex,
   Box,
@@ -17,6 +16,7 @@ import {
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
+import useWallet from 'hooks/useWallet'
 
 const LiquidityList: React.FC = () => {
   const { t } = useTranslation()
@@ -24,7 +24,7 @@ const LiquidityList: React.FC = () => {
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
   const history = useHistory()
 
-  const { account } = useActiveWeb3React()
+  const { account } = useWallet()
   const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),

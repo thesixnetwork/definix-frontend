@@ -1,11 +1,9 @@
-import React, { useCallback, useState, useContext, useEffect, useMemo } from 'react'
+import React, { useCallback, useState, useEffect, useMemo } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ethers } from 'ethers'
 import tp from 'tp-js-sdk'
 import Caver from 'caver-js'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
-import { KlipConnector } from '@sixnetwork/klip-connector'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import {
   Modal,
   Box,
@@ -16,7 +14,6 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import { Currency, CurrencyAmount, Percent, Price, TokenAmount, ETHER } from 'definixswap-sdk'
 import { useTranslation } from 'react-i18next'
-import * as klipProvider from 'hooks/klipProvider'
 import { getAbiByName } from 'hooks/hookHelper'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
 import farms from 'config/constants/farm'
@@ -32,11 +29,10 @@ import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { sendAnalyticsData } from 'utils/definixAnalytics'
 import useWallet from 'hooks/useWallet'
+import useKlipContract from 'hooks/useKlipContract'
 import ModalHeader from './ModalHeader'
 import ConfirmAddModalBottom from './ConfirmAddModalBottom'
 import { getCaver } from 'utils/caver'
-
-const isKlipConnector = (connector) => connector instanceof KlipConnector
 
 interface Props extends InjectedModalProps {
   noLiquidity: boolean
@@ -73,8 +69,8 @@ export default function ConfirmAddModal({
   onFieldBInput,
 }: Props) {
   const { t } = useTranslation()
-  const { chainId, account, connector, library } = useWallet()
-  const { setShowModal } = useContext(KlipModalContext())
+  const { chainId, account, library } = useWallet()
+  const { isKlip, request } = useKlipContract()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
   const [txHash, setTxHash] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>(undefined)
@@ -163,18 +159,15 @@ export default function ConfirmAddModal({
     const valueNumber = (Number(value ? (+value).toString() : '0') / 10 ** 18).toString()
     const valueklip = Number.parseFloat(valueNumber).toFixed(6)
 
-    if (isKlipConnector(connector)) {
-      klipProvider.genQRcodeContactInteract(
-        router.address,
-        JSON.stringify(getAbiByName(methodName)),
-        JSON.stringify(args),
-        setShowModal,
-        +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
-      )
-      const tx = await klipProvider.checkResponse()
+    if (isKlip()) {
+      const tx = await request({
+        contractAddress: router.address,
+        abi: getAbiByName(methodName),
+        input: args,
+        value: +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
+      })
       setTxHash(tx)
       setAttemptingTxn(false)
-      setShowModal(false)
 
       addTransaction(undefined, {
         type: 'removeLiquidity',
@@ -296,7 +289,6 @@ export default function ConfirmAddModal({
   }, [
     account,
     chainId,
-    connector,
     addTransaction,
     allowedSlippage,
     currencies,
@@ -307,7 +299,6 @@ export default function ConfirmAddModal({
     noLiquidity,
     parsedAmounts,
     sendDefinixAnalytics,
-    setShowModal,
   ])
 
   useEffect(() => {

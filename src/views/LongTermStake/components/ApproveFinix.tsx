@@ -3,18 +3,19 @@ import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Flex, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import { useApprove } from 'hooks/useLongTermStake'
-import * as klipProvider from 'hooks/klipProvider'
 import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 import UnlockButton from 'components/UnlockButton'
 
 import StakeModal from './StakeModal'
 import { IsMobileType } from './types'
+import { MAX_UINT_256_KLIP } from 'hooks/useKlipContract'
 
 interface ApproveFinixProps extends IsMobileType {
   hasAccount: boolean
   isApproved: boolean
   inputBalance: string
+  setIsApproved: React.Dispatch<React.SetStateAction<boolean>>
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
   days: number
   earn: number
@@ -30,6 +31,7 @@ const FlexApprove = styled(Flex)`
 const ApproveFinix: React.FC<ApproveFinixProps> = ({
   hasAccount,
   isApproved,
+  setIsApproved,
   inputBalance,
   setInputBalance,
   days,
@@ -46,7 +48,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   )
   // const [error] = useState<string>('') // UX 상황별 버튼 상태 수정으로 인해 영역만 남겨둠
 
-  const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
+  const { onApprove } = useApprove(MAX_UINT_256_KLIP)
   const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
 
@@ -55,12 +57,15 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
       setIsLoadingApprove(true)
       await onApprove()
       toastSuccess(t('{{Action}} Complete', { Action: t('actionApprove') }))
+      setIsApproved(true)
     } catch (e) {
       toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
+      setIsApproved(false)
     } finally {
+      setIsApproved(true)
       setIsLoadingApprove(false)
     }
-  }, [onApprove, toastSuccess, toastError, t])
+  }, [onApprove, toastSuccess, toastError, t, setIsApproved])
 
   const disabledStakeButton = () => {
     if (!isApproved || isError) return true

@@ -147,6 +147,8 @@ export interface LongTermState {
   level: string
   amount: number
   isPenalty: boolean
+  isTopup: boolean
+  isUnlocked: boolean
   periodPenalty: string
   penaltyUnlockTimestamp: string
   penaltyFinixAmount: string

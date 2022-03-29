@@ -70,7 +70,7 @@ const SuperConfirmStake: React.FC<SuperConfirmStakeProps> = ({ totalFinix, days 
             {t('Stake Period')}
           </Text>
           <Text textStyle="R_14M" color="deepgrey">
-            {t(`${days} days`)}
+            {t(`${28} days`)}
           </Text>
         </Flex>
         <Flex mb="S_8" justifyContent="space-between">
@@ -79,7 +79,7 @@ const SuperConfirmStake: React.FC<SuperConfirmStakeProps> = ({ totalFinix, days 
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
-              {getEndDay(days)}
+              {getEndDay(28)}
             </Text>
             <Text textStyle="R_12R" color="mediumgrey">
               *GMT +9 {t('Asia/Seoul')}

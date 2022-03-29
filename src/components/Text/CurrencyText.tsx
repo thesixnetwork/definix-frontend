@@ -1,5 +1,4 @@
 import React from 'react'
-import numeral from 'numeral'
 import { Text } from '@fingerlabs/definixswap-uikit-v2'
 
 const CurrencyText: React.FC<{
@@ -11,7 +10,8 @@ const CurrencyText: React.FC<{
   const { value, prefix, toFixed = 2, ...rest } = props
   return (
     <Text {...rest}>
-      {prefix || ''} {`$${numeral(value).format(`0,0.[${'0'.repeat(toFixed)}]`)}`}
+      {prefix || ''}
+      {`$${Number(Number(value).toFixed(toFixed)).toLocaleString('en', { maximumFractionDigits: toFixed })}`}
     </Text>
   )
 }

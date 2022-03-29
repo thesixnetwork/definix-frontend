@@ -9,7 +9,6 @@ import useWallet from 'hooks/useWallet'
 import dayjs from 'dayjs'
 import { Flex, Text, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
-import * as klipProvider from 'hooks/klipProvider'
 import {
   useProposalIndex,
   useServiceAllowance,
@@ -25,6 +24,7 @@ import { Voting } from 'state/types'
 import VotingConfirmModal from './VotingConfirmModal'
 import { TransactionState } from '../types'
 import VotingChoiceItem from './VotingChoiceItem'
+import { MAX_UINT_256_KLIP } from 'hooks/useKlipContract'
 
 const WrapVote = styled(Flex)`
   flex-direction: column;
@@ -85,7 +85,7 @@ const VotingChoice: React.FC = () => {
   const { fastRefresh } = useRefresh()
   const { indexProposal } = useProposalIndex()
   const allowance = useServiceAllowance()
-  const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
+  const { onApprove } = useApproveToService(MAX_UINT_256_KLIP)
   const isMulti = useMemo(() => proposal.choice_type === 'multiple', [proposal])
   const [selectedIndexs, setSelectedIndexs] = useState<number[]>([])
   const selectedVotes = useRef<string[]>([])

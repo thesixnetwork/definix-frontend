@@ -7,7 +7,6 @@ import { SIX_ADDRESS } from 'config/constants'
 
 import useWallet from 'hooks/useWallet'
 import useENS from '../../hooks/useENS'
-import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
@@ -276,7 +275,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: any): Sw
 export function useDefaultsFromURLSearch():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined {
-  const { chainId = process.env.REACT_APP_CHAIN_ID || '56' } = useActiveWeb3React()
+  const { chainId = process.env.REACT_APP_CHAIN_ID || '56' } = useWallet()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
   const [result, setResult] = useState<
