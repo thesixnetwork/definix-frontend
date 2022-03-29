@@ -84,6 +84,7 @@ const GuideItem = styled(Flex)`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  width: 102px;
 
   img {
     width: 36px;
@@ -92,6 +93,7 @@ const GuideItem = styled(Flex)`
 
   .text {
     margin-top: 8px;
+    text-align: center;
     ${({ theme }) => theme.textStyle.R_12M}
     color: ${({ theme }) => theme.colors.black};
   }
@@ -141,18 +143,18 @@ const KlipModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       <StyledModalFooter isFooter>
         <WrapGuide>
           <GuideItem>
-            <img src="./images/klip/Connect-to-KLIP-02.png" />
+            <img src="/images/klip/Connect-to-KLIP-02.png" />
             <Text className="text">{t('Open Kakaotalk')}</Text>
           </GuideItem>
           <StyledArrowRightGIcon />
           <GuideItem>
-            <img src="./images/klip/Connect-to-KLIP-03.png" />
+            <img src="/images/klip/Connect-to-KLIP-03.png" />
             <Text className="text">{t('Click the search bar')}</Text>
           </GuideItem>
           <StyledArrowRightGIcon />
           <GuideItem>
-            <img src="./images/klip/Connect-to-KLIP-04.png" />
-            <Text className="text">{t('Click the search bar')}</Text>
+            <img src="/images/klip/Connect-to-KLIP-04.png" />
+            <Text className="text">{t('Log in by scanning the ')}</Text>
           </GuideItem>
         </WrapGuide>
         <GuideText>{t('*Klip > Code Scan')}</GuideText>
