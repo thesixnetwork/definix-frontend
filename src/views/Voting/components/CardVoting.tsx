@@ -53,7 +53,7 @@ function getFilterList(filterListAllProposal, filterId: FilterId) {
 
 const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const { t } = useTranslation()
-  const { account } = useWallet();
+  const { account } = useWallet()
   const { isMobile } = useMatchBreakpoints()
   const allProposalMap = useAllProposalOfType()
   const { proposalOfAddress } = useAllProposalOfAddress()
