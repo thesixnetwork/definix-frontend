@@ -1,17 +1,17 @@
 {
   "notice_1": [
-    "Notice of APR adjustment voting",
-    "APR is adjusted, followed by the result of the vote that was ended at 7th, Mar.\nNext voting is beginning at 6 pm, 14th Mar(GMT +9) for 7days.",
-    "https://g2.klaytn.definix.com/voting ",
-    "Go to Vote",
-    "FALSE"
-  ],
-  "notice_2": [
     "Let your voice be heard",
     "Definix is always listening to the voices of holders.\nIf there are any inconveniences or improvements to the beta service, please give us feedback.",
     "https://forms.gle/x9rfWuzD9Kpa8xa47",
+    "Go to Vote",
+    "TRUE"
+  ],
+  "notice_2": [
+    "Notice of voting",
+    "Mulitple proposals are revealed inlcuding the APR adjustment voting and regarding governance. \nvFINIX holders can demand what you want by voting.",
+    "https://g2.klaytn.definix.com/voting ",
     "Feedback",
-    "FALSE"
+    "TRUE"
   ],
   "notice_3": [
     "Definix - Official DeFi protocol of Klaytn chain",
@@ -21,9 +21,9 @@
     "FALSE"
   ],
   "notice_4": [
-    "Rebalancing farm is under maintenance.",
-    "Rebalancing farm is under maintenance.\nClick \"See detail\" to find out more!",
-    "https://twitter.com/DefinixOfficial/status/1505597541307805696?ref_src=twsrc%5Etfw%7Ctwcamp%5Eembeddedtimeline%7Ctwterm%5Eprofile%3ADefinixOfficial%7Ctwgr%5EeyJ0ZndfZXhwZXJpbWVudHNfY29va2llX2V4cGlyYXRpb24iOnsiYnVja2V0IjoxMjA5NjAwLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X2hvcml6b25fdHdlZXRfZW1iZWRfOTU1NSI6eyJidWNrZXQiOiJodGUiLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X3NrZWxldG9uX2xvYWRpbmdfMTMzOTgiOnsiYnVja2V0IjoiY3RhIiwidmVyc2lvbiI6bnVsbH0sInRmd19zcGFjZV9jYXJkIjp7ImJ1Y2tldCI6Im9mZiIsInZlcnNpb24iOm51bGx9fQ%3D%3D%7Ctwcon%5Etimelinechrome&ref_url=https%3A%2F%2Fg2.klaytn.definix.com%2F",
+    "Rebalancing farm maintenance is completed.",
+    "Apologize again to any inconvenience you have been through.\nThank you for your patience and click \"See detail\" to find out more.",
+    "https://twitter.com/fingerlabs_io/status/1508618217392025602?s=20&t=TXYD2GU7oVoVcIO2-D805A  ",
     "See detail",
     "TRUE"
   ]

@@ -286,7 +286,10 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         (new BigNumber(get(value, 'penaltyUnlockTimestamp._hex')).toNumber() +
           get(period, '0.penaltyPeriod')[value.level]) *
           1000
-      asDays = moment.duration({ seconds: get(period, '0.periodMap')[value.level] }).asDays()
+      asDays =
+        process.env.REACT_APP_CHAIN_ID === '1001'
+          ? days[value.level]
+          : moment.duration({ seconds: get(period, '0.periodMap')[value.level] }).asDays()
       asPenaltyDays = moment.duration({ seconds: get(period, '0.penaltyPeriod')[value.level] }).asDays()
 
       let lockTimes = new Date(new BigNumber(get(value, 'lockTimestamp._hex')).toNumber() * 1000)
@@ -351,7 +354,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         voteAmount: new BigNumber(get(value, 'voteAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
         periodPenalty: moment(periodPenalty).format(`DD-MMM-YY HH:mm:ss`),
         multiplier: get(period, '0.multiplier')[value.level * 1 + 1 - 1],
-        days: isTopup ? 28 : days[value.level * 1 + 1 - 1],
+        days: days[value.level * 1 + 1 - 1],
         topup,
         topupTimeStamp: moment(new Date(topupTime.setDate(topupTime.getDate() + 28))).format(`DD-MMM-YY HH:mm:ss`),
       })

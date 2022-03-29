@@ -63,7 +63,7 @@ const TotalStakedSection: React.FC<{
   }, [totalStaked])
 
   const totalStakedPrice = useMemo(() => {
-    return convertToPriceFormat(new BigNumber(totalStakedValue).multipliedBy(price).toNumber())
+    return new BigNumber(totalStakedValue).multipliedBy(price).toNumber()
   }, [convertToPriceFormat, totalStakedValue, price])
 
   return (

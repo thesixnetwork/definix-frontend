@@ -530,7 +530,7 @@
   "Your Voting Power (vFINIX)": "Your Voting Power (vFINIX) will be locked until the voting time is ended.",
   "Your Vote": "Your Vote",
   "Release notes title": "Definix Update",
-  "Release notes date": "15.Mar.2022",
+  "Release notes date": "29.Mar.2022",
   "Still in progress": "Applying G2 is in progress.\r\nIt is available to use on G1. ",
   "actionImport": "Import",
   "Available": "Available",
@@ -550,6 +550,7 @@
   "Connect to Kakao Klip": "Connect to Kakao Klip via QR Code",
   "Time Remaining": "Time Remaining",
   "Scan the QR code through": "Scan the QR code through a QR code reader or the Kakao Talk app.",
+  "Log in by scanning the ": "Log in by scanning the code",
   "Open Kakaotalk": "Open Kakaotalk",
   "Click the search bar": "Click the search bar",
   "*Klip > Code Scan": "*Klip > Code Scan (from side menu) can be used",
@@ -600,6 +601,7 @@
   "Amount of Token": "Amount of Token",
   "Extra Purchase Amount": "Extra Purchase Amount",
   "*Only the max": "*Only the max vFINIX staked is available to purchase token with USDT.",
+  "The distribution timing of the": "The distribution timing of the additional purchase quantity is the same as the first distribution time.",
   "Stake vFINIX": "Stake vFINIX",
   "Available to stake up to ": "Available to stake up to ",
   "vFINIX Staking": "vFINIX Staking",
@@ -611,5 +613,6 @@
   "The amount is over the": "The amount is over the purchase available amount.",
   "Confirm Purchase": "Confirm Purchase",
   "actionPurchase": "Purchase",
-  "The app does not support": "The app does not support klip."
+  "The app does not support": "The app does not support klip.",
+  "Extra Allocation": "Extra Allocation"
 }

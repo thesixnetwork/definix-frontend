@@ -36,7 +36,7 @@ const FarmHighAPR = () => {
   return sortedFarmData[0] ? (
     <FormAPR
       title={sortedFarmData[0].lpSymbol}
-      totalAssetValue={numeral(get(sortedFarmData[0], 'totalLiquidityValue', 0)).format('0,0.00')}
+      totalAssetValue={get(sortedFarmData[0], 'totalLiquidityValue', 0)}
       apr={numeral(sortedFarmData[0].apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}
       Images={
         <WrapImage>
