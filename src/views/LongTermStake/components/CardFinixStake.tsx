@@ -119,7 +119,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   }
 
   useEffect(() => {
-    if(apr) {
+    if (apr > 0) {
       const data = [
         {
           multiple: 1,
