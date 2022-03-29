@@ -79,8 +79,8 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
           }}
           className={isMobile ? 'mr-s12' : 'mb-s12'}
           variant="red"
-          /** @Todo Rebalancing */
-          disabled={true}
+          /** @Todo Rebalancing 
+          disabled={true}*/
         >
           {t('Invest')}
         </Button>
