@@ -4,6 +4,7 @@ import { getHerodotusAddress } from 'utils/addressHelpers'
 import UseDeParam from 'hooks/useDeParam'
 import Caver from 'caver-js'
 import { getCaver } from './caver'
+import { getCaverKlay } from './lib'
 
 const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
 const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
@@ -16,6 +17,11 @@ export const getEstimateGas = async (method, account, ...args) => {
 }
 
 export const approve = async (lpContract, herodotusContract, account) => {
+  const gasPrice = await getCaverKlay().getGasPrice();
+
+  return lpContract.methods
+    .approve(herodotusContract.options.address, ethers.constants.MaxUint256)
+    .send({ from: account, gasPrice })
   const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
   const estimatedGas = await getEstimateGas(
@@ -49,7 +55,7 @@ export const approve = async (lpContract, herodotusContract, account) => {
 
   return lpContract.methods
     .approve(herodotusContract.options.address, ethers.constants.MaxUint256)
-    .send({ from: account, gas: estimatedGas })
+    .send({ from: account, gasPrice })
 }
 
 export const approveOther = async (lpContract, spender, account) => {

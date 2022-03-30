@@ -3,12 +3,13 @@ import { Contract } from 'web3-eth-contract'
 import { AbiItem } from 'web3-utils'
 import erc20 from 'config/abi/erc20.json'
 import { getCaver } from './caver'
+import { getCaverKlay } from './lib'
 // import getRPCHalper from 'utils/getRPCHalper'
 // import caver from '../klaytn/caver'
 
 export const getContract = (provider: ProviderType, address: string) => {
-  const caver = getCaver()
-  return new caver.klay.Contract(erc20 as unknown as AbiItem, address)
+  const { Contract } = getCaverKlay(provider)
+  return new Contract(erc20 as unknown as AbiItem, address)
 }
 
 export const getCustomContract = (provider: ProviderType, abi: AbiItem, address: string) => {

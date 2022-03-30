@@ -28,6 +28,7 @@ import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
 import { FarmCardProps } from './types'
 import FarmContext from '../../FarmContext'
+import useWallet from 'hooks/useWallet'
 
 const CardWrap = styled(Card)`
   margin-top: ${({ theme }) => theme.spacing.S_16}px;
@@ -66,6 +67,7 @@ const Wrap = styled(Box)<{ paddingLg: boolean }>`
 
 const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBalancesInWallet, klaytn, account }) => {
   const { t } = useTranslation()
+  const { provider } = useWallet();
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
@@ -74,7 +76,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   const lpTokenName = useMemo(() => farm.lpSymbols.map((lpSymbol) => lpSymbol.symbol).join('-'), [farm.lpSymbols])
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, stakedBalance, allowance } = useFarmUser(pid)
-  const lpContract = useMemo(() => getContract(klaytn as provider, getAddress(lpAddresses)), [klaytn, lpAddresses])
+  const lpContract = useMemo(() => getContract(provider, getAddress(lpAddresses)), [klaytn, lpAddresses])
 
   const addLiquidityUrl = useMemo(() => {
     const liquidityUrlPathParts = getLiquidityUrlPathParts({

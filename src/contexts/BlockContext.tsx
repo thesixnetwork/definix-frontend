@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { getCaver } from 'utils/caver'
+import { getCaverKlay } from 'utils/lib'
 
 const BlockContext = React.createContext(0)
 
@@ -8,9 +8,9 @@ const BlockContextProvider = ({ children }) => {
   const [block, setBlock] = useState(0)
 
   useEffect(() => {
-    const caver = getCaver()
+    const { getBlockNumber } = getCaverKlay();
     const interval = setInterval(async () => {
-      const blockNumber = await caver.klay.getBlockNumber()
+      const blockNumber = await getBlockNumber()
       if (blockNumber !== previousBlock.current) {
         previousBlock.current = blockNumber
         setBlock(blockNumber)

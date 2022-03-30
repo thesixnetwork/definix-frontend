@@ -5,9 +5,10 @@ import { useTranslation } from 'react-i18next'
 import getLibrary from 'utils/getLibrary'
 import { renderKlipTimeFormat } from 'hooks/useKlipModal'
 import { Text } from '@fingerlabs/definixswap-uikit-v2'
-import { getCaver } from 'utils/caver'
+import { getCaver } from 'utils/lib'
 
 interface WalletState {
+  provider: any;
   wallet: KlaytnWallet
   account: string
   connector: string
@@ -20,6 +21,7 @@ interface WalletState {
 }
 
 const WalletContext = createContext<WalletState>({
+  provider: null,
   wallet: null,
   account: null,
   connector: null,
@@ -100,6 +102,19 @@ const WalletContextProvider = ({ children }) => {
 
   const library = useMemo(() => getLibrary(window.caver ? window.klaytn : getCaver().currentProvider), [])
   const klaytn = useMemo(() => library?.provider || undefined, [library])
+  const provider = useMemo(() => {
+    if (!wallet.current) {
+      return null
+      // @ts-ignore
+    } else if (wallet.current.connectorId === AvailableConnectors.METAMASK) {
+      return (window as any).ethereum;
+      // @ts-ignore
+    } else if (wallet.current.connectorId === AvailableConnectors.KLIP) {
+      return null;
+    } else {
+      return window.caver;
+    }
+  }, [wallet.current])
 
   const initKlip = (callback: { show: () => void; hide: () => void }) => {
     if (isInit || !wallet.current) return
@@ -119,6 +134,7 @@ const WalletContextProvider = ({ children }) => {
   return (
     <WalletContext.Provider
       value={{
+        provider,
         wallet: wallet.current,
         account,
         chainId: parseInt(process.env.REACT_APP_CHAIN_ID) || 1001,
