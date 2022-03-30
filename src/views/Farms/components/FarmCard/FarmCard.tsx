@@ -67,7 +67,7 @@ const Wrap = styled(Box)<{ paddingLg: boolean }>`
 
 const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBalancesInWallet, klaytn, account }) => {
   const { t } = useTranslation()
-  const { provider } = useWallet();
+  const { provider } = useWallet()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)

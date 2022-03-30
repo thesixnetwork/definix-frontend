@@ -8,7 +8,7 @@ const BlockContextProvider = ({ children }) => {
   const [block, setBlock] = useState(0)
 
   useEffect(() => {
-    const { getBlockNumber } = getCaverKlay();
+    const { getBlockNumber } = getCaverKlay()
     const interval = setInterval(async () => {
       const blockNumber = await getBlockNumber()
       if (blockNumber !== previousBlock.current) {

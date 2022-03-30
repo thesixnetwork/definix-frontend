@@ -8,7 +8,7 @@ import { Text } from '@fingerlabs/definixswap-uikit-v2'
 import { getCaver } from 'utils/lib'
 
 interface WalletState {
-  provider: any;
+  provider: any
   wallet: KlaytnWallet
   account: string
   connector: string
@@ -107,12 +107,12 @@ const WalletContextProvider = ({ children }) => {
       return null
       // @ts-ignore
     } else if (wallet.current.connectorId === AvailableConnectors.METAMASK) {
-      return (window as any).ethereum;
+      return (window as any).ethereum
       // @ts-ignore
     } else if (wallet.current.connectorId === AvailableConnectors.KLIP) {
-      return null;
+      return null
     } else {
-      return window.caver;
+      return window.caver
     }
   }, [wallet.current])
 

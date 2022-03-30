@@ -31,7 +31,7 @@ const getCaver = () => {
 }
 
 const getCaverKlay = () => {
-  return getCaver().eth ?  getCaver().eth : getCaver().klay;
+  return getCaver().eth ? getCaver().eth : getCaver().klay
 }
 
 const getContract = (abi: any, address: string, contractOptions?: ContractOptions) => {

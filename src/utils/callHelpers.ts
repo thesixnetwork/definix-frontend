@@ -17,7 +17,7 @@ export const getEstimateGas = async (method, account, ...args) => {
 }
 
 export const approve = async (lpContract, herodotusContract, account) => {
-  const gasPrice = await getCaverKlay().getGasPrice();
+  const gasPrice = await getCaverKlay().getGasPrice()
 
   return lpContract.methods
     .approve(herodotusContract.options.address, ethers.constants.MaxUint256)
