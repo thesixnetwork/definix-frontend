@@ -40,28 +40,19 @@ import ERC20_ABI from 'config/constants/abis/erc20.json'
 import WETH_ABI from 'config/constants/abis/weth.json'
 import HERODOTUS_ABI from 'config/constants/abis/herodotus.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from 'config/constants/multicall'
-import { getContract } from 'utils'
+import { getContract as getEthContract } from 'utils'
 import useWallet from './useWallet'
-import { getCaver } from 'utils/caver'
+import { getCaver, getCaverKlay, getContract } from 'utils/caver'
 
 const intMainnetId = parseInt(process.env.REACT_APP_MAINNET_ID || '')
 const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
-  const caver = getCaver()
-  const [contract, setcontract] = useState(new caver.klay.Contract(abi, address, contractOptions))
+  const { Contract } = getCaverKlay()
+  const [contract, setcontract] = useState(new Contract(abi, address, contractOptions))
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const rpc = await getRPCHalper()
-    //   const caverEffect = new Caver(rpc)
-    //   setcontract(new caverEffect.klay.Contract(abi, address, contractOptions))
-    // }
-    // fetchData()
-
-    // const caverEffect = new Caver(process.env.REACT_APP_NODE_3)
-    // @ts-ignore
-    setcontract(new caver.klay.Contract(abi, address, contractOptions))
+    setcontract(new Contract(abi, address, contractOptions))
   }, [abi, address, contractOptions])
 
   return contract
@@ -150,7 +141,8 @@ function useContractForExchange(
   return useMemo(() => {
     if (!address || !ABI || !library) return null
     try {
-      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+      // @Todo
+      return getEthContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null

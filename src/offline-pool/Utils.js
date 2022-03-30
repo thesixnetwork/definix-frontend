@@ -2,14 +2,13 @@
 import BigNumber from 'bignumber.js'
 import DefinixPair from './contracts/DefinixPair.json'
 import IERC20 from './contracts/IERC20.json'
-import { getCaver } from 'utils/caver'
+import { getCaver, getContract } from 'utils/caver'
 
 const caver = getCaver()
 
 class Utils {
   static getPairData = async (_pairAddress) => {
-    // eslint-disable-next-line
-    const pairContract = new caver.klay.Contract(DefinixPair.abi, _pairAddress)
+    const pairContract = new getContract(DefinixPair.abi, _pairAddress)
 
     const pairResults = await Promise.all([
       pairContract.methods.token0().call(),
@@ -17,10 +16,8 @@ class Utils {
       pairContract.methods.getReserves().call(),
     ])
 
-    // eslint-disable-next-line
-    const erc0 = new caver.klay.Contract(IERC20.abi, pairResults[0])
-    // eslint-disable-next-line
-    const erc1 = new caver.klay.Contract(IERC20.abi, pairResults[1])
+    const erc0 = getContract(IERC20.abi, pairResults[0])
+    const erc1 = getContract(IERC20.abi, pairResults[1])
 
     const tokenResults = await Promise.all([
       erc0.methods.symbol().call(),

@@ -32,7 +32,7 @@ import useWallet from 'hooks/useWallet'
 import useKlipContract from 'hooks/useKlipContract'
 import ModalHeader from './ModalHeader'
 import ConfirmAddModalBottom from './ConfirmAddModalBottom'
-import { getCaver } from 'utils/caver'
+import { getCaver, getCaverKlay } from 'utils/caver'
 
 interface Props extends InjectedModalProps {
   noLiquidity: boolean
@@ -192,10 +192,9 @@ export default function ConfirmAddModal({
           if (flagFeeDelegate === 'Y') {
             const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
             const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
-            // @ts-ignore
             const caver = getCaver()
-            caver.klay
-              .signTransaction({
+            const { signTransaction } = getCaverKlay();
+            signTransaction({
                 type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
                 from: account,
                 to: ROUTER_ADDRESS[chainId],

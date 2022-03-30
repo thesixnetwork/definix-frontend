@@ -1,4 +1,3 @@
-import Caver from 'caver-js'
 import { ethers } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
 import { Trade, TokenAmount, CurrencyAmount, ETHER } from 'definixswap-sdk'
@@ -20,7 +19,7 @@ import { getApproveAbi } from './hookHelper'
 import { calculateGasMargin } from '../utils'
 import useWallet from './useWallet'
 import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
-import { getCaver } from 'utils/caver'
+import { getCaver, getCaverKlay } from 'utils/caver'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -106,13 +105,12 @@ export function useApproveCallback(
       const flagFeeDelegate = await UseDeParamForExchange(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
 
       if (flagFeeDelegate === 'Y') {
-        const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
+        const caverFeeDelegate = getCaver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
         const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
-        // @ts-ignore
+
         const caver = getCaver()
-        // eslint-disable-next-line consistent-return
-        return caver.klay
-          .signTransaction({
+        const { signTransaction } = getCaverKlay()
+        return signTransaction({
             type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
             from: account,
             to: token?.address,

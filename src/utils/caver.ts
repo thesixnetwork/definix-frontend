@@ -15,7 +15,10 @@ const web3HttpProvider = new Web3.providers.HttpProvider(process.env.REACT_APP_B
  * Provides a caver instance using our own private provider httpProver
  */
 let caverInstance
-const getCaver = () => {
+const getCaver = (provider?: any) => {
+  if (provider) {
+    return new Caver(provider)
+  }
   if ((window as any).klaytn && (window as any).klaytn.networkVersion == process.env.REACT_APP_CHAIN_ID) {
     return window.caver
   } else {
@@ -26,6 +29,11 @@ const getCaver = () => {
   }
   // const caver = window.caver || new Caver(httpProvider)
   // return caver
+}
+
+const getCaverKlay = (provider?: any) => {
+  const caver = getCaver(provider)
+  return caver.klay;
 }
 
 const getContract = (abi: any, address: string, contractOptions?: ContractOptions) => {
@@ -45,4 +53,4 @@ const getWeb3Contract = (abi: any, address: string, contractOptions?: ContractOp
   return new web3.eth.Contract(abi as unknown as AbiItem, address, contractOptions)
 }
 
-export { getWeb3Contract, getWeb3, getCaver, getContract, httpProvider }
+export { getWeb3Contract, getWeb3, getCaver, getContract, getCaverKlay, httpProvider }

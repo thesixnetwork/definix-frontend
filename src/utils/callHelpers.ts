@@ -2,13 +2,13 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { getHerodotusAddress } from 'utils/addressHelpers'
 import UseDeParam from 'hooks/useDeParam'
-import Caver from 'caver-js'
-import { getCaver } from './caver'
+import { getCaver, getCaverKlay } from './caver'
 
-const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
+const caverFeeDelegate = getCaver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
 const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
 const caver = getCaver()
+const { signTransaction } = getCaverKlay()
 
 export const getEstimateGas = async (method, account, ...args) => {
   const estimateGas = await method(...args).estimateGas({ from: account })
@@ -26,8 +26,7 @@ export const approve = async (lpContract, herodotusContract, account) => {
   )
 
   if (flagFeeDelegate === 'Y') {
-    return caver.klay
-      .signTransaction({
+    return signTransaction({
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
         from: account,
         to: lpContract._address,
@@ -67,8 +66,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
     )
 
     if (flagFeeDelegate === 'Y') {
-      return caver.klay
-        .signTransaction({
+      return signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: account,
           to: getHerodotusAddress(),
@@ -111,8 +109,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
   )
 
   if (flagFeeDelegate === 'Y') {
-    return caver.klay
-      .signTransaction({
+    return signTransaction({
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
         from: account,
         to: getHerodotusAddress(),
@@ -199,8 +196,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
     )
     if (flagFeeDelegate === 'Y') {
-      return caver.klay
-        .signTransaction({
+      return signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: account,
           to: getHerodotusAddress(),
@@ -242,8 +238,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
     new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
   )
   if (flagFeeDelegate === 'Y') {
-    return caver.klay
-      .signTransaction({
+    return signTransaction({
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
         from: account,
         to: getHerodotusAddress(),
@@ -339,8 +334,7 @@ export const harvest = async (herodotusContract, pid, account) => {
   if (pid === 0) {
     const estimatedGas = await getEstimateGas(herodotusContract.methods.leaveStaking, account, '0')
     if (flagFeeDelegate === 'Y') {
-      return caver.klay
-        .signTransaction({
+      return signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: account,
           to: getHerodotusAddress(),
@@ -378,8 +372,7 @@ export const harvest = async (herodotusContract, pid, account) => {
 
   const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit, account, pid, '0')
   if (flagFeeDelegate === 'Y') {
-    return caver.klay
-      .signTransaction({
+    return signTransaction({
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
         from: account,
         to: getHerodotusAddress(),

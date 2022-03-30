@@ -1,5 +1,4 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react'
-import Caver from 'caver-js'
 import { useTranslation } from 'react-i18next'
 import { ethers } from 'ethers'
 import styled from 'styled-components'
@@ -41,7 +40,7 @@ import KlaytnScopeLink from 'components/KlaytnScopeLink'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
 import useWallet from 'hooks/useWallet'
 import useKlipContract from 'hooks/useKlipContract'
-import { getCaver } from 'utils/caver'
+import { getCaver, getCaverKlay } from 'utils/caver'
 
 interface IProps extends InjectedModalProps {
   currencyA: Currency
@@ -241,13 +240,13 @@ export default function ConfirmRemoveModal({
         const flagFeeDelegate = await UseDeParamForExchange(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
 
         if (flagFeeDelegate === 'Y') {
-          const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
+          const caverFeeDelegate = getCaver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
           const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
           const caver = getCaver()
+          const { signTransaction } = getCaverKlay()
 
-          await caver.klay
-            .signTransaction({
+          await signTransaction({
               type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
               from: account,
               to: ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],

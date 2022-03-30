@@ -1,4 +1,3 @@
-import Caver from 'caver-js'
 import { ethers } from 'ethers'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
@@ -15,7 +14,7 @@ import useENS from './useENS'
 import { getAbiByName } from './hookHelper'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
-import { getCaver } from 'utils/caver'
+import { getCaver, getCaverKlay } from 'utils/caver'
 
 enum SwapCallbackState {
   INVALID,
@@ -204,14 +203,13 @@ export function useSwapCallback(
         const flagFeeDelegate = await UseDeParamForExchange(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
 
         if (flagFeeDelegate === 'Y') {
-          const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
+          const caverFeeDelegate = getCaver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
           const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
           const caver = getCaver()
+          const { signTransaction } = getCaverKlay()
 
-          // eslint-disable-next-line consistent-return
-          return caver.klay
-            .signTransaction({
+          return signTransaction({
               type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
               from: account,
               to: ROUTER_ADDRESS[chainId],

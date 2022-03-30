@@ -66,6 +66,8 @@ export function getContract(address: string, ABI: any, library: CaverProvider, a
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
 
+  // const { Contract } = getCaverKlay()
+  // return new Contract(ABI, address, getProviderOrSigner(library, account) as any)
   return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
 }
 
