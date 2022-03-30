@@ -193,15 +193,15 @@ export default function ConfirmAddModal({
             const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
             const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
             const caver = getCaver()
-            const { signTransaction } = getCaverKlay();
+            const { signTransaction } = getCaverKlay()
             signTransaction({
-                type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-                from: account,
-                to: ROUTER_ADDRESS[chainId],
-                gas: calculateGasMargin(estimatedGasLimit),
-                value,
-                data: iface.encodeFunctionData(methodName, [...args]),
-              })
+              type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+              from: account,
+              to: ROUTER_ADDRESS[chainId],
+              gas: calculateGasMargin(estimatedGasLimit),
+              value,
+              data: iface.encodeFunctionData(methodName, [...args]),
+            })
               .then((userSignTx) => {
                 const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
                 userSigned.feePayer = feePayerAddress

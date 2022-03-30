@@ -45,7 +45,7 @@ export const fetchUserBalances = async (account) => {
   )
 
   // BNB pools
-  const { getBalance } = getCaverKlay();
+  const { getBalance } = getCaverKlay()
   const bnbBalance = await getBalance(account)
   const bnbBalances = bnbPools.reduce(
     (acc, pool) => ({ ...acc, [pool.sousId]: new BigNumber(bnbBalance).toJSON() }),

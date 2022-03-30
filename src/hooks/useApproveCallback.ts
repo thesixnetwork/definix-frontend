@@ -111,15 +111,12 @@ export function useApproveCallback(
         const caver = getCaver()
         const { signTransaction } = getCaverKlay()
         return signTransaction({
-            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-            from: account,
-            to: token?.address,
-            gas: calculateGasMargin(estimatedGas),
-            data: iface.encodeFunctionData('approve', [
-              spender,
-              useExact ? amountToApprove.raw.toString() : MaxUint256,
-            ]),
-          })
+          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+          from: account,
+          to: token?.address,
+          gas: calculateGasMargin(estimatedGas),
+          data: iface.encodeFunctionData('approve', [spender, useExact ? amountToApprove.raw.toString() : MaxUint256]),
+        })
           .then((userSignTx) => {
             const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
             userSigned.feePayer = feePayerAddress

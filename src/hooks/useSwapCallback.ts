@@ -210,66 +210,65 @@ export function useSwapCallback(
           const { signTransaction } = getCaverKlay()
 
           return signTransaction({
-              type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-              from: account,
-              to: ROUTER_ADDRESS[chainId],
-              gas: calculateGasMargin(gasEstimate),
-              value: value && !isZero(value) ? value : null,
-              data: iface.encodeFunctionData(methodName, [...args]),
-            })
-            .then((userSignTx) => {
-              // console.log('userSignTx tx = ', userSignTx)
-              const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-              // console.log('userSigned tx = ', userSigned)
-              userSigned.feePayer = feePayerAddress
-              // console.log('userSigned After add feePayer tx = ', userSigned)
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: account,
+            to: ROUTER_ADDRESS[chainId],
+            gas: calculateGasMargin(gasEstimate),
+            value: value && !isZero(value) ? value : null,
+            data: iface.encodeFunctionData(methodName, [...args]),
+          }).then((userSignTx) => {
+            // console.log('userSignTx tx = ', userSignTx)
+            const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
+            // console.log('userSigned tx = ', userSigned)
+            userSigned.feePayer = feePayerAddress
+            // console.log('userSigned After add feePayer tx = ', userSigned)
 
-              return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-                // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-                return caver.rpc.klay
-                  .sendRawTransaction(feePayerSigningResult.raw)
-                  .then((response: KlaytnTransactionResponse) => {
-                    // console.log('swap tx = ', response)
-                    const inputSymbol = trade.inputAmount.currency.symbol
-                    const outputSymbol = trade.outputAmount.currency.symbol
-                    const inputAmount = trade.inputAmount.toSignificant(3)
-                    const outputAmount = trade.outputAmount.toSignificant(3)
+            return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
+              // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+              return caver.rpc.klay
+                .sendRawTransaction(feePayerSigningResult.raw)
+                .then((response: KlaytnTransactionResponse) => {
+                  // console.log('swap tx = ', response)
+                  const inputSymbol = trade.inputAmount.currency.symbol
+                  const outputSymbol = trade.outputAmount.currency.symbol
+                  const inputAmount = trade.inputAmount.toSignificant(3)
+                  const outputAmount = trade.outputAmount.toSignificant(3)
 
-                    const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
-                    const withRecipient =
-                      recipient === account
-                        ? base
-                        : `${base} to ${
-                            recipientAddressOrName && isAddress(recipientAddressOrName)
-                              ? shortenAddress(recipientAddressOrName)
-                              : recipientAddressOrName
-                          }`
+                  const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
+                  const withRecipient =
+                    recipient === account
+                      ? base
+                      : `${base} to ${
+                          recipientAddressOrName && isAddress(recipientAddressOrName)
+                            ? shortenAddress(recipientAddressOrName)
+                            : recipientAddressOrName
+                        }`
 
-                    addTransaction(response, {
-                      type: 'swap',
-                      data: {
-                        firstToken: inputSymbol,
-                        firstTokenAmount: inputAmount,
-                        secondToken: outputSymbol,
-                        secondTokenAmount: outputAmount,
-                      },
-                      summary: withRecipient,
-                    })
-
-                    return response.transactionHash
+                  addTransaction(response, {
+                    type: 'swap',
+                    data: {
+                      firstToken: inputSymbol,
+                      firstTokenAmount: inputAmount,
+                      secondToken: outputSymbol,
+                      secondTokenAmount: outputAmount,
+                    },
+                    summary: withRecipient,
                   })
-                  .catch((error: any) => {
-                    // if the user rejected the tx, pass this along
-                    if (error?.code === 4001) {
-                      throw new Error('Transaction rejected.')
-                    } else {
-                      // otherwise, the error was unexpected and we need to convey that
-                      console.error(`Swap failed`, error, methodName, args, value)
-                      throw new Error(`Swap failed: ${error.message}`)
-                    }
-                  })
-              })
+
+                  return response.transactionHash
+                })
+                .catch((error: any) => {
+                  // if the user rejected the tx, pass this along
+                  if (error?.code === 4001) {
+                    throw new Error('Transaction rejected.')
+                  } else {
+                    // otherwise, the error was unexpected and we need to convey that
+                    console.error(`Swap failed`, error, methodName, args, value)
+                    throw new Error(`Swap failed: ${error.message}`)
+                  }
+                })
             })
+          })
         }
 
         // eslint-disable-next-line consistent-return

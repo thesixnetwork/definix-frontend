@@ -27,12 +27,12 @@ export const approve = async (lpContract, herodotusContract, account) => {
 
   if (flagFeeDelegate === 'Y') {
     return signTransaction({
-        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-        from: account,
-        to: lpContract._address,
-        gas: estimatedGas,
-        data: lpContract.methods.approve(herodotusContract.options.address, ethers.constants.MaxUint256).encodeABI(),
-      })
+      type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+      from: account,
+      to: lpContract._address,
+      gas: estimatedGas,
+      data: lpContract.methods.approve(herodotusContract.options.address, ethers.constants.MaxUint256).encodeABI(),
+    })
       .then((userSignTx) => {
         const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
         userSigned.feePayer = feePayerAddress
@@ -67,14 +67,14 @@ export const stake = async (herodotusContract, pid, amount, account) => {
 
     if (flagFeeDelegate === 'Y') {
       return signTransaction({
-          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-          from: account,
-          to: getHerodotusAddress(),
-          gas: estimatedGas,
-          data: herodotusContract.methods
-            .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-            .encodeABI(),
-        })
+        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+        from: account,
+        to: getHerodotusAddress(),
+        gas: estimatedGas,
+        data: herodotusContract.methods
+          .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+          .encodeABI(),
+      })
         .then((userSignTx) => {
           const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
           userSigned.feePayer = feePayerAddress
@@ -110,14 +110,14 @@ export const stake = async (herodotusContract, pid, amount, account) => {
 
   if (flagFeeDelegate === 'Y') {
     return signTransaction({
-        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-        from: account,
-        to: getHerodotusAddress(),
-        gas: estimatedGas,
-        data: herodotusContract.methods
-          .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-          .encodeABI(),
-      })
+      type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+      from: account,
+      to: getHerodotusAddress(),
+      gas: estimatedGas,
+      data: herodotusContract.methods
+        .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+        .encodeABI(),
+    })
       .then((userSignTx) => {
         const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
         userSigned.feePayer = feePayerAddress
@@ -197,14 +197,14 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
     )
     if (flagFeeDelegate === 'Y') {
       return signTransaction({
-          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-          from: account,
-          to: getHerodotusAddress(),
-          gas: estimatedGas,
-          data: herodotusContract.methods
-            .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-            .encodeABI(),
-        })
+        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+        from: account,
+        to: getHerodotusAddress(),
+        gas: estimatedGas,
+        data: herodotusContract.methods
+          .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+          .encodeABI(),
+      })
         .then((userSignTx) => {
           const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
           userSigned.feePayer = feePayerAddress
@@ -239,14 +239,14 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
   )
   if (flagFeeDelegate === 'Y') {
     return signTransaction({
-        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-        from: account,
-        to: getHerodotusAddress(),
-        gas: estimatedGas,
-        data: herodotusContract.methods
-          .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-          .encodeABI(),
-      })
+      type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+      from: account,
+      to: getHerodotusAddress(),
+      gas: estimatedGas,
+      data: herodotusContract.methods
+        .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+        .encodeABI(),
+    })
       .then((userSignTx) => {
         const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
         userSigned.feePayer = feePayerAddress
@@ -335,12 +335,12 @@ export const harvest = async (herodotusContract, pid, account) => {
     const estimatedGas = await getEstimateGas(herodotusContract.methods.leaveStaking, account, '0')
     if (flagFeeDelegate === 'Y') {
       return signTransaction({
-          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-          from: account,
-          to: getHerodotusAddress(),
-          gas: estimatedGas,
-          data: herodotusContract.methods.leaveStaking('0').encodeABI(),
-        })
+        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+        from: account,
+        to: getHerodotusAddress(),
+        gas: estimatedGas,
+        data: herodotusContract.methods.leaveStaking('0').encodeABI(),
+      })
         .then((userSignTx) => {
           const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
           userSigned.feePayer = feePayerAddress
@@ -373,12 +373,12 @@ export const harvest = async (herodotusContract, pid, account) => {
   const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit, account, pid, '0')
   if (flagFeeDelegate === 'Y') {
     return signTransaction({
-        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-        from: account,
-        to: getHerodotusAddress(),
-        gas: estimatedGas,
-        data: herodotusContract.methods.deposit(pid, '0').encodeABI(),
-      })
+      type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+      from: account,
+      to: getHerodotusAddress(),
+      gas: estimatedGas,
+      data: herodotusContract.methods.deposit(pid, '0').encodeABI(),
+    })
       .then((userSignTx) => {
         const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
         userSigned.feePayer = feePayerAddress

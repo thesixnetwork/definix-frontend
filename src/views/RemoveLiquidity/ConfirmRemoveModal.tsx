@@ -247,12 +247,12 @@ export default function ConfirmRemoveModal({
           const { signTransaction } = getCaverKlay()
 
           await signTransaction({
-              type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-              from: account,
-              to: ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
-              gas: safeGasEstimate,
-              data: iface.encodeFunctionData(methodName, [...args]),
-            })
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: account,
+            to: ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
+            gas: safeGasEstimate,
+            data: iface.encodeFunctionData(methodName, [...args]),
+          })
             .then((userSignTx) => {
               // console.log('userSignTx tx = ', userSignTx)
               const userSigned = caver.transaction.decode(userSignTx.rawTransaction)

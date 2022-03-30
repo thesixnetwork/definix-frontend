@@ -33,7 +33,7 @@ const getCaver = (provider?: any) => {
 
 const getCaverKlay = (provider?: any) => {
   const caver = getCaver(provider)
-  return caver.klay;
+  return caver.klay
 }
 
 const getContract = (abi: any, address: string, contractOptions?: ContractOptions) => {
