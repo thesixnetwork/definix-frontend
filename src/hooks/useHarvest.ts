@@ -7,9 +7,11 @@ import { soushHarvest, soushHarvestBnb, harvest } from 'utils/callHelpers'
 import { useHerodotus, useSousChef } from './useContract'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
+import { useGasPrice } from 'state/application/hooks'
 
 export const useHarvest = (farmPid: number) => {
   const dispatch = useDispatch()
+  const gasPrice = useGasPrice()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
   const { isKlip, request } = useKlipContract()
@@ -31,7 +33,7 @@ export const useHarvest = (farmPid: number) => {
         })
       }
     } else {
-      tx = await harvest(herodotusContract, farmPid, account)
+      tx = await harvest(herodotusContract, farmPid, account, gasPrice)
     }
     dispatch(fetchFarmUserDataAsync(account))
     return tx
@@ -44,6 +46,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
   const dispatch = useDispatch()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
   const [harvestResultList, setHarvestResultList] = useState([])
 
@@ -129,7 +132,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
       farms.forEach((farm) => {
         promise.push(
           (() => {
-            return harvest(herodotusContract, farm.pid, account)
+            return harvest(herodotusContract, farm.pid, account, gasPrice)
               .then(() =>
                 setHarvestResultList([
                   {
@@ -168,6 +171,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
 export const useSousHarvest = (sousId, isUsingKlay = false) => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
+  const gasPrice = useGasPrice()
   const sousChefContract = useSousChef(sousId)
   const herodotusContract = useHerodotus()
   const { isKlip, request } = useKlipContract()
@@ -195,13 +199,13 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
 
     let tx = null
     if (sousId === 0) {
-      tx = await harvest(herodotusContract, 0, account)
+      tx = await harvest(herodotusContract, 0, account, gasPrice)
     } else if (sousId === 1) {
-      tx = await harvest(herodotusContract, 1, account)
+      tx = await harvest(herodotusContract, 1, account, gasPrice)
     } else if (isUsingKlay) {
-      tx = await soushHarvestBnb(sousChefContract, account)
+      tx = await soushHarvestBnb(sousChefContract, account, gasPrice)
     } else {
-      tx = await soushHarvest(sousChefContract, account)
+      tx = await soushHarvest(sousChefContract, account, gasPrice)
     }
     dispatch(updateUserPendingReward(sousId, account))
     dispatch(updateUserBalance(sousId, account))

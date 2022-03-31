@@ -9,10 +9,12 @@ import { getAbiHerodotusByName } from 'hooks/hookHelper'
 import { useHerodotus, useSousChef } from './useContract'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
+import { useGasPrice } from 'state/application/hooks'
 
 const useStake = (pid: number) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const herodotusContract = useHerodotus()
   const { isKlip, request } = useKlipContract()
 
@@ -38,7 +40,7 @@ const useStake = (pid: number) => {
           console.warn('useStake/handleStake] tx failed')
         }
       } else {
-        tx = await stake(herodotusContract, pid, amount, account)
+        tx = await stake(herodotusContract, pid, amount, account, gasPrice)
       }
       dispatch(fetchFarmUserDataAsync(account))
       console.info(tx)
@@ -53,6 +55,7 @@ const useStake = (pid: number) => {
 export const useSousStake = (sousId, isUsingBnb = false) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
   const { isKlip, request } = useKlipContract()
@@ -80,13 +83,13 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
         }
       } else {
         if (sousId === 0) {
-          tx = await stake(herodotusContract, 0, amount, account)
+          tx = await stake(herodotusContract, 0, amount, account, gasPrice)
         } else if (sousId === 1) {
-          tx = await stake(herodotusContract, 1, amount, account)
+          tx = await stake(herodotusContract, 1, amount, account, gasPrice)
         } else if (isUsingBnb) {
-          tx = await sousStakeBnb(sousChefContract, amount, account)
+          tx = await sousStakeBnb(sousChefContract, amount, account, gasPrice)
         } else {
-          tx = await sousStake(sousChefContract, amount, account)
+          tx = await sousStake(sousChefContract, amount, account, gasPrice)
         }
       }
       dispatch(updateUserStakedBalance(sousId, account))

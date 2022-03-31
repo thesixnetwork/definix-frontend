@@ -28,7 +28,8 @@ import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import CardHeading from './CardHeading'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import InlineAssetRatioLabel from './InlineAssetRatioLabel'
-import { getEstimateGas } from 'utils/callHelpers'
+import { handleContractExecute } from 'utils/callHelpers'
+import { useGasPrice } from 'state/application/hooks'
 
 const WithdrawCalculateModal = ({
   setTx,
@@ -51,6 +52,7 @@ const WithdrawCalculateModal = ({
   const isMobile = !isXl && !isXxl
   const { isKlip, request } = useKlipContract()
   const { account, klaytn } = useWallet()
+  const gasPrice = useGasPrice()
   const [isWithdrawing, setIsWithdrawing] = useState(false)
 
   const handleLocalStorage = async (tx) => {
@@ -104,17 +106,9 @@ const WithdrawCalculateModal = ({
         setTx(tx)
         handleLocalStorage(tx)
       } else {
-        const estimatedGas = await getEstimateGas(
-          rebalanceContract.methods.removeFund,
-          account,
-          lpAmount,
-          toAllAssets,
-          outputRatios,
-          outputUSDRatio,
-        )
-        const tx = await rebalanceContract.methods
-          .removeFund(lpAmount, toAllAssets, outputRatios, outputUSDRatio)
-          .send({ from: account, gas: estimatedGas })
+        const tx = await handleContractExecute(rebalanceContract.methods.removeFund(lpAmount, toAllAssets, outputRatios, outputUSDRatio), {
+          account, gasPrice
+        })
         setTx(tx)
         handleLocalStorage(tx)
       }

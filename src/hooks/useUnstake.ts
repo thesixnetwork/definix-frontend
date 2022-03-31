@@ -12,10 +12,12 @@ import { unstake, sousUnstake, sousEmegencyUnstake } from 'utils/callHelpers'
 import { useHerodotus, useSousChef } from './useContract'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
+import { useGasPrice } from 'state/application/hooks'
 
 const useUnstake = (pid: number) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const herodotusContract = useHerodotus()
   const { isKlip, request } = useKlipContract()
 
@@ -41,7 +43,7 @@ const useUnstake = (pid: number) => {
           console.warn('useUnstake/handleUnstake] tx failed')
         }
       } else {
-        tx = await unstake(herodotusContract, pid, amount, account)
+        tx = await unstake(herodotusContract, pid, amount, account, gasPrice)
       }
       dispatch(fetchFarmUserDataAsync(account))
       console.info(tx)
@@ -58,6 +60,7 @@ const SYRUPIDS = []
 export const useSousUnstake = (sousId) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
   const isOldSyrup = SYRUPIDS.includes(sousId)
@@ -87,13 +90,13 @@ export const useSousUnstake = (sousId) => {
         dispatch(fetchFarmUserDataAsync(account))
       } else {
         if (sousId === 0) {
-          tx = await unstake(herodotusContract, 0, amount, account)
+          tx = await unstake(herodotusContract, 0, amount, account, gasPrice)
         } else if (sousId === 1) {
-          tx = await unstake(herodotusContract, 1, amount, account)
+          tx = await unstake(herodotusContract, 1, amount, account, gasPrice)
         } else if (isOldSyrup) {
-          tx = await sousEmegencyUnstake(sousChefContract, amount, account)
+          tx = await sousEmegencyUnstake(sousChefContract, amount, account, gasPrice)
         } else {
-          tx = await sousUnstake(sousChefContract, amount, account)
+          tx = await sousUnstake(sousChefContract, amount, account, gasPrice)
         }
       }
       dispatch(updateUserStakedBalance(sousId, account))

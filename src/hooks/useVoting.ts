@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAbiIProposalFacetByName, getAbiIUsageFacetByName, getAbiIVotingFacetByName } from 'hooks/hookHelper'
@@ -15,7 +14,8 @@ import { fetchVotesByIndex, fetchVotesByIpfs, fetchAvailableVotes } from '../sta
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
-import { getEstimateGas } from 'utils/callHelpers'
+import { handleContractExecute } from 'utils/callHelpers'
+import { useGasPrice } from 'state/application/hooks'
 
 export const useAvailableVotes = () => {
   const { fastRefresh } = useRefresh()
@@ -106,6 +106,7 @@ export const usePropose = (
   voteLimit,
 ) => {
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
 
   const callPropose = async (ipfsHash) => {
@@ -118,23 +119,8 @@ export const usePropose = (
     }
 
     const callContract = getContract(IProposalFacet.abi, getVFinixVoting())
-    const estimatedGas = await getEstimateGas(
-      callContract.methods.propose,
-      account,
-      ipfsHash,
-      proposalType,
-      startTimestamp,
-      endTimestamp,
-      optionsCount,
-      minimumVotingPower,
-      voteLimit,
-    )
-    return new Promise((resolve, reject) => {
-      callContract.methods
-        .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
-        .send({ from: account, gas: estimatedGas })
-        .then(resolve)
-        .catch(reject)
+    return handleContractExecute(callContract.methods.propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit), {
+      account, gasPrice
     })
   }
 
@@ -168,6 +154,7 @@ export const useGetProposal = () => {
 // eslint-disable-next-line
 export const useApproveToService = (max) => {
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
 
   const onApprove = useCallback(async () => {
@@ -183,7 +170,9 @@ export const useApproveToService = (max) => {
     }
     const callContract = getContract(IUsageFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
-      handleContractExecute(callContract.methods.approveToService(serviceKey, max), account).then(resolve).catch(reject)
+      handleContractExecute(callContract.methods.approveToService(serviceKey, max), {
+        account, gasPrice
+      }).then(resolve).catch(reject)
     })
   }, [account, max])
 
@@ -222,17 +211,10 @@ export const useIsClaimable = async (index: number) => {
   return isClaimable
 }
 
-const handleContractExecute = (_executeFunction, _account) => {
-  return new Promise((resolve, reject) => {
-    _executeFunction.estimateGas({ from: _account }).then((estimatedGasLimit) => {
-      _executeFunction.send({ from: _account, gas: estimatedGasLimit }).then(resolve).catch(reject)
-    })
-  })
-}
-
 // Add vote
 export const useVote = () => {
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
   const [serviceKey] = useState('')
 
@@ -247,13 +229,8 @@ export const useVote = () => {
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
-    return new Promise(async (resolve, reject) => {
-      const estimatedGas = await getEstimateGas(callContract.methods.vote, account, proposalIndex, votingPowers)
-      callContract.methods
-        .vote(proposalIndex, votingPowers)
-        .send({ from: account, gas: estimatedGas })
-        .then(resolve)
-        .catch(reject)
+    return handleContractExecute(callContract.methods.vote(proposalIndex, votingPowers), {
+      account, gasPrice
     })
   }
 
@@ -263,6 +240,7 @@ export const useVote = () => {
 // Claim vote
 export const useClaimVote = () => {
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
 
   const callClaimVote = async (proposalIndex) => {
@@ -276,13 +254,8 @@ export const useClaimVote = () => {
     }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
-    return new Promise(async (resolve, reject) => {
-      const estimatedGas = await getEstimateGas(callContract.methods.recallVotesFromProposal, account, proposalIndex)
-      callContract.methods
-        .recallVotesFromProposal(proposalIndex)
-        .send({ from: account, gas: estimatedGas })
-        .then(resolve)
-        .catch(reject)
+    return handleContractExecute(callContract.methods.recallVotesFromProposal(proposalIndex), {
+      account, gasPrice
     })
   }
 

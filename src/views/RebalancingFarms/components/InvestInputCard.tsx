@@ -36,6 +36,7 @@ import CurrencyText from 'components/Text/CurrencyText'
 import CurrencyInputPanel from './CurrencyInputPanel'
 import CalculateModal from './CalculateModal'
 import CoinWrap from './CoinWrap'
+import { useGasPrice } from 'state/application/hooks'
 
 interface InvestInputCardProp {
   isMobile?: boolean
@@ -55,6 +56,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
   const [, setTx] = useState({})
   const dispatch = useDispatch()
   const { account, klaytn } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
   const { toastSuccess, toastError } = useToast()
   const balances = useBalances(account)
@@ -183,7 +185,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
           input: [getAddress(mRebalance.address), MAX_UINT_256_KLIP],
         })
       } else {
-        await approveOther(tokenContract, getAddress(mRebalance.address), account)
+        await approveOther(tokenContract, getAddress(mRebalance.address), account, gasPrice)
       }
       const assets = mRebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))

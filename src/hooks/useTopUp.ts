@@ -9,6 +9,8 @@ import { getContract } from '../utils/caver'
 import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
+import { handleContractExecute } from 'utils/callHelpers'
+import { useGasPrice } from 'state/application/hooks'
 
 const useTopUp = () => {
   const [balance] = useState(new BigNumber(0))
@@ -20,6 +22,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
 
   const stake = useCallback(async () => {
@@ -39,26 +42,20 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
       } else {
         await new Promise((resolve, reject) => {
           const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
-          callContract.methods
-            .lockPlus(level, idLastMaxLv, lockFinix)
-            .estimateGas({ from: account })
-            .then((estimatedGasLimit) => {
-              callContract.methods
-                .lockPlus(level, idLastMaxLv, lockFinix)
-                .send({ from: account, gas: estimatedGasLimit })
-                .then(() => {
-                  setLoading('success')
-                  setStatus(true)
-                  resolve(true)
-                  setInterval(() => setLoading(''), 3000)
-                  setInterval(() => setStatus(false), 3000)
-                })
-                .catch(() => {
-                  setLoading('')
-                  setStatus(false)
-                  reject(false)
-                })
-            })
+          handleContractExecute(callContract.methods.lockPlus(level, idLastMaxLv, lockFinix), {
+            account, gasPrice
+          }).then(() => {
+            setLoading('success')
+            setStatus(true)
+            resolve(true)
+            setInterval(() => setLoading(''), 3000)
+            setInterval(() => setStatus(false), 3000)
+          })
+          .catch(() => {
+            setLoading('')
+            setStatus(false)
+            reject(false)
+          })
         })
       }
     } else {

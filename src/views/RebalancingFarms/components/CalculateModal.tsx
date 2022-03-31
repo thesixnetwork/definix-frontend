@@ -31,6 +31,8 @@ import { fetchRebalances } from '../../../state/rebalance'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import CardHeading from './CardHeading'
 import VerticalAssetRatio from './VerticalAssetRatio'
+import { handleContractExecute } from 'utils/callHelpers'
+import { useGasPrice } from 'state/application/hooks'
 
 const CalculateModal = ({
   setTx,
@@ -52,6 +54,7 @@ const CalculateModal = ({
   // const slippage = useSlippage()
   const { isKlip, request } = useKlipContract()
   const { account, klaytn } = useWallet()
+  const gasPrice = useGasPrice()
   const dispatch = useDispatch()
   // const balances = useBalances(account)
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
@@ -123,10 +126,10 @@ const CalculateModal = ({
         //   0,
         // )
         // console.log(await rebalanceContract.methods.addFund(arrayTokenAmount, usdTokenAmount, 0).estimateGas({ from: account }))
-        const tx = await rebalanceContract.methods
-          // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
-          .addFund(arrayTokenAmount, usdTokenAmount, 0)
-          .send({ from: account, gas: 50000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
+        const tx = await handleContractExecute(rebalanceContract.methods.addFund(arrayTokenAmount, usdTokenAmount, 0), {
+          account, gasPrice,
+          ...(containMainCoin ? { value: mainCoinValue } : {})
+        })
         setTx(tx)
         handleLocalStorage(tx)
       }

@@ -39,6 +39,10 @@ export default function Updater(): null {
       .then(blockNumberCallback)
       .catch((error) => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
+    library.getGasPrice().then((res) => {
+      dispatch(updateGasPrice({ gasPrice: res.toString() }))
+    }).catch((error) => console.error(`Failed to get gasPrice`, error))
+
     library.on('block', blockNumberCallback)
     return () => {
       library.removeListener('block', blockNumberCallback)
@@ -50,7 +54,6 @@ export default function Updater(): null {
   useEffect(() => {
     if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return
     dispatch(updateBlockNumber({ chainId: debouncedState.chainId, blockNumber: debouncedState.blockNumber }))
-    // dispatch(updateGasPrice({ gasPrice: debouncedState.blockNumber }))
   }, [windowVisible, dispatch, debouncedState.blockNumber, debouncedState.chainId])
 
   return null

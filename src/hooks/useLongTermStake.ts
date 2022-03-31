@@ -30,9 +30,10 @@ import useRefresh from './useRefresh'
 import { State } from '../state/types'
 import { useHerodotus } from './useContract'
 import useWallet from './useWallet'
-import { getEstimateGas } from 'utils/callHelpers'
+import { handleContractExecute } from 'utils/callHelpers'
 import useKlipModal from './useKlipModal'
 import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
+import { useGasPrice } from 'state/application/hooks'
 
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -224,16 +225,9 @@ export const useLockTopup = () => {
   return topUp
 }
 
-const handleContractExecute = (_executeFunction, _account) => {
-  return new Promise((resolve, reject) => {
-    _executeFunction.estimateGas({ from: _account }).then((estimatedGasLimit) => {
-      _executeFunction.send({ from: _account, gas: estimatedGasLimit }).then(resolve).catch(reject)
-    })
-  })
-}
-
 export const useUnLock = () => {
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
 
   const onUnLock = async (id) => {
@@ -249,7 +243,9 @@ export const useUnLock = () => {
     }
     const callContract = getContract(VaultFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
-      handleContractExecute(callContract.methods.unlock(id), account).then(resolve).catch(reject)
+      handleContractExecute(callContract.methods.unlock(id), {
+        account, gasPrice
+      }).then(resolve).catch(reject)
     })
   }
 
@@ -260,6 +256,7 @@ export const useLock = (level, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
 
   const stake = useCallback(async () => {
@@ -279,9 +276,11 @@ export const useLock = (level, lockFinix) => {
           setTimeout(() => setStatus(false), 5000)
         } else {
           const callContract = getContract(VaultFacet.abi, getVFinix())
-          const estimatedGasLimit = await callContract.methods.lock(level, lockFinix).estimateGas({ from: account })
 
-          await callContract.methods.lock(level, lockFinix).send({ from: account, gas: estimatedGasLimit })
+          await handleContractExecute(callContract.methods.lock(level, lockFinix), {
+            account,
+            gasPrice
+          })
 
           setLoading('success')
           setStatus(true)
@@ -305,6 +304,7 @@ export const useLock = (level, lockFinix) => {
 
 export const useHarvest = () => {
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
 
   const handleHarvest = useCallback(async () => {
@@ -320,7 +320,9 @@ export const useHarvest = () => {
     }
     const callContract = getContract(RewardFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
-      handleContractExecute(callContract.methods.harvest(account), account).then(resolve).catch(reject)
+      handleContractExecute(callContract.methods.harvest(account), {
+        account, gasPrice
+      }).then(resolve).catch(reject)
     })
   }, [account])
 
@@ -329,6 +331,7 @@ export const useHarvest = () => {
 
 export const useApprove = (max) => {
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
   const { isKlip, request } = useKlipContract()
 
@@ -345,7 +348,9 @@ export const useApprove = (max) => {
     }
     const callContract = getContract(IKIP7.abi, getFinixAddress())
     return new Promise((resolve, reject) => {
-      handleContractExecute(callContract.methods.approve(getVFinix(), max), account).then(resolve).catch(reject)
+      handleContractExecute(callContract.methods.approve(getVFinix(), max), {
+        account, gasPrice
+      }).then(resolve).catch(reject)
     })
   }, [account, max, onPresentKlipModal, onDismissKlipModal])
 
@@ -557,6 +562,7 @@ export const useUnstakeId = () => {
 
 export const useClaim = () => {
   const { account } = useWallet()
+  const gasPrice = useGasPrice()
   const { isKlip, request } = useKlipContract()
 
   const handleClaim = async (id) => {
@@ -572,7 +578,9 @@ export const useClaim = () => {
     }
     const callContract = getContract(VaultPenaltyFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
-      handleContractExecute(callContract.methods.claimWithPenalty(id), account).then(resolve).catch(reject)
+      handleContractExecute(callContract.methods.claimWithPenalty(id), {
+        account, gasPrice
+      }).then(resolve).catch(reject)
     })
   }
 
@@ -583,6 +591,7 @@ export const useClaim = () => {
 export const useSousHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
+  const gasPrice = useGasPrice()
   const herodotusContract = useHerodotus()
   const [onPresentKlipModal, onDismissKlipModal] = useKlipModal()
   const { isKlip, request } = useKlipContract()
@@ -606,23 +615,13 @@ export const useSousHarvest = () => {
         dispatch(fetchFarmUserDataAsync(account))
       }
       if (sousId === 0) {
-        return new Promise(async (resolve, reject) => {
-          const estimatedGas = await getEstimateGas(herodotusContract.methods.leaveStaking, account, '0')
-          herodotusContract.methods
-            .leaveStaking('0')
-            .send({ from: account, gas: estimatedGas })
-            .then(resolve)
-            .catch(reject)
+        return handleContractExecute(herodotusContract.methods.leaveStaking('0'), {
+          account, gasPrice
         })
       }
       if (sousId === 1) {
-        return new Promise(async (resolve, reject) => {
-          const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit, account, sousId, '0')
-          herodotusContract.methods
-            .deposit(sousId, '0')
-            .send({ from: account, gas: estimatedGas })
-            .then(resolve)
-            .catch(reject)
+        return handleContractExecute(herodotusContract.methods.deposit(sousId, '0'), {
+          account, gasPrice
         })
       }
 
@@ -640,6 +639,7 @@ export const useSousHarvest = () => {
 export const useSuperHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
+  const gasPrice = useGasPrice()
   const herodotusContract = useHerodotus()
 
   const { isKlip, request } = useKlipContract()
@@ -668,13 +668,8 @@ export const useSuperHarvest = () => {
 
       dispatch(fetchFarmUserDataAsync(account))
 
-      return new Promise(async (resolve, reject) => {
-        const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit, account, farmPid, '0')
-        herodotusContract.methods
-          .deposit(farmPid, '0')
-          .send({ from: account, gas: estimatedGas })
-          .then(resolve)
-          .catch(reject)
+      return handleContractExecute(herodotusContract.methods.deposit(farmPid, '0'), {
+        account, gasPrice
       })
     },
     [account, dispatch, herodotusContract, onPresentKlipModal, onDismissKlipModal, connector],
