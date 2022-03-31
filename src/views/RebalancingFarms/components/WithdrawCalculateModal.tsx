@@ -106,9 +106,13 @@ const WithdrawCalculateModal = ({
         setTx(tx)
         handleLocalStorage(tx)
       } else {
-        const tx = await handleContractExecute(rebalanceContract.methods.removeFund(lpAmount, toAllAssets, outputRatios, outputUSDRatio), {
-          account, gasPrice
-        })
+        const tx = await handleContractExecute(
+          rebalanceContract.methods.removeFund(lpAmount, toAllAssets, outputRatios, outputUSDRatio),
+          {
+            account,
+            gasPrice,
+          },
+        )
         setTx(tx)
         handleLocalStorage(tx)
       }

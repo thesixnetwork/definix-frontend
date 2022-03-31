@@ -43,19 +43,21 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
         await new Promise((resolve, reject) => {
           const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
           handleContractExecute(callContract.methods.lockPlus(level, idLastMaxLv, lockFinix), {
-            account, gasPrice
-          }).then(() => {
-            setLoading('success')
-            setStatus(true)
-            resolve(true)
-            setInterval(() => setLoading(''), 3000)
-            setInterval(() => setStatus(false), 3000)
+            account,
+            gasPrice,
           })
-          .catch(() => {
-            setLoading('')
-            setStatus(false)
-            reject(false)
-          })
+            .then(() => {
+              setLoading('success')
+              setStatus(true)
+              resolve(true)
+              setInterval(() => setLoading(''), 3000)
+              setInterval(() => setStatus(false), 3000)
+            })
+            .catch(() => {
+              setLoading('')
+              setStatus(false)
+              reject(false)
+            })
         })
       }
     } else {

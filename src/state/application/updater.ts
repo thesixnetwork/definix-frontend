@@ -39,9 +39,12 @@ export default function Updater(): null {
       .then(blockNumberCallback)
       .catch((error) => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
-    library.getGasPrice().then((res) => {
-      dispatch(updateGasPrice({ gasPrice: res.toString() }))
-    }).catch((error) => console.error(`Failed to get gasPrice`, error))
+    library
+      .getGasPrice()
+      .then((res) => {
+        dispatch(updateGasPrice({ gasPrice: res.toString() }))
+      })
+      .catch((error) => console.error(`Failed to get gasPrice`, error))
 
     library.on('block', blockNumberCallback)
     return () => {

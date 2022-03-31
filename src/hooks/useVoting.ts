@@ -119,9 +119,21 @@ export const usePropose = (
     }
 
     const callContract = getContract(IProposalFacet.abi, getVFinixVoting())
-    return handleContractExecute(callContract.methods.propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit), {
-      account, gasPrice
-    })
+    return handleContractExecute(
+      callContract.methods.propose(
+        ipfsHash,
+        proposalType,
+        startTimestamp,
+        endTimestamp,
+        optionsCount,
+        minimumVotingPower,
+        voteLimit,
+      ),
+      {
+        account,
+        gasPrice,
+      },
+    )
   }
 
   return { onPropose: callPropose }
@@ -171,8 +183,11 @@ export const useApproveToService = (max) => {
     const callContract = getContract(IUsageFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.approveToService(serviceKey, max), {
-        account, gasPrice
-      }).then(resolve).catch(reject)
+        account,
+        gasPrice,
+      })
+        .then(resolve)
+        .catch(reject)
     })
   }, [account, max])
 
@@ -230,7 +245,8 @@ export const useVote = () => {
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
     return handleContractExecute(callContract.methods.vote(proposalIndex, votingPowers), {
-      account, gasPrice
+      account,
+      gasPrice,
     })
   }
 
@@ -255,7 +271,8 @@ export const useClaimVote = () => {
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
     return handleContractExecute(callContract.methods.recallVotesFromProposal(proposalIndex), {
-      account, gasPrice
+      account,
+      gasPrice,
     })
   }
 
