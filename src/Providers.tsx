@@ -1,5 +1,4 @@
 import { HelmetProvider } from 'react-helmet-async'
-import { BlockContextProvider } from 'contexts/BlockContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
 
@@ -24,9 +23,7 @@ const Providers: React.FC = ({ children }) => {
             <ThemeContextProvider>
               <ModalProvider>
                 <HelmetProvider>
-                  <BlockContextProvider>
-                    <RefreshContextProvider>{children}</RefreshContextProvider>
-                  </BlockContextProvider>
+                  <RefreshContextProvider>{children}</RefreshContextProvider>
                 </HelmetProvider>
               </ModalProvider>
             </ThemeContextProvider>

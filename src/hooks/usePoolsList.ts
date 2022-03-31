@@ -4,8 +4,8 @@ import { useCallback } from 'react'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { usePriceFinixUsd, usePriceKethKusdt, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
-import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useBlockNumber } from 'state/application/hooks'
 
 const usePoolsList = ({ farms, pools }) => {
   const sixPriceUSD = usePriceSixUsd()
@@ -13,7 +13,7 @@ const usePoolsList = ({ farms, pools }) => {
   const klayPriceUSD = usePriceKlayKusdt()
   const kethPriceUsd = usePriceKethKusdt()
   const ethPriceKlay = usePriceKethKlay()
-  const block = useBlock()
+  const block = useBlockNumber()
 
   const getStakingTokenFarm = useCallback(
     (pool) => {

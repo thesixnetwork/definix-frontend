@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import useDebounce from '../../hooks/useDebounce'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
-import { updateBlockNumber } from './actions'
+import { updateBlockNumber, updateGasPrice } from './actions'
 
 export default function Updater(): null {
   const { chainId, library } = useWallet()
@@ -50,6 +50,7 @@ export default function Updater(): null {
   useEffect(() => {
     if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return
     dispatch(updateBlockNumber({ chainId: debouncedState.chainId, blockNumber: debouncedState.blockNumber }))
+    // dispatch(updateGasPrice({ gasPrice: debouncedState.blockNumber }))
   }, [windowVisible, dispatch, debouncedState.blockNumber, debouncedState.chainId])
 
   return null

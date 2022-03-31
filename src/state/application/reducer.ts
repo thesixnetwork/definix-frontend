@@ -3,15 +3,15 @@ import {
   addPopup,
   PopupContent,
   removePopup,
-  toggleWalletModal,
-  toggleSettingsMenu,
   updateBlockNumber,
+  updateGasPrice,
 } from './actions'
 
 type PopupList = Array<{ key: string; show: boolean; content: PopupContent; removeAfterMs: number | null }>
 
 export interface ApplicationState {
   blockNumber: { [chainId: number]: number }
+  gasPrice: string
   popupList: PopupList
   walletModalOpen: boolean
   settingsMenuOpen: boolean
@@ -19,6 +19,7 @@ export interface ApplicationState {
 
 const initialState: ApplicationState = {
   blockNumber: {},
+  gasPrice: '',
   popupList: [],
   walletModalOpen: false,
   settingsMenuOpen: false,
@@ -34,11 +35,9 @@ export default createReducer(initialState, (builder) =>
         state.blockNumber[chainId] = Math.max(blockNumber, state.blockNumber[chainId])
       }
     })
-    .addCase(toggleWalletModal, (state) => {
-      state.walletModalOpen = !state.walletModalOpen
-    })
-    .addCase(toggleSettingsMenu, (state) => {
-      state.settingsMenuOpen = !state.settingsMenuOpen
+    .addCase(updateGasPrice, (state, action) => {
+      const { gasPrice } = action.payload
+      state.gasPrice = gasPrice
     })
     .addCase(addPopup, (state, { payload: { content, key, removeAfterMs = 15000 } }) => {
       state.popupList = (key ? state.popupList.filter((popup) => popup.key !== key) : state.popupList).concat([

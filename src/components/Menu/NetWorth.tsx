@@ -6,7 +6,6 @@ import { compact, get } from 'lodash-es'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { getAddress } from 'utils/addressHelpers'
-import useBlock from 'hooks/useBlock'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import {
@@ -29,6 +28,7 @@ import {
 import { getBalanceNumber } from 'utils/formatBalance'
 import useWallet from 'hooks/useWallet'
 import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+import { useBlockNumber } from 'state/application/hooks'
 
 const NetWorth = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -99,7 +99,7 @@ const NetWorth = () => {
   const sixPriceUSD = usePriceSixUsd()
   const klayPriceUSD = usePriceKlayKusdt()
   const ethPriceKlay = usePriceKethKlay()
-  const block = useBlock()
+  const block = useBlockNumber()
 
   const priceToKlay = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceKLAYTN = new BigNumber(tokenPrice)

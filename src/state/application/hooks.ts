@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { addPopup, PopupContent, removePopup, toggleWalletModal, toggleSettingsMenu } from './actions'
+import { addPopup, PopupContent, removePopup } from './actions'
 import { AppState } from '../index'
 import useWallet from 'hooks/useWallet'
 
@@ -8,24 +8,6 @@ export function useBlockNumber(): number | undefined {
   const { chainId } = useWallet()
 
   return useSelector((state: AppState) => state.application.blockNumber[chainId ?? -1])
-}
-
-export function useWalletModalOpen(): boolean {
-  return useSelector((state: AppState) => state.application.walletModalOpen)
-}
-
-export function useWalletModalToggle(): () => void {
-  const dispatch = useDispatch()
-  return useCallback(() => dispatch(toggleWalletModal()), [dispatch])
-}
-
-export function useSettingsMenuOpen(): boolean {
-  return useSelector((state: AppState) => state.application.settingsMenuOpen)
-}
-
-export function useToggleSettingsMenu(): () => void {
-  const dispatch = useDispatch()
-  return useCallback(() => dispatch(toggleSettingsMenu()), [dispatch])
 }
 
 // returns a function that allows adding a popup
