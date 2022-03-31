@@ -19,7 +19,6 @@ export const network = new NetworkConnector({
 
 let networkLibrary: CaverProvider | undefined
 export function getNetworkLibrary(): CaverProvider {
-  // eslint-disable-next-line no-return-assign
   return (networkLibrary = networkLibrary ?? new CaverProvider(network.provider as any))
 }
 

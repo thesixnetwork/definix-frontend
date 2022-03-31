@@ -16,6 +16,9 @@ const web3HttpProvider = new Web3.providers.HttpProvider(process.env.REACT_APP_B
  */
 let caverInstance
 const getCaver = (provider?: any) => {
+  if ((window as any).ethereum) {
+    return new Web3((window as any).ethereum)
+  }
   if (provider) {
     return new Caver(provider)
   }
@@ -40,12 +43,12 @@ const getCaverInstance = () => {
 
 const getCaverKlay = (provider?: any) => {
   const caver = getCaver(provider)
-  return caver.klay
+  return caver.eth ? caver.eth : caver.klay
 }
 
 const getContract = (abi: any, address: string, contractOptions?: ContractOptions) => {
-  const caver = getCaver()
-  return new caver.klay.Contract(abi as unknown as AbiItem, address, contractOptions)
+  const { Contract } = getCaverKlay()
+  return new Contract(abi as unknown as AbiItem, address, contractOptions)
 }
 
 /**
