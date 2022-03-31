@@ -27,8 +27,15 @@ const getCaver = (provider?: any) => {
     }
     return caverInstance
   }
-  // const caver = window.caver || new Caver(httpProvider)
-  // return caver
+}
+/**
+ * only caver
+ */
+const getCaverInstance = () => {
+  if (!caverInstance) {
+    caverInstance = new Caver(httpProvider)
+  }
+  return caverInstance
 }
 
 const getCaverKlay = (provider?: any) => {
@@ -53,4 +60,4 @@ const getWeb3Contract = (abi: any, address: string, contractOptions?: ContractOp
   return new web3.eth.Contract(abi as unknown as AbiItem, address, contractOptions)
 }
 
-export { getWeb3Contract, getWeb3, getCaver, getContract, getCaverKlay, httpProvider }
+export { getWeb3Contract, getWeb3, getCaver, getContract, getCaverKlay, getCaverInstance, httpProvider }

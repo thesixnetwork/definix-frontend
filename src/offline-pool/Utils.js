@@ -1,10 +1,7 @@
-/* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
 import DefinixPair from './contracts/DefinixPair.json'
 import IERC20 from './contracts/IERC20.json'
-import { getCaver, getContract } from 'utils/caver'
-
-const caver = getCaver()
+import { getContract } from 'utils/caver'
 
 class Utils {
   static getPairData = async (_pairAddress) => {

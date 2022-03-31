@@ -19,7 +19,7 @@ import { getApproveAbi } from './hookHelper'
 import { calculateGasMargin } from '../utils'
 import useWallet from './useWallet'
 import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
-import { getCaver, getCaverKlay } from 'utils/caver'
+import { getCaver, getCaverInstance, getCaverKlay } from 'utils/caver'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -105,7 +105,7 @@ export function useApproveCallback(
       const flagFeeDelegate = await UseDeParamForExchange(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
 
       if (flagFeeDelegate === 'Y') {
-        const caverFeeDelegate = getCaver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
+        const caverFeeDelegate = getCaverInstance()
         const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
         const caver = getCaver()

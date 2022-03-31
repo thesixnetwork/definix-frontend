@@ -1,6 +1,6 @@
 import { AbiItem } from 'web3-utils'
 import { Interface } from '@ethersproject/abi'
-import { getCaver, getContract } from 'utils/caver'
+import { getContract } from 'utils/caver'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import { getMulticallAddress } from 'utils/addressHelpers'
 
@@ -11,8 +11,6 @@ interface Call {
 }
 
 const multicall = async (abi: any[], calls: Call[]) => {
-  const caver = getCaver()
-
   const multi = getContract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const itf = new Interface(abi)
 
@@ -24,7 +22,6 @@ const multicall = async (abi: any[], calls: Call[]) => {
 }
 
 export const multicallEth = async (account: string) => {
-  const caver = getCaver()
   const multi = getContract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const response = await multi.methods.getEthBalance(account).call()
   return response
@@ -39,7 +36,6 @@ interface Call {
 }
 
 export const multicallForExchange = async (address: string, abi: any[], calls: Call[]) => {
-  const caver = await getCaver()
   const multi = getContract(MultiCallAbi as unknown as AbiItem, address)
   const itf = new Interface(abi)
 

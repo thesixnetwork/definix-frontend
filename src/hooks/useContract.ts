@@ -42,7 +42,7 @@ import HERODOTUS_ABI from 'config/constants/abis/herodotus.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from 'config/constants/multicall'
 import { getContract as getEthContract } from 'utils'
 import useWallet from './useWallet'
-import { getCaver, getCaverKlay, getContract } from 'utils/caver'
+import { getCaverKlay } from 'utils/caver'
 
 const intMainnetId = parseInt(process.env.REACT_APP_MAINNET_ID || '')
 const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
@@ -141,7 +141,6 @@ function useContractForExchange(
   return useMemo(() => {
     if (!address || !ABI || !library) return null
     try {
-      // @Todo
       return getEthContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
     } catch (error) {
       console.error('Failed to get contract', error)

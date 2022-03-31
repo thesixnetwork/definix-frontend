@@ -2,7 +2,7 @@ import { provider as ProviderType } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
 import { AbiItem } from 'web3-utils'
 import erc20 from 'config/abi/erc20.json'
-import { getCaver, getCaverKlay } from './caver'
+import { getCaverKlay } from './caver'
 // import getRPCHalper from 'utils/getRPCHalper'
 // import caver from '../klaytn/caver'
 

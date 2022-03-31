@@ -14,7 +14,7 @@ import useENS from './useENS'
 import { getAbiByName } from './hookHelper'
 import useWallet from './useWallet'
 import useKlipContract from './useKlipContract'
-import { getCaver, getCaverKlay } from 'utils/caver'
+import { getCaver, getCaverInstance, getCaverKlay } from 'utils/caver'
 
 enum SwapCallbackState {
   INVALID,
@@ -203,7 +203,7 @@ export function useSwapCallback(
         const flagFeeDelegate = await UseDeParamForExchange(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
 
         if (flagFeeDelegate === 'Y') {
-          const caverFeeDelegate = getCaver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
+          const caverFeeDelegate = getCaverInstance()
           const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
           const caver = getCaver()

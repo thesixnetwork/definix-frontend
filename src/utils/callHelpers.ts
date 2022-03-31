@@ -2,9 +2,9 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { getHerodotusAddress } from 'utils/addressHelpers'
 import UseDeParam from 'hooks/useDeParam'
-import { getCaver, getCaverKlay } from './caver'
+import { getCaver, getCaverInstance, getCaverKlay } from './caver'
 
-const caverFeeDelegate = getCaver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
+const caverFeeDelegate = getCaverInstance()
 const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
 const caver = getCaver()
