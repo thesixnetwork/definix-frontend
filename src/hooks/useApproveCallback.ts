@@ -100,47 +100,6 @@ export function useApproveCallback(
         return tokenContract.estimateGas.approve(spender, amountToApprove.raw.toString())
       })
 
-      const iface = new ethers.utils.Interface(ERC20_ABI)
-
-      const flagFeeDelegate = await UseDeParamForExchange(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
-
-      if (flagFeeDelegate === 'Y') {
-        const caverFeeDelegate = getCaverInstance()
-        const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
-
-        const caver = getCaver()
-        const { signTransaction } = getCaverKlay()
-        return signTransaction({
-          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-          from: account,
-          to: token?.address,
-          gas: calculateGasMargin(estimatedGas),
-          data: iface.encodeFunctionData('approve', [spender, useExact ? amountToApprove.raw.toString() : MaxUint256]),
-        })
-          .then((userSignTx) => {
-            const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-            userSigned.feePayer = feePayerAddress
-
-            return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-              return caver.rpc.klay
-                .sendRawTransaction(feePayerSigningResult.raw)
-                .then((tx: KlaytnTransactionResponse) => {
-                  addTransaction(tx, {
-                    summary: `Approve ${amountToApprove.currency.symbol}`,
-                    approval: { tokenAddress: token.address, spender },
-                  })
-                })
-                .catch((error: Error) => {
-                  console.error('Failed to approve token', error)
-                })
-            })
-          })
-          .catch((tx) => {
-            return tx.transactionHash
-          })
-      }
-
-      // eslint-disable-next-line consistent-return
       return tokenContract
         .approve(spender, useExact ? amountToApprove.raw.toString() : MaxUint256, {
           gasLimit: calculateGasMargin(estimatedGas),

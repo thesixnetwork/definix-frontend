@@ -235,96 +235,33 @@ export default function ConfirmRemoveModal({
           } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
         })
       } else {
-        const iface = new ethers.utils.Interface(IUniswapV2Router02ABI)
+        await router[methodName](...args, {
+          gasLimit: safeGasEstimate,
+        })
+          .then((response: KlaytnTransactionResponse) => {
+            setAttemptingTxn(false)
 
-        const flagFeeDelegate = await UseDeParamForExchange(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
+            addTransaction(response, {
+              type: 'removeLiquidity',
+              data: {
+                firstToken: currencyA?.symbol,
+                firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
+                secondToken: currencyB?.symbol,
+                secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
+              },
+              summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
+                currencyA?.symbol
+              } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
+            })
 
-        if (flagFeeDelegate === 'Y') {
-          const caverFeeDelegate = getCaverInstance()
-          const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
-
-          const caver = getCaver()
-          const { signTransaction } = getCaverKlay()
-
-          await signTransaction({
-            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-            from: account,
-            to: ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
-            gas: safeGasEstimate,
-            data: iface.encodeFunctionData(methodName, [...args]),
+            setTxHash(response.hash)
           })
-            .then((userSignTx) => {
-              // console.log('userSignTx tx = ', userSignTx)
-              const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-              // console.log('userSigned tx = ', userSigned)
-              userSigned.feePayer = feePayerAddress
-              // console.log('userSigned After add feePayer tx = ', userSigned)
-
-              caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-                // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-                caver.rpc.klay
-                  .sendRawTransaction(feePayerSigningResult.raw)
-                  .then((response: KlaytnTransactionResponse) => {
-                    setAttemptingTxn(false)
-
-                    addTransaction(response, {
-                      type: 'removeLiquidity',
-                      data: {
-                        firstToken: currencyA?.symbol,
-                        firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
-                        secondToken: currencyB?.symbol,
-                        secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
-                      },
-                      summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-                        currencyA?.symbol
-                      } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
-                    })
-
-                    setTxHash(response.transactionHash)
-                  })
-                  .catch((e) => {
-                    setAttemptingTxn(false)
-                    setErrorMsg(e.message)
-                    // we only care if the error is something _other_ than the user rejected the tx
-                    console.error(e)
-                  })
-              })
-            })
-            .catch((e) => {
-              setAttemptingTxn(false)
-              setErrorMsg(e.message)
-              // we only care if the error is something _other_ than the user rejected the tx
-              console.error(e)
-            })
-        } else {
-          await router[methodName](...args, {
-            gasLimit: safeGasEstimate,
+          .catch((e: Error) => {
+            setAttemptingTxn(false)
+            setErrorMsg(e.message)
+            // we only care if the error is something _other_ than the user rejected the tx
+            console.error(e)
           })
-            .then((response: KlaytnTransactionResponse) => {
-              setAttemptingTxn(false)
-
-              addTransaction(response, {
-                type: 'removeLiquidity',
-                data: {
-                  firstToken: currencyA?.symbol,
-                  firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
-                  secondToken: currencyB?.symbol,
-                  secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
-                },
-                summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-                  currencyA?.symbol
-                } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
-              })
-
-              setTxHash(response.hash)
-            })
-            .catch((e: Error) => {
-              setAttemptingTxn(false)
-              setErrorMsg(e.message)
-              // we only care if the error is something _other_ than the user rejected the tx
-              console.error(e)
-            })
-        }
       }
     }
   }, [

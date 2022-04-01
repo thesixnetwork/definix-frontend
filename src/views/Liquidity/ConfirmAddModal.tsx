@@ -182,99 +182,38 @@ export default function ConfirmAddModal({
         ]?.toSignificant(3)} ${currencyB?.symbol}`,
       })
     } else {
-      const iface = new ethers.utils.Interface(IUniswapV2Router02ABI)
-      const flagFeeDelegate = await UseDeParamForExchange(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
       const flagDefinixAnalaytics = await UseDeParamForExchange(chainId, 'GA_TP', 'N')
 
       await estimate(...args, value ? { value } : {})
         .then((estimatedGasLimit) => {
-          if (flagFeeDelegate === 'Y') {
-            const caverFeeDelegate = getCaverInstance()
-            const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
-            const caver = getCaver()
-            const { signTransaction } = getCaverKlay()
-            signTransaction({
-              type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-              from: account,
-              to: ROUTER_ADDRESS[chainId],
-              gas: calculateGasMargin(estimatedGasLimit),
-              value,
-              data: iface.encodeFunctionData(methodName, [...args]),
+          method(...args, {
+            ...(value ? { value } : {}),
+            gasLimit: calculateGasMargin(estimatedGasLimit),
+          })
+            .then((response) => {
+              if (flagDefinixAnalaytics === 'Y') {
+                sendDefinixAnalytics()
+              }
+              setAttemptingTxn(false)
+              addTransaction(response, {
+                type: 'addLiquidity',
+                data: {
+                  firstToken: currencies[Field.CURRENCY_A]?.symbol,
+                  firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
+                  secondToken: currencies[Field.CURRENCY_B]?.symbol,
+                  secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
+                },
+                summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
+                  currencies[Field.CURRENCY_A]?.symbol
+                } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
+              })
+              setTxHash(response.hash)
             })
-              .then((userSignTx) => {
-                const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-                userSigned.feePayer = feePayerAddress
-                caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-                  if (flagDefinixAnalaytics === 'Y') {
-                    sendDefinixAnalytics()
-                  }
-                  caver.rpc.klay
-                    .sendRawTransaction(feePayerSigningResult.raw)
-                    .then((response: KlaytnTransactionResponse) => {
-                      setAttemptingTxn(false)
-                      setTxHash(response.transactionHash)
-                      addTransaction(response, {
-                        type: 'addLiquidity',
-                        data: {
-                          firstToken: currencies[Field.CURRENCY_A]?.symbol,
-                          firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
-                          secondToken: currencies[Field.CURRENCY_B]?.symbol,
-                          secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
-                        },
-                        summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-                          currencies[Field.CURRENCY_A]?.symbol
-                        } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${
-                          currencies[Field.CURRENCY_B]?.symbol
-                        }`,
-                      })
-                    })
-                    .catch((e) => {
-                      setAttemptingTxn(false)
-                      if (e?.code !== 4001) {
-                        console.error(e)
-                        setErrorMsg(e)
-                      }
-                    })
-                })
-              })
-              .catch((e) => {
-                setAttemptingTxn(false)
-                alert(`err ${e}`)
-                if (e?.code !== 4001) {
-                  console.error(e)
-                  setErrorMsg(e)
-                }
-              })
-          } else {
-            method(...args, {
-              ...(value ? { value } : {}),
-              gasLimit: calculateGasMargin(estimatedGasLimit),
+            .catch((e) => {
+              setAttemptingTxn(false)
+              setErrorMsg(e)
+              console.error(e)
             })
-              .then((response) => {
-                if (flagDefinixAnalaytics === 'Y') {
-                  sendDefinixAnalytics()
-                }
-                setAttemptingTxn(false)
-                addTransaction(response, {
-                  type: 'addLiquidity',
-                  data: {
-                    firstToken: currencies[Field.CURRENCY_A]?.symbol,
-                    firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
-                    secondToken: currencies[Field.CURRENCY_B]?.symbol,
-                    secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
-                  },
-                  summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-                    currencies[Field.CURRENCY_A]?.symbol
-                  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
-                })
-                setTxHash(response.hash)
-              })
-              .catch((e) => {
-                setAttemptingTxn(false)
-                setErrorMsg(e)
-                console.error(e)
-              })
-          }
         })
         .catch((e) => {
           setAttemptingTxn(false)
