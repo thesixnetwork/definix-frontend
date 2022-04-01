@@ -7,28 +7,19 @@ import { Provider } from 'react-redux'
 import store from 'state'
 import { ModalProvider } from '@fingerlabs/definixswap-uikit-v2'
 
-import { createCaverJsReactRoot, CaverJsReactProvider } from '@sixnetwork/caverjs-react-core'
-import { NetworkContextName } from './config/constants'
-import getLibrary from './utils/getLibrary'
 import { WalletContextProvider } from 'contexts/WalletContext'
-
-const Web3ProviderNetwork = createCaverJsReactRoot(NetworkContextName)
 
 const Providers: React.FC = ({ children }) => {
   return (
     <Provider store={store}>
       <WalletContextProvider>
-        <Web3ProviderNetwork getLibrary={getLibrary}>
-          <CaverJsReactProvider getLibrary={getLibrary}>
-            <ThemeContextProvider>
-              <ModalProvider>
-                <HelmetProvider>
-                  <RefreshContextProvider>{children}</RefreshContextProvider>
-                </HelmetProvider>
-              </ModalProvider>
-            </ThemeContextProvider>
-          </CaverJsReactProvider>
-        </Web3ProviderNetwork>
+        <ThemeContextProvider>
+          <ModalProvider>
+            <HelmetProvider>
+              <RefreshContextProvider>{children}</RefreshContextProvider>
+            </HelmetProvider>
+          </ModalProvider>
+        </ThemeContextProvider>
       </WalletContextProvider>
     </Provider>
   )
