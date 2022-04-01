@@ -16,9 +16,9 @@ const web3HttpProvider = new Web3.providers.HttpProvider(process.env.REACT_APP_B
  */
 let caverInstance
 const getCaver = (provider?: any) => {
-  if ((window as any).ethereum) {
-    return new Web3((window as any).ethereum)
-  }
+  // if ((window as any).ethereum) {
+  //   return new Web3((window as any).ethereum)
+  // }
   if (provider) {
     return new Caver(provider)
   }

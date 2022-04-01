@@ -118,14 +118,6 @@ const CalculateModal = ({
         setTx(tx)
         handleLocalStorage(tx)
       } else {
-        // const estimatedGas = await getEstimateGas(
-        //   rebalanceContract.methods.addFund,
-        //   account,
-        //   arrayTokenAmount,
-        //   usdTokenAmount,
-        //   0,
-        // )
-        // console.log(await rebalanceContract.methods.addFund(arrayTokenAmount, usdTokenAmount, 0).estimateGas({ from: account }))
         const tx = await handleContractExecute(rebalanceContract.methods.addFund(arrayTokenAmount, usdTokenAmount, 0), {
           account,
           gasPrice,

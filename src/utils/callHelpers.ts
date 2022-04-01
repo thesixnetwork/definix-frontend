@@ -34,22 +34,19 @@ export const handleContractExecute = (
   })
 }
 
-export const getEstimateGas = async (executeFunction, account, ...args) => {
-  const estimateGas = await executeFunction(...args).estimateGas({ from: account })
-  return estimateGas * 2
+export const getEstimateGas = async (executeFunction, account) => {
+  return await executeFunction.estimateGas({ from: account })
 }
 
 export const approve = async (lpContract, herodotusContract, account, gasPrice) => {
   const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
-  const estimatedGas = await getEstimateGas(
-    lpContract.methods.approve,
-    account,
-    herodotusContract.options.address,
-    ethers.constants.MaxUint256,
-  )
-
+  
   if (flagFeeDelegate === 'Y') {
+    const estimatedGas = await getEstimateGas(
+      lpContract.methods.approve(herodotusContract.options.address, ethers.constants.MaxUint256),
+      account
+    )
     return signTransaction({
       type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
       from: account,
@@ -91,9 +88,8 @@ export const stake = async (herodotusContract, pid, amount, account, gasPrice) =
 
   if (pid === 0) {
     const estimatedGas = await getEstimateGas(
-      herodotusContract.methods.enterStaking,
+      herodotusContract.methods.enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()),
       account,
-      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
     )
 
     if (flagFeeDelegate === 'Y') {
@@ -137,10 +133,8 @@ export const stake = async (herodotusContract, pid, amount, account, gasPrice) =
   }
 
   const estimatedGas = await getEstimateGas(
-    herodotusContract.methods.deposit,
+    herodotusContract.methods.deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),),
     account,
-    pid,
-    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
   )
 
   if (flagFeeDelegate === 'Y') {
@@ -220,9 +214,8 @@ export const unstake = async (herodotusContract, pid, amount, account, gasPrice)
 
   if (pid === 0) {
     const estimatedGas = await getEstimateGas(
-      herodotusContract.methods.leaveStaking,
+      herodotusContract.methods.leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()),
       account,
-      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
     )
     if (flagFeeDelegate === 'Y') {
       return signTransaction({
@@ -265,10 +258,8 @@ export const unstake = async (herodotusContract, pid, amount, account, gasPrice)
   }
 
   const estimatedGas = await getEstimateGas(
-    herodotusContract.methods.withdraw,
+    herodotusContract.methods.withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),),
     account,
-    pid,
-    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
   )
   if (flagFeeDelegate === 'Y') {
     return signTransaction({
@@ -371,7 +362,7 @@ export const harvest = async (herodotusContract, pid, account, gasPrice) => {
   const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
   if (pid === 0) {
-    const estimatedGas = await getEstimateGas(herodotusContract.methods.leaveStaking, account, '0')
+    const estimatedGas = await getEstimateGas(herodotusContract.methods.leaveStaking('0'), account)
     if (flagFeeDelegate === 'Y') {
       return signTransaction({
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
@@ -407,7 +398,7 @@ export const harvest = async (herodotusContract, pid, account, gasPrice) => {
       })
   }
 
-  const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit, account, pid, '0')
+  const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit(pid, '0'), account)
   if (flagFeeDelegate === 'Y') {
     return signTransaction({
       type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
