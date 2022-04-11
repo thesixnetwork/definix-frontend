@@ -231,10 +231,6 @@ export const usePropose = (
       )
         .then(resolve)
         .catch(reject)
-      // callContract.methods
-      //   .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
-      //   .estimateGas({ from: account })
-      //   .then((estimatedGasLimit) => {
       //     callContract.methods
       //       .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
       //       .send({ from: account, gas: estimatedGasLimit })
@@ -372,11 +368,12 @@ export const useVote = () => {
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
     return new Promise((resolve, reject) => {
-      callContract.methods
-        .vote(proposalIndex, votingPowers)
-        .send({ from: account, gas: 150000000 })
-        .then(resolve)
-        .catch(reject)
+      handleContractExecute(callContract.methods.vote(proposalIndex, votingPowers), account).then(resolve).catch(reject)
+      // callContract.methods
+      //   .vote(proposalIndex, votingPowers)
+      //   .send({ from: account, gas: 150000000 })
+      //   .then(resolve)
+      //   .catch(reject)
     })
   }
 
@@ -405,11 +402,14 @@ export const useClaimVote = () => {
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
     return new Promise((resolve, reject) => {
-      callContract.methods
-        .recallVotesFromProposal(proposalIndex)
-        .send({ from: account, gas: 150000000 })
+      handleContractExecute(callContract.mathods.recallVotesFromProposal(proposalIndex), account)
         .then(resolve)
         .catch(reject)
+      // callContract.methods
+      //   .recallVotesFromProposal(proposalIndex)
+      //   .send({ from: account, gas: 150000000 })
+      //   .then(resolve)
+      //   .catch(reject)
     })
   }
 
