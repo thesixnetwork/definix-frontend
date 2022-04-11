@@ -217,11 +217,17 @@ export const usePropose = (
 
     const callContract = getContract(IProposalFacet.abi, getVFinixVoting())
     return new Promise((resolve, reject) => {
-      callContract.methods
-        .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
-        .send({ from: account, gas: 150000000 })
-        .then(resolve)
-        .catch(reject)
+      handleContractExecute(callContract.methods.propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit), account).then(resolve).catch(reject)
+      // callContract.methods
+      //   .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
+      //   .estimateGas({ from: account })
+      //   .then((estimatedGasLimit) => {
+      //     callContract.methods
+      //       .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
+      //       .send({ from: account, gas: estimatedGasLimit })
+      //       .then(resolve)
+      //       .catch(reject)
+      //   })
     })
   }
 
