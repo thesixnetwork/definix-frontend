@@ -626,13 +626,13 @@ export const useSousHarvest = () => {
       }
       if (sousId === 0) {
         return new Promise((resolve, reject) => {
-          herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
+          herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 9000000 }).then(resolve).catch(reject)
         })
       } else if (sousId === 1) {
         return new Promise((resolve, reject) => {
           herodotusContract.methods
             .deposit(sousId, '0')
-            .send({ from: account, gas: 400000 })
+            .send({ from: account, gas: 12000000 })
             .then(resolve)
             .catch(reject)
         })
@@ -687,7 +687,11 @@ export const useSuperHarvest = () => {
       dispatch(fetchFarmUserDataAsync(account))
 
       return new Promise((resolve, reject) => {
-        herodotusContract.methods.deposit(farmPid, '0').send({ from: account, gas: 400000 }).then(resolve).catch(reject)
+        herodotusContract.methods
+          .deposit(farmPid, '0')
+          .send({ from: account, gas: 12000000 })
+          .then(resolve)
+          .catch(reject)
       })
     },
     [account, dispatch, herodotusContract, setShowModal, connector],
