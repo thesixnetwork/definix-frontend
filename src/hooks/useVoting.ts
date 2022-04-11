@@ -217,7 +217,20 @@ export const usePropose = (
 
     const callContract = getContract(IProposalFacet.abi, getVFinixVoting())
     return new Promise((resolve, reject) => {
-      handleContractExecute(callContract.methods.propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit), account).then(resolve).catch(reject)
+      handleContractExecute(
+        callContract.methods.propose(
+          ipfsHash,
+          proposalType,
+          startTimestamp,
+          endTimestamp,
+          optionsCount,
+          minimumVotingPower,
+          voteLimit,
+        ),
+        account,
+      )
+        .then(resolve)
+        .catch(reject)
       // callContract.methods
       //   .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
       //   .estimateGas({ from: account })
