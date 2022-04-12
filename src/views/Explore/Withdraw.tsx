@@ -190,20 +190,20 @@ const CardInput = ({
       } else {
         // estimate gas for withdraw
         const estimateGas = await rebalanceContract.methods
-            .removeFund(
-              thisInput.times(new BigNumber(10).pow(18)).toJSON(),
-              ratioType === 'all',
-              ((rebalance || {}).tokens || []).map((token, index) => {
-                const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
-                return selectedToken[tokenAddress]
-                  ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
-                  : 0
-              }),
-              selectedToken[typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)]
-                ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
-                : 0,
-            )
-            .estimateGas({ from: account })
+          .removeFund(
+            thisInput.times(new BigNumber(10).pow(18)).toJSON(),
+            ratioType === 'all',
+            ((rebalance || {}).tokens || []).map((token, index) => {
+              const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
+              return selectedToken[tokenAddress]
+                ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
+                : 0
+            }),
+            selectedToken[typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)]
+              ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
+              : 0,
+          )
+          .estimateGas({ from: account })
 
         const tx = await rebalanceContract.methods
           .removeFund(

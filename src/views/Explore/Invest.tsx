@@ -345,9 +345,9 @@ const CardCalculate = ({
       } else {
         // estimate gas for invest
         const estimateGas = await rebalanceContract.methods
-            .addFund(arrayTokenAmount, usdTokenAmount, 0)
-            .estimateGas({ from: account })
-           
+          .addFund(arrayTokenAmount, usdTokenAmount, 0)
+          .estimateGas({ from: account })
+
         const tx = await rebalanceContract.methods
           // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
           .addFund(arrayTokenAmount, usdTokenAmount, 0)
