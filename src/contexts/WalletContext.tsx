@@ -98,7 +98,7 @@ const WalletContextProvider = ({ children }) => {
     }, 100)
   }, [wallet.current])
 
-  const library = useMemo(() => getLibrary(window.caver ? window.klaytn : getCaver().currentProvider), [])
+  const library = getLibrary(window.caver ? window.klaytn : getCaver().currentProvider)
   const klaytn = useMemo(() => library?.provider || undefined, [library])
 
   const initKlip = (callback: { show: () => void; hide: () => void }) => {
