@@ -209,7 +209,6 @@ export function useSwapCallback(
 
           const caver = getCaver()
 
-          // eslint-disable-next-line consistent-return
           return caver.klay
             .signTransaction({
               type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
@@ -274,7 +273,6 @@ export function useSwapCallback(
             })
         }
 
-        // eslint-disable-next-line consistent-return
         return contract[methodName](...args, {
           gasLimit: calculateGasMargin(gasEstimate),
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
