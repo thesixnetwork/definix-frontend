@@ -27,6 +27,7 @@ const FarmList: React.FC<{
 
   const balances = useBalances(account)
   const farmsLP = useFarms()
+  console.log('farmsLP', farmsLP)
   const farmsWithApy: FarmWithStakedValue[] = useFarmsList(farmsLP)
 
   const filteredFarms = useMemo(() => {

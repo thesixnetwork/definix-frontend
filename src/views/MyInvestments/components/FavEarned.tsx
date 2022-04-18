@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { usePriceFinixUsd } from 'state/hooks'
 import EarningBoxTemplate from './EarningBoxTemplate/index'
 
-const Earned: React.FC<{
+const FavEarnd: React.FC<{
   isMobile: boolean
   isMain?: boolean
   theme?: 'white' | 'dark'
@@ -88,9 +88,9 @@ const Earned: React.FC<{
         price: earnedList.reduce((result, item) => result + item.price, 0),
       }}
       valueList={account ? earnedList : []}
-      unit="FINIX"
+      unit="FAV"
     />
   )
 }
 
-export default Earned
+export default FavEarnd

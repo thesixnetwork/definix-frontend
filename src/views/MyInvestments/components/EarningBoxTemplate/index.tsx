@@ -343,6 +343,7 @@ const EarningBoxTemplate: React.FC<{
             displayOnlyTotalPrice={displayOnlyTotalPrice}
             curTheme={curTheme}
             data={valueList}
+            unit={unit}
           />
         )}
       </SlideSection>
