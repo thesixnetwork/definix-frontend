@@ -3,9 +3,7 @@ import BigNumber from 'bignumber.js'
 import { Toast, toastTypes } from '@fingerlabs/definixswap-uikit-v2'
 import { getAddress } from 'utils/addressHelpers'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
-import useWallet from 'hooks/useWallet'
 import {
   fetchFarmUnlockDate,
   fetchFarmsPublicDataAsync,
@@ -24,10 +22,7 @@ import {
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { Balances, State, Farm, Rebalance, Pool, ProfileState, TeamsState, AchievementState } from './types'
-import { fetchProfile } from './profile'
-import { fetchTeam, fetchTeams } from './teams'
-import { fetchAchievements } from './achievements'
+import { Balances, State, Farm, Rebalance, Pool } from './types'
 
 const ZERO = new BigNumber(0)
 
@@ -252,64 +247,6 @@ export const useToast = () => {
   }, [dispatch])
 
   return helpers
-}
-
-// Profile
-
-export const useFetchProfile = () => {
-  const { account } = useWallet()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchProfile(account))
-  }, [account, dispatch])
-}
-
-export const useProfile = () => {
-  const { isInitialized, isLoading, data, hasRegistered }: ProfileState = useSelector((state: State) => state.profile)
-  return { profile: data, hasProfile: isInitialized && hasRegistered, isInitialized, isLoading }
-}
-
-// Teams
-
-export const useTeam = (id: number) => {
-  const team: Team = useSelector((state: State) => state.teams.data[id])
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchTeam(id))
-  }, [id, dispatch])
-
-  return team
-}
-
-export const useTeams = () => {
-  const { isInitialized, isLoading, data }: TeamsState = useSelector((state: State) => state.teams)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchTeams())
-  }, [dispatch])
-
-  return { teams: data, isInitialized, isLoading }
-}
-
-// Achievements
-
-export const useFetchAchievements = () => {
-  const { account } = useWallet()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchAchievements(account))
-    }
-  }, [account, dispatch])
-}
-
-export const useAchievements = () => {
-  const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)
-  return achievements
 }
 
 /**

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async'
 
 import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom'
 import { Config } from 'definixswap-sdk'
-import { useFetchProfile, useFetchPublicData, usePriceFinixUsd } from 'state/hooks'
+import { useFetchPublicData, usePriceFinixUsd } from 'state/hooks'
 import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
 
 import useWallet from 'hooks/useWallet'
@@ -47,7 +47,6 @@ const App: React.FC = () => {
   const { account } = useWallet()
 
   useFetchPublicData()
-  useFetchProfile()
 
   const finixPrice = usePriceFinixUsd()
 

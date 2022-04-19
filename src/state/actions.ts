@@ -35,5 +35,3 @@ export {
   fetchTVL,
   fetchFinixPrice,
 } from './finixPrice'
-export { profileFetchStart, profileFetchSucceeded, profileFetchFailed } from './profile'
-export { fetchStart, teamFetchSucceeded, fetchFailed, teamsFetchSucceeded } from './teams'
