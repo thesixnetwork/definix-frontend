@@ -1,6 +1,6 @@
 {
   "name": "definix-frontend",
-  "version": "2.4.1",
+  "version": "2.4.12",
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -41,7 +41,7 @@
   "dependencies": {
     "@ethersproject/abi": "^5.0.7",
     "@fingerlabs/definixswap-uikit-v2": "1.3.1",
-    "@fingerlabs/klaytn-wallets": "^0.1.1",
+    "@fingerlabs/klaytn-wallets": "^0.1.3",
     "@material-ui/core": "^4.12.1",
     "@reduxjs/toolkit": "^1.5.0",
     "@sixnetwork/caverjs-react-abstract-connector": "^1.0.4",

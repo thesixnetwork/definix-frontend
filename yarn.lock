@@ -2195,10 +2195,10 @@
     react-transition-group "^4.4.1"
     styled-system "^5.1.5"
 
-"@fingerlabs/klaytn-wallets@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@fingerlabs/klaytn-wallets/-/klaytn-wallets-0.1.1.tgz#ebfd4ebca36a594692dbfa374497ccf491add030"
-  integrity sha512-HmuGsOvUVk//s3CkH7gwdA8MlriQNTq44KD1mUdYiHC0wxpKEZ4cv7TzIzn72WrukFztML3sGO/zYoSrRV5VYQ==
+"@fingerlabs/klaytn-wallets@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@fingerlabs/klaytn-wallets/-/klaytn-wallets-0.1.3.tgz#dfc0fbdaf06c251226e0504c29dae30f0ce04a53"
+  integrity sha512-8PeAxbu88O8zvMHkQ9/qD/SEtRdzyM6U0rwToaLXEaKJ7ZnU5BdYxt5gI1uMnsib69LtGx6enafgoh60OAvg7g==
   dependencies:
     "@metamask/detect-provider" "^1.2.0"
     "@testing-library/jest-dom" "^5.16.2"

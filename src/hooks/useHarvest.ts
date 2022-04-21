@@ -122,34 +122,41 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
 
   const handleHarvest = useCallback(async () => {
     setHarvestResultList([])
-
+    const promise = []
     if (isKlip()) {
-      await harvestAllUsingKlip(farms, 0)
+      promise.push(harvestAllUsingKlip(farms, 0))
     } else {
-      await farms.map(async (farm) => {
-        await harvest(herodotusContract, farm.pid, account)
-          .then(() =>
-            setHarvestResultList([
-              {
-                symbol: farm.lpSymbol,
-                isSuccess: true,
-              },
-              ...harvestResultList,
-            ]),
-          )
-          .catch(() =>
-            setHarvestResultList([
-              {
-                symbol: farm.lpSymbol,
-                isSuccess: false,
-              },
-              ...harvestResultList,
-            ]),
-          )
+      farms.forEach((farm) => {
+        promise.push(
+          (() => {
+            return harvest(herodotusContract, farm.pid, account)
+              .then(() =>
+                setHarvestResultList([
+                  {
+                    symbol: farm.lpSymbol,
+                    isSuccess: true,
+                  },
+                  ...harvestResultList,
+                ]),
+              )
+              .catch(() =>
+                setHarvestResultList([
+                  {
+                    symbol: farm.lpSymbol,
+                    isSuccess: false,
+                  },
+                  ...harvestResultList,
+                ]),
+              )
+          })(),
+        )
       })
     }
+    const result = await Promise.all(promise)
+      .then(() => true)
+      .catch(() => false)
     dispatch(fetchFarmUserDataAsync(account))
-    return Promise.resolve()
+    return result
   }, [account, farms, connector, harvestAllUsingKlip, dispatch, herodotusContract])
 
   return {
