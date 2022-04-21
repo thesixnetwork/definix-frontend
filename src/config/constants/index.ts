@@ -85,6 +85,11 @@ export const KBNB_ADDRESS = {
   [intTestnetId]: process.env.REACT_APP_KBNB_ADDRESS_TESTNET || '',
 }
 
+export const FAVOR_ADDRESS = {
+  [intMainnetId]: process.env.REACT_APP_FAVOR_ADDRESS_MAINNET || '',
+  [intTestnetId]: process.env.REACT_APP_FAVOR_ADDRESS_TESTNET || '',
+}
+
 export const allTokenAddresses = {
   SIX: SIX_ADDRESS,
   FINIX: FINIX_ADDRESS,
@@ -96,6 +101,7 @@ export const allTokenAddresses = {
   KXRP: KXRP_ADDRESS,
   KBNB: KBNB_ADDRESS,
   KSP: KSP_ADDRESS,
+  FAVOR: FAVOR_ADDRESS
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
@@ -115,11 +121,6 @@ export const getLpNetwork = (firstToken, secondToken) => {
 export const HERODOTUS_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_HERODOTUS_MAINNET || '', // ==================
   [intTestnetId]: process.env.REACT_APP_HERODOTUS_TESTNET || '',
-}
-
-export const PANCAKE_MASTER_CHEF_ADDRESS = {
-  [intMainnetId]: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET || '', // ==================
-  [intTestnetId]: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET || '',
 }
 
 export const DAI = new Token(intMainnetId, '0xf24400CA87E2260FaA63233c2Be8e4259B214E4E', 18, 'KDAI', 'Dai Stablecoin')
@@ -153,6 +154,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intTestnetId, KWBTC_ADDRESS[intTestnetId], 18, 'KWBTC', 'KWBTC Token'),
     new Token(intTestnetId, KXRP_ADDRESS[intTestnetId], 18, 'KXRP', 'KXRP Token'),
     new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token'),
+    new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token')
   ],
   [intMainnetId]: [
     ...WETH_ONLY[intMainnetId],
@@ -169,6 +171,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intMainnetId, KETH_ADDRESS[intMainnetId], 18, 'KETH', 'KETH Token'),
     new Token(intMainnetId, KXRP_ADDRESS[intMainnetId], 18, 'KXRP', 'KXRP Token'),
     new Token(intMainnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
+    new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token')
   ],
 }
 
@@ -258,6 +261,10 @@ export const PINNED_PAIRS = {
       new Token(intTestnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
       new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
+    [
+      new Token(intTestnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+    ],
   ],
   [intTestnetId]: [
     [
@@ -323,6 +330,10 @@ export const PINNED_PAIRS = {
     [
       new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token'),
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
+    ],
+    [
+      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
   ],
 }
