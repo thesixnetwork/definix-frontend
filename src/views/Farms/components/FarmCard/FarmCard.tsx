@@ -28,7 +28,6 @@ import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
 import { FarmCardProps } from './types'
 import FarmContext from '../../FarmContext'
-import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const CardWrap = styled(Card)`

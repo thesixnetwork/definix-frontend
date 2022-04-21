@@ -5,7 +5,6 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import useConverter from 'hooks/useConverter'
 import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
-import { FarmWithStakedValue } from './types'
 import { QuoteToken } from 'config/constants/types'
 import { useTranslation } from 'react-i18next'
 
