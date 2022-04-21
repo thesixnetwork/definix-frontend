@@ -12,7 +12,14 @@ import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import { useFarms, usePriceFavorKusdt, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
+import {
+  useFarms,
+  usePriceFavorKusdt,
+  usePriceKlayKusdt,
+  usePriceKethKusdt,
+  usePriceFinixUsd,
+  usePriceSixUsd,
+} from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text, Link, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
@@ -117,9 +124,8 @@ const Farms: React.FC = () => {
         const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
 
-        
-        // DO NOT DELETE THIS CODE 
-        // DESCRIPTION THIS CODE CALCULATE BUNDLE APR 
+        // DO NOT DELETE THIS CODE
+        // DESCRIPTION THIS CODE CALCULATE BUNDLE APR
         // One day we may have a new bundle.
         // START FN CAL APR BUNDLE
 
@@ -168,7 +174,6 @@ const Farms: React.FC = () => {
           }
         }
         // END FN CAL APR BUNDLE
-        
 
         // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
 

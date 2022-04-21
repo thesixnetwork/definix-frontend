@@ -107,7 +107,9 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
           // ${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')} percent airdrop
           return reward !== 0 || allocate.toNumber() !== 0 ? (
             <AirDrop
-              logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name.toLowerCase()}.png`}
+              logo={`/images/coins/${
+                br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name.toLowerCase()
+              }.png`}
               title="AAPR"
               percent={`${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
