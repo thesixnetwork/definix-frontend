@@ -1,12 +1,9 @@
 import BigNumber from 'bignumber.js'
 import {
-  CampaignType,
   FarmConfig,
   LongTermStakeConfig,
   RebalanceConfig,
-  Nft,
   PoolConfig,
-  Team,
 } from 'config/constants/types'
 
 export type TranslatableText =
@@ -81,19 +78,6 @@ export interface Pool extends PoolConfig {
     stakedBalance: BigNumber
     pendingReward: BigNumber
   }
-}
-
-export interface Profile {
-  userId: number
-  points: number
-  teamId: number
-  nftAddress: string
-  tokenId: number
-  isActive: boolean
-  username: string
-  nft?: Nft
-  team: Team
-  hasRegistered: boolean
 }
 
 export interface Token {
@@ -213,44 +197,6 @@ export interface FinixPriceState {
   klayswapKlayPrice: number
   definixKlayPrice: number
 }
-export interface ProfileState {
-  isInitialized: boolean
-  isLoading: boolean
-  hasRegistered: boolean
-  data: Profile
-}
-
-export type TeamResponse = {
-  0: string
-  1: string
-  2: string
-  3: string
-  4: boolean
-}
-
-export type TeamsById = {
-  [key: string]: Team
-}
-
-export interface TeamsState {
-  isInitialized: boolean
-  isLoading: boolean
-  data: TeamsById
-}
-
-export interface Achievement {
-  id: string
-  type: CampaignType
-  address: string
-  title: TranslatableText
-  description?: TranslatableText
-  badge: string
-  points: number
-}
-
-export interface AchievementState {
-  data: Achievement[]
-}
 
 export interface VotingItem {
   choice_type: 'single' | 'multiple'
@@ -326,9 +272,6 @@ export interface State {
   farms: FarmsState
   toasts: ToastsState
   pools: PoolsState
-  profile: ProfileState
-  teams: TeamsState
-  achievements: AchievementState
   rebalances: RebalanceState
   wallet: WalletState
   longTerm: LongTermState

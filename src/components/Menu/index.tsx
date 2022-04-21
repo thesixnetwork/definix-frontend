@@ -18,7 +18,6 @@ const Menu: React.FC<any> = ({ finixPrice, ...props }) => {
 
   const { isDark, toggleTheme } = useTheme()
   // const finixPriceUsd = usePriceFinixUsd()
-  // const { profile } = useProfile()
   const { pathname } = useLocation()
   useEffect(() => {
     window.scrollTo(0, 0)

@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
 import { approve } from 'utils/callHelpers'
-import { useHerodotus, useFinix, useSousChef, useLottery } from './useContract'
+import { useHerodotus, useSousChef } from './useContract'
 import { getAbiERC20ByName } from './hookHelper'
 import useWallet from './useWallet'
 import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
@@ -55,24 +55,6 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
     dispatch(updateUserAllowance(sousId, account))
     return tx
   }, [account, dispatch, lpContract, sousChefContract, sousId, herodotusContract])
-
-  return { onApprove: handleApprove }
-}
-
-// Approve the lottery
-export const useLotteryApprove = () => {
-  const { account }: { account: string } = useWallet()
-  const finixContract = useFinix()
-  const lotteryContract = useLottery()
-
-  const handleApprove = useCallback(async () => {
-    try {
-      const tx = await approve(finixContract, lotteryContract, account)
-      return tx
-    } catch (e) {
-      return false
-    }
-  }, [account, finixContract, lotteryContract])
 
   return { onApprove: handleApprove }
 }

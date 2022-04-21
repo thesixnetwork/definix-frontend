@@ -7,7 +7,7 @@ import getRpcUrl from 'utils/getRpcUrl'
 
 const RPC_URL = getRpcUrl()
 const httpProvider = new Caver.providers.HttpProvider(RPC_URL)
-const web3HttpProvider = new Web3.providers.HttpProvider(process.env.REACT_APP_BSC_NODE, {
+const web3HttpProvider = new Web3.providers.HttpProvider(RPC_URL, {
   timeout: 10000,
 } as HttpProviderOptions)
 

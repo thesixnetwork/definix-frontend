@@ -16,7 +16,5 @@ export const KLAY_PER_BLOCK = new BigNumber(0.1)
 export const BLOCKS_PER_YEAR = new BigNumber(31536000)
 export const BSC_BLOCK_TIME = 3
 export const FINIX_POOL_PID = 7
-export const BASE_ADD_LIQUIDITY_URL = `${process.env.REACT_APP_SWAP_URL}/liquidity/add`
-export const BASE_ADD_SWAP_URL = `${process.env.REACT_APP_SWAP_URL}/swap`
 export const LOTTERY_MAX_NUMBER_OF_TICKETS = 50
 export const LOTTERY_TICKET_PRICE = 1

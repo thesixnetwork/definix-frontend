@@ -78,7 +78,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
 
   const addSwapUrl = useMemo(() => {
     const swapUrlPathParts = getSwapUrlPathParts({ tokenAddress: pool.stakingTokenAddress })
-    // return `${BASE_ADD_SWAP_URL}/${swapUrlPathParts}`
     return `/swap/${swapUrlPathParts}`
   }, [pool.stakingTokenAddress])
 

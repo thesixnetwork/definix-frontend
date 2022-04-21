@@ -83,6 +83,14 @@ export default {
       logoURI: '/images/coins/KSP.png',
     },
     {
+      name: 'FAVOR',
+      symbol: 'FAVOR',
+      address: process.env.REACT_APP_FAVOR_ADDRESS_TESTNET,
+      chainId: 1001,
+      decimals: 18,
+      logoURI: '/images/coins/FAVOR.png'
+    },
+    {
       name: 'FINIX',
       symbol: 'FINIX',
       address: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
@@ -153,6 +161,14 @@ export default {
       chainId: 8217,
       decimals: 18,
       logoURI: '/images/coins/KSP.png',
+    },
+    {
+      name: 'FAVOR',
+      symbol: 'FAVOR',
+      address: process.env.REACT_APP_FAVOR_ADDRESS_MAINNET,
+      chainId: 8217,
+      decimals: 18,
+      logoURI: '/images/coins/FAVOR.png'
     },
   ],
 }

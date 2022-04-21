@@ -28,6 +28,7 @@ import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
 import { FarmCardProps } from './types'
 import FarmContext from '../../FarmContext'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 const CardWrap = styled(Card)`
   margin-top: ${({ theme }) => theme.spacing.S_16}px;
@@ -73,7 +74,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   const { convertToPriceFromToken } = useConverter()
   const lpTokenName = useMemo(() => farm.lpSymbols.map((lpSymbol) => lpSymbol.symbol).join('-'), [farm.lpSymbols])
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
-  const { earnings, stakedBalance, allowance } = useFarmUser(pid)
+  const { earnings, stakedBalance, allowance, pendingRewards } = useFarmUser(pid)
   const lpContract = useMemo(() => getContract(klaytn as provider, getAddress(lpAddresses)), [klaytn, lpAddresses])
 
   const addLiquidityUrl = useMemo(() => {
@@ -82,7 +83,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
       quoteTokenSymbol: farm.quoteTokenSymbol,
       tokenAddresses: farm.tokenAddresses,
     })
-    // return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
     return `/liquidity/add/${liquidityUrlPathParts}`
   }, [farm.quoteTokenAdresses, farm.quoteTokenSymbol, farm.tokenAddresses])
   /**
@@ -104,6 +104,16 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
       .times(new BigNumber(2))
     return convertToPriceFromToken(stakedTotalInQuoteToken, farm.quoteTokenSymbol)
   }, [farm, stakedBalance, convertToPriceFromToken])
+
+  const bundleRewards = useMemo(() => {
+    return farm.bundleRewards.map((bundle, bundleId) => {
+      const pendingReward = pendingRewards.find((pr) => pr.bundleId === bundleId) || {}
+      return {
+        ...bundle,
+        reward: (getBalanceNumber(pendingReward.reward) || '')
+      }
+    })
+  }, [farm.bundleRewards, pendingRewards])
 
   /**
    * Card Ribbon
@@ -160,8 +170,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * Earnings Section
    */
   const renderEarningsSection = useCallback(
-    () => <EarningsSection title={t('Earned')} tokenName={lpTokenName} earnings={earnings} />,
-    [t, lpTokenName, earnings],
+    () => <EarningsSection isBundle={farm.isBundle} bundleRewards={farm.bundleRewards} earnings={earnings} pendingRewards={pendingRewards} />,
+    [t, lpTokenName, earnings, farm.isBundle, farm.bundleRewards, pendingRewards],
   )
   /**
    * StakeAction Section
@@ -201,8 +211,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * HarvestAction Section
    */
   const renderHarvestAction = useCallback(
-    () => <HarvestActionAirDrop componentType={componentType} pid={pid} earnings={earnings} lpSymbol={lpTokenName} />,
-    [earnings, pid, componentType, lpTokenName],
+    () => <HarvestActionAirDrop bundleRewards={bundleRewards} componentType={componentType} pid={pid} earnings={earnings} lpSymbol={lpTokenName} />,
+    [earnings, pid, componentType, lpTokenName, bundleRewards],
   )
   /**
    * Link Section
