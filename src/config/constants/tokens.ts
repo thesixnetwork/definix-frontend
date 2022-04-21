@@ -50,6 +50,10 @@ export const KSP = {
   [intMainnetId]: process.env.REACT_APP_KSP_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_KSP_ADDRESS_TESTNET,
 }
+export const FAVOR = {
+  [intMainnetId]: process.env.REACT_APP_FAVOR_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_FAVOR_ADDRESS_TESTNET,
+}
 
 export const allTokens = {
   SIX,
@@ -62,6 +66,7 @@ export const allTokens = {
   KXRP,
   KBNB,
   KSP,
+  FAVOR,
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {

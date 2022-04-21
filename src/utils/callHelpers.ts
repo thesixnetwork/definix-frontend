@@ -292,7 +292,7 @@ export const harvest = async (herodotusContract, pid, account) => {
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: account,
           to: getHerodotusAddress(),
-          gas: 300000,
+          gas: 3000000,
           data: herodotusContract.methods.leaveStaking('0').encodeABI(),
         })
         .then((userSignTx) => {
@@ -312,7 +312,7 @@ export const harvest = async (herodotusContract, pid, account) => {
 
     return herodotusContract.methods
       .leaveStaking('0')
-      .send({ from: account, gas: 300000 })
+      .send({ from: account, gas: 3000000 })
       .then((tx) => {
         return tx.transactionHash
       })
@@ -330,7 +330,7 @@ export const harvest = async (herodotusContract, pid, account) => {
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
         from: account,
         to: getHerodotusAddress(),
-        gas: 300000,
+        gas: 3000000,
         data: herodotusContract.methods.deposit(pid, '0').encodeABI(),
       })
       .then((userSignTx) => {
@@ -352,7 +352,7 @@ export const harvest = async (herodotusContract, pid, account) => {
 
   return herodotusContract.methods
     .deposit(pid, '0')
-    .send({ from: account, gas: 400000 })
+    .send({ from: account, gas: 4000000 })
     .then((tx) => {
       return tx.transactionHash
     })

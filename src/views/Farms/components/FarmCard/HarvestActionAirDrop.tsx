@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
-// import { QuoteToken } from 'config/constants/types'
+import { QuoteToken } from 'config/constants/types'
 import AirDropHarvestModal from './AirDropHarvestModal'
 import { FarmWithStakedValue } from './types'
 
@@ -92,20 +92,24 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
           name="FINIX"
         />
         {(bundleRewards || []).map((br, bundleId) => {
-          // let apy = new BigNumber(0)
-          // if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
-          //   apy = farm.klayApy
-          // }
+          let apy = new BigNumber(0)
+          if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
+            apy = farm.klayApy
+          }
+          if (br.rewardTokenInfo.name === QuoteToken.FAVOR || br.rewardTokenInfo.name === QuoteToken.FAVOR) {
+            apy = farm.favorApy
+          }
 
           const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
           // const allocate = br.rewardPerBlock || new BigNumber(0)
           const allocate = new BigNumber(0)
 
+          // ${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')} percent airdrop
           return reward !== 0 || allocate.toNumber() !== 0 ? (
             <AirDrop
-              logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
+              logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name.toLowerCase()}.png`}
               title="AAPR"
-              percent="0.0%"
+              percent={`${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
               name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
             />

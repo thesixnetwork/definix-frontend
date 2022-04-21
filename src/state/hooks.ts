@@ -166,6 +166,14 @@ export const usePoolFromPid = (sousId): Pool => {
 }
 
 // Prices
+export const usePriceFavorKusdt = (): BigNumber => {
+  // const pid = 5 // KLAY-KUSDT LP
+  const pid = parseInt(process.env.REACT_APP_FAVOR_KUSDT_PID || '93') // FAVOR-KUSDT LP
+  const farm = useFarmFromPid(pid)
+  if (!farm) return ZERO
+  return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
+}
+
 export const usePriceKlayKusdt = (): BigNumber => {
   // const pid = 5 // KLAY-KUSDT LP
   const pid = parseInt(process.env.REACT_APP_KLAY_KUSDT_PID || '14') // KLAY-KUSDT LP

@@ -12,7 +12,7 @@ import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
+import { useFarms, usePriceFavorKusdt, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text, Link, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
@@ -54,6 +54,7 @@ const TutorailsLink = styled(Link)`
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
+  const favorPrice = usePriceFavorKusdt()
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
@@ -107,7 +108,8 @@ const Farms: React.FC = () => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
-        const klayApy = new BigNumber(0)
+        let klayApy = new BigNumber(0)
+        let favorApy = new BigNumber(0)
         const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
           .times(farm.BONUS_MULTIPLIER)
           .div(new BigNumber(10).pow(18))
@@ -115,7 +117,7 @@ const Farms: React.FC = () => {
         const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
 
-        /*
+        
         // DO NOT DELETE THIS CODE 
         // DESCRIPTION THIS CODE CALCULATE BUNDLE APR 
         // One day we may have a new bundle.
@@ -123,6 +125,7 @@ const Farms: React.FC = () => {
 
         if ((farm.bundleRewards || []).length > 0) {
           const klayBundle = (farm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === QuoteToken.WKLAY)
+          const favorBundle = (farm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === QuoteToken.FAVOR)
           if (klayBundle) {
             // @ts-ignore
             const klayRewardPerBlock = new BigNumber([klayBundle.rewardPerBlock]).div(new BigNumber(10).pow(18))
@@ -143,9 +146,29 @@ const Farms: React.FC = () => {
             }
             klayApy = yieldValue.div(totalValue)
           }
+          if (favorBundle) {
+            // @ts-ignore
+            const favorRewardPerBlock = new BigNumber([favorBundle.rewardPerBlock]).div(new BigNumber(10).pow(18))
+            const favorRewardPerYear = favorRewardPerBlock.times(BLOCKS_PER_YEAR)
+            const yieldValue = favorPrice.times(favorRewardPerYear)
+            let totalValue = farm.lpTotalInQuoteToken
+            if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+              totalValue = klayPrice.times(farm.lpTotalInQuoteToken)
+            }
+            if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+              totalValue = finixPrice.times(farm.lpTotalInQuoteToken)
+            }
+            if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+              totalValue = kethPriceUsd.times(farm.lpTotalInQuoteToken)
+            }
+            if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+              totalValue = sixPrice.times(farm.lpTotalInQuoteToken)
+            }
+            favorApy = yieldValue.div(totalValue)
+          }
         }
         // END FN CAL APR BUNDLE
-        */
+        
 
         // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
 
@@ -183,7 +206,7 @@ const Farms: React.FC = () => {
         const sumApy = BigNumber.sum(finixApy, klayApy)
         */
 
-        return { ...farm, apy: finixApy, finixApy, klayApy }
+        return { ...farm, apy: finixApy, finixApy, klayApy, favorApy }
       })
 
       return farmsToDisplayWithAPY.map((farm) => (
@@ -201,7 +224,7 @@ const Farms: React.FC = () => {
         />
       ))
     },
-    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, listView],
+    [sixPrice, favorPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, listView],
   )
 
   const handlePresent = useCallback((node: React.ReactNode) => {

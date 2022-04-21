@@ -1,4 +1,4 @@
-import { SIX, FINIX, WKLAY, KUSDT, KDAI, KETH, KWBTC, KXRP, KBNB, KSP, getLpNetwork } from './tokens'
+import { SIX, FINIX, WKLAY, KUSDT, KDAI, KETH, KWBTC, KXRP, KBNB, KSP, getLpNetwork, FAVOR } from './tokens'
 
 export default {
   bscFinix: {
@@ -27,6 +27,7 @@ export default {
   kbnb: KBNB,
   six: SIX,
   finix: FINIX,
+  favor: FAVOR,
   finixSixLP: getLpNetwork(FINIX, SIX),
   finixKusdtLP: getLpNetwork(FINIX, KUSDT),
   finixKlayLP: getLpNetwork(FINIX, WKLAY),

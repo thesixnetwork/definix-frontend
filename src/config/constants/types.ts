@@ -34,12 +34,14 @@ export enum QuoteToken {
   'KBNB' = 'KBNB',
   'SIX' = 'SIX',
   'FINIX' = 'FINIX',
+  'FAVOR' = 'FAVOR',
   'VFINIX' = 'VFINIX',
   'SIXFINIX' = 'FINIX-SIX',
   'FINIXKUSDT' = 'FINIX-KUSDT',
   'FINIXKLAY' = 'FINIX-KLAY',
   'SIXKUSDT' = 'SIX-KUSDT',
   'KDAIKUSDT' = 'KDAI-KUSDT',
+  'FAVORKUSDT' = 'FAVOR-KUSDT',
 }
 
 export enum PoolCategory {

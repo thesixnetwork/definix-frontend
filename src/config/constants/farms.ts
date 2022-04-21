@@ -11,6 +11,7 @@ import {
   KXRP,
   KBNB,
   KSP,
+  FAVOR,
   getLpNetwork,
   getSingleLpNetwork,
 } from './tokens'
@@ -209,6 +210,17 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.kbnb,
     secondToken: contracts.finix,
+  },
+  {
+    pid: 93,
+    lpSymbol: 'FAVOR-KUSDT LP',
+    lpAddresses: getLpNetwork(FAVOR, KUSDT),
+    tokenSymbol: 'FAVOR',
+    tokenAddresses: FAVOR,
+    quoteTokenSymbol: QuoteToken.KUSDT,
+    quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.favor,
+    secondToken: contracts.kusdt,
   },
 ]
 
