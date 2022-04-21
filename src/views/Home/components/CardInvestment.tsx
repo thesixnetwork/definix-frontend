@@ -6,6 +6,7 @@ import Earned from 'views/MyInvestments/components/Earned'
 import { useTranslation } from 'react-i18next'
 import FavEarnd from 'views/MyInvestments/components/FavEarned'
 import styled from 'styled-components'
+import { FAVOR_FARMS } from 'config/constants/farms'
 
 const WrapTabs = styled(Box)`
   width: 100%;
@@ -35,6 +36,14 @@ const CardInvestment = () => {
   }, [t])
   const [curTab, setCurTab] = useState<string>(tabs[0].id)
 
+  const favorProducts = useMemo(() => {
+    const favorPids = FAVOR_FARMS.map(({ pid }) => pid)
+    return myInvestments.filter(({ type, data }) => {
+      if (type !== 'farm') return false;
+      return !!favorPids.includes(data.pid)
+    })
+  }, [myInvestments])
+
   return (
     <Card cardBg={ColorStyles.DEEPBROWN} isOverflowHidden>
       <WrapTabs>
@@ -42,7 +51,7 @@ const CardInvestment = () => {
       </WrapTabs>
       <CardBody p="0">
         {curTab === tabs[0].id && <Earned isMain isMobile={isMobile} products={groupBy(myInvestments, 'type')} theme="dark" />}
-        {curTab === tabs[1].id && <FavEarnd isMain isMobile={isMobile} products={groupBy(myInvestments, 'type')} theme="dark" />}
+        {curTab === tabs[1].id && <FavEarnd isMain isMobile={isMobile} products={groupBy(favorProducts, 'type')} theme="dark" />}
       </CardBody>
     </Card>
   )

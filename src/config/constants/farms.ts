@@ -13,6 +13,7 @@ import {
   KSP,
   getLpNetwork,
   getSingleLpNetwork,
+  FAVOR,
 } from './tokens'
 
 const farms: FarmConfig[] = [
@@ -243,6 +244,24 @@ const farms: FarmConfig[] = [
     firstSymbol: QuoteToken.KBNB,
     secondSymbol: QuoteToken.FINIX,
   },
+  /**
+   * @favor
+   */
+  {
+    pid: 93,
+    lpSymbol: 'FAVOR-KUSDT LP',
+    lpAddresses: getLpNetwork(FAVOR, KUSDT),
+    tokenSymbol: 'FAVOR',
+    tokenAddresses: FAVOR,
+    quoteTokenSymbol: QuoteToken.KUSDT,
+    quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.favor,
+    secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.FAVOR,
+    secondSymbol: QuoteToken.KUSDT,
+  },
 ]
+
+export const FAVOR_FARMS = farms.filter(({ tokenSymbol, firstSymbol, secondSymbol }) => tokenSymbol === 'FAVOR' || firstSymbol === QuoteToken.FAVOR || secondSymbol === QuoteToken.FAVOR)
 
 export default farms

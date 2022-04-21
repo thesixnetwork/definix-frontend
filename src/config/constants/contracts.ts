@@ -1,4 +1,4 @@
-import { SIX, FINIX, WKLAY, KUSDT, KDAI, KETH, KWBTC, KXRP, KBNB, KSP, getLpNetwork } from './tokens'
+import { SIX, FINIX, WKLAY, KUSDT, KDAI, KETH, KWBTC, KXRP, KBNB, KSP, getLpNetwork, FAVOR } from './tokens'
 
 export default {
   bscFinix: {
@@ -27,6 +27,11 @@ export default {
   kbnb: KBNB,
   six: SIX,
   finix: FINIX,
+  /**
+   * @favor
+   */
+  favor: FAVOR,
+
   finixSixLP: getLpNetwork(FINIX, SIX),
   finixKusdtLP: getLpNetwork(FINIX, KUSDT),
   finixKlayLP: getLpNetwork(FINIX, WKLAY),
@@ -43,6 +48,11 @@ export default {
   kdaiKusdtLP: getLpNetwork(KDAI, KUSDT),
   kbnbKusdtLP: getLpNetwork(KBNB, KUSDT),
   kbnbFinixLP: getLpNetwork(KBNB, FINIX),
+  /**
+   * @favor
+   */
+  favorKusdtLP: getLpNetwork(FAVOR, KUSDT),
+
   definixKlayKusdtLP: getLpNetwork(WKLAY, KUSDT),
   tradingCompetRegis: {
     1001: process.env.REACT_APP_TRADING_COMPET_REGIS_TESTNET,

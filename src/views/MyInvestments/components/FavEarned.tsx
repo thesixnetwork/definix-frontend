@@ -1,8 +1,9 @@
 import BigNumber from 'bignumber.js'
+import { QuoteToken } from 'config/constants/types'
 import useWallet from 'hooks/useWallet'
 import React, { useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { usePriceFinixUsd } from 'state/hooks'
+import { usePriceFavorKusdt } from 'state/hooks'
 import EarningBoxTemplate from './EarningBoxTemplate/index'
 
 const FavEarnd: React.FC<{
@@ -13,13 +14,13 @@ const FavEarnd: React.FC<{
 }> = ({ isMobile, isMain = false, products, theme = 'white' }) => {
   const { t } = useTranslation()
   const { account } = useWallet()
-  const finixPrice = usePriceFinixUsd()
+  const favorPrice = usePriceFavorKusdt()
 
   const convertEarningsSumToPrice = useCallback(
     (value) => {
-      return new BigNumber(value).multipliedBy(finixPrice).toNumber()
+      return new BigNumber(value).multipliedBy(favorPrice).toNumber()
     },
-    [finixPrice],
+    [favorPrice],
   )
 
   const calculateEarning = useCallback((value) => {
@@ -30,28 +31,11 @@ const FavEarnd: React.FC<{
     if (!Array.isArray(products.farm)) return 0
     return products.farm
       .reduce((accum, farm) => {
-        return accum.plus(calculateEarning(farm.data.userData.earnings))
+        return accum.plus(calculateEarning(farm.data.userData?.pendingRewards[0]?.reward))
       }, new BigNumber(0))
       .toNumber()
   }, [products.farm, calculateEarning])
 
-  const poolEarningsSum = useMemo(() => {
-    if (!Array.isArray(products.pool)) return 0
-    return products.pool
-      .reduce((accum, pool) => {
-        return accum.plus(calculateEarning(pool.data.userData.pendingReward))
-      }, new BigNumber(0))
-      .toNumber()
-  }, [products.pool, calculateEarning])
-
-  const longTermStakeEarningsSum = useMemo(() => {
-    if (!Array.isArray(products.longTermStake)) return 0
-    return products.longTermStake
-      .reduce((accum, longTermStake) => {
-        return accum.plus(new BigNumber(longTermStake.data.finixEarn) || 0)
-      }, new BigNumber(0))
-      .toNumber()
-  }, [products.longTermStake])
 
   /**
    * total
@@ -63,18 +47,8 @@ const FavEarnd: React.FC<{
         value: farmEarningsSum,
         price: convertEarningsSumToPrice(farmEarningsSum),
       },
-      {
-        title: t('Pool'),
-        value: poolEarningsSum,
-        price: convertEarningsSumToPrice(poolEarningsSum),
-      },
-      {
-        title: t('Long-term Stake'),
-        value: longTermStakeEarningsSum,
-        price: convertEarningsSumToPrice(longTermStakeEarningsSum),
-      },
     ]
-  }, [t, farmEarningsSum, poolEarningsSum, longTermStakeEarningsSum, convertEarningsSumToPrice])
+  }, [t, farmEarningsSum, convertEarningsSumToPrice])
 
   return (
     <EarningBoxTemplate
@@ -88,7 +62,7 @@ const FavEarnd: React.FC<{
         price: earnedList.reduce((result, item) => result + item.price, 0),
       }}
       valueList={account ? earnedList : []}
-      unit="FAV"
+      unit={QuoteToken.FAVOR}
     />
   )
 }

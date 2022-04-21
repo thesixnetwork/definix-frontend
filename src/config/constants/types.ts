@@ -1,5 +1,3 @@
-import { TranslatableText } from 'state/types'
-
 export enum QuoteToken {
   'KLAY' = 'KLAY',
   'WKLAY' = 'WKLAY',
@@ -19,6 +17,10 @@ export enum QuoteToken {
   'SIXKUSDT' = 'SIX-KUSDT',
   'KDAIKUSDT' = 'KDAI-KUSDT',
   'KSP' = 'KSP',
+  /**
+   * @favor
+   */
+  'FAVOR' = 'FAVOR'
 }
 
 export enum PoolCategory {
