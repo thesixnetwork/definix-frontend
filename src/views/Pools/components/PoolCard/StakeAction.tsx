@@ -143,7 +143,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     <>
       <TitleSection>{t('My Staked')}</TitleSection>
       {
-        componentType === 'pool' ? renderPool : renderPoolAccordian
+        componentType !== 'pool-accordian' ? renderPool : renderPoolAccordian
       }
     </>
   )

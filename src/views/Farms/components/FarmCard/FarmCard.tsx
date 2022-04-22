@@ -253,7 +253,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
                 <Flex justifyContent="space-between">
                   <Box className="link-section">{renderLinkSection}</Box>
                   <Box className="harvest-action-section">{renderHarvestAction}</Box>
-                  <Box className="stake-action-section">{renderStakeAction('farm-accordion')}</Box>
+                  <Box className="stake-action-section">{renderStakeAction('farm-accordian')}</Box>
                 </Flex>
               </Box>
             )}
