@@ -17,6 +17,37 @@ import {
 } from './tokens'
 
 const farms: FarmConfig[] = [
+  /**
+   * @favor
+   */
+   {
+    pid: 93,
+    lpSymbol: 'FAVOR-KUSDT LP',
+    lpAddresses: getLpNetwork(FAVOR, KUSDT),
+    tokenSymbol: 'FAVOR',
+    tokenAddresses: FAVOR,
+    quoteTokenSymbol: QuoteToken.KUSDT,
+    quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.favor,
+    secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.FAVOR,
+    secondSymbol: QuoteToken.KUSDT,
+    tag: 'special',
+  },
+  {
+    pid: 94,
+    lpSymbol: 'FAVOR-KLAY LP',
+    lpAddresses: getLpNetwork(FAVOR, WKLAY),
+    tokenSymbol: 'FAVOR',
+    tokenAddresses: FAVOR,
+    quoteTokenSymbol: QuoteToken.KLAY,
+    quoteTokenAdresses: contracts.wklay,
+    firstToken: contracts.favor,
+    secondToken: contracts.wklay,
+    firstSymbol: QuoteToken.FAVOR,
+    secondSymbol: QuoteToken.KLAY,
+    tag: 'special',
+  },
   {
     pid: 0,
     lpSymbol: 'FINIX',
@@ -73,7 +104,6 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.finix,
     secondToken: contracts.ksp,
-    tag: 'hot',
   },
   {
     pid: 5,
@@ -243,22 +273,6 @@ const farms: FarmConfig[] = [
     secondToken: contracts.finix,
     firstSymbol: QuoteToken.KBNB,
     secondSymbol: QuoteToken.FINIX,
-  },
-  /**
-   * @favor
-   */
-  {
-    pid: 93,
-    lpSymbol: 'FAVOR-KUSDT LP',
-    lpAddresses: getLpNetwork(FAVOR, KUSDT),
-    tokenSymbol: 'FAVOR',
-    tokenAddresses: FAVOR,
-    quoteTokenSymbol: QuoteToken.KUSDT,
-    quoteTokenAdresses: contracts.kusdt,
-    firstToken: contracts.favor,
-    secondToken: contracts.kusdt,
-    firstSymbol: QuoteToken.FAVOR,
-    secondSymbol: QuoteToken.KUSDT,
   },
 ]
 
