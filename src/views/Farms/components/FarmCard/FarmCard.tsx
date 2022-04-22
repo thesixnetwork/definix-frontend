@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { provider } from 'web3-core'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
@@ -30,40 +30,6 @@ import { FarmCardProps } from './types'
 import FarmContext from '../../FarmContext'
 import { getBalanceNumber } from 'utils/formatBalance'
 
-const CardWrap = styled(Card)`
-  margin-top: ${({ theme }) => theme.spacing.S_16}px;
-  ${({ theme }) => theme.mediaQueries.xl} {
-    .card-heading {
-      width: 236px;
-    }
-    .total-liquidity-section {
-      width: 112px;
-    }
-    .my-balance-section {
-      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
-      width: 232px;
-    }
-    .earnings-section {
-      width: 200px;
-    }
-    .link-section {
-      width: 166px;
-    }
-    .harvest-action-section {
-      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
-      width: 358px;
-    }
-    .stake-action-section {
-      width: 276px;
-    }
-  }
-`
-const Wrap = styled(Box)<{ paddingLg: boolean }>`
-  padding: ${({ theme, paddingLg }) => (paddingLg ? theme.spacing.S_40 : theme.spacing.S_32)}px;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    padding: ${({ theme }) => theme.spacing.S_20}px;
-  }
-`
 
 const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBalancesInWallet, klaytn, account }) => {
   const { t } = useTranslation()
@@ -76,6 +42,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, stakedBalance, allowance, pendingRewards } = useFarmUser(pid)
   const lpContract = useMemo(() => getContract(klaytn as provider, getAddress(lpAddresses)), [klaytn, lpAddresses])
+  const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
 
   const addLiquidityUrl = useMemo(() => {
     const liquidityUrlPathParts = getLiquidityUrlPathParts({
@@ -129,7 +96,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   /**
    * CardHeading
    */
-  const renderCardHeading = useCallback(
+  const renderCardHeading = useMemo(
     () => (
       <CardHeading
         farm={farm}
@@ -144,7 +111,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   /**
    * IconButton
    */
-  const renderIconButton = useCallback(
+  const renderIconButton = useMemo(
     () => (
       <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
         {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
@@ -155,21 +122,21 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   /**
    * TotalLiquidity Section
    */
-  const renderTotalLiquiditySection = useCallback(
+  const renderTotalLiquiditySection = useMemo(
     () => <TotalLiquiditySection title={t('Total Liquidity')} totalLiquidity={totalLiquidity} />,
     [t, totalLiquidity],
   )
   /**
    * MyBalance Section
    */
-  const renderMyBalanceSection = useCallback(
+  const renderMyBalanceSection = useMemo(
     () => <MyBalanceSection title={t('Balance')} myBalances={myBalancesInWallet} />,
     [t, myBalancesInWallet],
   )
   /**
    * Earnings Section
    */
-  const renderEarningsSection = useCallback(
+  const renderEarningsSection = useMemo(
     () => <EarningsSection isBundle={farm.isBundle} bundleRewards={farm.bundleRewards} earnings={earnings} pendingRewards={pendingRewards} />,
     [t, lpTokenName, earnings, farm.isBundle, farm.bundleRewards, pendingRewards],
   )
@@ -187,12 +154,13 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
       addLiquidityUrl,
     }
   }, [farm, lpTokenName, myLiquidity, addLiquidityUrl])
-  const renderStakeAction = useCallback(
+  const renderStakeAction = useMemo(
     () => (
+      (type?: string) => 
       <FarmContext.Consumer>
         {({ goDeposit, goWithdraw }) => (
           <StakeAction
-            componentType={componentType}
+            componentType={type || componentType}
             hasAccount={hasAccount}
             hasUserData={hasUserData}
             hasAllowance={hasAllowance}
@@ -210,22 +178,22 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   /**
    * HarvestAction Section
    */
-  const renderHarvestAction = useCallback(
+  const renderHarvestAction = useMemo(
     () => <HarvestActionAirDrop bundleRewards={bundleRewards} componentType={componentType} pid={pid} earnings={earnings} lpSymbol={lpTokenName} />,
     [earnings, pid, componentType, lpTokenName, bundleRewards],
   )
   /**
    * Link Section
    */
-  const renderLinkSection = useCallback(() => <LinkListSection lpAddresses={lpAddresses} />, [lpAddresses])
+  const renderLinkSection = useMemo(() => <LinkListSection lpAddresses={lpAddresses} />, [lpAddresses])
 
-  if (componentType === 'myInvestment') {
+  if (isInMyInvestment) {
     return (
       <Wrap paddingLg>
         <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
-          <Flex alignItems="center">{renderCardHeading()}</Flex>
+          <Flex alignItems="center">{renderCardHeading}</Flex>
           <Box>{renderStakeAction()}</Box>
-          <Box>{renderHarvestAction()}</Box>
+          <Box>{renderHarvestAction}</Box>
         </Grid>
       </Wrap>
     )
@@ -238,19 +206,19 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
           <>
             <Wrap paddingLg={false}>
               <Flex justifyContent="space-between">
-                {renderCardHeading()}
-                {renderIconButton()}
+                {renderCardHeading}
+                {renderIconButton}
               </Flex>
-              {renderEarningsSection()}
+              {renderEarningsSection}
             </Wrap>
             {isOpenAccordion && (
               <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" pt="S_24" pb="S_28">
-                {renderHarvestAction()}
+                {renderHarvestAction}
                 <Box py="S_24">{renderStakeAction()}</Box>
                 <Divider />
-                <Box pt="S_24">{renderTotalLiquiditySection()}</Box>
-                <Box pt="S_16">{renderMyBalanceSection()}</Box>
-                <Box pt="S_28">{renderLinkSection()}</Box>
+                <Box pt="S_24">{renderTotalLiquiditySection}</Box>
+                <Box pt="S_16">{renderMyBalanceSection}</Box>
+                <Box pt="S_28">{renderLinkSection}</Box>
               </Box>
             )}
           </>
@@ -259,20 +227,20 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
             <Wrap paddingLg={false}>
               <Flex justifyContent="space-between">
                 <Flex className="card-heading" alignItems="center">
-                  {renderCardHeading()}
+                  {renderCardHeading}
                 </Flex>
-                <Box className="total-liquidity-section">{renderTotalLiquiditySection()}</Box>
-                <Box className="my-balance-section">{renderMyBalanceSection()}</Box>
-                <Box className="earnings-section">{renderEarningsSection()}</Box>
-                {renderIconButton()}
+                <Box className="total-liquidity-section">{renderTotalLiquiditySection}</Box>
+                <Box className="my-balance-section">{renderStakeAction()}</Box>
+                <Box className="earnings-section">{renderEarningsSection}</Box>
+                {renderIconButton}
               </Flex>
             </Wrap>
             {isOpenAccordion && (
               <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
                 <Flex justifyContent="space-between">
-                  <Box className="link-section">{renderLinkSection()}</Box>
-                  <Box className="harvest-action-section">{renderHarvestAction()}</Box>
-                  <Box className="stake-action-section">{renderStakeAction()}</Box>
+                  <Box className="link-section">{renderLinkSection}</Box>
+                  <Box className="harvest-action-section">{renderHarvestAction}</Box>
+                  <Box className="stake-action-section">{renderStakeAction('farm-accordion')}</Box>
                 </Flex>
               </Box>
             )}
@@ -284,3 +252,38 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
 }
 
 export default FarmCard
+
+const CardWrap = styled(Card)`
+  margin-top: ${({ theme }) => theme.spacing.S_16}px;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    .card-heading {
+      width: 236px;
+    }
+    .total-liquidity-section {
+      width: 112px;
+    }
+    .my-balance-section {
+      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      width: 232px;
+    }
+    .earnings-section {
+      width: 200px;
+    }
+    .link-section {
+      width: 166px;
+    }
+    .harvest-action-section {
+      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      width: 358px;
+    }
+    .stake-action-section {
+      width: 276px;
+    }
+  }
+`
+const Wrap = styled(Box)<{ paddingLg: boolean }>`
+  padding: ${({ theme, paddingLg }) => (paddingLg ? theme.spacing.S_40 : theme.spacing.S_32)}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: ${({ theme }) => theme.spacing.S_20}px;
+  }
+`

@@ -84,7 +84,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   /**
    * CardHeading
    */
-  const renderCardHeading = useCallback(
+  const renderCardHeading = useMemo(
     () => (
       <CardHeading
         isOldSyrup={isOldSyrup}
@@ -98,7 +98,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   /**
    * IconButton
    */
-  const renderToggleButton = useCallback(
+  const renderToggleButton = useMemo(
     () => (
       <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
         {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
@@ -109,20 +109,20 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   /**
    * TotalStaked Section
    */
-  const renderTotalStakedSection = useCallback(
+  const renderTotalStakedSection = useMemo(
     () => <TotalStakedSection title={t('Total staked')} tokenName={tokenName} totalStaked={totalStaked} />,
     [t, tokenName, totalStaked],
   )
   /**
    * MyBalance Section
    */
-  const renderMyBalanceSection = useCallback(() => {
+  const renderMyBalanceSection = useMemo(() => {
     return <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
   }, [t, tokenName, myBalanceInWallet])
   /**
    * Earnings Section
    */
-  const renderEarningsSection = useCallback(
+  const renderEarningsSection = useMemo(
     () => <EarningsSection title={t('Earned')} earnings={earnings} />,
     [t, earnings],
   )
@@ -141,8 +141,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
     }
   }, [isOldSyrup, isBnbPool, pool, addSwapUrl])
 
-  const renderStakeAction = useCallback(
-    () => (
+  const renderStakeAction = useMemo(
+    () => (type?: string) => (
       <PoolConText.Consumer>
         {({ goDeposit, goWithdraw }) => (
           <StakeAction
@@ -175,7 +175,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   /**
    * HarvestAction Section
    */
-  const renderHarvestActionAirDrop = useCallback(
+  const renderHarvestActionAirDrop = useMemo(
     () => (
       <HarvestActionAirDrop
         componentType={componentType}
@@ -193,7 +193,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   /**
    * Link Section
    */
-  const renderLinkSection = useCallback(
+  const renderLinkSection = useMemo(
     () => <LinkListSection contractAddress={pool.contractAddress} />,
     [pool.contractAddress],
   )
@@ -203,9 +203,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
       <>
         <Wrap paddingLg>
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
-            <Flex alignItems="center">{renderCardHeading()}</Flex>
+            <Flex alignItems="center">{renderCardHeading}</Flex>
             <Box>{renderStakeAction()}</Box>
-            <Box>{renderHarvestActionAirDrop()}</Box>
+            <Box>{renderHarvestActionAirDrop}</Box>
           </Grid>
         </Wrap>
       </>
@@ -218,19 +218,19 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
         <>
           <Wrap paddingLg={false}>
             <Flex justifyContent="space-between">
-              {renderCardHeading()}
-              {renderToggleButton()}
+              {renderCardHeading}
+              {renderToggleButton}
             </Flex>
-            {renderEarningsSection()}
+            {renderEarningsSection}
           </Wrap>
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" py="S_24">
-              {renderHarvestActionAirDrop()}
+              {renderHarvestActionAirDrop}
               <Box py="S_24">{renderStakeAction()}</Box>
               <Divider />
-              <Box pt="S_24">{renderTotalStakedSection()}</Box>
-              <Box pt="S_16">{renderMyBalanceSection()}</Box>
-              <Box py="S_28">{renderLinkSection()}</Box>
+              <Box pt="S_24">{renderTotalStakedSection}</Box>
+              <Box pt="S_16">{renderMyBalanceSection}</Box>
+              <Box py="S_28">{renderLinkSection}</Box>
             </Box>
           )}
         </>
@@ -239,20 +239,20 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
           <Wrap paddingLg={false}>
             <Flex justifyContent="space-between">
               <Flex className="card-heading" alignItems="center">
-                {renderCardHeading()}
+                {renderCardHeading}
               </Flex>
-              <Box className="total-staked-section">{renderTotalStakedSection()}</Box>
-              <Box className="my-balance-section">{renderMyBalanceSection()}</Box>
-              <Box className="earnings-section">{renderEarningsSection()}</Box>
-              {renderToggleButton()}
+              <Box className="total-staked-section">{renderTotalStakedSection}</Box>
+              <Box className="my-balance-section">{renderStakeAction()}</Box>
+              <Box className="earnings-section">{renderEarningsSection}</Box>
+              {renderToggleButton}
             </Flex>
           </Wrap>
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
               <Flex justifyContent="space-between">
-                <Box className="link-section">{renderLinkSection()}</Box>
-                <Box className="harvest-action-section">{renderHarvestActionAirDrop()}</Box>
-                <Box className="stake-action-section">{renderStakeAction()}</Box>
+                <Box className="link-section">{renderLinkSection}</Box>
+                <Box className="harvest-action-section">{renderHarvestActionAirDrop}</Box>
+                <Box className="stake-action-section">{renderStakeAction('pool-accordion')}</Box>
               </Flex>
             </Box>
           )}

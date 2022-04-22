@@ -64,7 +64,7 @@ const HarvestAction: React.FC<{
     }
   }, [onReward, showHarvestResult, pendingTx])
 
-  const renderHarvestButton = useCallback(
+  const renderHarvestButton = useMemo(
     () => (
       <Button
         variant={ButtonVariants.RED}
@@ -79,7 +79,7 @@ const HarvestAction: React.FC<{
     [t, finixEarningsValue, pendingTx, handleHarvest],
   )
 
-  const renderDetailButton = useCallback(
+  const renderDetailButton = useMemo(
     () => (
       <DetailButton variant={ButtonVariants.BROWN} width="100%" onClick={() => navigate.push('/farm')}>
         {t('Detail')}
@@ -89,7 +89,7 @@ const HarvestAction: React.FC<{
   )
 
   const renderEarnedPrice = useCallback((tokenName, balance, price) => {
-    return <Flex>
+    return <Flex key={tokenName}>
       <TokenLabel type="token">{tokenName}</TokenLabel>
       <TokenValueWrap>
         <BalanceText>{convertToBalanceFormat(balance)}</BalanceText>
@@ -113,14 +113,14 @@ const HarvestAction: React.FC<{
                   renderEarnedPrice(QuoteToken.FINIX, finixEarningsValue, earningsPrice)
                 }
               </Flex>
-              {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton()}</HarvestButtonSectionInFarm>}
+              {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton}</HarvestButtonSectionInFarm>}
             </HarvestInfo>
           </Box>
 
           {isInFarm ? null : (
             <HarvestButtonSectionInMyInvestment>
-              {renderHarvestButton()}
-              {renderDetailButton()}
+              {renderHarvestButton}
+              {renderDetailButton}
             </HarvestButtonSectionInMyInvestment>
           )}
         </Wrap>
