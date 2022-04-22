@@ -15,11 +15,54 @@ import {
   getSingleLpNetwork,
   FAVOR,
 } from './tokens'
+import { ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 
 const farms: FarmConfig[] = [
   /**
    * @favor
    */
+   {
+    pid: 95,
+    lpSymbol: 'FAVOR-FINIX LP',
+    lpAddresses: getLpNetwork(FAVOR, FINIX),
+    tokenSymbol: 'FAVOR',
+    tokenAddresses: FAVOR,
+    quoteTokenSymbol: QuoteToken.FINIX,
+    quoteTokenAdresses: contracts.finix,
+    firstToken: contracts.favor,
+    secondToken: contracts.finix,
+    firstSymbol: QuoteToken.FAVOR,
+    secondSymbol: QuoteToken.FINIX,
+    tag: 'special',
+  },
+  {
+    pid: 96,
+    lpSymbol: 'FAVOR-SIX LP',
+    lpAddresses: getLpNetwork(FAVOR, SIX),
+    tokenSymbol: 'FAVOR',
+    tokenAddresses: FAVOR,
+    quoteTokenSymbol: QuoteToken.SIX,
+    quoteTokenAdresses: contracts.six,
+    firstToken: contracts.favor,
+    secondToken: contracts.six,
+    firstSymbol: QuoteToken.FAVOR,
+    secondSymbol: QuoteToken.SIX,
+    tag: 'special',
+  },
+   {
+    pid: 94,
+    lpSymbol: 'FAVOR-KLAY LP',
+    lpAddresses: getLpNetwork(FAVOR, WKLAY),
+    tokenSymbol: 'FAVOR',
+    tokenAddresses: FAVOR,
+    quoteTokenSymbol: QuoteToken.KLAY,
+    quoteTokenAdresses: contracts.wklay,
+    firstToken: contracts.favor,
+    secondToken: contracts.wklay,
+    firstSymbol: QuoteToken.FAVOR,
+    secondSymbol: QuoteToken.KLAY,
+    tag: 'special',
+  },
    {
     pid: 93,
     lpSymbol: 'FAVOR-KUSDT LP',
@@ -32,20 +75,6 @@ const farms: FarmConfig[] = [
     secondToken: contracts.kusdt,
     firstSymbol: QuoteToken.FAVOR,
     secondSymbol: QuoteToken.KUSDT,
-    tag: 'special',
-  },
-  {
-    pid: 94,
-    lpSymbol: 'FAVOR-KLAY LP',
-    lpAddresses: getLpNetwork(FAVOR, WKLAY),
-    tokenSymbol: 'FAVOR',
-    tokenAddresses: FAVOR,
-    quoteTokenSymbol: QuoteToken.KLAY,
-    quoteTokenAdresses: contracts.wklay,
-    firstToken: contracts.favor,
-    secondToken: contracts.wklay,
-    firstSymbol: QuoteToken.FAVOR,
-    secondSymbol: QuoteToken.KLAY,
     tag: 'special',
   },
   {
@@ -277,5 +306,10 @@ const farms: FarmConfig[] = [
 ]
 
 export const FAVOR_FARMS = farms.filter(({ tokenSymbol, firstSymbol, secondSymbol }) => tokenSymbol === 'FAVOR' || firstSymbol === QuoteToken.FAVOR || secondSymbol === QuoteToken.FAVOR)
+
+export const TAG_COLORS = {
+  'hot': ColorStyles.RED,
+  'special': ColorStyles.YELLOW
+}
 
 export default farms

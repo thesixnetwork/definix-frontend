@@ -77,7 +77,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
   const renderFarmAccordian = useMemo(() => hasAccount ? (hasUserData && hasAllowance ? <Flex justifyContent="space-between">
     {renderBalance}
-    {componentType == 'farm-accordian' && <Box>
+    {componentType === 'farm-accordian' && <Box>
       <Button
         minWidth="40px"
         md

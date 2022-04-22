@@ -146,7 +146,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
       <PoolConText.Consumer>
         {({ goDeposit, goWithdraw }) => (
           <StakeAction
-            componentType={componentType}
+            componentType={type || componentType}
             isOldSyrup={isOldSyrup}
             isBnbPool={isBnbPool}
             hasAccount={hasAccount}
@@ -252,7 +252,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
               <Flex justifyContent="space-between">
                 <Box className="link-section">{renderLinkSection}</Box>
                 <Box className="harvest-action-section">{renderHarvestActionAirDrop}</Box>
-                <Box className="stake-action-section">{renderStakeAction('pool-accordion')}</Box>
+                <Box className="stake-action-section">{renderStakeAction('pool-accordian')}</Box>
               </Flex>
             </Box>
           )}
