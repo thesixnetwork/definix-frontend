@@ -204,18 +204,6 @@ const HarvestActionAirdrop: React.FC<{
             <HarvestInfo>
               <Box>
                 {renderAirDrop({ name: 'FINIX', value: finixEarningsValue })}
-                {/* {(farm.bundleRewards || []).map((br, bundleId) => {
-                  const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
-                  const allocate = br.rewardPerBlock || new BigNumber(0)
-                  return reward !== 0 || allocate.toNumber() !== 0 ? (
-                    <>
-                      {renderAirDrop({
-                        name: br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name,
-                        value: reward,
-                      })}
-                    </>
-                  ) : null
-                })} */}
               </Box>
               {isInPool && <HarvestButtonSectionInPool>{renderHarvestButton()}</HarvestButtonSectionInPool>}
             </HarvestInfo>
