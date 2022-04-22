@@ -130,7 +130,6 @@ export const useFarmFromSymbol = (lpSymbol: string): Farm => {
 
 export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
-
   return {
     allowance: farm.userData ? new BigNumber(farm.userData.allowance) : new BigNumber(0),
     tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : new BigNumber(0),

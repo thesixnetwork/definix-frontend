@@ -28,20 +28,20 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   const isMediumSize = useMemo(() => size === 'medium', [size])
 
-  const renderAPR = (coin: string, apy: BigNumber) => {
+  const renderAPR = useMemo(() => (coin: string, apy: BigNumber) => {
     return <Flex alignItems="flex-end">
       <APRCoin symbol={coin} size="20px" />
       <Text textStyle="R_14M" color={ColorStyles.ORANGE}>
         APR
       </Text>
-      <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
+      <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px', marginBottom: '-2px' }}>
         {convertToFarmAPRFormat(apy)}
       </Text>
       <Box style={{ marginLeft: '4px' }}>
         <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={apy} />
       </Box>
     </Flex>
-  }
+  }, [isMediumSize])
 
   return (
     <Flex position="relative">
@@ -58,10 +58,12 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         </ImageBox>
       </Flex>
 
-      <Flex flexDirection="column">
+      <Flex flexDirection={componentType === 'deposit' ? 'row' : 'column'} alignItems="center">
         <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{lpLabel}</Text>
-        {(farm.bundleRewards || []).length > 0 && renderAPR(QuoteToken.FAVOR, farm.favorApy)}
-        {renderAPR(QuoteToken.FINIX, farm.apy)}
+        <Flex flexDirection="column" ml={componentType === 'deposit' ? '50px' : ''}>
+          {(farm.bundleRewards || []).length > 0 && renderAPR(QuoteToken.FAVOR, farm.favorApy)}
+          {renderAPR(QuoteToken.FINIX, farm.apy)}
+        </Flex>
       </Flex>
     </Flex>
   )

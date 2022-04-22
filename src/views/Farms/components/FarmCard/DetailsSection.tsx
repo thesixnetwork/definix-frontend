@@ -59,7 +59,6 @@ const EarningsSection: React.FC<{
         {
           allEarnings.length > 0 && allEarnings.map(({ token, earnings }, index) => <Flex key={index} alignItems="flex-end">
             <StyledBalanceText value={earnings} />
-            {/* <BalanceText>{convertToBalanceFormat(earnings)}</BalanceText> */}
             <TokenNameText>{token || ''}</TokenNameText>
           </Flex>)
         }
@@ -116,7 +115,7 @@ const ValueWrap = styled(Box)`
 `
 const TokenNameText = styled(Text)`
   padding-left: 2px;
-  padding-bottom: 2px;
+  padding-bottom: 3px;
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_12M};
 `
