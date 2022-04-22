@@ -6,6 +6,7 @@ import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
 import { QuoteToken } from 'config/constants/types'
 import { useTranslation } from 'react-i18next'
+import BalanceText from 'components/Text/BalanceText'
 
 const TotalLiquiditySection: React.FC<{
   title: string
@@ -23,16 +24,13 @@ const MyBalanceSection: React.FC<{
   title: string
   myBalances: { [key: string]: BigNumber | null }
 }> = ({ title, myBalances }) => {
-  const { convertToBalanceFormat } = useConverter()
   return (
     <>
       <TitleSection hasMb>{title}</TitleSection>
       {Object.entries(myBalances).map(([tokenName, balanceValue], index) => (
         <Flex alignItems="center" key={index}>
           <TokenLabel type="token">{tokenName}</TokenLabel>
-          <BalanceText>
-            {!BigNumber.isBigNumber(balanceValue) ? '-' : convertToBalanceFormat(balanceValue.toNumber())}
-          </BalanceText>
+          <StyledBalanceText value={balanceValue} toFixed={0} />
         </Flex>
       ))}
     </>
@@ -47,7 +45,6 @@ const EarningsSection: React.FC<{
   }[]
 }> = ({ allEarnings }) => {
   const { t } = useTranslation()
-  const { convertToBalanceFormat } = useConverter()
       
   return (
     <Wrap>
@@ -62,7 +59,8 @@ const EarningsSection: React.FC<{
       <ValueWrap>
         {
           allEarnings.length > 0 && allEarnings.map(({ token, earnings }, index) => <Flex key={index} alignItems="flex-end">
-            <BalanceText>{convertToBalanceFormat(earnings)}</BalanceText>
+            <StyledBalanceText value={earnings} />
+            {/* <BalanceText>{convertToBalanceFormat(earnings)}</BalanceText> */}
             <TokenNameText>{token || ''}</TokenNameText>
           </Flex>)
         }
@@ -89,7 +87,7 @@ const TokenLabel = styled(Label)`
     margin-right: ${({ theme }) => theme.spacing.S_12}px;
   }
 `
-const BalanceText = styled(Text)`
+const StyledBalanceText = styled(BalanceText)`
   color: ${({ theme }) => theme.colors.black};
   ${({ theme }) => theme.textStyle.R_18M};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
