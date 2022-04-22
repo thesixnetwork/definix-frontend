@@ -1,6 +1,6 @@
 import useWallet from 'hooks/useWallet'
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
