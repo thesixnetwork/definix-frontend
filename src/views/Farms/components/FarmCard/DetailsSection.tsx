@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js'
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { getBalanceNumber } from 'utils/formatBalance'
 import useConverter from 'hooks/useConverter'
 import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
@@ -42,24 +41,13 @@ const MyBalanceSection: React.FC<{
 
 
 const EarningsSection: React.FC<{
-  pendingRewards: any[];
-  isBundle: boolean;
-  bundleRewards: any;
-  earnings: BigNumber
-}> = ({ isBundle, bundleRewards, earnings, pendingRewards }) => {
+  allEarnings: {
+    token: QuoteToken
+    earnings: number
+  }[]
+}> = ({ allEarnings }) => {
   const { t } = useTranslation()
   const { convertToBalanceFormat } = useConverter()
-
-  const earningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
-  const rewardValues = useMemo(() => {
-    if (pendingRewards.length > 0) {
-      return pendingRewards.reduce((acc, { bundleId, reward }) => {
-        acc[bundleId] = getBalanceNumber(reward)
-        return acc;
-      }, [])
-    }
-    return []
-  }, [pendingRewards])
       
   return (
     <Wrap>
@@ -67,22 +55,17 @@ const EarningsSection: React.FC<{
         <TitleSection hasMb={false}>{t('Earned')}</TitleSection>
         <Box>
           {
-            isBundle && bundleRewards.map((bundle, index) => <Coin key={index} symbol={bundle.rewardTokenInfo.name} size="20px" />)
+            allEarnings.length > 0 && allEarnings.map(({ token }, index) => <Coin key={index} symbol={token} size="20px" />)
           }
-          <Coin symbol={QuoteToken.FINIX} size="20px" />
         </Box>
       </TitleWrap>
       <ValueWrap>
         {
-          isBundle && bundleRewards.map((bundle, bundleId) => <Flex key={bundleId} alignItems="flex-end">
-            <BalanceText>{convertToBalanceFormat(rewardValues[bundleId])}</BalanceText>
-            <TokenNameText>{bundle.rewardTokenInfo.name || ''}</TokenNameText>
+          allEarnings.length > 0 && allEarnings.map(({ token, earnings }, index) => <Flex key={index} alignItems="flex-end">
+            <BalanceText>{convertToBalanceFormat(earnings)}</BalanceText>
+            <TokenNameText>{token || ''}</TokenNameText>
           </Flex>)
         }
-        <Flex alignItems="flex-end">
-          <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
-          <TokenNameText>FINIX</TokenNameText>
-        </Flex>
       </ValueWrap>
     </Wrap>
   )

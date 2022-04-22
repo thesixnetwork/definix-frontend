@@ -7,17 +7,18 @@ import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
 
 const HarvestAction: React.FC<{
   componentType: string
   pid?: number
-  earnings: BigNumber
+  allEarnings: {
+    token: QuoteToken
+    earnings: number
+  }[]
   lpSymbol: string
-  bundleRewards: any[]
-}> = ({ pid, earnings, componentType = 'farm', lpSymbol, bundleRewards }) => {
+}> = ({ pid, allEarnings, componentType = 'farm', lpSymbol }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const navigate = useHistory()
@@ -27,12 +28,9 @@ const HarvestAction: React.FC<{
   const { onReward } = useHarvest(pid)
   const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
 
-  const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
-  const favorPrice = convertToPriceFromSymbol(QuoteToken.FAVOR)
-  const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
-  const earningsPrice = useMemo(() => {
-    return new BigNumber(finixEarningsValue).multipliedBy(finixPrice).toNumber()
-  }, [finixEarningsValue, finixPrice])
+  const getPrice = useCallback((value, unitPrice) => {
+    return new BigNumber(value).multipliedBy(unitPrice).toNumber()
+  }, [])
 
   const showHarvestResult = useCallback(
     (isSuccess: boolean) => {
@@ -69,14 +67,14 @@ const HarvestAction: React.FC<{
       <Button
         variant={ButtonVariants.RED}
         width="100%"
-        disabled={finixEarningsValue === 0}
+        disabled={allEarnings.reduce((sum, { earnings }) => sum + earnings, 0) === 0}
         isLoading={pendingTx}
         onClick={handleHarvest}
       >
         {t('Harvest')}
       </Button>
     ),
-    [t, finixEarningsValue, pendingTx, handleHarvest],
+    [t, allEarnings, pendingTx, handleHarvest],
   )
 
   const renderDetailButton = useMemo(
@@ -107,10 +105,7 @@ const HarvestAction: React.FC<{
             <HarvestInfo>
               <Flex flexDirection="column">
                 {
-                  bundleRewards.length > 0 && bundleRewards.map((bundle) => renderEarnedPrice(bundle.rewardTokenInfo.name, bundle.reward, new BigNumber(bundle.reward).multipliedBy(favorPrice).toNumber()))
-                }
-                {
-                  renderEarnedPrice(QuoteToken.FINIX, finixEarningsValue, earningsPrice)
+                  allEarnings.length > 0 && allEarnings.map((item) => renderEarnedPrice(item.token, item.earnings, getPrice(item.earnings, convertToPriceFromSymbol(item.token))))
                 }
               </Flex>
               {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton}</HarvestButtonSectionInFarm>}

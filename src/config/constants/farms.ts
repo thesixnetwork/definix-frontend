@@ -15,6 +15,7 @@ import {
   getSingleLpNetwork,
   FAVOR,
 } from './tokens'
+import { ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 
 const farms: FarmConfig[] = [
   /**
@@ -277,5 +278,10 @@ const farms: FarmConfig[] = [
 ]
 
 export const FAVOR_FARMS = farms.filter(({ tokenSymbol, firstSymbol, secondSymbol }) => tokenSymbol === 'FAVOR' || firstSymbol === QuoteToken.FAVOR || secondSymbol === QuoteToken.FAVOR)
+
+export const TAG_COLORS = {
+  'hot': ColorStyles.RED,
+  'special': ColorStyles.YELLOW
+}
 
 export default farms

@@ -29,6 +29,8 @@ import LinkListSection from './LinkListSection'
 import { FarmCardProps } from './types'
 import FarmContext from '../../FarmContext'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { TAG_COLORS } from 'config/constants/farms'
+import { QuoteToken } from 'config/constants/types'
 
 
 const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBalancesInWallet, klaytn, account }) => {
@@ -72,15 +74,26 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
     return convertToPriceFromToken(stakedTotalInQuoteToken, farm.quoteTokenSymbol)
   }, [farm, stakedBalance, convertToPriceFromToken])
 
-  const bundleRewards = useMemo(() => {
-    return farm.bundleRewards.map((bundle, bundleId) => {
-      const pendingReward = pendingRewards.find((pr) => pr.bundleId === bundleId) || {}
-      return {
-        ...bundle,
-        reward: (getBalanceNumber(pendingReward.reward) || '')
-      }
+  const allEarnings = useMemo(() => {
+    const result: {
+      token: QuoteToken
+      earnings: number
+    }[] = [];
+    if (farm.bundleRewards) {
+      farm.bundleRewards.forEach((bundle, bundleId) => {
+        const pendingReward = pendingRewards.find((pr) => pr.bundleId === bundleId) || {}
+        result.push({
+          token: bundle.rewardTokenInfo.name,
+          earnings: (getBalanceNumber(pendingReward.reward) || 0)
+        })
+      })
+    }
+    result.push({
+      token: QuoteToken.FINIX,
+      earnings: getBalanceNumber(earnings),
     })
-  }, [farm.bundleRewards, pendingRewards])
+    return result
+  }, [earnings, farm.bundleRewards, pendingRewards])
 
   /**
    * Card Ribbon
@@ -88,7 +101,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   const ribbonProps = useMemo(() => {
     if (typeof farm.tag === 'string') {
       return {
-        ribbon: <CardRibbon variantColor={ColorStyles.RED} text={farm.tag} upperCase />,
+        ribbon: <CardRibbon variantColor={TAG_COLORS[farm.tag] || ColorStyles.RED} text={farm.tag} upperCase />,
       }
     }
     return null
@@ -137,8 +150,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * Earnings Section
    */
   const renderEarningsSection = useMemo(
-    () => <EarningsSection isBundle={farm.isBundle} bundleRewards={farm.bundleRewards} earnings={earnings} pendingRewards={pendingRewards} />,
-    [t, lpTokenName, earnings, farm.isBundle, farm.bundleRewards, pendingRewards],
+    () => <EarningsSection allEarnings={allEarnings} />,
+    [allEarnings],
   )
   /**
    * StakeAction Section
@@ -179,8 +192,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * HarvestAction Section
    */
   const renderHarvestAction = useMemo(
-    () => <HarvestActionAirDrop bundleRewards={bundleRewards} componentType={componentType} pid={pid} earnings={earnings} lpSymbol={lpTokenName} />,
-    [earnings, pid, componentType, lpTokenName, bundleRewards],
+    () => <HarvestActionAirDrop allEarnings={allEarnings} componentType={componentType} pid={pid} lpSymbol={lpTokenName} />,
+    [earnings, pid, componentType, lpTokenName, allEarnings],
   )
   /**
    * Link Section
