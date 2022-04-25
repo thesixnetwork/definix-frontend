@@ -2,14 +2,14 @@ import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd, usePriceFavorKusdt } from 'state/hooks'
+import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 
 export default function useConverter() {
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const kethPrice = usePriceKethKusdt()
-  const favorPrice = usePriceFavorKusdt()
+  const favorPrice = usePriceFinixUsd()
 
   const convertToPriceFromToken = (token, symbol): BigNumber => {
     const tokenSymbol = symbol.toUpperCase()

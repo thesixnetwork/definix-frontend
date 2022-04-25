@@ -196,6 +196,7 @@ export interface FinixPriceState {
   sixPrice: number
   klayswapKlayPrice: number
   definixKlayPrice: number
+  favorPrice: number
 }
 
 export interface VotingItem {

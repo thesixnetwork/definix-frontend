@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React from 'react'
 import styled from 'styled-components'
-import useConverter from 'hooks/useConverter'
 import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
 import { QuoteToken } from 'config/constants/types'
@@ -60,7 +59,6 @@ const EarningsSection: React.FC<{
         {
           allEarnings.length > 0 && allEarnings.map(({ token, earnings }, index) => <Flex key={index} alignItems="flex-end">
             <StyledBalanceText value={earnings} />
-            {/* <BalanceText>{convertToBalanceFormat(earnings)}</BalanceText> */}
             <TokenNameText>{token || ''}</TokenNameText>
           </Flex>)
         }
@@ -93,6 +91,7 @@ const StyledBalanceText = styled(BalanceText)`
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_16M};
   }
+  margin-bottom: -3px;
 `
 const TotalLiquidityText = styled(CurrencyText)`
   color: ${({ theme }) => theme.colors.black};
@@ -117,7 +116,6 @@ const ValueWrap = styled(Box)`
 `
 const TokenNameText = styled(Text)`
   padding-left: 2px;
-  padding-bottom: 2px;
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_12M};
 `

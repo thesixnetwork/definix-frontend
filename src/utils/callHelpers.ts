@@ -12,7 +12,7 @@ const caver = getCaver()
 
 export const getEstimateGas = async (method, account, ...args) => {
   const estimateGas = await method(...args).estimateGas({ from: account })
-  return estimateGas * 2
+  return estimateGas
 }
 
 export const approve = async (lpContract, herodotusContract, account) => {

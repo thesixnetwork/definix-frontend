@@ -24,6 +24,7 @@ const initialState: FinixPriceState = {
   sixPrice: 0,
   definixKlayPrice: 0,
   klayswapKlayPrice: 0,
+  favorPrice: 0,
 }
 
 export const finixPriceSlice = createSlice({
@@ -37,6 +38,10 @@ export const finixPriceSlice = createSlice({
     setFinixPrice: (state, action) => {
       const { price } = action.payload
       state.price = price
+    },
+    setFavorPrice: (state, action) => {
+      const { price } = action.payload
+      state.favorPrice = price
     },
     setDefinixKlayPrice: (state, action) => {
       const { price } = action.payload
@@ -55,7 +60,7 @@ export const finixPriceSlice = createSlice({
 })
 
 // Actions
-export const { setTVL, setSixPrice, setFinixPrice, setDefinixKlayPrice, setKlayswapKlayPrice } = finixPriceSlice.actions
+export const { setTVL, setSixPrice, setFinixPrice, setFavorPrice, setDefinixKlayPrice, setKlayswapKlayPrice } = finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2 }) => {
   let pair1Amount = 0
@@ -240,6 +245,62 @@ export const fetchFinixPrice = () => async (dispatch) => {
   dispatch(
     setFinixPrice({
       price: finixPrice,
+    }),
+  )
+}
+
+export const fetchFavorPrice = () => async (dispatch) => {
+  const allTokenCombinationKeys = pairObjectCombination(allTokens)
+  const allFavorPair = allTokenCombinationKeys.filter(
+    (item) => item.indexOf('FAVOR') >= 0 || item.indexOf('KUSDT') >= 0,
+  )
+  const sortedPair = compact(allFavorPair.map((pair) => findAndSelectPair(pair)))
+  const searchablePair = {}
+  sortedPair.forEach((pair, index) => {
+    if (!searchablePair[pair[0]]) {
+      searchablePair[pair[0]] = {}
+    }
+    searchablePair[pair[0]][pair[1]] = index
+  })
+  const fetchPromise = []
+  sortedPair.forEach((pair) => {
+    const [firstKey, secondKey] = findAndSelectPair(pair)
+    const firstTokenAddress = allTokens[firstKey]
+    const secondTokenAddress = allTokens[secondKey]
+    fetchPromise.push(
+      getTotalBalanceLp({
+        lpAddress: getAddress(getLpNetwork(firstTokenAddress, secondTokenAddress)),
+        pair1: getAddress(firstTokenAddress),
+        pair2: getAddress(secondTokenAddress),
+      }),
+    )
+  })
+  const allFetchedData = await Promise.all(fetchPromise)
+  const allRatio = allFetchedData.map((data) => {
+    if (data) {
+      const ratio = data[1] / data[0] || 0
+      return ratio
+    }
+    return undefined
+  })
+  const allPrices = allFetchedData.map((data, index) => {
+    const currentPair = sortedPair[index]
+    if (data && currentPair[0] === 'FAVOR') {
+      if (currentPair[1] === 'KUSDT') {
+        return [allRatio[index], allFetchedData[index][1]]
+      }
+      const pairIndex = searchablePair[currentPair[1]].KUSDT
+      return [allRatio[index] * allRatio[pairIndex], allFetchedData[index][1]]
+    }
+    return undefined
+  })
+  const availAllPrices = compact(allPrices)
+  const calPrice = availAllPrices.reduce((sum, pair) => sum + pair[0] * pair[1], 0)
+  const quoteSum = availAllPrices.reduce((sum, pair) => sum + pair[1], 0)
+  const favorPrice = calPrice / quoteSum || 0
+  dispatch(
+    setFavorPrice({
+      price: favorPrice,
     }),
   )
 }

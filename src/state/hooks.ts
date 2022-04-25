@@ -10,6 +10,7 @@ import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchFinixPrice,
+  fetchFavorPrice,
   fetchKlayPriceFromKlayswap,
   fetchDefinixKlayPrice,
   fetchSixPrice,
@@ -23,6 +24,7 @@ import {
   clear as clearToast,
 } from './actions'
 import { Balances, State, Farm, Rebalance, Pool } from './types'
+import { resetPoolsUserData } from './pools'
 
 const ZERO = new BigNumber(0)
 
@@ -35,6 +37,7 @@ export const useFetchPublicData = () => {
     dispatch(fetchFarmUnlockDate())
     dispatch(fetchPoolsPublicDataAsync())
     dispatch(fetchFinixPrice())
+    dispatch(fetchFavorPrice())
     dispatch(fetchSixPrice())
     dispatch(fetchTVL())
     dispatch(fetchKlayPriceFromKlayswap())
@@ -130,7 +133,6 @@ export const useFarmFromSymbol = (lpSymbol: string): Farm => {
 
 export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
-
   return {
     allowance: farm.userData ? new BigNumber(farm.userData.allowance) : new BigNumber(0),
     tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : new BigNumber(0),
@@ -148,6 +150,8 @@ export const usePools = (account): Pool[] => {
   useEffect(() => {
     if (account) {
       dispatch(fetchPoolsUserDataAsync(account))
+    } else {
+      dispatch(resetPoolsUserData())
     }
   }, [account, dispatch, fastRefresh])
 
@@ -201,6 +205,11 @@ export const usePriceKethKusdt = (): BigNumber => {
 export const usePriceFinixUsd = (): BigNumber => {
   const finixPrice = useSelector((state: State) => state.finixPrice.price)
   return new BigNumber(finixPrice)
+}
+
+export const usePriceFavorUsd = (): BigNumber => {
+  const favorPrice = useSelector((state: State) => state.finixPrice.favorPrice)
+  return new BigNumber(favorPrice)
 }
 
 export const usePriceSixUsd = (): BigNumber => {

@@ -34,6 +34,12 @@ export const farmsSlice = createSlice({
       })
       state.isFetched = true
     },
+    resetFarmUserData: (state) => {
+      state.data.forEach((data, index) => {
+        state.data[index] = { ...state.data[index], userData: null }
+      })
+      state.isFetched = false
+    },
     setFarmUnlockAt: (state, action) => {
       const { farmUnlockAt } = action.payload
       state.farmUnlockAt = farmUnlockAt
@@ -42,7 +48,7 @@ export const farmsSlice = createSlice({
 })
 
 // Actions
-export const { setFarmsPublicData, setFarmUserData, setFarmUnlockAt } = farmsSlice.actions
+export const { setFarmsPublicData, setFarmUserData, setFarmUnlockAt, resetFarmUserData } = farmsSlice.actions
 
 // Thunks
 export const fetchFarmsPublicDataAsync = () => async (dispatch) => {
