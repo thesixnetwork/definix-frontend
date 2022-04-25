@@ -198,72 +198,84 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR = {
 export const PINNED_PAIRS = {
   [intMainnetId]: [
     [
-      new Token(intTestnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
-      new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
+      new Token(intMainnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
+      new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intTestnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+      new Token(intMainnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
+      new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
+      new Token(intMainnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
+      new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
-      new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+      new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
+      new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
+      new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
+      new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
-      new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
-      new Token(intTestnetId, KSP_ADDRESS[intMainnetId], 18, 'KSP', 'KLAY Swap Protocol'),
+      new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
+      new Token(intMainnetId, KSP_ADDRESS[intMainnetId], 18, 'KSP', 'KLAY Swap Protocol'),
     ],
     [
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+      new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
+      new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, KDAI_ADDRESS[intMainnetId], 18, 'KDAI', 'KDAI Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+      new Token(intMainnetId, KDAI_ADDRESS[intMainnetId], 18, 'KDAI', 'KDAI Token'),
+      new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, KETH_ADDRESS[intMainnetId], 18, 'KETH', 'KETH Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
+      new Token(intMainnetId, KETH_ADDRESS[intMainnetId], 18, 'KETH', 'KETH Token'),
+      new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
-      new Token(intTestnetId, KWBTC_ADDRESS[intMainnetId], 18, 'KWBTC', 'KWBTC Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
+      new Token(intMainnetId, KWBTC_ADDRESS[intMainnetId], 18, 'KWBTC', 'KWBTC Token'),
+      new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
-      new Token(intTestnetId, KXRP_ADDRESS[intMainnetId], 18, 'KXRP', 'KXRP Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
+      new Token(intMainnetId, KXRP_ADDRESS[intMainnetId], 18, 'KXRP', 'KXRP Token'),
+      new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
-      new Token(intTestnetId, KETH_ADDRESS[intMainnetId], 18, 'KETH', 'KETH Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+      new Token(intMainnetId, KETH_ADDRESS[intMainnetId], 18, 'KETH', 'KETH Token'),
+      new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, KWBTC_ADDRESS[intMainnetId], 18, 'KWBTC', 'KWBTC Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+      new Token(intMainnetId, KWBTC_ADDRESS[intMainnetId], 18, 'KWBTC', 'KWBTC Token'),
+      new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, KXRP_ADDRESS[intMainnetId], 18, 'KXRP', 'KXRP Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+      new Token(intMainnetId, KXRP_ADDRESS[intMainnetId], 18, 'KXRP', 'KXRP Token'),
+      new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+      new Token(intMainnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
+      new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
-      new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
+      new Token(intMainnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
+      new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intTestnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
+    ],
+    [
+      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
+    ],
+    [
+      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
+    ],
+    [
+      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'KLAY', 'KLAY Token'),
     ],
   ],
   [intTestnetId]: [
@@ -334,6 +346,18 @@ export const PINNED_PAIRS = {
     [
       new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
       new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
+    ],
+    [
+      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, SIX_ADDRESS[intTestnetId], 18, 'SIX', 'SIX Token'),
+    ],
+    [
+      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
+    ],
+    [
+      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'KLAY', 'KLAY Token'),
     ],
   ],
 }
