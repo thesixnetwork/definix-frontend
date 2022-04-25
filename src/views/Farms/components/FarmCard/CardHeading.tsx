@@ -27,6 +27,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   const isMediumSize = useMemo(() => size === 'medium', [size])
+  const isRow = useMemo(() => componentType === 'deposit' && (farm.bundleRewards || []).length > 0, [componentType, farm])
 
   const renderAPR = useMemo(() => (coin: string, apy: BigNumber) => {
     return <Flex alignItems="flex-end">
@@ -58,9 +59,9 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         </ImageBox>
       </Flex>
 
-      <Flex flexDirection={componentType === 'deposit' ? 'row' : 'column'} alignItems="flex-start">
+      <Flex flexDirection={isRow ? 'row' : 'column'} alignItems={isRow ? "center" : "flex-start"}>
         <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{lpLabel}</Text>
-        <Flex flexDirection="column" ml={componentType === 'deposit' ? '50px' : ''}>
+        <Flex flexDirection="column" ml={isRow ? '50px' : ''}>
           {(farm.bundleRewards || []).length > 0 && renderAPR(QuoteToken.FAVOR, farm.favorApy)}
           {renderAPR(QuoteToken.FINIX, farm.apy)}
         </Flex>
