@@ -24,6 +24,7 @@ import {
   clear as clearToast,
 } from './actions'
 import { Balances, State, Farm, Rebalance, Pool } from './types'
+import { resetPoolsUserData } from './pools'
 
 const ZERO = new BigNumber(0)
 
@@ -149,6 +150,8 @@ export const usePools = (account): Pool[] => {
   useEffect(() => {
     if (account) {
       dispatch(fetchPoolsUserDataAsync(account))
+    } else {
+      dispatch(resetPoolsUserData())
     }
   }, [account, dispatch, fastRefresh])
 

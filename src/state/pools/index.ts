@@ -31,6 +31,12 @@ export const PoolsSlice = createSlice({
       })
       state.isFetched = true
     },
+    resetPoolsUserData: (state) => {
+      state.data.forEach((data, index) => {
+        state.data[index] = { ...state.data[index], userData: null }
+      })
+      state.isFetched = false
+    },
     updatePoolsUserData: (state, action) => {
       const { field, value, sousId } = action.payload
       const index = state.data.findIndex((p) => p.sousId === sousId)
@@ -41,7 +47,7 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, resetPoolsUserData } = PoolsSlice.actions
 
 // Thunks
 export const fetchPoolsPublicDataAsync = () => async (dispatch) => {
