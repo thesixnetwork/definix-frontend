@@ -4,14 +4,14 @@ import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import { getLpImageUrlsAndSymbols } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd, usePriceFavorKusdt } from 'state/hooks'
+import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd, usePriceFavorUsd } from 'state/hooks'
 import { Farm } from 'state/types'
 import { useCallback } from 'react'
 
 const useFarmsList = (farms: Farm[]): any => {
   const { convertToPriceFromToken } = useConverter()
   const klayPrice = usePriceKlayKusdt()
-  const favorPrice = usePriceFavorKusdt()
+  const favorPrice = usePriceFavorUsd()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const kethPriceUsd = usePriceKethKusdt()

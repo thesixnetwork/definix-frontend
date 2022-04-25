@@ -34,4 +34,5 @@ export {
   fetchSixPrice,
   fetchTVL,
   fetchFinixPrice,
+  fetchFavorPrice,
 } from './finixPrice'

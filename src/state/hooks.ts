@@ -10,6 +10,7 @@ import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchFinixPrice,
+  fetchFavorPrice,
   fetchKlayPriceFromKlayswap,
   fetchDefinixKlayPrice,
   fetchSixPrice,
@@ -35,6 +36,7 @@ export const useFetchPublicData = () => {
     dispatch(fetchFarmUnlockDate())
     dispatch(fetchPoolsPublicDataAsync())
     dispatch(fetchFinixPrice())
+    dispatch(fetchFavorPrice())
     dispatch(fetchSixPrice())
     dispatch(fetchTVL())
     dispatch(fetchKlayPriceFromKlayswap())
@@ -200,6 +202,11 @@ export const usePriceKethKusdt = (): BigNumber => {
 export const usePriceFinixUsd = (): BigNumber => {
   const finixPrice = useSelector((state: State) => state.finixPrice.price)
   return new BigNumber(finixPrice)
+}
+
+export const usePriceFavorUsd = (): BigNumber => {
+  const favorPrice = useSelector((state: State) => state.finixPrice.favorPrice)
+  return new BigNumber(favorPrice)
 }
 
 export const usePriceSixUsd = (): BigNumber => {

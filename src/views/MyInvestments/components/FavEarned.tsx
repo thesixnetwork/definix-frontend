@@ -3,7 +3,7 @@ import { QuoteToken } from 'config/constants/types'
 import useWallet from 'hooks/useWallet'
 import React, { useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { usePriceFavorKusdt } from 'state/hooks'
+import { usePriceFavorUsd } from 'state/hooks'
 import EarningBoxTemplate from './EarningBoxTemplate/index'
 
 const FavEarnd: React.FC<{
@@ -14,7 +14,7 @@ const FavEarnd: React.FC<{
 }> = ({ isMobile, isMain = false, products, theme = 'white' }) => {
   const { t } = useTranslation()
   const { account } = useWallet()
-  const favorPrice = usePriceFavorKusdt()
+  const favorPrice = usePriceFavorUsd()
 
   const convertEarningsSumToPrice = useCallback(
     (value) => {
