@@ -21,6 +21,7 @@ interface ApyCalculatorModalProps {
   lpLabel?: string
   apy?: BigNumber
   addLiquidityUrl?: string
+  coin: string
 }
 
 const Grid = styled.div`
@@ -28,7 +29,7 @@ const Grid = styled.div`
   grid-template-columns: repeat(3, 1fr);
 `
 
-const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLabel, apy, addLiquidityUrl }) => {
+const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLabel, apy, addLiquidityUrl, coin }) => {
   const { t } = useTranslation()
   const { convertToPriceFromSymbol } = useConverter()
   const finixPrice = convertToPriceFromSymbol()
@@ -41,7 +42,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
     [farmApy, finixPrice],
   )
 
-  const headerData = ['Timeframe', 'ROI', 'FINIX per $1000']
+  const headerData = useMemo(() => ['Timeframe', 'ROI', `${coin} per $1000`], [coin])
   const bodyData = useMemo(() => {
     return [
       {
@@ -67,8 +68,8 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
     <Modal title={t('ROI')} onDismiss={onDismiss}>
       <ModalBody isBody style={{ maxWidth: '416px' }}>
         <Grid className="mt-s16 mb-s20">
-          {headerData.map((header) => (
-            <Box>
+          {headerData.map((header, index) => (
+            <Box key={index}>
               <Text textStyle="R_12M" color={ColorStyles.MEDIUMGREY}>
                 {t(header)}
               </Text>
@@ -76,7 +77,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
           ))}
         </Grid>
         {bodyData.map((row, index) => (
-          <Grid className={index === bodyData.length - 1 ? 'mb-s20' : 'mb-s12'}>
+          <Grid key={index} className={index === bodyData.length - 1 ? 'mb-s20' : 'mb-s12'}>
             <Box>
               <Text textStyle="R_14M" color={ColorStyles.BLACK}>
                 {row.timeFrame}
