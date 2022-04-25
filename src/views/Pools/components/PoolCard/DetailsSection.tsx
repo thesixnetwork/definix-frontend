@@ -152,4 +152,5 @@ const StyledBalanceText = styled(BalanceText)`
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_16M};
   }
+  margin-bottom: -3px;
 `

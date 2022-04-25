@@ -91,6 +91,7 @@ const StyledBalanceText = styled(BalanceText)`
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_16M};
   }
+  margin-bottom: -3px;
 `
 const TotalLiquidityText = styled(CurrencyText)`
   color: ${({ theme }) => theme.colors.black};
@@ -115,7 +116,6 @@ const ValueWrap = styled(Box)`
 `
 const TokenNameText = styled(Text)`
   padding-left: 2px;
-  padding-bottom: 3px;
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_12M};
 `
