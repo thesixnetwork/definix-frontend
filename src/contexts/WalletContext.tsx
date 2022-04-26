@@ -91,6 +91,10 @@ const WalletContextProvider = ({ children }) => {
         AvailableConnectors.TOKENPOCKET,
       ])
 
+      window?.klaytn?.on('accountsChanged', (accounts) => {
+        setAccount(accounts[0])
+      })
+
       if (!wallet.current.isConnected()) {
         // @ts-ignore
         onActivate(wallet.current.connectorId)

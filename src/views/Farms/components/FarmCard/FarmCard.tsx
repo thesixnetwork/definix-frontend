@@ -22,7 +22,7 @@ import {
   Grid,
 } from '@fingerlabs/definixswap-uikit-v2'
 import CardHeading from './CardHeading'
-import { TotalLiquiditySection, MyBalanceSection, EarningsSection } from './DetailsSection'
+import { TotalLiquiditySection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
@@ -33,7 +33,7 @@ import { TAG_COLORS } from 'config/constants/farms'
 import { QuoteToken } from 'config/constants/types'
 
 
-const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBalancesInWallet, klaytn, account }) => {
+const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klaytn, account }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
