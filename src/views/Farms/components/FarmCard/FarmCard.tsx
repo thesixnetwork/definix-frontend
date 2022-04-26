@@ -21,8 +21,9 @@ import {
   useMatchBreakpoints,
   Grid,
 } from '@fingerlabs/definixswap-uikit-v2'
-import CardHeading from './CardHeading'
-import { TotalLiquiditySection, EarningsSection } from './DetailsSection'
+import CardHeading from 'components/FarmAndPool/CardHeading'
+import { EarningsSection } from 'components/FarmAndPool/DetailsSection'
+import { TotalLiquiditySection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
@@ -74,26 +75,37 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
     return convertToPriceFromToken(stakedTotalInQuoteToken, farm.quoteTokenSymbol)
   }, [farm, stakedBalance, convertToPriceFromToken])
 
+  const apyList = useMemo(() => {
+    return {
+      [QuoteToken.FAVOR]: farm.favorApy,
+      [QuoteToken.FINIX]: farm.apy,
+    }
+  }, [farm])
+
   const allEarnings = useMemo(() => {
     const result: {
-      token: QuoteToken
+      symbol: QuoteToken
       earnings: number
+      apy: BigNumber
     }[] = [];
     if (farm.bundleRewards) {
       farm.bundleRewards.forEach((bundle, bundleId) => {
         const pendingReward = pendingRewards.find((pr) => pr.bundleId === bundleId) || {}
         result.push({
-          token: bundle.rewardTokenInfo.name,
-          earnings: (getBalanceNumber(pendingReward.reward) || 0)
+          symbol: bundle.rewardTokenInfo.name,
+          earnings: (getBalanceNumber(pendingReward.reward) || 0),
+          apy: apyList[bundle.rewardTokenInfo.name]
         })
       })
     }
     result.push({
-      token: QuoteToken.FINIX,
+      symbol: QuoteToken.FINIX,
       earnings: getBalanceNumber(earnings),
+      apy: apyList[QuoteToken.FINIX],
     })
     return result
-  }, [earnings, farm.bundleRewards, pendingRewards])
+  }, [earnings, farm, pendingRewards, apyList])
+
 
   /**
    * Card Ribbon
@@ -112,11 +124,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
   const renderCardHeading = useMemo(
     () => (
       <CardHeading
-        farm={farm}
-        lpLabel={lpTokenName}
+        tokenApyList={allEarnings}
         size="small"
-        addLiquidityUrl={addLiquidityUrl}
         componentType={componentType}
+        addLiquidityUrl={addLiquidityUrl}
       />
     ),
     [farm, lpTokenName, addLiquidityUrl, componentType],

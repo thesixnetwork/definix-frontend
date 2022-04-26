@@ -17,9 +17,9 @@ import {
   useMatchBreakpoints,
   Grid,
 } from '@fingerlabs/definixswap-uikit-v2'
-import CardHeading from './CardHeading'
+import CardHeading from 'components/FarmAndPool/CardHeading'
 import { TotalStakedSection } from './DetailsSection'
-import { EarningsSection } from '../../../Farms/components/FarmCard/DetailsSection'
+import { EarningsSection } from 'components/FarmAndPool/DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
@@ -83,19 +83,26 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
     return `/swap/${swapUrlPathParts}`
   }, [pool.stakingTokenAddress])
 
+  const tokenApyList = useMemo(() => {
+    return [{
+      symbol: pool.tokenName,
+      apy: pool.apy
+    }]
+  }, [pool])
+
   /**
    * CardHeading
    */
   const renderCardHeading = useMemo(
     () => (
       <CardHeading
-        isOldSyrup={isOldSyrup}
-        pool={pool}
+        // isOldSyrup={isOldSyrup}
+        tokenApyList={tokenApyList}
         size={isInMyInvestment && 'small'}
         componentType={componentType}
       />
     ),
-    [isOldSyrup, pool, isInMyInvestment, componentType],
+    [tokenApyList, isInMyInvestment, componentType],
   )
   /**
    * IconButton
@@ -120,7 +127,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
    */
   const renderEarningsSection = useMemo(
     () => <EarningsSection allEarnings={[{
-      token: QuoteToken.FINIX,
+      symbol: QuoteToken.FINIX,
       earnings: getBalanceNumber(earnings)
     }]} isMobile={isMobile} />,
     [t, earnings, isMobile],

@@ -14,7 +14,7 @@ const HarvestAction: React.FC<{
   componentType: string
   pid?: number
   allEarnings: {
-    token: QuoteToken
+    symbol: QuoteToken
     earnings: number
   }[]
   lpSymbol: string
@@ -105,7 +105,7 @@ const HarvestAction: React.FC<{
             <HarvestInfo>
               <Flex flexDirection="column">
                 {
-                  allEarnings.length > 0 && allEarnings.map((item) => renderEarnedPrice(item.token, item.earnings, getPrice(item.earnings, convertToPriceFromSymbol(item.token))))
+                  allEarnings.length > 0 && allEarnings.map((item) => renderEarnedPrice(item.symbol, item.earnings, getPrice(item.earnings, convertToPriceFromSymbol(item.symbol))))
                 }
               </Flex>
               {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton}</HarvestButtonSectionInFarm>}
