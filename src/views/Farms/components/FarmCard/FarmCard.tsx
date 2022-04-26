@@ -150,8 +150,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * Earnings Section
    */
   const renderEarningsSection = useMemo(
-    () => <EarningsSection allEarnings={allEarnings} />,
-    [allEarnings],
+    () => <EarningsSection allEarnings={allEarnings} isMobile={isMobile} />,
+    [allEarnings, isMobile],
   )
   /**
    * StakeAction Section
