@@ -22,7 +22,7 @@ import {
   Grid,
 } from '@fingerlabs/definixswap-uikit-v2'
 import CardHeading from './CardHeading'
-import { TotalLiquiditySection, MyBalanceSection, EarningsSection } from './DetailsSection'
+import { TotalLiquiditySection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
@@ -33,7 +33,7 @@ import { TAG_COLORS } from 'config/constants/farms'
 import { QuoteToken } from 'config/constants/types'
 
 
-const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBalancesInWallet, klaytn, account }) => {
+const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klaytn, account }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
@@ -140,18 +140,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
     [t, totalLiquidity],
   )
   /**
-   * MyBalance Section
-   */
-  const renderMyBalanceSection = useMemo(
-    () => <MyBalanceSection title={t('Balance')} myBalances={myBalancesInWallet} />,
-    [t, myBalancesInWallet],
-  )
-  /**
    * Earnings Section
    */
   const renderEarningsSection = useMemo(
-    () => <EarningsSection allEarnings={allEarnings} />,
-    [allEarnings],
+    () => <EarningsSection allEarnings={allEarnings} isMobile={isMobile} />,
+    [allEarnings, isMobile],
   )
   /**
    * StakeAction Section
@@ -227,10 +220,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
             {isOpenAccordion && (
               <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" pt="S_24" pb="S_28">
                 {renderHarvestAction}
-                <Box py="S_24">{renderStakeAction()}</Box>
+                <Box py="S_24">{renderStakeAction('farm-accordian')}</Box>
                 <Divider />
                 <Box pt="S_24">{renderTotalLiquiditySection}</Box>
-                <Box pt="S_16">{renderMyBalanceSection}</Box>
                 <Box pt="S_28">{renderLinkSection}</Box>
               </Box>
             )}

@@ -27,9 +27,9 @@ const MyBalanceSection: React.FC<{
     <>
       <TitleSection hasMb>{title}</TitleSection>
       {Object.entries(myBalances).map(([tokenName, balanceValue], index) => (
-        <Flex alignItems="center" key={index}>
+        <Flex alignItems="center" mb="2px" key={index}>
           <TokenLabel type="token">{tokenName}</TokenLabel>
-          <StyledBalanceText value={balanceValue} toFixed={0} />
+          <StyledBalanceText value={balanceValue || 0} toFixed={0} />
         </Flex>
       ))}
     </>
@@ -42,18 +42,23 @@ const EarningsSection: React.FC<{
     token: QuoteToken
     earnings: number
   }[]
-}> = ({ allEarnings }) => {
+  isMobile: boolean
+}> = ({ allEarnings, isMobile }) => {
   const { t } = useTranslation()
       
   return (
     <Wrap>
       <TitleWrap>
         <TitleSection hasMb={false}>{t('Earned')}</TitleSection>
-        <Box>
+        <Flex>
           {
-            allEarnings.length > 0 && allEarnings.map(({ token }, index) => <Coin key={index} symbol={token} size="20px" />)
+            allEarnings.length > 0 && allEarnings.map(({ token }, index) => 
+              <ImageBox key={index}>
+                <Coin symbol={token} size={isMobile ? '16px' : '20px'} />
+              </ImageBox>
+            )
           }
-        </Box>
+        </Flex>
       </TitleWrap>
       <ValueWrap>
         {
@@ -68,6 +73,16 @@ const EarningsSection: React.FC<{
 }
 
 export { TotalLiquiditySection, MyBalanceSection, EarningsSection }
+
+const ImageBox = styled(Box)`
+  &:first-child {
+    z-index: 1;
+  }
+  &:last-child {
+    margin-left: -4px;
+  }
+`
+
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;
@@ -109,7 +124,7 @@ const Wrap = styled(Flex)`
 `
 const TitleWrap = styled(Flex)`
   margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
-  align-items: flex-start;
+  align-items: center;
 `
 const ValueWrap = styled(Box)`
   margin-top: -2px;
@@ -118,4 +133,7 @@ const TokenNameText = styled(Text)`
   padding-left: 2px;
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_12M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: -1px;
+  }
 `
