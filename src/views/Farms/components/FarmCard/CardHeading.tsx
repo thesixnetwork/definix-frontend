@@ -61,7 +61,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
       <Flex flexDirection={isRow ? 'row' : 'column'} alignItems={isRow ? "center" : "flex-start"}>
         <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{lpLabel}</Text>
-        <Flex flexDirection="column" ml={isRow ? '50px' : ''}>
+        <Flex flexDirection="column" ml={isRow ? '50px' : ''} mt="3px">
           {(farm.bundleRewards || []).length > 0 && renderAPR(QuoteToken.FAVOR, farm.favorApy)}
           {renderAPR(QuoteToken.FINIX, farm.apy)}
         </Flex>
