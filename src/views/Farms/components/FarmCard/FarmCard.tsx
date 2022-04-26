@@ -140,13 +140,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
     [t, totalLiquidity],
   )
   /**
-   * MyBalance Section
-   */
-  const renderMyBalanceSection = useMemo(
-    () => <MyBalanceSection title={t('Balance')} myBalances={myBalancesInWallet} />,
-    [t, myBalancesInWallet],
-  )
-  /**
    * Earnings Section
    */
   const renderEarningsSection = useMemo(
@@ -230,7 +223,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
                 <Box py="S_24">{renderStakeAction('farm-accordian')}</Box>
                 <Divider />
                 <Box pt="S_24">{renderTotalLiquiditySection}</Box>
-                <Box pt="S_16">{renderMyBalanceSection}</Box>
                 <Box pt="S_28">{renderLinkSection}</Box>
               </Box>
             )}

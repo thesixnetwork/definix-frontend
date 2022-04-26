@@ -87,7 +87,7 @@ const HarvestAction: React.FC<{
   )
 
   const renderEarnedPrice = useCallback((tokenName, balance, price) => {
-    return <Flex key={tokenName}>
+    return <Flex key={tokenName} mb="8px">
       <TokenLabel type="token">{tokenName}</TokenLabel>
       <TokenValueWrap>
         <BalanceText>{convertToBalanceFormat(balance)}</BalanceText>

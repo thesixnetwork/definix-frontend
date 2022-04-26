@@ -69,7 +69,10 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
   const renderBalance = useMemo(() => <Flex justifyContent="space-between">
       <Box>
-        <BalanceText>{convertToBalanceFormat(myLiquidityValue)}</BalanceText>
+        <BalanceText>
+          {convertToBalanceFormat(myLiquidityValue)}
+          <UnitText>LP</UnitText>
+        </BalanceText>
         <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
         </Box>
     </Flex>
@@ -139,6 +142,8 @@ const TitleSection = styled(Text)`
   }
 `
 const BalanceText = styled(Text)`
+  display: flex;
+  align-items: flex-end;
   color: ${({ theme }) => theme.colors.black};
   ${({ theme }) => theme.textStyle.R_18M};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -150,5 +155,14 @@ const PriceText = styled(CurrencyText)`
   ${({ theme }) => theme.textStyle.R_14R};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_12R};
+  }
+`
+const UnitText = styled(Text)`
+  margin-left: 4px;
+  ${({ theme }) => theme.textStyle.R_12M};
+  color: ${({ theme }) => theme.colors.deepgrey};
+  line-height: 1.9;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    line-height: 1.8;
   }
 `
