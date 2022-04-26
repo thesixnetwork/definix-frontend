@@ -192,7 +192,6 @@ const Deposit: React.FC<{
             variant="line"
             onClick={() => {
               history.push(addLiquidityUrl)
-              // window.location.href = `${addLiquidityUrl}`
             }}
           >
             {t('Add Liquidity')}

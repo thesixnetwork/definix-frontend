@@ -97,7 +97,7 @@ export { TotalStakedSection, MyBalanceSection, EarningsSection }
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;
-  margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
+  margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_8 : 0)}px;
   color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_12R};
   white-space: nowrap;
