@@ -227,7 +227,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
             {isOpenAccordion && (
               <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" pt="S_24" pb="S_28">
                 {renderHarvestAction}
-                <Box py="S_24">{renderStakeAction()}</Box>
+                <Box py="S_24">{renderStakeAction('farm-accordian')}</Box>
                 <Divider />
                 <Box pt="S_24">{renderTotalLiquiditySection}</Box>
                 <Box pt="S_16">{renderMyBalanceSection}</Box>

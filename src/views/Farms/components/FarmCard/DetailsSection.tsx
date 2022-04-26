@@ -27,9 +27,9 @@ const MyBalanceSection: React.FC<{
     <>
       <TitleSection hasMb>{title}</TitleSection>
       {Object.entries(myBalances).map(([tokenName, balanceValue], index) => (
-        <Flex alignItems="center" key={index}>
+        <Flex alignItems="center" mb="2px" key={index}>
           <TokenLabel type="token">{tokenName}</TokenLabel>
-          <StyledBalanceText value={balanceValue} toFixed={0} />
+          <StyledBalanceText value={balanceValue || 0} toFixed={0} />
         </Flex>
       ))}
     </>
@@ -118,4 +118,7 @@ const TokenNameText = styled(Text)`
   padding-left: 2px;
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_12M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: -1px;
+  }
 `
