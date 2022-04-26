@@ -18,12 +18,14 @@ import {
   Grid,
 } from '@fingerlabs/definixswap-uikit-v2'
 import CardHeading from './CardHeading'
-import { TotalStakedSection, MyBalanceSection, EarningsSection } from './DetailsSection'
+import { TotalStakedSection } from './DetailsSection'
+import { EarningsSection } from '../../../Farms/components/FarmCard/DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
 import PoolConText from '../../PoolContext'
 import { PoolCardProps } from './types'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 const CardWrap = styled(Card)`
   margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
@@ -60,7 +62,7 @@ const Wrap = styled(Box)<{ paddingLg: boolean }>`
   }
 `
 
-const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBalanceInWallet }) => {
+const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
@@ -114,17 +116,14 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
     [t, tokenName, totalStaked],
   )
   /**
-   * MyBalance Section
-   */
-  const renderMyBalanceSection = useMemo(() => {
-    return <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
-  }, [t, tokenName, myBalanceInWallet])
-  /**
    * Earnings Section
    */
   const renderEarningsSection = useMemo(
-    () => <EarningsSection title={t('Earned')} earnings={earnings} />,
-    [t, earnings],
+    () => <EarningsSection allEarnings={[{
+      token: QuoteToken.FINIX,
+      earnings: getBalanceNumber(earnings)
+    }]} isMobile={isMobile} />,
+    [t, earnings, isMobile],
   )
   /**
    * StakeAction Section
@@ -229,7 +228,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
               <Box py="S_24">{renderStakeAction()}</Box>
               <Divider />
               <Box pt="S_24">{renderTotalStakedSection}</Box>
-              <Box pt="S_16">{renderMyBalanceSection}</Box>
               <Box py="S_28">{renderLinkSection}</Box>
             </Box>
           )}
