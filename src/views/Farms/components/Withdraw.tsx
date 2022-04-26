@@ -176,6 +176,7 @@ const Withdraw: React.FC<{
           value={val}
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onChange={handleChange}
+          balanceLabel={'Removable'}
           max={stakedBalance}
           // symbol={lpTokenName}
           buttonName={t('Remove')}
