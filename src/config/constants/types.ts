@@ -17,9 +17,6 @@ export enum QuoteToken {
   'SIXKUSDT' = 'SIX-KUSDT',
   'KDAIKUSDT' = 'KDAI-KUSDT',
   'KSP' = 'KSP',
-  /**
-   * @favor
-   */
   'FAVOR' = 'FAVOR'
 }
 

@@ -27,9 +27,6 @@ export default {
   kbnb: KBNB,
   six: SIX,
   finix: FINIX,
-  /**
-   * @favor
-   */
   favor: FAVOR,
 
   finixSixLP: getLpNetwork(FINIX, SIX),
@@ -48,10 +45,6 @@ export default {
   kdaiKusdtLP: getLpNetwork(KDAI, KUSDT),
   kbnbKusdtLP: getLpNetwork(KBNB, KUSDT),
   kbnbFinixLP: getLpNetwork(KBNB, FINIX),
-  /**
-   * @favor
-   */
-  favorKusdtLP: getLpNetwork(FAVOR, KUSDT),
 
   definixKlayKusdtLP: getLpNetwork(WKLAY, KUSDT),
   tradingCompetRegis: {
