@@ -36,7 +36,7 @@ const useFarmsList = (farms: Farm[]): any => {
       const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
 
       if ((farm.bundleRewards || []).length > 0) {
-        const favorBundle = (farm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === QuoteToken.FAVOR)
+        const favorBundle = (farm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === 'Finger')
         if (favorBundle) {
           // @ts-ignore
           const favorRewardPerBlock = new BigNumber([favorBundle.rewardPerBlock]).div(new BigNumber(10).pow(18))

@@ -19,10 +19,10 @@ import { ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 
 const farms: FarmConfig[] = [
   /**
-   * @favor
+   * @TODO
    */
    {
-    pid: 95,
+    pid: 100,
     lpSymbol: 'FAVOR-FINIX LP',
     lpAddresses: getLpNetwork(FAVOR, FINIX),
     tokenSymbol: 'FAVOR',
@@ -36,7 +36,7 @@ const farms: FarmConfig[] = [
     tag: 'special',
   },
   {
-    pid: 96,
+    pid: 99,
     lpSymbol: 'FAVOR-SIX LP',
     lpAddresses: getLpNetwork(FAVOR, SIX),
     tokenSymbol: 'FAVOR',
@@ -50,7 +50,7 @@ const farms: FarmConfig[] = [
     tag: 'special',
   },
    {
-    pid: 94,
+    pid: 98,
     lpSymbol: 'FAVOR-KLAY LP',
     lpAddresses: getLpNetwork(FAVOR, WKLAY),
     tokenSymbol: 'FAVOR',
@@ -64,7 +64,7 @@ const farms: FarmConfig[] = [
     tag: 'special',
   },
    {
-    pid: 93,
+    pid: 97,
     lpSymbol: 'FAVOR-KUSDT LP',
     lpAddresses: getLpNetwork(FAVOR, KUSDT),
     tokenSymbol: 'FAVOR',
