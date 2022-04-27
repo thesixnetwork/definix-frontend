@@ -225,7 +225,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" py="S_24">
               {renderHarvestActionAirDrop}
-              <Box py="S_24">{renderStakeAction()}</Box>
+              <Box py="S_24">{renderStakeAction('pool-accordian')}</Box>
               <Divider />
               <Box pt="S_24">{renderTotalStakedSection}</Box>
               <Box py="S_28">{renderLinkSection}</Box>
