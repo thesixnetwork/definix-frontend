@@ -62,7 +62,7 @@ const FavEarnd: React.FC<{
         price: earnedList.reduce((result, item) => result + item.price, 0),
       }}
       valueList={account ? earnedList : []}
-      unit={QuoteToken.FAVOR}
+      unit={QuoteToken.FINGER}
     />
   )
 }

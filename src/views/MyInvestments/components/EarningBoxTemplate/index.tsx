@@ -13,7 +13,7 @@ import CurrencyText from 'components/Text/CurrencyText'
 import BalanceText from 'components/Text/BalanceText'
 import Slide from './Slide'
 import { QuoteToken } from 'config/constants/types'
-import { FAVOR_FARMS } from 'config/constants/farms'
+import { FINGER_FARMS } from 'config/constants/farms'
 
 interface InnerTheme {
   totalTitleColor: ColorStyles
@@ -183,9 +183,9 @@ const EarningBoxTemplate: React.FC<{
   // farm, pool
   const farmsWithBalance = useFarmsWithBalance()
   const myFarmPools = useMemo(() => {
-    const favorPids = FAVOR_FARMS.map(({ pid }) => pid);
+    const favorPids = FINGER_FARMS.map(({ pid }) => pid);
     const list =  farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
-    if (unit === QuoteToken.FAVOR) {
+    if (unit === QuoteToken.FINGER) {
       return list.filter(({ pid }) => !!favorPids.includes(pid))
     }
     return list;
@@ -197,7 +197,7 @@ const EarningBoxTemplate: React.FC<{
   // long term stake
   const { finixEarn } = usePrivateData()
   const longTermStakeHarvestHook = useHarvest()
-  const needHarvestLongTermStake = useMemo(() => unit === QuoteToken.FAVOR ? false : finixEarn > 0, [unit, finixEarn])
+  const needHarvestLongTermStake = useMemo(() => unit === QuoteToken.FINGER ? false : finixEarn > 0, [unit, finixEarn])
 
   const harvestAllLength = useRef(0)
   const isHarvestingUsingKlip = useMemo(() => {

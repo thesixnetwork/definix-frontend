@@ -46,7 +46,7 @@ export default function useConverter() {
     if (symbol === QuoteToken.SIX) {
       price = sixPrice
     }
-    if (symbol === QuoteToken.FAVOR) {
+    if (symbol === QuoteToken.FINGER) {
       price = favorPrice
     }
     return price.toNumber()

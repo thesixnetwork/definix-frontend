@@ -83,9 +83,9 @@ export default {
       logoURI: '/images/coins/KSP.png',
     },
     {
-      name: 'FAVOR',
-      symbol: 'FAVOR',
-      address: process.env.REACT_APP_FAVOR_ADDRESS_TESTNET,
+      name: 'FINGER',
+      symbol: 'FINGER',
+      address: process.env.REACT_APP_FINGER_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
       logoURI: '/images/coins/FAVOR.png'
@@ -163,9 +163,9 @@ export default {
       logoURI: '/images/coins/KSP.png',
     },
     {
-      name: 'FAVOR',
-      symbol: 'FAVOR',
-      address: process.env.REACT_APP_FAVOR_ADDRESS_MAINNET,
+      name: 'FINGER',
+      symbol: 'FINGER',
+      address: process.env.REACT_APP_FINGER_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
       logoURI: '/images/coins/FAVOR.png'

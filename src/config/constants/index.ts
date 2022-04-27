@@ -85,9 +85,9 @@ export const KBNB_ADDRESS = {
   [intTestnetId]: process.env.REACT_APP_KBNB_ADDRESS_TESTNET || '',
 }
 
-export const FAVOR_ADDRESS = {
-  [intMainnetId]: process.env.REACT_APP_FAVOR_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_FAVOR_ADDRESS_TESTNET || '',
+export const FINGER_ADDRESS = {
+  [intMainnetId]: process.env.REACT_APP_FINGER_ADDRESS_MAINNET || '',
+  [intTestnetId]: process.env.REACT_APP_FINGER_ADDRESS_TESTNET || '',
 }
 
 export const allTokenAddresses = {
@@ -101,7 +101,7 @@ export const allTokenAddresses = {
   KXRP: KXRP_ADDRESS,
   KBNB: KBNB_ADDRESS,
   KSP: KSP_ADDRESS,
-  FAVOR: FAVOR_ADDRESS
+  FINGER: FINGER_ADDRESS
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
@@ -154,7 +154,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intTestnetId, KWBTC_ADDRESS[intTestnetId], 18, 'KWBTC', 'KWBTC Token'),
     new Token(intTestnetId, KXRP_ADDRESS[intTestnetId], 18, 'KXRP', 'KXRP Token'),
     new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token'),
-    new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token')
+    new Token(intTestnetId, FINGER_ADDRESS[intTestnetId], 18, 'FINGER', 'FINGER Token')
   ],
   [intMainnetId]: [
     ...WETH_ONLY[intMainnetId],
@@ -171,7 +171,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intMainnetId, KETH_ADDRESS[intMainnetId], 18, 'KETH', 'KETH Token'),
     new Token(intMainnetId, KXRP_ADDRESS[intMainnetId], 18, 'KXRP', 'KXRP Token'),
     new Token(intMainnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
-    new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token')
+    new Token(intMainnetId, FINGER_ADDRESS[intMainnetId], 18, 'FINGER', 'FINGER Token')
   ],
 }
 
@@ -262,19 +262,19 @@ export const PINNED_PAIRS = {
       new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, FINGER_ADDRESS[intMainnetId], 18, 'FINGER', 'FINGER Token'),
       new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, FINGER_ADDRESS[intMainnetId], 18, 'FINGER', 'FINGER Token'),
       new Token(intMainnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
     ],
     [
-      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, FINGER_ADDRESS[intMainnetId], 18, 'FINGER', 'FINGER Token'),
       new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, FINGER_ADDRESS[intMainnetId], 18, 'FINGER', 'FINGER Token'),
       new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'KLAY', 'KLAY Token'),
     ],
   ],
@@ -344,19 +344,19 @@ export const PINNED_PAIRS = {
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, FINGER_ADDRESS[intTestnetId], 18, 'FINGER', 'FINGER Token'),
       new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, FINGER_ADDRESS[intTestnetId], 18, 'FINGER', 'FINGER Token'),
       new Token(intTestnetId, SIX_ADDRESS[intTestnetId], 18, 'SIX', 'SIX Token'),
     ],
     [
-      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, FINGER_ADDRESS[intTestnetId], 18, 'FINGER', 'FINGER Token'),
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, FINGER_ADDRESS[intTestnetId], 18, 'FINGER', 'FINGER Token'),
       new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'KLAY', 'KLAY Token'),
     ],
   ],

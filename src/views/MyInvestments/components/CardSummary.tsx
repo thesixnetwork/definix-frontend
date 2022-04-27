@@ -7,7 +7,7 @@ import VFinixSummary from './VFinixSummary'
 import Earned from './Earned'
 import NetWorth from './NetWorth'
 import FavEarnd from './FavEarned'
-import { FAVOR_FARMS } from 'config/constants/farms'
+import { FINGER_FARMS } from 'config/constants/farms'
 
 function CardSummary({ products }) {
   const { t } = useTranslation()
@@ -40,7 +40,7 @@ function CardSummary({ products }) {
   )
 
   const favorProducts = useMemo(() => {
-    const favorPids = FAVOR_FARMS.map(({ pid }) => pid)
+    const favorPids = FINGER_FARMS.map(({ pid }) => pid)
     return products.filter(({ type, data }) => {
       if (type !== 'farm') return false;
       return !!favorPids.includes(data.pid)

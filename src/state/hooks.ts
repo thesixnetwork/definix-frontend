@@ -174,7 +174,7 @@ export const usePriceKlayKusdt = (): BigNumber => {
 }
 
 export const usePriceFavorKusdt = (): BigNumber => {
-  const pid = parseInt(process.env.REACT_APP_FAVOR_KUSDT_PID || '93') // FAVOR-KUSDT LP
+  const pid = parseInt(process.env.REACT_APP_FAVOR_KUSDT_PID || '97') // FAVOR-KUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
