@@ -1,11 +1,14 @@
 import BigNumber from 'bignumber.js'
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
 import { QuoteToken } from 'config/constants/types'
 import { useTranslation } from 'react-i18next'
 import BalanceText from 'components/Text/BalanceText'
+import useConverter from 'hooks/useConverter'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { TitleSection } from './Styled'
 
 const TotalLiquiditySection: React.FC<{
   title: string
@@ -13,11 +16,45 @@ const TotalLiquiditySection: React.FC<{
 }> = ({ title, totalLiquidity }) => {
   return (
     <>
-      <TitleSection hasMb>{title}</TitleSection>
+      <TitleSection>{title}</TitleSection>
       <TotalLiquidityText value={totalLiquidity} />
     </>
   )
 }
+
+const TotalStakedSection: React.FC<{
+  title: string
+  tokenName: string
+  totalStaked: BigNumber
+}> = ({ title, tokenName, totalStaked }) => {
+  const { convertToPriceFromSymbol, convertToPriceFormat } = useConverter()
+
+  const price = useMemo(() => {
+    return convertToPriceFromSymbol(tokenName)
+  }, [convertToPriceFromSymbol, tokenName])
+
+  const totalStakedValue = useMemo(() => {
+    return getBalanceNumber(totalStaked)
+  }, [totalStaked])
+
+  const totalStakedPrice = useMemo(() => {
+    return new BigNumber(totalStakedValue).multipliedBy(price).toNumber()
+  }, [convertToPriceFormat, totalStakedValue, price])
+
+  return (
+    <>
+      <TitleSection>{title}</TitleSection>
+      <Box>
+        <Flex alignItems="flex-end">
+          <StyledBalanceText value={totalStakedValue} toFixed={0} />
+          <UnitText>{tokenName}</UnitText>
+        </Flex>
+        <PriceText value={totalStakedPrice} prefix="=" />
+      </Box>
+    </>
+  )
+}
+
 
 const MyBalanceSection: React.FC<{
   title: string
@@ -25,7 +62,7 @@ const MyBalanceSection: React.FC<{
 }> = ({ title, myBalances }) => {
   return (
     <>
-      <TitleSection hasMb>{title}</TitleSection>
+      <TitleSection>{title}</TitleSection>
       {Object.entries(myBalances).map(([tokenName, balanceValue], index) => (
         <Flex alignItems="center" mb="2px" key={index}>
           <TokenLabel type="token">{tokenName}</TokenLabel>
@@ -48,18 +85,18 @@ const EarningsSection: React.FC<{
       
   return (
     <Wrap>
-      <TitleWrap>
-        <TitleSection hasMb={false}>{t('Earned')}</TitleSection>
-        <Flex>
+      <StyledTitleSection>
+        <span>{t('Earned')}</span>
+        <Flex ml="8px">
           {
             allEarnings.length > 0 && allEarnings.map(({ symbol }, index) => 
-              <ImageBox key={index}>
-                <Coin symbol={symbol} size={isMobile ? '16px' : '20px'} />
+              <ImageBox key={index} width={isMobile ? '16px' : '20px'} height={isMobile ? '16px' : '20px'}>
+                <Coin symbol={symbol} size="100%" />
               </ImageBox>
             )
           }
         </Flex>
-      </TitleWrap>
+      </StyledTitleSection>
       <ValueWrap>
         {
           allEarnings.length > 0 && allEarnings.map(({ symbol, earnings }, index) => <Flex key={index} alignItems="flex-end">
@@ -72,7 +109,7 @@ const EarningsSection: React.FC<{
   )
 }
 
-export { TotalLiquiditySection, MyBalanceSection, EarningsSection }
+export { TotalLiquiditySection, TotalStakedSection, MyBalanceSection, EarningsSection }
 
 const ImageBox = styled(Box)`
   &:first-child {
@@ -83,17 +120,22 @@ const ImageBox = styled(Box)`
   }
 `
 
-
-const TitleSection = styled(Text)<{ hasMb: boolean }>`
-  margin-right: ${({ theme }) => theme.spacing.S_6}px;
-  margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_12R};
-  white-space: nowrap;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
-  }
+const StyledTitleSection = styled(TitleSection)`
+  display: flex;
+  align-items: center;
 `
+
+
+// const TitleSection = styled(Text)<{ hasMb: boolean }>`
+//   margin-right: ${({ theme }) => theme.spacing.S_6}px;
+//   margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
+//   color: ${({ theme }) => theme.colors.mediumgrey};
+//   ${({ theme }) => theme.textStyle.R_12R};
+//   white-space: nowrap;
+//   ${({ theme }) => theme.mediaQueries.mobileXl} {
+//     margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
+//   }
+// `
 const TokenLabel = styled(Label)`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -135,5 +177,23 @@ const TokenNameText = styled(Text)`
   ${({ theme }) => theme.textStyle.R_12M};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-bottom: -1px;
+  }
+`
+
+const UnitText = styled(Text)`
+  margin-left: 4px;
+  ${({ theme }) => theme.textStyle.R_12M};
+  color: ${({ theme }) => theme.colors.deepgrey};
+  line-height: 1.9;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    line-height: 1.8;
+  }
+`
+
+const PriceText = styled(CurrencyText)`
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_14R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_12R};
   }
 `

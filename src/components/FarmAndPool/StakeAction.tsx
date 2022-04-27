@@ -1,16 +1,14 @@
-import BigNumber from 'bignumber.js'
-import { Contract } from 'web3-eth-contract'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { useApprove } from 'hooks/useApprove'
 import useConverter from 'hooks/useConverter'
-import { useFarmUnlockDate, useToast } from 'state/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { useToast } from 'state/hooks'
 import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
 import UnlockButton from 'components/UnlockButton'
 import { TitleSection } from 'components/FarmAndPool/Styled'
+import BigNumber from 'bignumber.js'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 
 interface FarmStakeActionProps {
@@ -18,11 +16,16 @@ interface FarmStakeActionProps {
   hasAccount: boolean
   hasUserData: boolean
   hasAllowance: boolean
-  myLiquidity: BigNumber
-  myLiquidityPrice: BigNumber
-  lpContract: Contract
   onPresentDeposit?: any
   onPresentWithdraw?: any
+
+  isEnableRemoveStake: boolean
+  isEnableAddStake: boolean
+  onApprove: () => Promise<any>
+  stakedBalance: BigNumber
+  stakedBalancePrice: number
+  stakedBalanceUnit: string
+
 }
 
 const StakeAction: React.FC<FarmStakeActionProps> = ({
@@ -30,27 +33,24 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   hasAccount,
   hasUserData,
   hasAllowance,
-  myLiquidity,
-  myLiquidityPrice,
-  lpContract,
   onPresentDeposit,
   onPresentWithdraw,
+
+  isEnableRemoveStake,
+  isEnableAddStake,
+  onApprove,
+  stakedBalance,
+  stakedBalancePrice,
+  stakedBalanceUnit,
+
+
 }) => {
+
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const { convertToBalanceFormat } = useConverter()
   const [isLoadingApproveContract, setIsLoadingApproveContract] = useState(false)
 
-  const farmUnlockDate = useFarmUnlockDate()
-  const isEnableAddStake = useMemo(() => {
-    return (
-      typeof farmUnlockDate === 'undefined' ||
-      (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())
-    )
-  }, [farmUnlockDate])
-  const myLiquidityValue = useMemo(() => getBalanceNumber(myLiquidity), [myLiquidity])
-
-  const { onApprove } = useApprove(lpContract)
   const handleApprove = useCallback(async () => {
     try {
       setIsLoadingApproveContract(true)
@@ -71,22 +71,22 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const renderBalance = useMemo(() => <Flex justifyContent="space-between">
       <Box>
         <BalanceText>
-          {convertToBalanceFormat(myLiquidityValue)}
-          <UnitText>LP</UnitText>
+          {convertToBalanceFormat(getBalanceNumber(stakedBalance))}
+          <UnitText>{stakedBalanceUnit}</UnitText>
         </BalanceText>
-        <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
+        <PriceText value={stakedBalancePrice} prefix="=" />
         </Box>
     </Flex>
-  , [myLiquidityValue, myLiquidityValue, componentType])
+  , [convertToBalanceFormat, stakedBalance, stakedBalancePrice, componentType, stakedBalanceUnit])
 
   const renderFarmAccordian = useMemo(() => hasAccount ? (hasUserData && hasAllowance ? <Flex justifyContent="space-between">
     {renderBalance}
-    {componentType === 'farm-accordian' && <Box>
+    {componentType === 'accordian' && <Box>
       <Button
         minWidth="40px"
         md
         variant={ButtonVariants.LINE}
-        disabled={myLiquidity.eq(new BigNumber(0)) || isLoadingApproveContract}
+        disabled={isEnableRemoveStake}
         onClick={onPresentWithdraw}
       >
         <MinusIcon />
@@ -112,7 +112,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     >
       {t('Approve Contract')}
     </Button>) : <UnlockButton />
-  , [hasAccount, hasUserData, hasAllowance, renderBalance, componentType, myLiquidity, isEnableAddStake, onPresentDeposit, isLoadingApproveContract, handleApprove, onPresentWithdraw])
+  , [hasAccount, hasUserData, hasAllowance, renderBalance, componentType, isEnableAddStake, isEnableRemoveStake, onPresentDeposit, isLoadingApproveContract, handleApprove, onPresentWithdraw])
 
 const renderFarm = useMemo(() => <Flex justifyContent="space-between">
   {hasAccount ? renderBalance : <Box>
@@ -126,7 +126,7 @@ const renderFarm = useMemo(() => <Flex justifyContent="space-between">
     <>
       <TitleSection>{t('My Staked')}</TitleSection>
       {
-        componentType !== 'farm-accordian' ? renderFarm : renderFarmAccordian
+        componentType !== 'accordian' ? renderFarm : renderFarmAccordian
       }
     </>
   )
