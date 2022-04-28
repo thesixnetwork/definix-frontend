@@ -5,16 +5,6 @@ import { Flex, Box, Text, ColorStyles, Coin } from '@fingerlabs/definixswap-uiki
 import ApyButton from './ApyButton'
 import { CardHeadingProps } from './types'
 
-const StyledCoin = styled(Coin)`
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    width: 36px;
-    height: 36px;
-  }
-`
-
 const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, pool, size = 'medium', componentType }) => {
   const { convertToPoolAPRFormat } = useConverter()
   const isMediumSize = useMemo(() => size === 'medium', [size])
@@ -41,10 +31,11 @@ const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, pool, size = 'med
         </Text>
 
         <Flex alignItems="end">
-          <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px' }}>
+          <APRCoin symbol="FINIX" size="20px" />
+          <Text textStyle="R_14M" color={ColorStyles.ORANGE}>
             APR
           </Text>
-          <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
+          <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px', marginBottom: '-2px' }}>
             {displayApy}
           </Text>
           <Box style={{ marginLeft: '4px' }}>
@@ -57,3 +48,18 @@ const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, pool, size = 'med
 }
 
 export default CardHeading
+
+
+const StyledCoin = styled(Coin)`
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 36px;
+    height: 36px;
+  }
+`
+
+const APRCoin = styled(Coin)`
+  margin-right: 3px;
+`

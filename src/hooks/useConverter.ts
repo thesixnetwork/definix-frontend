@@ -9,6 +9,7 @@ export default function useConverter() {
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const kethPrice = usePriceKethKusdt()
+  const favorPrice = usePriceFinixUsd()
 
   const convertToPriceFromToken = (token, symbol): BigNumber => {
     const tokenSymbol = symbol.toUpperCase()
@@ -44,6 +45,9 @@ export default function useConverter() {
     }
     if (symbol === QuoteToken.SIX) {
       price = sixPrice
+    }
+    if (symbol === QuoteToken.FAVOR) {
+      price = favorPrice
     }
     return price.toNumber()
   }

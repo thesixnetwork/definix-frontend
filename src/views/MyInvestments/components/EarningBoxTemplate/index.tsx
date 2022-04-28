@@ -12,6 +12,8 @@ import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/Text/CurrencyText'
 import BalanceText from 'components/Text/BalanceText'
 import Slide from './Slide'
+import { QuoteToken } from 'config/constants/types'
+import { FAVOR_FARMS } from 'config/constants/farms'
 
 interface InnerTheme {
   totalTitleColor: ColorStyles
@@ -163,7 +165,7 @@ const EarningBoxTemplate: React.FC<{
   valueList,
   theme = 'white',
   useHarvestButton = true,
-  unit = '',
+  unit = QuoteToken.FINIX,
 }) => {
   const { t } = useTranslation()
   const history = useHistory()
@@ -181,8 +183,13 @@ const EarningBoxTemplate: React.FC<{
   // farm, pool
   const farmsWithBalance = useFarmsWithBalance()
   const myFarmPools = useMemo(() => {
-    return farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
-  }, [farmsWithBalance])
+    const favorPids = FAVOR_FARMS.map(({ pid }) => pid);
+    const list =  farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
+    if (unit === QuoteToken.FAVOR) {
+      return list.filter(({ pid }) => !!favorPids.includes(pid))
+    }
+    return list;
+  }, [farmsWithBalance, unit])
 
   const farmPoolHarvestHook = useAllHarvest(
     myFarmPools.map((farmWithBalance) => pick(farmWithBalance, ['pid', 'lpSymbol'])),
@@ -190,7 +197,7 @@ const EarningBoxTemplate: React.FC<{
   // long term stake
   const { finixEarn } = usePrivateData()
   const longTermStakeHarvestHook = useHarvest()
-  const needHarvestLongTermStake = useMemo(() => finixEarn > 0, [finixEarn])
+  const needHarvestLongTermStake = useMemo(() => unit === QuoteToken.FAVOR ? false : finixEarn > 0, [unit, finixEarn])
 
   const harvestAllLength = useRef(0)
   const isHarvestingUsingKlip = useMemo(() => {
@@ -343,6 +350,7 @@ const EarningBoxTemplate: React.FC<{
             displayOnlyTotalPrice={displayOnlyTotalPrice}
             curTheme={curTheme}
             data={valueList}
+            unit={unit}
           />
         )}
       </SlideSection>

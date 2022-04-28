@@ -30,7 +30,7 @@ const StyledLp = styled(Lp)`
 const FarmHighAPR = () => {
   const farmsLP = useFarms()
   const farmsWithApy = useFarmsList(farmsLP)
-  const activeFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
+  const activeFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X' && farm.apy.toString() !== 'Infinity')
   const sortedFarmData = useMemo(() => activeFarms.sort((a, b) => +a.apy - +b.apy).reverse(), [activeFarms])
 
   return sortedFarmData[0] ? (

@@ -11,9 +11,11 @@ export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
   finixApy?: BigNumber
   klayApy?: BigNumber
+  favorApy?: BigNumber
   apyValue: number
   totalLiquidityValue: number
   lpSymbols: LpSymbol[]
+  isBundle?: boolean
 }
 
 export interface FarmCardProps {
@@ -22,4 +24,5 @@ export interface FarmCardProps {
   myBalancesInWallet?: { [key: string]: BigNumber }
   klaytn?: provider
   account?: string
+  reward?: BigNumber
 }

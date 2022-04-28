@@ -16,7 +16,7 @@ import { Currency, CurrencyAmount, Percent, Price, TokenAmount, ETHER } from 'de
 import { useTranslation } from 'react-i18next'
 import { getAbiByName } from 'hooks/hookHelper'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
-import farms from 'config/constants/farm'
+import farms from 'config/constants/farms'
 import { ROUTER_ADDRESS } from 'config/constants/index'
 import useUserDeadline from 'hooks/useUserDeadline'
 import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'

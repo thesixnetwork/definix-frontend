@@ -1,4 +1,3 @@
-import contracts from './contracts'
 import { LongTermStakeConfig } from './types'
 
 const longTerm: LongTermStakeConfig[] = [

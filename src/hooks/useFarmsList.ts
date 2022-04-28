@@ -4,13 +4,14 @@ import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import { getLpImageUrlsAndSymbols } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
+import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd, usePriceFavorUsd } from 'state/hooks'
 import { Farm } from 'state/types'
 import { useCallback } from 'react'
 
 const useFarmsList = (farms: Farm[]): any => {
   const { convertToPriceFromToken } = useConverter()
   const klayPrice = usePriceKlayKusdt()
+  const favorPrice = usePriceFavorUsd()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const kethPriceUsd = usePriceKethKusdt()
@@ -26,12 +27,39 @@ const useFarmsList = (farms: Farm[]): any => {
         }
       }
       const klayApy = new BigNumber(0)
+      let favorApy = new BigNumber(0)
       const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
         .times(farm.BONUS_MULTIPLIER)
         .div(new BigNumber(10).pow(18))
       // const totalKlayRewardPerBlock = new BigNumber(KLAY_PER_BLOCK)
       const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
       const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+
+      const filterBundleRewards = farm.bundleRewards.filter(({ rewardTokenInfo }) => ![QuoteToken.WKLAY, QuoteToken.KLAY].includes(rewardTokenInfo.symbol))
+
+      if (filterBundleRewards.length > 0) {
+        const favorBundle = filterBundleRewards.find((br) => br.rewardTokenInfo.symbol === QuoteToken.FAVOR)
+        if (favorBundle) {
+          // @ts-ignore
+          const favorRewardPerBlock = new BigNumber([favorBundle.rewardPerBlock]).div(new BigNumber(10).pow(18))
+          const favorRewardPerYear = favorRewardPerBlock.times(BLOCKS_PER_YEAR)
+          const yieldValue = favorPrice.times(favorRewardPerYear)
+          let totalValue = farm.lpTotalInQuoteToken
+          if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+            totalValue = klayPrice.times(farm.lpTotalInQuoteToken)
+          }
+          if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+            totalValue = finixPrice.times(farm.lpTotalInQuoteToken)
+          }
+          if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+            totalValue = kethPriceUsd.times(farm.lpTotalInQuoteToken)
+          }
+          if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+            totalValue = sixPrice.times(farm.lpTotalInQuoteToken)
+          }
+          favorApy = yieldValue.div(totalValue)
+        }
+      }
 
       /*
       // DO NOT DELETE THIS CODE 
@@ -108,13 +136,16 @@ const useFarmsList = (farms: Farm[]): any => {
 
       return {
         ...farm,
+        bundleRewards: filterBundleRewards,
         apy: finixApy,
         finixApy,
         klayApy,
+        favorApy,
         // apyValue: convertToFarmAPR(finixApy),
         apyValue: finixApy.times(100).toNumber(),
         totalLiquidityValue: Number(totalLiquidityValue),
         lpSymbols: getLpImageUrlsAndSymbols(farm.lpSymbol),
+        isBundle: (farm.bundleRewards || []).length > 0
       }
     })
   }, [convertToPriceFromToken, farms, finixPrice, finixPriceVsKlay, kethPriceUsd, klayPrice, sixPrice])

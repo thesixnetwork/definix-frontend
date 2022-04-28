@@ -7,6 +7,7 @@ interface Window {
     isMetaMask?: true
     on?: (...args: any[]) => void
     removeListener?: (...args: any[]) => void
+    sendAsync?: (...args: any) => void
   }
   web3?: any
   BinanceChain?: BinanceChain

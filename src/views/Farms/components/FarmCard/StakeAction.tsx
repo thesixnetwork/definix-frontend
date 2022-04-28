@@ -11,28 +11,6 @@ import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from '@f
 import CurrencyText from 'components/Text/CurrencyText'
 import UnlockButton from 'components/UnlockButton'
 
-const TitleSection = styled(Text)`
-  margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_12R};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
-  }
-`
-const BalanceText = styled(Text)`
-  color: ${({ theme }) => theme.colors.black};
-  ${({ theme }) => theme.textStyle.R_18M};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_16M};
-  }
-`
-const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_14R};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_12R};
-  }
-`
 
 interface FarmStakeActionProps {
   componentType?: string
@@ -89,61 +67,102 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     }
   }, [onApprove, toastError, toastSuccess, t])
 
+  const renderBalance = useMemo(() => <Flex justifyContent="space-between">
+      <Box>
+        <BalanceText>
+          {convertToBalanceFormat(myLiquidityValue)}
+          <UnitText>LP</UnitText>
+        </BalanceText>
+        <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
+        </Box>
+    </Flex>
+  , [myLiquidityValue, myLiquidityValue, componentType])
+
+  const renderFarmAccordian = useMemo(() => hasAccount ? (hasUserData && hasAllowance ? <Flex justifyContent="space-between">
+    {renderBalance}
+    {componentType === 'farm-accordian' && <Box>
+      <Button
+        minWidth="40px"
+        md
+        variant={ButtonVariants.LINE}
+        disabled={myLiquidity.eq(new BigNumber(0)) || isLoadingApproveContract}
+        onClick={onPresentWithdraw}
+      >
+        <MinusIcon />
+      </Button>
+      {isEnableAddStake && (
+        <Button
+          minWidth="40px"
+          md
+          variant={ButtonVariants.LINE}
+          onClick={onPresentDeposit}
+          style={{ marginLeft: '4px' }}
+        >
+          <PlusIcon />
+        </Button>
+      )}
+    </Box>}
+    </Flex> : <Button
+      width="100%"
+      md
+      variant={ButtonVariants.BROWN}
+      isLoading={!hasUserData || isLoadingApproveContract}
+      onClick={handleApprove}
+    >
+      {t('Approve Contract')}
+    </Button>) : <UnlockButton />
+  , [hasAccount, hasUserData, hasAllowance, renderBalance, componentType, myLiquidity, isEnableAddStake, onPresentDeposit, isLoadingApproveContract, handleApprove, onPresentWithdraw])
+
+const renderFarm = useMemo(() => <Flex justifyContent="space-between">
+  {hasAccount ? renderBalance : <Box>
+      <BalanceText>-</BalanceText>
+      </Box>}
+    </Flex>
+  , [hasAccount, renderBalance])
+  
+
   return (
     <>
-      <TitleSection>{t('My Liquidity')}</TitleSection>
-      {hasAccount ? (
-        <>
-          {/* // hasAllowance로 loading 상태 구분 */}
-          {hasUserData && hasAllowance ? (
-            <Flex justifyContent="space-between">
-              <Box>
-                <BalanceText>{convertToBalanceFormat(myLiquidityValue)}</BalanceText>
-                <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
-              </Box>
-
-              {componentType === 'farm' && (
-                <Box>
-                  <Button
-                    minWidth="40px"
-                    md
-                    variant={ButtonVariants.LINE}
-                    disabled={myLiquidity.eq(new BigNumber(0)) || isLoadingApproveContract}
-                    onClick={onPresentWithdraw}
-                  >
-                    <MinusIcon />
-                  </Button>
-                  {isEnableAddStake && (
-                    <Button
-                      minWidth="40px"
-                      md
-                      variant={ButtonVariants.LINE}
-                      onClick={onPresentDeposit}
-                      style={{ marginLeft: '4px' }}
-                    >
-                      <PlusIcon />
-                    </Button>
-                  )}
-                </Box>
-              )}
-            </Flex>
-          ) : (
-            <Button
-              width="100%"
-              md
-              variant={ButtonVariants.BROWN}
-              isLoading={!hasUserData || isLoadingApproveContract}
-              onClick={handleApprove}
-            >
-              {t('Approve Contract')}
-            </Button>
-          )}
-        </>
-      ) : (
-        <UnlockButton />
-      )}
+      <TitleSection>{t('My Staked')}</TitleSection>
+      {
+        componentType !== 'farm-accordian' ? renderFarm : renderFarmAccordian
+      }
     </>
   )
 }
 
 export default React.memo(StakeAction)
+
+const TitleSection = styled(Text)`
+  margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_12R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+  }
+`
+const BalanceText = styled(Text)`
+  display: flex;
+  align-items: flex-end;
+  color: ${({ theme }) => theme.colors.black};
+  ${({ theme }) => theme.textStyle.R_18M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_16M};
+  }
+`
+const PriceText = styled(CurrencyText)`
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_14R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_12R};
+  }
+`
+const UnitText = styled(Text)`
+  margin-left: 4px;
+  ${({ theme }) => theme.textStyle.R_12M};
+  color: ${({ theme }) => theme.colors.deepgrey};
+  line-height: 1.9;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    line-height: 1.8;
+  }
+`

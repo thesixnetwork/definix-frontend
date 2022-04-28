@@ -108,30 +108,6 @@ export const getTradingCompetRegisAddress = () => {
 export const getDeParamAddress = () => {
   return getAddress(addresses.deParam)
 }
-export const getLotteryAddress = () => {
-  return getAddress(addresses.lottery)
-}
-export const getLotteryTicketAddress = () => {
-  return getAddress(addresses.lotteryNFT)
-}
-export const getDefinixProfileAddress = () => {
-  return getAddress(addresses.definixProfile)
-}
-export const getDefinixRabbitsAddress = () => {
-  return getAddress(addresses.definixRabbits)
-}
-export const getBunnyFactoryAddress = () => {
-  return getAddress(addresses.bunnyFactory)
-}
-export const getClaimRefundAddress = () => {
-  return getAddress(addresses.claimRefund)
-}
-export const getPointCenterIfoAddress = () => {
-  return getAddress(addresses.pointCenterIfo)
-}
-export const getBunnySpecialAddress = () => {
-  return getAddress(addresses.bunnySpecial)
-}
 export const getVFinix = () => {
   return getAddress(addresses.vFinix)
 }

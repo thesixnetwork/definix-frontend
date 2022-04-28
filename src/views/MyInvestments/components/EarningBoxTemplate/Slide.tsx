@@ -115,7 +115,8 @@ const Slide: React.FC<{
   displayOnlyTotalPrice: boolean
   curTheme: { [key: string]: any }
   data: ValueList[]
-}> = ({ isMobile, hasAccount, displayOnlyTotalPrice, curTheme, data }) => {
+  unit: string
+}> = ({ isMobile, hasAccount, displayOnlyTotalPrice, curTheme, data, unit }) => {
   const pcSlider = useRef(null)
   const mobileSlider = useRef(null)
   const [slideIndex, setSlideIndex] = useState(0)
@@ -135,12 +136,12 @@ const Slide: React.FC<{
         textStyle: isMobile ? 'R_14B' : `R_16M`,
         color: curTheme.itemBalanceColor,
         value: hasAccount ? value : 0,
-        postfix: 'FINIX',
+        postfix: unit,
         style: { display: 'inline-block' },
       }
       return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
     },
-    [displayOnlyTotalPrice, isMobile, curTheme.itemBalanceColor, hasAccount],
+    [displayOnlyTotalPrice, isMobile, curTheme.itemBalanceColor, hasAccount, unit],
   )
 
   const renderItemSubValue = useCallback(

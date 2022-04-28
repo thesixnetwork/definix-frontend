@@ -13,7 +13,9 @@ import {
   KSP,
   getLpNetwork,
   getSingleLpNetwork,
+  // FAVOR,
 } from './tokens'
+import { ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 
 const farms: FarmConfig[] = [
   {
@@ -44,6 +46,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.finix,
     secondToken: contracts.six,
+    firstSymbol: QuoteToken.FINIX,
+    secondSymbol: QuoteToken.SIX,
     tag: 'hot',
   },
   {
@@ -56,6 +60,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.finix,
     secondToken: contracts.wklay,
+    firstSymbol: QuoteToken.FINIX,
+    secondSymbol: QuoteToken.KLAY,
     tag: 'hot',
   },
   {
@@ -68,7 +74,6 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.finix,
     secondToken: contracts.ksp,
-    tag: 'hot',
   },
   {
     pid: 5,
@@ -80,6 +85,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.finix,
     secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.FINIX,
+    secondSymbol: QuoteToken.KUSDT,
   },
   {
     pid: 6,
@@ -91,6 +98,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
     firstToken: contracts.six,
     secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.SIX,
+    secondSymbol: QuoteToken.KUSDT,
   },
   {
     pid: 7,
@@ -102,6 +111,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.six,
     firstToken: contracts.six,
     secondToken: contracts.wklay,
+    firstSymbol: QuoteToken.SIX,
+    secondSymbol: QuoteToken.KLAY,
   },
   {
     pid: 8,
@@ -113,6 +124,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wklay,
     firstToken: contracts.wklay,
     secondToken: contracts.keth,
+    firstSymbol: QuoteToken.KLAY,
+    secondSymbol: QuoteToken.KETH,
   },
   {
     pid: 9,
@@ -124,6 +137,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wklay,
     firstToken: contracts.wklay,
     secondToken: contracts.kwbtc,
+    firstSymbol: QuoteToken.KLAY,
+    secondSymbol: QuoteToken.KWBTC,
   },
   {
     pid: 10,
@@ -135,6 +150,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wklay,
     firstToken: contracts.wklay,
     secondToken: contracts.kxrp,
+    firstSymbol: QuoteToken.KLAY,
+    secondSymbol: QuoteToken.KXRP,
   },
   {
     pid: 11,
@@ -146,6 +163,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
     firstToken: contracts.keth,
     secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.KETH,
+    secondSymbol: QuoteToken.KUSDT,
   },
   {
     pid: 12,
@@ -157,6 +176,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
     firstToken: contracts.kwbtc,
     secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.KWBTC,
+    secondSymbol: QuoteToken.KUSDT,
   },
   {
     pid: 13,
@@ -168,6 +189,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
     firstToken: contracts.kxrp,
     secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.KXRP,
+    secondSymbol: QuoteToken.KUSDT,
   },
   {
     pid: 14,
@@ -179,6 +202,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
     firstToken: contracts.wklay,
     secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.KLAY,
+    secondSymbol: QuoteToken.KUSDT,
   },
   {
     pid: 15,
@@ -190,6 +215,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
     firstToken: contracts.kdai,
     secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.KDAI,
+    secondSymbol: QuoteToken.KUSDT,
   },
   {
     pid: 16,
@@ -201,6 +228,8 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
     firstToken: contracts.kbnb,
     secondToken: contracts.kusdt,
+    firstSymbol: QuoteToken.KBNB,
+    secondSymbol: QuoteToken.KUSDT,
   },
   {
     pid: 17,
@@ -212,7 +241,16 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.kbnb,
     secondToken: contracts.finix,
+    firstSymbol: QuoteToken.KBNB,
+    secondSymbol: QuoteToken.FINIX,
   },
 ]
+
+export const FAVOR_FARMS = farms.filter(({ tokenSymbol, firstSymbol, secondSymbol }) => tokenSymbol === 'Favor' || tokenSymbol === 'FAVOR' || firstSymbol === 'FAVOR' || firstSymbol === 'Favor' || secondSymbol === 'FAVOR' || secondSymbol === 'Favor')
+
+export const TAG_COLORS = {
+  'hot': ColorStyles.RED,
+  'special': ColorStyles.YELLOW
+}
 
 export default farms

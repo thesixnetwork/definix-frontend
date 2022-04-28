@@ -1,10 +1,88 @@
 import BigNumber from 'bignumber.js'
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { getBalanceNumber } from 'utils/formatBalance'
-import useConverter from 'hooks/useConverter'
 import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
+import { QuoteToken } from 'config/constants/types'
+import { useTranslation } from 'react-i18next'
+import BalanceText from 'components/Text/BalanceText'
+
+const TotalLiquiditySection: React.FC<{
+  title: string
+  totalLiquidity: number
+}> = ({ title, totalLiquidity }) => {
+  return (
+    <>
+      <TitleSection hasMb>{title}</TitleSection>
+      <TotalLiquidityText value={totalLiquidity} />
+    </>
+  )
+}
+
+const MyBalanceSection: React.FC<{
+  title: string
+  myBalances: { [key: string]: BigNumber | null }
+}> = ({ title, myBalances }) => {
+  return (
+    <>
+      <TitleSection hasMb>{title}</TitleSection>
+      {Object.entries(myBalances).map(([tokenName, balanceValue], index) => (
+        <Flex alignItems="center" mb="2px" key={index}>
+          <TokenLabel type="token">{tokenName}</TokenLabel>
+          <StyledBalanceText value={balanceValue || 0} toFixed={0} />
+        </Flex>
+      ))}
+    </>
+  )
+}
+
+
+const EarningsSection: React.FC<{
+  allEarnings: {
+    token: QuoteToken
+    earnings: number
+  }[]
+  isMobile: boolean
+}> = ({ allEarnings, isMobile }) => {
+  const { t } = useTranslation()
+      
+  return (
+    <Wrap>
+      <TitleWrap>
+        <TitleSection hasMb={false}>{t('Earned')}</TitleSection>
+        <Flex>
+          {
+            allEarnings.length > 0 && allEarnings.map(({ token }, index) => 
+              <ImageBox key={index}>
+                <Coin symbol={token} size={isMobile ? '16px' : '20px'} />
+              </ImageBox>
+            )
+          }
+        </Flex>
+      </TitleWrap>
+      <ValueWrap>
+        {
+          allEarnings.length > 0 && allEarnings.map(({ token, earnings }, index) => <Flex key={index} alignItems="flex-end">
+            <StyledBalanceText value={earnings} />
+            <TokenNameText>{token || ''}</TokenNameText>
+          </Flex>)
+        }
+      </ValueWrap>
+    </Wrap>
+  )
+}
+
+export { TotalLiquiditySection, MyBalanceSection, EarningsSection }
+
+const ImageBox = styled(Box)`
+  &:first-child {
+    z-index: 1;
+  }
+  &:last-child {
+    margin-left: -4px;
+  }
+`
+
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;
@@ -22,12 +100,13 @@ const TokenLabel = styled(Label)`
     margin-right: ${({ theme }) => theme.spacing.S_12}px;
   }
 `
-const BalanceText = styled(Text)`
+const StyledBalanceText = styled(BalanceText)`
   color: ${({ theme }) => theme.colors.black};
   ${({ theme }) => theme.textStyle.R_18M};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_16M};
   }
+  margin-bottom: -3px;
 `
 const TotalLiquidityText = styled(CurrencyText)`
   color: ${({ theme }) => theme.colors.black};
@@ -36,44 +115,6 @@ const TotalLiquidityText = styled(CurrencyText)`
     ${({ theme }) => theme.textStyle.R_16M};
   }
 `
-const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_14R};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_12R};
-  }
-`
-const TotalLiquiditySection: React.FC<{
-  title: string
-  totalLiquidity: number
-}> = ({ title, totalLiquidity }) => {
-  return (
-    <>
-      <TitleSection hasMb>{title}</TitleSection>
-      <TotalLiquidityText value={totalLiquidity} />
-    </>
-  )
-}
-
-const MyBalanceSection: React.FC<{
-  title: string
-  myBalances: { [key: string]: BigNumber | null }
-}> = ({ title, myBalances }) => {
-  const { convertToBalanceFormat } = useConverter()
-  return (
-    <>
-      <TitleSection hasMb>{title}</TitleSection>
-      {Object.entries(myBalances).map(([tokenName, balanceValue], index) => (
-        <Flex alignItems="center" key={index}>
-          <TokenLabel type="token">{tokenName}</TokenLabel>
-          <BalanceText>
-            {!BigNumber.isBigNumber(balanceValue) ? '-' : convertToBalanceFormat(balanceValue.toNumber())}
-          </BalanceText>
-        </Flex>
-      ))}
-    </>
-  )
-}
 
 const Wrap = styled(Flex)`
   flex-direction: column;
@@ -83,53 +124,16 @@ const Wrap = styled(Flex)`
 `
 const TitleWrap = styled(Flex)`
   margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
-  align-items: flex-start;
+  align-items: center;
 `
 const ValueWrap = styled(Box)`
   margin-top: -2px;
 `
 const TokenNameText = styled(Text)`
   padding-left: 2px;
-  padding-bottom: 2px;
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_12M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: -1px;
+  }
 `
-// const TokenImage = styled.img`
-//   width: 20px;
-//   height: auto;
-//   object-fit: contain;
-// `
-const EarningsSection: React.FC<{
-  title: string
-  tokenName: string
-  earnings: BigNumber
-}> = ({ title, tokenName, earnings }) => {
-  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
-
-  const earningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
-  const earningsPrice = useMemo(() => {
-    const price = convertToPriceFromSymbol(tokenName)
-    return new BigNumber(earningsValue).multipliedBy(price)
-  }, [earningsValue, convertToPriceFromSymbol, tokenName])
-
-  return (
-    <Wrap>
-      <TitleWrap>
-        <TitleSection hasMb={false}>{title}</TitleSection>
-        <Box>
-          <Coin symbol="FINIX" size="20px" />
-          {/* <TokenImage src={getTokenImageUrl('finix')} alt="finix" /> */}
-        </Box>
-      </TitleWrap>
-      <ValueWrap>
-        <Flex alignItems="flex-end">
-          <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
-          <TokenNameText>FINIX</TokenNameText>
-        </Flex>
-        <PriceText value={earningsPrice} prefix="=" />
-      </ValueWrap>
-    </Wrap>
-  )
-}
-
-export { TotalLiquiditySection, MyBalanceSection, EarningsSection }

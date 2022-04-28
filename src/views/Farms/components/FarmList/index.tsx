@@ -14,6 +14,7 @@ import NoResultArea from 'components/NoResultArea'
 import useWallet from 'hooks/useWallet'
 import FarmCard from '../FarmCard/FarmCard'
 import { FarmWithStakedValue } from '../FarmCard/types'
+import { resetFarmUserData } from 'state/farms'
 
 const FarmList: React.FC<{
   stakedOnly: boolean
@@ -87,6 +88,8 @@ const FarmList: React.FC<{
   useEffect(() => {
     if (account) {
       dispatch(fetchFarmUserDataAsync(account))
+    } else {
+      dispatch(resetFarmUserData())
     }
   }, [account, dispatch, slowRefresh])
 

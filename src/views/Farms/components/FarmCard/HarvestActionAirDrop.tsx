@@ -7,9 +7,124 @@ import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
+
+const HarvestAction: React.FC<{
+  componentType: string
+  pid?: number
+  allEarnings: {
+    token: QuoteToken
+    earnings: number
+  }[]
+  lpSymbol: string
+}> = ({ pid, allEarnings, componentType = 'farm', lpSymbol }) => {
+  const { t } = useTranslation()
+  const { toastSuccess, toastError } = useToast()
+  const navigate = useHistory()
+  const isInFarm = useMemo(() => componentType === 'farm', [componentType])
+  const [pendingTx, setPendingTx] = useState(false)
+
+  const { onReward } = useHarvest(pid)
+  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
+
+  const getPrice = useCallback((value, unitPrice) => {
+    return new BigNumber(value).multipliedBy(unitPrice).toNumber()
+  }, [])
+
+  const showHarvestResult = useCallback(
+    (isSuccess: boolean) => {
+      const toastDescription = (
+        <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
+          {lpSymbol}
+        </Text>
+      )
+      const actionText = t('actionHarvest')
+      if (isSuccess) {
+        toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
+      } else {
+        toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
+      }
+    },
+    [toastSuccess, toastError, t, lpSymbol],
+  )
+
+  const handleHarvest = useCallback(async () => {
+    try {
+      if (pendingTx) return
+      setPendingTx(true)
+      await onReward()
+      showHarvestResult(true)
+    } catch {
+      showHarvestResult(false)
+    } finally {
+      setPendingTx(false)
+    }
+  }, [onReward, showHarvestResult, pendingTx])
+
+  const renderHarvestButton = useMemo(
+    () => (
+      <Button
+        variant={ButtonVariants.RED}
+        width="100%"
+        disabled={allEarnings.reduce((sum, { earnings }) => sum + earnings, 0) === 0}
+        isLoading={pendingTx}
+        onClick={handleHarvest}
+      >
+        {t('Harvest')}
+      </Button>
+    ),
+    [t, allEarnings, pendingTx, handleHarvest],
+  )
+
+  const renderDetailButton = useMemo(
+    () => (
+      <DetailButton variant={ButtonVariants.BROWN} width="100%" onClick={() => navigate.push('/farm')}>
+        {t('Detail')}
+      </DetailButton>
+    ),
+    [navigate, t],
+  )
+
+  const renderEarnedPrice = useCallback((tokenName, balance, price) => {
+    return <Flex key={tokenName} mb="8px">
+      <TokenLabel type="token">{tokenName}</TokenLabel>
+      <TokenValueWrap>
+        <BalanceText>{convertToBalanceFormat(balance)}</BalanceText>
+        <PriceText value={price} prefix="=" />
+      </TokenValueWrap>
+    </Flex>
+  }, [convertToBalanceFormat])
+
+  return (
+    <>
+      <Box>
+        <Wrap isInFarm={isInFarm}>
+          <Box>
+            <TitleSection>{t('Earned Token')}</TitleSection>
+            <HarvestInfo>
+              <Flex flexDirection="column">
+                {
+                  allEarnings.length > 0 && allEarnings.map((item) => renderEarnedPrice(item.token, item.earnings, getPrice(item.earnings, convertToPriceFromSymbol(item.token))))
+                }
+              </Flex>
+              {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton}</HarvestButtonSectionInFarm>}
+            </HarvestInfo>
+          </Box>
+
+          {isInFarm ? null : (
+            <HarvestButtonSectionInMyInvestment>
+              {renderHarvestButton}
+              {renderDetailButton}
+            </HarvestButtonSectionInMyInvestment>
+          )}
+        </Wrap>
+      </Box>
+    </>
+  )
+}
+
+export default React.memo(HarvestAction)
 
 const Wrap = styled(Flex)<{ isInFarm: boolean }>`
   flex-direction: ${({ isInFarm }) => (isInFarm ? 'column' : 'row')};
@@ -80,110 +195,3 @@ const DetailButton = styled(Button)`
     margin-left: ${({ theme }) => theme.spacing.S_16}px;
   }
 `
-
-const HarvestAction: React.FC<{
-  componentType: string
-  pid?: number
-  earnings: BigNumber
-  lpSymbol: string
-}> = ({ pid, earnings, componentType = 'farm', lpSymbol }) => {
-  const { t } = useTranslation()
-  const { toastSuccess, toastError } = useToast()
-  const navigate = useHistory()
-  const isInFarm = useMemo(() => componentType === 'farm', [componentType])
-  const [pendingTx, setPendingTx] = useState(false)
-
-  const { onReward } = useHarvest(pid)
-  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
-
-  const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
-  const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
-  const earningsPrice = useMemo(() => {
-    return new BigNumber(finixEarningsValue).multipliedBy(finixPrice).toNumber()
-  }, [finixEarningsValue, finixPrice])
-
-  const showHarvestResult = useCallback(
-    (isSuccess: boolean) => {
-      const toastDescription = (
-        <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
-          {lpSymbol}
-        </Text>
-      )
-      const actionText = t('actionHarvest')
-      if (isSuccess) {
-        toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
-      } else {
-        toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
-      }
-    },
-    [toastSuccess, toastError, t, lpSymbol],
-  )
-
-  const handleHarvest = useCallback(async () => {
-    try {
-      if (pendingTx) return
-      setPendingTx(true)
-      await onReward()
-      showHarvestResult(true)
-    } catch {
-      showHarvestResult(false)
-    } finally {
-      setPendingTx(false)
-    }
-  }, [onReward, showHarvestResult, pendingTx])
-
-  const renderHarvestButton = useCallback(
-    () => (
-      <Button
-        variant={ButtonVariants.RED}
-        width="100%"
-        disabled={finixEarningsValue === 0}
-        isLoading={pendingTx}
-        onClick={handleHarvest}
-      >
-        {t('Harvest')}
-      </Button>
-    ),
-    [t, finixEarningsValue, pendingTx, handleHarvest],
-  )
-
-  const renderDetailButton = useCallback(
-    () => (
-      <DetailButton variant={ButtonVariants.BROWN} width="100%" onClick={() => navigate.push('/farm')}>
-        {t('Detail')}
-      </DetailButton>
-    ),
-    [navigate, t],
-  )
-
-  return (
-    <>
-      <Box>
-        <Wrap isInFarm={isInFarm}>
-          <Box>
-            <TitleSection>{t('Earned Token')}</TitleSection>
-            <HarvestInfo>
-              <Flex>
-                <TokenLabel type="token">FINIX</TokenLabel>
-                <TokenValueWrap>
-                  <BalanceText>{convertToBalanceFormat(finixEarningsValue)}</BalanceText>
-                  <PriceText value={earningsPrice} prefix="=" />
-                </TokenValueWrap>
-              </Flex>
-              {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton()}</HarvestButtonSectionInFarm>}
-            </HarvestInfo>
-          </Box>
-
-          {isInFarm ? null : (
-            <HarvestButtonSectionInMyInvestment>
-              {renderHarvestButton()}
-              {renderDetailButton()}
-            </HarvestButtonSectionInMyInvestment>
-          )}
-        </Wrap>
-      </Box>
-    </>
-  )
-}
-
-export default React.memo(HarvestAction)

@@ -185,6 +185,7 @@ const Withdraw: React.FC<{
           type="withdraw"
           value={val}
           max={myStakedBalance}
+          balanceLabel={'Removable'}
           // symbol={pool.stakingTokenName}
           buttonName={t('Remove')}
           onSelectBalanceRateButton={handleSelectBalanceRate}

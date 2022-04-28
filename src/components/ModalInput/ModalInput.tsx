@@ -28,18 +28,14 @@ const ButtonWrap = styled(Box)`
 const ModalInput: React.FC<{
   type: string // deposit, withdraw
   max: BigNumber
-  // symbol: string
-  // placeholder?: string
   value: string
-  // addLiquidityUrl?: string
+  balanceLabel?: string
   onChange: (e: React.FormEvent<HTMLInputElement>) => void
   onSelectBalanceRateButton: (rate: number) => void
   buttonName?: string
   onClickButton?: () => void
 }> = ({
-  // addLiquidityUrl,
-  // placeholder,
-  // symbol,
+  balanceLabel = 'Balance',
   type,
   max,
   onChange,
@@ -78,7 +74,7 @@ const ModalInput: React.FC<{
   return (
     <div>
       <Flex color={ColorStyles.DEEPGREY}>
-        <Text textStyle="R_14R">Balance</Text>
+        <Text textStyle="R_14R">{t(balanceLabel)}</Text>
         <BalanceText value={maxValue} textStyle="R_14B" ml="S_6" />
       </Flex>
 

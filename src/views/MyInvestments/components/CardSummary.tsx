@@ -6,6 +6,8 @@ import ListPageHeader from 'components/ListPageHeader'
 import VFinixSummary from './VFinixSummary'
 import Earned from './Earned'
 import NetWorth from './NetWorth'
+import FavEarnd from './FavEarned'
+import { FAVOR_FARMS } from 'config/constants/farms'
 
 function CardSummary({ products }) {
   const { t } = useTranslation()
@@ -14,8 +16,12 @@ function CardSummary({ products }) {
   const tabs = useMemo(() => {
     return [
       {
-        id: 'earned',
-        name: t('Earned'),
+        id: 'finix_earned',
+        name: t('FINIX Earned tab'),
+      },
+      {
+        id: 'favor_earned',
+        name: t('FAV Earned tab'),
       },
       {
         id: 'networth',
@@ -33,6 +39,14 @@ function CardSummary({ products }) {
     [longTermStake],
   )
 
+  const favorProducts = useMemo(() => {
+    const favorPids = FAVOR_FARMS.map(({ pid }) => pid)
+    return products.filter(({ type, data }) => {
+      if (type !== 'farm') return false;
+      return !!favorPids.includes(data.pid)
+    })
+  }, [products])
+
   return (
     <>
       <ListPageHeader type="myInvestment" {...(hasLongTermStake ? { grade: longTermStake.data.grade } : {})} />
@@ -43,11 +57,9 @@ function CardSummary({ products }) {
 
       <Card isOverflowHidden>
         <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} small={isMobile} equal={isMobile} />
-        {curTab === tabs[1].id ? (
-          <NetWorth isMobile={isMobile} products={groupBy(products, 'type')} />
-        ) : (
-          <Earned isMobile={isMobile} products={groupBy(products, 'type')} />
-        )}
+        {curTab === tabs[0].id && <Earned isMobile={isMobile} products={groupBy(products, 'type')} />}
+        {curTab === tabs[1].id && <FavEarnd isMobile={isMobile} products={groupBy(favorProducts, 'type')} />}
+        {curTab === tabs[2].id && <NetWorth isMobile={isMobile} products={groupBy(products, 'type')} />}
       </Card>
     </>
   )

@@ -151,7 +151,7 @@ const Deposit: React.FC<{
       <TitleSet title={t('Deposit')} description={t('Deposit LP on the farm')} />
 
       <CardWrap>
-        <CardHeading farm={farm} lpLabel={lpTokenName} addLiquidityUrl={addLiquidityUrl} />
+        <CardHeading farm={farm} lpLabel={lpTokenName} addLiquidityUrl={addLiquidityUrl} componentType="deposit" />
 
         <CardBody>
           <LiquidityInfo hasMb>
@@ -192,7 +192,6 @@ const Deposit: React.FC<{
             variant="line"
             onClick={() => {
               history.push(addLiquidityUrl)
-              // window.location.href = `${addLiquidityUrl}`
             }}
           >
             {t('Add Liquidity')}
