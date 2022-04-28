@@ -39,7 +39,7 @@ const StyledButton = styled(AnountButton)`
 
 const CurrencyItem: React.FC<IProps> = ({ currency, onSelect, isSelected, otherSelected }) => {
   const { t } = useTranslation()
-  const { account } = useWallet()
+  const { account, connector } = useWallet()
   const itemRef = useRef(null)
   const balance = useCurrencyBalance(account ?? undefined, currency)
 
@@ -56,7 +56,7 @@ const CurrencyItem: React.FC<IProps> = ({ currency, onSelect, isSelected, otherS
           <Coin size="32px" symbol={currency?.symbol} />
           <Text ml="12px">{currency.symbol}</Text>
         </Flex>
-        {(currency as any).address && <StyledButton onClick={addToken}>{t('Add Token')}</StyledButton>}
+        {(currency as any).address && connector === 'kaikas' && <StyledButton onClick={addToken}>{t('Add Token')}</StyledButton>}
       </Flex>
       <Flex justifySelf="flex-end" className="selected-opacity">
         {!account ? <></> : balance ? <Balance balance={balance} /> : <Loader />}
