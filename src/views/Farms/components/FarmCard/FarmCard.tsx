@@ -262,7 +262,8 @@ const CardWrap = styled(Card)`
   margin-top: ${({ theme }) => theme.spacing.S_16}px;
   ${({ theme }) => theme.mediaQueries.xl} {
     .card-heading {
-      width: 236px;
+      width: auto;
+      min-width: 236px;
     }
     .total-liquidity-section {
       width: 112px;

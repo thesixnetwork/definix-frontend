@@ -22,7 +22,7 @@ const farms: FarmConfig[] = [
    * @favor
    */
    {
-    pid: 95,
+    pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 36 : 95,
     lpSymbol: 'FAVOR-FINIX LP',
     lpAddresses: getLpNetwork(FAVOR, FINIX),
     tokenSymbol: 'FAVOR',
@@ -36,7 +36,7 @@ const farms: FarmConfig[] = [
     tag: 'special',
   },
   {
-    pid: 96,
+    pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 35 : 96,
     lpSymbol: 'FAVOR-SIX LP',
     lpAddresses: getLpNetwork(FAVOR, SIX),
     tokenSymbol: 'FAVOR',
@@ -50,7 +50,7 @@ const farms: FarmConfig[] = [
     tag: 'special',
   },
    {
-    pid: 94,
+    pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 37 : 94,
     lpSymbol: 'FAVOR-KLAY LP',
     lpAddresses: getLpNetwork(FAVOR, WKLAY),
     tokenSymbol: 'FAVOR',
@@ -64,7 +64,7 @@ const farms: FarmConfig[] = [
     tag: 'special',
   },
    {
-    pid: 93,
+    pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 34 : 93,
     lpSymbol: 'FAVOR-KUSDT LP',
     lpAddresses: getLpNetwork(FAVOR, KUSDT),
     tokenSymbol: 'FAVOR',

@@ -11,12 +11,14 @@ export const MenuItem = styled(Flex)<{ disabled: boolean; selected: boolean }>`
   min-height: 60px;
   justify-content: space-between;
   align-items: center;
-  cursor: ${({ disabled }) => !disabled && 'pointer'};
-  pointer-events: ${({ disabled }) => disabled && 'none'};
   :hover {
     background-color: ${({ theme, disabled }) => !disabled && theme.colors.invertedContrast};
   }
-  opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
+  .selected-opacity {
+    cursor: ${({ disabled }) => !disabled && 'pointer'};
+    pointer-events: ${({ disabled }) => disabled && 'none'};
+    opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
+  }
 `
 
 export const SearchInput = styled.input`

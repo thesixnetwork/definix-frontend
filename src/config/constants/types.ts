@@ -20,7 +20,7 @@ export enum QuoteToken {
   /**
    * @favor
    */
-  'FAVOR' = 'FAVOR'
+  'FAVOR' = 'Favor'
 }
 
 export enum PoolCategory {
