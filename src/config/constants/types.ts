@@ -17,7 +17,7 @@ export enum QuoteToken {
   'SIXKUSDT' = 'SIX-KUSDT',
   'KDAIKUSDT' = 'KDAI-KUSDT',
   'KSP' = 'KSP',
-  'FINGER' = 'FINGER'
+  'FINGER' = 'Finger'
 }
 
 export enum PoolCategory {
