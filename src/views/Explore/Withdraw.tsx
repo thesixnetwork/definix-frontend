@@ -97,7 +97,7 @@ const InlineAssetRatioLabel = ({ coin, className = '' }) => {
   return (
     <div className={`flex justify-space-between align-center ${className}`}>
       <Coin className="col-8">
-        <img src={`/images/coins/${coin.symbol}.png`} alt="" />
+        <img src={`/images/coins/${coin.symbol.toLowerCase()}.png`} alt="" />
         <Text className="col-3 mr-4" bold>
           {coin.amount ? numeral(coin.amount.toNumber()).format('0,0.[0000]') : '-'}
         </Text>
