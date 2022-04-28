@@ -166,30 +166,30 @@ export const usePoolFromPid = (sousId): Pool => {
 }
 
 // Prices
-export const usePriceKlayKusdt = (): BigNumber => {
-  // const pid = 5 // KLAY-KUSDT LP
-  const pid = parseInt(process.env.REACT_APP_KLAY_KUSDT_PID || '14') // KLAY-KUSDT LP
+export const usePriceKlayOusdt = (): BigNumber => {
+  // const pid = 5 // KLAY-oUSDT LP
+  const pid = parseInt(process.env.REACT_APP_KLAY_OUSDT_PID || '14') // KLAY-oUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
 }
 
-export const usePriceSixKusdt = (): BigNumber => {
+export const usePriceSixOusdt = (): BigNumber => {
   const sixPrice = useSelector((state: State) => state.finixPrice.sixPrice)
   return new BigNumber(sixPrice)
 }
 
-export const usePriceFinixKusdt = (): BigNumber => {
-  // const pid = 1 // FINIX-KUSDT LP
-  const pid = parseInt(process.env.REACT_APP_FINIX_KUSDT_PID || '5') // FINIX-KUSDT LP
+export const usePriceFinixOusdt = (): BigNumber => {
+  // const pid = 1 // FINIX-oUSDT LP
+  const pid = parseInt(process.env.REACT_APP_FINIX_OUSDT_PID || '5') // FINIX-oUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
 }
 
-export const usePriceKethKusdt = (): BigNumber => {
-  // const pid = 6 // ETH-KUSDT LP
-  const pid = parseInt(process.env.REACT_APP_KETH_KUSDT_PID || '11') // KETH-KUSDT LP
+export const usePriceOethOusdt = (): BigNumber => {
+  // const pid = 6 // ETH-oUSDT LP
+  const pid = parseInt(process.env.REACT_APP_OETH_OUSDT_PID || '11') // oETH-oUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
@@ -220,10 +220,10 @@ export const usePriceTVL = (): BigNumber => {
   return new BigNumber(caverTVL)
 }
 
-export const usePriceKethKlay = (): BigNumber => {
-  const priceKlayKusdt = usePriceKlayUsd()
-  const priceKethKusdt = usePriceKethKusdt()
-  return priceKethKusdt.div(priceKlayKusdt)
+export const usePriceOethKlay = (): BigNumber => {
+  const priceKlayOusdt = usePriceKlayUsd()
+  const priceOethOusdt = usePriceOethOusdt()
+  return priceOethOusdt.div(priceKlayOusdt)
 }
 
 // Toasts

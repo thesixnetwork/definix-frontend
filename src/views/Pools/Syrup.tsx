@@ -16,10 +16,10 @@ import {
   useFarms,
   usePools,
   usePriceFinixUsd,
-  usePriceKethKusdt,
+  usePriceOethOusdt,
   usePriceSixUsd,
-  usePriceKlayKusdt,
-  usePriceKethKlay,
+  usePriceKlayOusdt,
+  usePriceOethKlay,
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text, Link, useMatchBreakpoints, useModal } from 'uikit-dev'
@@ -68,9 +68,9 @@ const Farm: React.FC = () => {
   const pools = usePools(account)
   const sixPriceUSD = usePriceSixUsd()
   const finixPriceUSD = usePriceFinixUsd()
-  const klayPriceUSD = usePriceKlayKusdt()
-  const kethPriceUsd = usePriceKethKusdt()
-  const ethPriceKlay = usePriceKethKlay()
+  const klayPriceUSD = usePriceKlayOusdt()
+  const oethPriceUsd = usePriceOethOusdt()
+  const ethPriceKlay = usePriceOethKlay()
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
@@ -106,7 +106,7 @@ const Farm: React.FC = () => {
     if (tokenName === 'KLAY') {
       return new BigNumber(1)
     }
-    if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
+    if (tokenPrice && quoteToken === QuoteToken.oUSDT) {
       return tokenPriceKLAYTN.div(klayPriceUSD)
     }
     return tokenPriceKLAYTN
@@ -144,7 +144,7 @@ const Farm: React.FC = () => {
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
-    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KETH' ? ethPriceKlay : 1
+    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'oETH' ? ethPriceKlay : 1
 
     // /!\ Assume that the farm quote price is KLAY
     const stakingTokenPriceInKLAY = isKlayPool
@@ -200,8 +200,8 @@ const Farm: React.FC = () => {
             if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.FINIX) {
               totalValue = finixPriceUSD.times(new BigNumber(currentTotalStaked))
             }
-            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KETH) {
-              totalValue = kethPriceUsd.times(new BigNumber(currentTotalStaked))
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.oETH) {
+              totalValue = oethPriceUsd.times(new BigNumber(currentTotalStaked))
             }
             if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
               totalValue = sixPriceUSD.times(new BigNumber(currentTotalStaked))
@@ -236,8 +236,8 @@ const Farm: React.FC = () => {
             if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.FINIX) {
               totalValue = finixPriceUSD.times(new BigNumber(currentTotalStaked))
             }
-            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KETH) {
-              totalValue = kethPriceUsd.times(new BigNumber(currentTotalStaked))
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.oETH) {
+              totalValue = oethPriceUsd.times(new BigNumber(currentTotalStaked))
             }
             if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
               totalValue = sixPriceUSD.times(new BigNumber(currentTotalStaked))

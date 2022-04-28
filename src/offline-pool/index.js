@@ -16,7 +16,7 @@ const asyncForEach = async (array, callback) => {
 }
 
 const isStable = (tokenData) => {
-  return tokenData.symbol === 'KUSDT' || tokenData.symbol === 'BUSD' || tokenData.symbol === 'USDT'
+  return tokenData.symbol === 'oUSDT' || tokenData.symbol === 'BUSD' || tokenData.symbol === 'USDT'
 }
 
 const getLowerAddress = (address) => {

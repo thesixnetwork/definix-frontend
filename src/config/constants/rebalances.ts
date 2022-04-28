@@ -1,5 +1,5 @@
 import { RebalanceConfig } from './types'
-import { FINIX, SIX, WKLAY, KWBTC, KETH, KXRP, KUSDT, KBNB } from './tokens'
+import { FINIX, SIX, WKLAY, oWBTC, oETH, oXRP, oUSDT, KBNB } from './tokens'
 
 const rebalances: RebalanceConfig[] = [
   {
@@ -20,22 +20,22 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 70,
         color: '#ef9244',
-        address: KWBTC,
+        address: oWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 30,
         color: '#6D6D6D',
-        address: KETH,
+        address: oETH,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 0,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: oUSDT,
       },
     ],
     factsheet: {
@@ -68,22 +68,22 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 25,
         color: '#ef9244',
-        address: KWBTC,
+        address: oWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 25,
         color: '#6D6D6D',
-        address: KETH,
+        address: oETH,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 50,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: oUSDT,
       },
     ],
     factsheet: {
@@ -116,10 +116,10 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 33,
         color: '#6D6D6D',
-        address: KETH,
+        address: oETH,
       },
       {
         symbol: 'WKLAY',
@@ -134,10 +134,10 @@ const rebalances: RebalanceConfig[] = [
         address: KBNB,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 0,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: oUSDT,
       },
     ],
     factsheet: {
@@ -170,28 +170,28 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 40,
         color: '#ef9244',
-        address: KWBTC,
+        address: oWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 20,
         color: '#6D6D6D',
-        address: KETH,
+        address: oETH,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 20,
         color: '#23292e',
-        address: KXRP,
+        address: oXRP,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 20,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: oUSDT,
       },
     ],
     factsheet: {
@@ -224,16 +224,16 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 20,
         color: '#ef9244',
-        address: KWBTC,
+        address: oWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 20,
         color: '#6D6D6D',
-        address: KETH,
+        address: oETH,
       },
       {
         symbol: 'KBNB',
@@ -242,16 +242,16 @@ const rebalances: RebalanceConfig[] = [
         address: KBNB,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 20,
         color: '#23292e',
-        address: KXRP,
+        address: oXRP,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 20,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: oUSDT,
       },
     ],
     factsheet: {
@@ -284,10 +284,10 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 25,
         color: '#6D6D6D',
-        address: KETH,
+        address: oETH,
       },
       {
         symbol: 'KBNB',
@@ -302,10 +302,10 @@ const rebalances: RebalanceConfig[] = [
         address: WKLAY,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 25,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: oUSDT,
       },
     ],
     factsheet: {
@@ -338,16 +338,16 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 30,
         color: '#6D6D6D',
-        address: KETH,
+        address: oETH,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 30,
         color: '#23292e',
-        address: KXRP,
+        address: oXRP,
       },
       {
         symbol: 'KBNB',
@@ -356,10 +356,10 @@ const rebalances: RebalanceConfig[] = [
         address: KBNB,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 10,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: oUSDT,
       },
     ],
     factsheet: {
@@ -398,16 +398,16 @@ const rebalances: RebalanceConfig[] = [
         address: FINIX,
       },
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 16,
         color: '#ef9244',
-        address: KWBTC,
+        address: oWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 16,
         color: '#6D6D6D',
-        address: KETH,
+        address: oETH,
       },
       {
         symbol: 'SIX',
@@ -422,16 +422,16 @@ const rebalances: RebalanceConfig[] = [
         address: WKLAY,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 16,
         color: '#23292e',
-        address: KXRP,
+        address: oXRP,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 4,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: oUSDT,
       },
     ],
     factsheet: {
@@ -470,16 +470,16 @@ const rebalances: RebalanceConfig[] = [
         address: FINIX,
       },
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 16.6,
         color: '#ef9244',
-        address: KWBTC,
+        address: oWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 16.6,
         color: '#6D6D6D',
-        address: KETH,
+        address: oETH,
       },
       {
         symbol: 'KBNB',
@@ -488,16 +488,16 @@ const rebalances: RebalanceConfig[] = [
         address: KBNB,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 16.6,
         color: '#23292e',
-        address: KXRP,
+        address: oXRP,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 16.6,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: oUSDT,
       },
     ],
     factsheet: {

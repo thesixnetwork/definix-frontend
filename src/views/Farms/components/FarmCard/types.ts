@@ -12,7 +12,7 @@ export interface FarmCardProps {
   farm: FarmWithStakedValue
   removed: boolean
   klayPrice?: BigNumber
-  kethPrice?: BigNumber
+  oethPrice?: BigNumber
   sixPrice?: BigNumber
   finixPrice?: BigNumber
   klaytn?: provider

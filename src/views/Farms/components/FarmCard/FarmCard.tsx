@@ -56,7 +56,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   sixPrice,
   finixPrice,
   klayPrice,
-  kethPrice,
+  oethPrice,
   account,
   isHorizontal = false,
   inlineMultiplier = false,
@@ -76,14 +76,14 @@ const FarmCard: React.FC<FarmCardProps> = ({
     if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
       return finixPrice.times(farm.lpTotalInQuoteToken)
     }
-    if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-      return kethPrice.times(farm.lpTotalInQuoteToken)
+    if (farm.quoteTokenSymbol === QuoteToken.oETH) {
+      return oethPrice.times(farm.lpTotalInQuoteToken)
     }
     if (farm.quoteTokenSymbol === QuoteToken.SIX) {
       return sixPrice.times(farm.lpTotalInQuoteToken)
     }
     return farm.lpTotalInQuoteToken
-  }, [sixPrice, klayPrice, finixPrice, kethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
+  }, [sixPrice, klayPrice, finixPrice, oethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
 
   const totalValueFormated = totalValue
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
@@ -108,8 +108,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
     if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
       return finixPrice.times(stakedTotalInQuoteToken)
     }
-    if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-      return kethPrice.times(stakedTotalInQuoteToken)
+    if (farm.quoteTokenSymbol === QuoteToken.oETH) {
+      return oethPrice.times(stakedTotalInQuoteToken)
     }
     if (farm.quoteTokenSymbol === QuoteToken.SIX) {
       return sixPrice.times(stakedTotalInQuoteToken)
@@ -119,7 +119,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
     sixPrice,
     klayPrice,
     finixPrice,
-    kethPrice,
+    oethPrice,
     farm.lpTotalInQuoteToken,
     farm.quoteTokenSymbol,
     stakedTotalInQuoteToken,

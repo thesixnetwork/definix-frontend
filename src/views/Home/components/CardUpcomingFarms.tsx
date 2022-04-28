@@ -3,7 +3,7 @@ import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import numeral from 'numeral'
 import React from 'react'
-import { useFarms, usePriceKethKusdt, usePriceFinixUsd, usePriceKlayKusdt, usePriceSixUsd } from 'state/hooks'
+import { useFarms, usePriceOethOusdt, usePriceFinixUsd, usePriceKlayOusdt, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Card, Heading } from 'uikit-dev'
 import el06 from 'uikit-dev/images/for-Farm-Elements/06.png'
@@ -67,9 +67,9 @@ const CardStyled = styled(Card)`
 const CardUpcomingFarms: React.FC = () => {
   const farmsLP = useFarms()
   const sixPrice = usePriceSixUsd()
-  const klayPrice = usePriceKlayKusdt()
+  const klayPrice = usePriceKlayOusdt()
   const finixPrice = usePriceFinixUsd()
-  const kethPriceUsd = usePriceKethKusdt()
+  const oethPriceUsd = usePriceOethOusdt()
   const farmToDisplay = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 1)
   const finixPriceVsKLAY = finixPrice
   const farms = farmToDisplay.map((farm) => {
@@ -86,12 +86,12 @@ const CardUpcomingFarms: React.FC = () => {
     // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
     let apy = finixPriceVsKLAY.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-    if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
+    if (farm.quoteTokenSymbol === QuoteToken.oUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
       apy = finixPriceVsKLAY.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
     } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
       apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-    } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-      apy = finixPrice.div(kethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+    } else if (farm.quoteTokenSymbol === QuoteToken.oETH) {
+      apy = finixPrice.div(oethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
     } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
       apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
     } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
@@ -122,7 +122,7 @@ const CardUpcomingFarms: React.FC = () => {
     },
     {
       img: el07,
-      name: 'FINIX-KUSDT LP',
+      name: 'FINIX-oUSDT LP',
       apr: pid2Farm.apy ? numeral(pid2Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
       pid: 2,
     },

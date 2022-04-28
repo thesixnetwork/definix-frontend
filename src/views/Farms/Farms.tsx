@@ -12,7 +12,7 @@ import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
+import { useFarms, usePriceKlayOusdt, usePriceOethOusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text, Link, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
@@ -54,11 +54,11 @@ const TutorailsLink = styled(Link)`
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
-  const klayPrice = usePriceKlayKusdt()
+  const klayPrice = usePriceKlayOusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
-  const kethPriceUsd = usePriceKethKusdt()
+  const oethPriceUsd = usePriceOethOusdt()
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd
 
@@ -135,8 +135,8 @@ const Farms: React.FC = () => {
             if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
               totalValue = finixPrice.times(farm.lpTotalInQuoteToken)
             }
-            if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-              totalValue = kethPriceUsd.times(farm.lpTotalInQuoteToken)
+            if (farm.quoteTokenSymbol === QuoteToken.oETH) {
+              totalValue = oethPriceUsd.times(farm.lpTotalInQuoteToken)
             }
             if (farm.quoteTokenSymbol === QuoteToken.SIX) {
               totalValue = sixPrice.times(farm.lpTotalInQuoteToken)
@@ -150,12 +150,12 @@ const Farms: React.FC = () => {
         // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
 
         let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
+        if (farm.quoteTokenSymbol === QuoteToken.oUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
           apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
           apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-          apy = finixPrice.div(kethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.oETH) {
+          apy = finixPrice.div(oethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
           apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
@@ -192,7 +192,7 @@ const Farms: React.FC = () => {
           farm={farm}
           removed={removed}
           klayPrice={klayPrice}
-          kethPrice={kethPriceUsd}
+          oethPrice={oethPriceUsd}
           sixPrice={sixPrice}
           finixPrice={finixPrice}
           klaytn={klaytn}
@@ -201,7 +201,7 @@ const Farms: React.FC = () => {
         />
       ))
     },
-    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, listView],
+    [sixPrice, klayPrice, oethPriceUsd, finixPrice, klaytn, account, listView],
   )
 
   const handlePresent = useCallback((node: React.ReactNode) => {

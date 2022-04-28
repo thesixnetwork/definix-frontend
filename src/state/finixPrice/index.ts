@@ -10,9 +10,9 @@ import {
   getAddress,
   getWklayAddress,
   getSixAddress,
-  getKusdtAddress,
-  getSixKusdtLPAddress,
-  getDefinixKlayKusdtLPAddress,
+  getOusdtAddress,
+  getSixOusdtLPAddress,
+  getDefinixKlayOusdtLPAddress,
 } from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
@@ -99,16 +99,16 @@ export const fetchSixPrice = () => async (dispatch) => {
 
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getSixKusdtLPAddress(),
+      lpAddress: getSixOusdtLPAddress(),
       pair1: getSixAddress(),
-      pair2: getKusdtAddress(),
+      pair2: getOusdtAddress(),
     }),
   )
-  const [[totalSixInDefinixSixKusdtPair, totalKusdtInDefinixSixKusdtPair]] = await Promise.all(fetchPromise)
-  const definixSixKusdtRatio = totalKusdtInDefinixSixKusdtPair / totalSixInDefinixSixKusdtPair || 0
+  const [[totalSixInDefinixSixOusdtPair, totalOusdtInDefinixSixOusdtPair]] = await Promise.all(fetchPromise)
+  const definixSixOusdtRatio = totalOusdtInDefinixSixOusdtPair / totalSixInDefinixSixOusdtPair || 0
   dispatch(
     setSixPrice({
-      sixPrice: definixSixKusdtRatio,
+      sixPrice: definixSixOusdtRatio,
     }),
   )
 }
@@ -140,16 +140,16 @@ export const fetchDefinixKlayPrice = () => async (dispatch) => {
 
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getDefinixKlayKusdtLPAddress(),
+      lpAddress: getDefinixKlayOusdtLPAddress(),
       pair1: getWklayAddress(),
-      pair2: getKusdtAddress(),
+      pair2: getOusdtAddress(),
     }),
   )
-  const [[totalKlayInDefinixKlayKusdtPair, totalKusdtInDefinixKlayKusdtPair]] = await Promise.all(fetchPromise)
-  const definixKlayKusdtRatio = totalKusdtInDefinixKlayKusdtPair / totalKlayInDefinixKlayKusdtPair || 0
+  const [[totalKlayInDefinixKlayOusdtPair, totalOusdtInDefinixKlayOusdtPair]] = await Promise.all(fetchPromise)
+  const definixKlayOusdtRatio = totalOusdtInDefinixKlayOusdtPair / totalKlayInDefinixKlayOusdtPair || 0
   dispatch(
     setDefinixKlayPrice({
-      price: definixKlayKusdtRatio,
+      price: definixKlayOusdtRatio,
     }),
   )
 }
@@ -175,9 +175,9 @@ const pairObjectCombination = (inputObject) => {
 }
 
 const findAndSelectPair = (pair) => {
-  if (pair.indexOf('KUSDT') >= 0) {
-    const firstKey = pair[0] === 'KUSDT' ? pair[1] : pair[0]
-    const secondKey = pair[0] === 'KUSDT' ? pair[0] : pair[1]
+  if (pair.indexOf('oUSDT') >= 0) {
+    const firstKey = pair[0] === 'oUSDT' ? pair[1] : pair[0]
+    const secondKey = pair[0] === 'oUSDT' ? pair[0] : pair[1]
     return [firstKey, secondKey]
   }
   if (pair.indexOf('FINIX') >= 0) {
@@ -191,7 +191,7 @@ const findAndSelectPair = (pair) => {
 export const fetchFinixPrice = () => async (dispatch) => {
   const allTokenCombinationKeys = pairObjectCombination(allTokens)
   const allFinixPair = allTokenCombinationKeys.filter(
-    (item) => item.indexOf('FINIX') >= 0 || item.indexOf('KUSDT') >= 0,
+    (item) => item.indexOf('FINIX') >= 0 || item.indexOf('oUSDT') >= 0,
   )
   const sortedPair = _.compact(allFinixPair.map((pair) => findAndSelectPair(pair)))
   const searchablePair = {}
@@ -225,10 +225,10 @@ export const fetchFinixPrice = () => async (dispatch) => {
   const allPrices = allFetchedData.map((data, index) => {
     const currentPair = sortedPair[index]
     if (data && currentPair[0] === 'FINIX') {
-      if (currentPair[1] === 'KUSDT') {
+      if (currentPair[1] === 'oUSDT') {
         return [allRatio[index], allFetchedData[index][1]]
       }
-      const pairIndex = searchablePair[currentPair[1]].KUSDT
+      const pairIndex = searchablePair[currentPair[1]].oUSDT
       return [allRatio[index] * allRatio[pairIndex], allFetchedData[index][1]]
     }
     return undefined

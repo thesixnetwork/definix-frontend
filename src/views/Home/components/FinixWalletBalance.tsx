@@ -5,7 +5,7 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePriceFinixKusdt } from 'state/hooks'
+import { usePriceFinixOusdt } from 'state/hooks'
 import { BigNumber } from 'bignumber.js'
 import CardValue from './CardValue'
 import CardBusdValue from './CardBusdValue'
@@ -13,7 +13,7 @@ import CardBusdValue from './CardBusdValue'
 const FinixWalletBalance = () => {
   const TranslateString = useI18n()
   const finixBalance = useTokenBalance(getFinixAddress())
-  const busdBalance = new BigNumber(getBalanceNumber(finixBalance)).multipliedBy(usePriceFinixKusdt()).toNumber()
+  const busdBalance = new BigNumber(getBalanceNumber(finixBalance)).multipliedBy(usePriceFinixOusdt()).toNumber()
   const { account } = useWallet()
 
   if (!account) {

@@ -29,9 +29,9 @@ import {
   usePools,
   usePoolsIsFetched,
   usePriceFinixUsd,
-  usePriceKethKlay,
-  usePriceKethKusdt,
-  usePriceKlayKusdt,
+  usePriceOethKlay,
+  usePriceOethOusdt,
+  usePriceKlayOusdt,
   usePriceSixUsd,
 } from 'state/hooks'
 import styled from 'styled-components'
@@ -322,10 +322,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
   // Farms
   const farmsLP = useFarms()
-  const klayPrice = usePriceKlayKusdt()
+  const klayPrice = usePriceKlayOusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
-  const ethPriceUsd = usePriceKethKusdt()
+  const ethPriceUsd = usePriceOethOusdt()
   const [listView, setListView] = useState(false)
   const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.pid !== 1 && farms.multiplier !== '0X')
   const stackedOnlyFarms = activeFarms.filter(
@@ -348,11 +348,11 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
         let apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteTokenSymbol === QuoteToken.KUSDT) {
+        if (farm.quoteTokenSymbol === QuoteToken.oUSDT) {
           apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(klayPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
           apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+        } else if (farm.quoteTokenSymbol === QuoteToken.oETH) {
           apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
           apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
@@ -380,7 +380,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           farm={farm}
           removed={removed}
           klayPrice={klayPrice}
-          kethPrice={ethPriceUsd}
+          oethPrice={ethPriceUsd}
           sixPrice={sixPrice}
           finixPrice={finixPrice}
           klaytn={klaytn}
@@ -396,8 +396,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const pools = usePools(account)
   const farms = useFarms()
   const sixPriceUSD = usePriceSixUsd()
-  const klayPriceUSD = usePriceKlayKusdt()
-  const ethPriceKlay = usePriceKethKlay()
+  const klayPriceUSD = usePriceKlayOusdt()
+  const ethPriceKlay = usePriceOethKlay()
   const block = useBlock()
 
   const priceToKlay = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
@@ -405,7 +405,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     if (tokenName === 'KLAY') {
       return new BigNumber(1)
     }
-    if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
+    if (tokenPrice && quoteToken === QuoteToken.oUSDT) {
       return tokenPriceKLAYTN.div(klayPriceUSD)
     }
     return tokenPriceKLAYTN
@@ -443,7 +443,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
-    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KETH' ? ethPriceKlay : 1
+    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'oETH' ? ethPriceKlay : 1
 
     // /!\ Assume that the farm quote price is KLAY
     const stakingTokenPriceInKLAY = isKlayPool
@@ -545,7 +545,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       if (d.quoteTokenSymbol === QuoteToken.FINIX) {
         totalValue = finixPrice.times(stakedTotalInQuoteToken)
       }
-      if (d.quoteTokenSymbol === QuoteToken.KETH) {
+      if (d.quoteTokenSymbol === QuoteToken.oETH) {
         totalValue = ethPriceUsd.times(stakedTotalInQuoteToken)
       }
       if (d.quoteTokenSymbol === QuoteToken.SIX) {
@@ -568,7 +568,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       if (d.stakingTokenName === QuoteToken.FINIX) {
         totalValue = finixPrice.times(stakedTotal)
       }
-      if (d.stakingTokenName === QuoteToken.KETH) {
+      if (d.stakingTokenName === QuoteToken.oETH) {
         totalValue = ethPriceUsd.times(stakedTotal)
       }
       if (d.stakingTokenName === QuoteToken.SIX) {

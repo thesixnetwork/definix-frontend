@@ -530,7 +530,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 }
               }
               if (graphTokenData[token.symbol]) {
-                if (token.symbol === 'KUSDT') {
+                if (token.symbol === 'oUSDT') {
                   graphTokenData[token.symbol].values.push(50)
                   graphTokenData[token.symbol].valuesPrice.push(1)
                 } else {

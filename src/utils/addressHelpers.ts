@@ -36,17 +36,17 @@ export const getSixAddress = () => {
 export const getKdaiAddress = () => {
   return getAddress(addresses.kdai)
 }
-export const getKusdtAddress = () => {
-  return getAddress(addresses.kusdt)
+export const getOusdtAddress = () => {
+  return getAddress(addresses.ousdt)
 }
-export const getKethAddress = () => {
-  return getAddress(addresses.keth)
+export const getOethAddress = () => {
+  return getAddress(addresses.oeth)
 }
-export const getKbtcAddress = () => {
-  return getAddress(addresses.kwbtc)
+export const getOwbtcAddress = () => {
+  return getAddress(addresses.owbtc)
 }
-export const getKxrpAddress = () => {
-  return getAddress(addresses.kxrp)
+export const getOxrpAddress = () => {
+  return getAddress(addresses.oxrp)
 }
 export const getKbnbAddress = () => {
   return getAddress(addresses.kbnb)
@@ -54,8 +54,8 @@ export const getKbnbAddress = () => {
 export const getFinixSixLPAddress = () => {
   return getAddress(addresses.finixSixLP)
 }
-export const getFinixKusdtLPAddress = () => {
-  return getAddress(addresses.finixKusdtLP)
+export const getFinixOusdtLPAddress = () => {
+  return getAddress(addresses.finixOusdtLP)
 }
 export const getFinixKlayLPAddress = () => {
   return getAddress(addresses.finixKlayLP)
@@ -63,44 +63,44 @@ export const getFinixKlayLPAddress = () => {
 export const getFinixKspLPAddress = () => {
   return getAddress(addresses.finixKspLP)
 }
-export const getSixKusdtLPAddress = () => {
-  return getAddress(addresses.sixKusdtLP)
+export const getSixOusdtLPAddress = () => {
+  return getAddress(addresses.sixOusdtLP)
 }
 export const getSixKlayLPAddress = () => {
   return getAddress(addresses.sixKlayLP)
 }
-export const getKlayKethLPAddress = () => {
-  return getAddress(addresses.klayKethLP)
+export const getKlayOethLPAddress = () => {
+  return getAddress(addresses.klayOethLP)
 }
-export const getKlayKbtcLPAddress = () => {
-  return getAddress(addresses.klayKbtcLP)
+export const getKlayOwbtcLPAddress = () => {
+  return getAddress(addresses.klayOwbtcLP)
 }
-export const getKlayKxrpLPAddress = () => {
-  return getAddress(addresses.klayKxrpLP)
+export const getKlayOxrpLPAddress = () => {
+  return getAddress(addresses.klayOxrpLP)
 }
-export const getKethKusdtLPAddress = () => {
-  return getAddress(addresses.kethKusdtLP)
+export const getOethOusdtLPAddress = () => {
+  return getAddress(addresses.oethOusdtLP)
 }
-export const getKbtcKusdtLPAddress = () => {
-  return getAddress(addresses.kbtcKusdtLP)
+export const getOwbtcOusdtLPAddress = () => {
+  return getAddress(addresses.owbtcOusdtLP)
 }
-export const getKxrpKusdtLPAddress = () => {
-  return getAddress(addresses.kxrpKusdtLP)
+export const getOxrpOusdtLPAddress = () => {
+  return getAddress(addresses.oxrpOusdtLP)
 }
-export const getKlayKusdtLPAddress = () => {
-  return getAddress(addresses.klayKusdtLP)
+export const getKlayOusdtLPAddress = () => {
+  return getAddress(addresses.klayOusdtLP)
 }
-export const getKdaiKusdtLPAddress = () => {
-  return getAddress(addresses.kdaiKusdtLP)
+export const getKdaiOusdtLPAddress = () => {
+  return getAddress(addresses.kdaiOusdtLP)
 }
-export const getKbnbKusdtLPAddress = () => {
-  return getAddress(addresses.kbnbKusdtLP)
+export const getKbnbOusdtLPAddress = () => {
+  return getAddress(addresses.kbnbOusdtLP)
 }
 export const getKbnbFinixLPAddress = () => {
   return getAddress(addresses.kbnbFinixLP)
 }
-export const getDefinixKlayKusdtLPAddress = () => {
-  return getAddress(addresses.definixKlayKusdtLP)
+export const getDefinixKlayOusdtLPAddress = () => {
+  return getAddress(addresses.definixKlayOusdtLP)
 }
 export const getTradingCompetRegisAddress = () => {
   return getAddress(addresses.tradingCompetRegis)

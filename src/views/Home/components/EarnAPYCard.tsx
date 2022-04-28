@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
 import { QuoteToken } from 'config/constants/types'
-import { useFarms, usePriceKlayKusdt } from 'state/hooks'
+import { useFarms, usePriceKlayOusdt } from 'state/hooks'
 import { BLOCKS_PER_YEAR, FINIX_PER_BLOCK, FINIX_POOL_PID } from 'config'
 
 const StyledFarmStakingCard = styled(Card)`
@@ -24,7 +24,7 @@ const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
 const EarnAPYCard = () => {
   const TranslateString = useI18n()
   const farmsLP = useFarms()
-  const bnbPrice = usePriceKlayKusdt()
+  const bnbPrice = usePriceKlayOusdt()
 
   const maxAPY = useRef(Number.MIN_VALUE)
 
@@ -51,7 +51,7 @@ const EarnAPYCard = () => {
 
         let apy = finixPriceVsKLAY.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteTokenSymbol === QuoteToken.KUSDT) {
+        if (farm.quoteTokenSymbol === QuoteToken.oUSDT) {
           apy = finixPriceVsKLAY.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
           apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
