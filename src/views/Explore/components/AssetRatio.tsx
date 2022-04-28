@@ -41,7 +41,7 @@ const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className 
           .filter((r) => r.value)
           .map((m) => (
             <Coin isHorizontal={isHorizontal}>
-              <img src={`/images/coins/${m.symbol || ''}.png`} alt={m.symbol} />
+              <img src={`/images/coins/${m.symbol.toLowerCase() || ''}.png`} alt={m.symbol} />
               <Text fontSize="16px">{m.value}%</Text>
             </Coin>
           ))}

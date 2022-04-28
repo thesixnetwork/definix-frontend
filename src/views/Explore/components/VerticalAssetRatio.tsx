@@ -36,7 +36,7 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
         return (
           <div className="flex justify-space-between align-center">
             <Coin>
-              <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
+              <img src={`/images/coins/${c.symbol.toLowerCase() || ''}.png`} alt="" />
               <Text bold>
                 {numeral(
                   (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(c.decimals)).toNumber(),

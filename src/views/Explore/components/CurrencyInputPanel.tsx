@@ -114,7 +114,7 @@ const CurrencyInputPanel = ({
               )}
               {!currency.hide && (
                 <Coin>
-                  {currency.symbol && <img src={`/images/coins/${currency.symbol}.png`} alt="" />}
+                  {currency.symbol && <img src={`/images/coins/${currency.symbol.toLowerCase()}.png`} alt="" />}
                   <Text>{thisName}</Text>
                 </Coin>
               )}

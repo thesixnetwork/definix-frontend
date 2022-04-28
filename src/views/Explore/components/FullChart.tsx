@@ -111,7 +111,7 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
             }
             label={
               <LegendItem>
-                <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
+                <img src={`/images/coins/${c.symbol.toLowerCase() || ''}.png`} alt="" />
                 <Text fontSize="14px" bold>
                   {thisName}
                 </Text>

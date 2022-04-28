@@ -74,7 +74,7 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
           <TR>
             <TD>
               <div className="flex align-center">
-                <img src={`/images/coins/${r.symbol || ''}.png`} alt="" width={32} height={32} className="mr-3" />
+                <img src={`/images/coins/${r.symbol.toLowerCase() || ''}.png`} alt="" width={32} height={32} className="mr-3" />
                 <Text bold>{thisName}</Text>
               </div>
             </TD>
