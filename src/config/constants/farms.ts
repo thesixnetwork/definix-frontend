@@ -13,7 +13,7 @@ import {
   KSP,
   getLpNetwork,
   getSingleLpNetwork,
-  FAVOR,
+  // FAVOR,
 } from './tokens'
 import { ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 
