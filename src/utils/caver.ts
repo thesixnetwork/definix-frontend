@@ -66,12 +66,12 @@ const addCustomToken =
         },
         id: Math.round(Math.random() * 100000),
       },
-      (_err: unknown, added: boolean) => {
-        if (added) {
-          console.log("---", added);
-        } else {
-          console.log("Your loss!");
-        }
+      () => {
+        // if (added) {
+        //   console.log("---", added);
+        // } else {
+        //   console.log("Your loss!");
+        // }
       }
     );
   }
