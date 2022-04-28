@@ -4,14 +4,14 @@
     "Definix is always listening to the voices of holders.\nIf there are any inconveniences or improvements to the beta service, please give us feedback.",
     "https://forms.gle/x9rfWuzD9Kpa8xa47",
     "Go to Vote",
-    "TRUE"
+    "FALSE"
   ],
   "notice_2": [
-    "Notice of voting",
-    "Mulitple proposals are revealed inlcuding the APR adjustment voting and regarding governance. \nvFINIX holders can demand what you want by voting.",
+    "Halving schedule adjustment voting is open!",
+    "The direction of Definix ecosystem is determined by the votes of vFINIX holders.\nWe ask for your interest and participation in Definix's first governance vote!",
     "https://g2.klaytn.definix.com/voting ",
     "Feedback",
-    "TRUE"
+    "FALSE"
   ],
   "notice_3": [
     "Definix - Official DeFi protocol of Klaytn chain",
@@ -21,10 +21,10 @@
     "FALSE"
   ],
   "notice_4": [
-    "Rebalancing farm maintenance is completed.",
-    "Apologize again to any inconvenience you have been through.\nThank you for your patience and click \"See detail\" to find out more.",
-    "https://twitter.com/fingerlabs_io/status/1508618217392025602?s=20&t=TXYD2GU7oVoVcIO2-D805A  ",
-    "See detail",
+    "Favor token listing is coming soon!",
+    "Favor is being listed on Definix in this evening!\nStay tuned!",
+    "",
+    "",
     "TRUE"
   ]
 }
