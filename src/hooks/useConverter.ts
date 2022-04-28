@@ -2,14 +2,14 @@ import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
+import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd, usePriceFavorUsd } from 'state/hooks'
 
 export default function useConverter() {
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const kethPrice = usePriceKethKusdt()
-  const favorPrice = usePriceFinixUsd()
+  const favorPrice = usePriceFavorUsd()
 
   const convertToPriceFromToken = (token, symbol): BigNumber => {
     const tokenSymbol = symbol.toUpperCase()
@@ -24,6 +24,9 @@ export default function useConverter() {
     }
     if (tokenSymbol === QuoteToken.SIX) {
       return sixPrice.times(token)
+    }
+    if (tokenSymbol === QuoteToken.FAVOR.toUpperCase()) {
+      return favorPrice.times(token)
     }
     return token
   }
@@ -46,7 +49,7 @@ export default function useConverter() {
     if (symbol === QuoteToken.SIX) {
       price = sixPrice
     }
-    if (symbol === QuoteToken.FAVOR) {
+    if (symbol.toUpperCase() === QuoteToken.FAVOR.toUpperCase()) {
       price = favorPrice
     }
     return price.toNumber()
