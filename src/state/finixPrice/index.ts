@@ -252,7 +252,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
 export const fetchFavorPrice = () => async (dispatch) => {
   const allTokenCombinationKeys = pairObjectCombination(allTokens)
   const allFavorPair = allTokenCombinationKeys.filter(
-    (item) => item.indexOf('FAVOR') >= 0 || item.indexOf('KUSDT') >= 0,
+    (item) => item.indexOf('Favor') >= 0 || item.indexOf('FAVOR') >= 0 || item.indexOf('KUSDT') >= 0,
   )
   const sortedPair = compact(allFavorPair.map((pair) => findAndSelectPair(pair)))
   const searchablePair = {}
@@ -285,7 +285,7 @@ export const fetchFavorPrice = () => async (dispatch) => {
   })
   const allPrices = allFetchedData.map((data, index) => {
     const currentPair = sortedPair[index]
-    if (data && currentPair[0] === 'FAVOR') {
+    if (data && (currentPair[0] === 'FAVOR' || data && currentPair[0] === 'Favor')) {
       if (currentPair[1] === 'KUSDT') {
         return [allRatio[index], allFetchedData[index][1]]
       }

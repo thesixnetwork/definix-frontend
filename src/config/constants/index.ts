@@ -262,19 +262,19 @@ export const PINNED_PAIRS = {
       new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'Favor', 'Favor Token'),
       new Token(intMainnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'Favor', 'Favor Token'),
       new Token(intMainnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
     ],
     [
-      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'Favor', 'Favor Token'),
       new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'Favor', 'Favor Token'),
       new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'KLAY', 'KLAY Token'),
     ],
   ],
@@ -344,19 +344,19 @@ export const PINNED_PAIRS = {
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'Favor', 'Favor Token'),
       new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
-      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'Favor', 'Favor Token'),
       new Token(intTestnetId, SIX_ADDRESS[intTestnetId], 18, 'SIX', 'SIX Token'),
     ],
     [
-      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'Favor', 'Favor Token'),
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
-      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
+      new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'Favor', 'Favor Token'),
       new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'KLAY', 'KLAY Token'),
     ],
   ],
