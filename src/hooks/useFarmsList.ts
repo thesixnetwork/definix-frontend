@@ -35,8 +35,10 @@ const useFarmsList = (farms: Farm[]): any => {
       const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
       const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
 
-      if ((farm.bundleRewards || []).length > 0) {
-        const favorBundle = (farm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === 'Finger')
+      const filterBundleRewards = farm.bundleRewards.filter(({ rewardTokenInfo }) => ![QuoteToken.WKLAY, QuoteToken.KLAY].includes(rewardTokenInfo.symbol))
+
+      if (filterBundleRewards.length > 0) {
+        const favorBundle = filterBundleRewards.find((br) => br.rewardTokenInfo.symbol === QuoteToken.FINGER)
         if (favorBundle) {
           // @ts-ignore
           const favorRewardPerBlock = new BigNumber([favorBundle.rewardPerBlock]).div(new BigNumber(10).pow(18))
@@ -134,6 +136,7 @@ const useFarmsList = (farms: Farm[]): any => {
 
       return {
         ...farm,
+        bundleRewards: filterBundleRewards,
         apy: finixApy,
         finixApy,
         klayApy,
