@@ -164,10 +164,6 @@ const Wrap = styled(Flex)`
     margin-top: ${({ theme }) => theme.spacing.S_20}px;
   }
 `
-const TitleWrap = styled(Flex)`
-  margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
-  align-items: center;
-`
 const ValueWrap = styled(Box)`
   margin-top: -2px;
 `

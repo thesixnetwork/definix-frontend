@@ -10,7 +10,7 @@ import { QuoteToken } from 'config/constants/types'
 export interface ExpandableSectionProps {
   size?: string
   componentType?: string
-
+  tokenNames: string;
   tokenApyList: {
     symbol: QuoteToken | string
     apy: BigNumber
@@ -20,6 +20,7 @@ export interface ExpandableSectionProps {
 
 const CardHeading: React.FC<ExpandableSectionProps> = ({
   size = 'medium',
+  tokenNames,
   componentType,
   tokenApyList,
   addLiquidityUrl
@@ -28,14 +29,14 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const isMediumSize = useMemo(() => size === 'medium', [size])
   const isRow = useMemo(() => componentType === 'deposit' && tokenApyList.length > 1, [componentType, tokenApyList])
 
-  const renderAPR = useMemo(() => (coin: string, apy: BigNumber) => {
-    return <Flex alignItems="flex-end">
+  const renderAPR = useMemo(() => (coin: string, apy: BigNumber, index: number) => {
+    return <Flex alignItems="flex-end" key={index}>
       <APRCoin symbol={coin} size="20px" />
       <Text textStyle="R_14M" color={ColorStyles.ORANGE}>
         APR
       </Text>
       <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px', marginBottom: '-2px' }}>
-        {convertToFarmAPRFormat(apy)}
+        {apy && convertToFarmAPRFormat(apy)}%
       </Text>
       <Box style={{ marginLeft: '4px' }}>
         <ApyButton lpLabel={tokenApyList.map(({ symbol }) => symbol).join('-')} addLiquidityUrl={addLiquidityUrl} apy={apy} coin={coin} />
@@ -51,19 +52,19 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         width={componentType === 'myInvestment' ? '70px' : 'auto'}
       >
         {
-          tokenApyList.map(({ symbol }, index) => 
+          tokenNames.split('-').map((token, index) => 
             <ImageBox key={index}>
-              <StyledCoin symbol={symbol} size="40px" />
+              <StyledCoin symbol={token} size="40px" />
             </ImageBox>
           )
         }
       </Flex>
 
       <Flex flexDirection={isRow ? 'row' : 'column'} alignItems={isRow ? "center" : "flex-start"}>
-        <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{tokenApyList.map(({ symbol }) => symbol).join('-')}</Text>
+        <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{tokenNames}</Text>
         <Flex flexDirection="column" ml={isRow ? '50px' : ''} mt="3px">
           {
-            tokenApyList.map(({ symbol, apy }) => renderAPR(symbol, apy))
+            tokenApyList.map(({ symbol, apy }, index) => renderAPR(symbol, apy, index))
           }
         </Flex>
       </Flex>

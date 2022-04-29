@@ -103,13 +103,14 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
   const renderCardHeading = useMemo(
     () => (
       <CardHeading
+        tokenNames={pool.tokenName}
         // isOldSyrup={isOldSyrup}
         tokenApyList={tokenApyList}
         size={isInMyInvestment && 'small'}
         componentType={componentType}
       />
     ),
-    [tokenApyList, isInMyInvestment, componentType],
+    [tokenApyList, isInMyInvestment, componentType, pool],
   )
   /**
    * IconButton

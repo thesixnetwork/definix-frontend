@@ -136,6 +136,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
   const renderCardHeading = useMemo(
     () => (
       <CardHeading
+        tokenNames={lpTokenName}
         tokenApyList={allEarnings}
         size="small"
         componentType={componentType}
@@ -184,7 +185,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
     }
   }, [farm, lpTokenName, myLiquidity, addLiquidityUrl])
 
-  console.log(getBalanceNumber(myLiquidity))
   
   const renderStakeAction = useMemo(
     () => (
