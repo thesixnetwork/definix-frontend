@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Divider, Helper } from '@fingerlabs/definixswap-uikit-v2'
