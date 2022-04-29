@@ -9,6 +9,7 @@ import { addCustomToken } from 'utils/caver'
 import Loader from '../Loader'
 import { MenuItem } from './styleds'
 import { useTranslation } from 'react-i18next'
+import { AvailableConnectors } from '@fingerlabs/klaytn-wallets'
 
 const StyledBalanceText = styled(Text)`
   white-space: nowrap;
@@ -39,7 +40,7 @@ const StyledButton = styled(AnountButton)`
 
 const CurrencyItem: React.FC<IProps> = ({ currency, onSelect, isSelected, otherSelected }) => {
   const { t } = useTranslation()
-  const { account } = useWallet()
+  const { account, connector } = useWallet()
   const itemRef = useRef(null)
   const balance = useCurrencyBalance(account ?? undefined, currency)
 
@@ -47,7 +48,7 @@ const CurrencyItem: React.FC<IProps> = ({ currency, onSelect, isSelected, otherS
     e.preventDefault()
     e.stopPropagation()
     addCustomToken((currency as any).address, currency.symbol, currency.decimals, itemRef.current.querySelector('img').src)
-  }, [currency])
+  }, [currency, connector])
 
   return (
     <MenuItem onClick={() => (isSelected ? null : onSelect())} disabled={isSelected} selected={otherSelected}>
@@ -56,7 +57,7 @@ const CurrencyItem: React.FC<IProps> = ({ currency, onSelect, isSelected, otherS
           <Coin size="32px" symbol={currency?.symbol} />
           <Text ml="12px">{currency.symbol}</Text>
         </Flex>
-        {(currency as any).address && <StyledButton onClick={addToken}>{t('Add Token')}</StyledButton>}
+        {(currency as any).address && connector === AvailableConnectors.KAIKAS && <StyledButton onClick={addToken}>{t('Add Token')}</StyledButton>}
       </Flex>
       <Flex justifySelf="flex-end" className="selected-opacity">
         {!account ? <></> : balance ? <Balance balance={balance} /> : <Loader />}
