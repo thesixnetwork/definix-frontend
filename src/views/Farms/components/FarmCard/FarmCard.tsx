@@ -200,7 +200,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
             isEnableRemoveStake={stakedBalance.eq(new BigNumber(0))}
             isEnableAddStake={isEnableAddStake}
             onApprove={onApprove}
-            stakedBalance={myLiquidity}
+            stakedBalance={stakedBalance}
             stakedBalancePrice={myLiquidity.toNumber()}
             stakedBalanceUnit="LP"
 
@@ -210,7 +210,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
         )}
       </FarmContext.Consumer>
     ),
-    [componentType, hasAccount, hasUserData, hasAllowance, stakedBalance, myLiquidity, lpContract, dataForNextState, onApprove],
+    [componentType, stakedBalance, hasAccount, hasUserData, hasAllowance, stakedBalance, myLiquidity, lpContract, dataForNextState, onApprove],
   )
   /**
    * HarvestAction Section
