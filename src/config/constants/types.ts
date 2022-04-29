@@ -5,7 +5,7 @@ export enum QuoteToken {
   'KUSDT' = 'KUSDT',
   'KDAI' = 'KDAI',
   'KETH' = 'KETH',
-  'KXRP' = 'KXRP',
+  'OXRP' = 'oXRP',
   'KWBTC' = 'KWBTC',
   'KBNB' = 'KBNB',
   'SIX' = 'SIX',
@@ -20,7 +20,7 @@ export enum QuoteToken {
   /**
    * @favor
    */
-  'FAVOR' = 'FAVOR'
+  'FAVOR' = 'Favor'
 }
 
 export enum PoolCategory {

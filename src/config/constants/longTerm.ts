@@ -11,4 +11,15 @@ const longTerm: LongTermStakeConfig[] = [
   },
 ]
 
+export const longTermDays = [{
+  multiplier: 1,
+  days: 90,
+}, {
+  multiplier: 2,
+  days: 180,
+}, {
+  multiplier: 4,
+  days: 365,
+}]
+
 export default longTerm

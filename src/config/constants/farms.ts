@@ -8,7 +8,7 @@ import {
   KDAI,
   KETH,
   KWBTC,
-  KXRP,
+  OXRP,
   KBNB,
   KSP,
   getLpNetwork,
@@ -21,11 +21,11 @@ const farms: FarmConfig[] = [
   /**
    * @favor
    */
-   {
-    pid: 95,
-    lpSymbol: 'FAVOR-FINIX LP',
+  {
+    pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 36 : 95,
+    lpSymbol: 'Favor-FINIX LP',
     lpAddresses: getLpNetwork(FAVOR, FINIX),
-    tokenSymbol: 'FAVOR',
+    tokenSymbol: 'Favor',
     tokenAddresses: FAVOR,
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
@@ -36,10 +36,10 @@ const farms: FarmConfig[] = [
     tag: 'special',
   },
   {
-    pid: 96,
-    lpSymbol: 'FAVOR-SIX LP',
+    pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 35 : 96,
+    lpSymbol: 'Favor-SIX LP',
     lpAddresses: getLpNetwork(FAVOR, SIX),
-    tokenSymbol: 'FAVOR',
+    tokenSymbol: 'Favor',
     tokenAddresses: FAVOR,
     quoteTokenSymbol: QuoteToken.SIX,
     quoteTokenAdresses: contracts.six,
@@ -49,11 +49,11 @@ const farms: FarmConfig[] = [
     secondSymbol: QuoteToken.SIX,
     tag: 'special',
   },
-   {
-    pid: 94,
-    lpSymbol: 'FAVOR-KLAY LP',
+  {
+    pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 37 : 94,
+    lpSymbol: 'Favor-KLAY LP',
     lpAddresses: getLpNetwork(FAVOR, WKLAY),
-    tokenSymbol: 'FAVOR',
+    tokenSymbol: 'Favor',
     tokenAddresses: FAVOR,
     quoteTokenSymbol: QuoteToken.KLAY,
     quoteTokenAdresses: contracts.wklay,
@@ -63,11 +63,11 @@ const farms: FarmConfig[] = [
     secondSymbol: QuoteToken.KLAY,
     tag: 'special',
   },
-   {
-    pid: 93,
-    lpSymbol: 'FAVOR-KUSDT LP',
+  {
+    pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 34 : 93,
+    lpSymbol: 'Favor-KUSDT LP',
     lpAddresses: getLpNetwork(FAVOR, KUSDT),
-    tokenSymbol: 'FAVOR',
+    tokenSymbol: 'Favor',
     tokenAddresses: FAVOR,
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
@@ -201,16 +201,16 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 10,
-    lpSymbol: 'KLAY-KXRP LP',
-    lpAddresses: getLpNetwork(WKLAY, KXRP),
-    tokenSymbol: 'KXRP',
-    tokenAddresses: KXRP,
+    lpSymbol: 'KLAY-OXRP LP',
+    lpAddresses: getLpNetwork(WKLAY, OXRP),
+    tokenSymbol: 'oXRP',
+    tokenAddresses: OXRP,
     quoteTokenSymbol: QuoteToken.KLAY,
     quoteTokenAdresses: contracts.wklay,
     firstToken: contracts.wklay,
-    secondToken: contracts.kxrp,
+    secondToken: contracts.oxrp,
     firstSymbol: QuoteToken.KLAY,
-    secondSymbol: QuoteToken.KXRP,
+    secondSymbol: QuoteToken.OXRP,
   },
   {
     pid: 11,
@@ -240,15 +240,15 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 13,
-    lpSymbol: 'KXRP-KUSDT LP',
-    lpAddresses: getLpNetwork(KXRP, KUSDT),
-    tokenSymbol: 'KXRP',
-    tokenAddresses: KXRP,
+    lpSymbol: 'OXRP-KUSDT LP',
+    lpAddresses: getLpNetwork(OXRP, KUSDT),
+    tokenSymbol: 'oXRP',
+    tokenAddresses: OXRP,
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
-    firstToken: contracts.kxrp,
+    firstToken: contracts.oxrp,
     secondToken: contracts.kusdt,
-    firstSymbol: QuoteToken.KXRP,
+    firstSymbol: QuoteToken.OXRP,
     secondSymbol: QuoteToken.KUSDT,
   },
   {
@@ -305,7 +305,7 @@ const farms: FarmConfig[] = [
   },
 ]
 
-export const FAVOR_FARMS = farms.filter(({ tokenSymbol, firstSymbol, secondSymbol }) => tokenSymbol === 'FAVOR' || firstSymbol === QuoteToken.FAVOR || secondSymbol === QuoteToken.FAVOR)
+export const FAVOR_FARMS = farms.filter(({ tokenSymbol, firstSymbol, secondSymbol }) => tokenSymbol === 'Favor' || tokenSymbol === 'FAVOR' || firstSymbol === 'FAVOR' || firstSymbol === 'Favor' || secondSymbol === 'FAVOR' || secondSymbol === 'Favor')
 
 export const TAG_COLORS = {
   'hot': ColorStyles.RED,

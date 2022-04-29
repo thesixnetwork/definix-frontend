@@ -1,5 +1,5 @@
 import { RebalanceConfig } from './types'
-import { FINIX, SIX, WKLAY, KWBTC, KETH, KXRP, KUSDT, KBNB } from './tokens'
+import { FINIX, SIX, WKLAY, KWBTC, KETH, OXRP, KUSDT, KBNB } from './tokens'
 
 const rebalances: RebalanceConfig[] = [
   {
@@ -198,10 +198,10 @@ const rebalances: RebalanceConfig[] = [
         address: KETH,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 20,
         color: '#23292e',
-        address: KXRP,
+        address: OXRP,
       },
       {
         symbol: 'KUSDT',
@@ -262,10 +262,10 @@ const rebalances: RebalanceConfig[] = [
         address: KBNB,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 20,
         color: '#23292e',
-        address: KXRP,
+        address: OXRP,
       },
       {
         symbol: 'KUSDT',
@@ -368,10 +368,10 @@ const rebalances: RebalanceConfig[] = [
         address: KETH,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 30,
         color: '#23292e',
-        address: KXRP,
+        address: OXRP,
       },
       {
         symbol: 'KBNB',
@@ -450,10 +450,10 @@ const rebalances: RebalanceConfig[] = [
         address: WKLAY,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 16,
         color: '#23292e',
-        address: KXRP,
+        address: OXRP,
       },
       {
         symbol: 'KUSDT',
@@ -516,10 +516,10 @@ const rebalances: RebalanceConfig[] = [
         address: KBNB,
       },
       {
-        symbol: 'KXRP',
+        symbol: 'oXRP',
         value: 16.6,
         color: '#23292e',
-        address: KXRP,
+        address: OXRP,
       },
       {
         symbol: 'KUSDT',
