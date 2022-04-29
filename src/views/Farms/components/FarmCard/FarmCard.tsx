@@ -141,6 +141,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
         size="small"
         componentType={componentType}
         addLiquidityUrl={addLiquidityUrl}
+        isFarm={true}
       />
     ),
     [farm, lpTokenName, addLiquidityUrl, componentType],

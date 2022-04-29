@@ -108,6 +108,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
         tokenApyList={tokenApyList}
         size={isInMyInvestment && 'small'}
         componentType={componentType}
+        isFarm={false}
       />
     ),
     [tokenApyList, isInMyInvestment, componentType, pool],
