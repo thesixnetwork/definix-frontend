@@ -45,8 +45,8 @@ export const getKethAddress = () => {
 export const getKbtcAddress = () => {
   return getAddress(addresses.kwbtc)
 }
-export const getKxrpAddress = () => {
-  return getAddress(addresses.kxrp)
+export const getOxrpAddress = () => {
+  return getAddress(addresses.oxrp)
 }
 export const getKbnbAddress = () => {
   return getAddress(addresses.kbnb)
@@ -75,8 +75,8 @@ export const getKlayKethLPAddress = () => {
 export const getKlayKbtcLPAddress = () => {
   return getAddress(addresses.klayKbtcLP)
 }
-export const getKlayKxrpLPAddress = () => {
-  return getAddress(addresses.klayKxrpLP)
+export const getKlayOxrpLPAddress = () => {
+  return getAddress(addresses.klayOxrpLP)
 }
 export const getKethKusdtLPAddress = () => {
   return getAddress(addresses.kethKusdtLP)
@@ -84,8 +84,8 @@ export const getKethKusdtLPAddress = () => {
 export const getKbtcKusdtLPAddress = () => {
   return getAddress(addresses.kbtcKusdtLP)
 }
-export const getKxrpKusdtLPAddress = () => {
-  return getAddress(addresses.kxrpKusdtLP)
+export const getOxrpKusdtLPAddress = () => {
+  return getAddress(addresses.oxrpKusdtLP)
 }
 export const getKlayKusdtLPAddress = () => {
   return getAddress(addresses.klayKusdtLP)

@@ -59,12 +59,12 @@ export default {
       logoURI: '/images/coins/KWBTC.png',
     },
     {
-      name: 'KXRP',
-      symbol: 'KXRP',
-      address: process.env.REACT_APP_KXRP_ADDRESS_TESTNET,
+      name: 'OXRP',
+      symbol: 'OXRP',
+      address: process.env.REACT_APP_OXRP_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KXRP.png',
+      logoURI: '/images/coins/OXRP.png',
     },
     {
       name: 'KBNB',
@@ -139,12 +139,12 @@ export default {
       logoURI: '/images/coins/KWBTC.png',
     },
     {
-      name: 'KXRP',
-      symbol: 'KXRP',
-      address: process.env.REACT_APP_KXRP_ADDRESS_MAINNET,
+      name: 'Orbit Bridge Klaytn Ripple',
+      symbol: 'oXRP',
+      address: process.env.REACT_APP_OXRP_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 6,
-      logoURI: '/images/coins/KXRP.png',
+      logoURI: '/images/coins/OXRP.png',
     },
     {
       name: 'KBNB',
