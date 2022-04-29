@@ -59,13 +59,13 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         </ImageBox>
       </Flex>
 
-      <Flex flexDirection={isRow ? 'row' : 'column'} alignItems={isRow ? "center" : "flex-start"}>
+      <Header isRow={isRow}>
         <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{lpLabel}</Text>
-        <Flex flexDirection="column" ml={isRow ? '50px' : ''} mt="3px">
+        <APRCoins isRow={isRow}>
           {(farm.bundleRewards || []).length > 0 && renderAPR(QuoteToken.FAVOR, farm.favorApy)}
           {renderAPR(QuoteToken.FINIX, farm.apy)}
-        </Flex>
-      </Flex>
+        </APRCoins>
+      </Header>
     </Flex>
   )
 }
@@ -90,6 +90,25 @@ const StyledCoin = styled(Coin)`
   }
 `
 
+const APRCoins = styled(Flex)<{ isRow: boolean }>`
+  flex-direction: column;
+  margin-left: ${({ isRow }) => isRow ? '50px' : ''};
+  margin-top: 3px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-left: 0;
+  }
+`
+
 const APRCoin = styled(Coin)`
   margin-right: 3px;
+`
+
+const Header = styled(Flex)<{ isRow: boolean }>`
+  flex-direction: ${({ isRow }) => isRow ? 'row' : 'column'};
+  align-items: ${({ isRow }) => isRow ? 'center' : 'flex-start'};
+
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
