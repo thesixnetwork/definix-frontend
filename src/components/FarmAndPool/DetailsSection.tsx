@@ -5,10 +5,9 @@ import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
 import { QuoteToken } from 'config/constants/types'
 import { useTranslation } from 'react-i18next'
-import BalanceText from 'components/Text/BalanceText'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { TitleSection } from './Styled'
+import { PriceText, StyledBalanceText, TitleSection } from './Styled'
 
 const TotalLiquiditySection: React.FC<{
   title: string
@@ -45,10 +44,7 @@ const TotalStakedSection: React.FC<{
     <>
       <TitleSection>{title}</TitleSection>
       <Box>
-        <Flex alignItems="flex-end">
-          <StyledBalanceText value={totalStakedValue} toFixed={0} />
-          <UnitText>{tokenName}</UnitText>
-        </Flex>
+        <StyledBalanceText value={totalStakedValue} toFixed={0} postfix={tokenName} />
         <PriceText value={totalStakedPrice} prefix="=" />
       </Box>
     </>
@@ -100,8 +96,7 @@ const EarningsSection: React.FC<{
       <ValueWrap>
         {
           allEarnings.length > 0 && allEarnings.map(({ symbol, earnings }, index) => <Flex key={index} alignItems="flex-end">
-            <StyledBalanceText value={earnings} />
-            <TokenNameText>{symbol || ''}</TokenNameText>
+            <StyledBalanceText value={earnings} postfix={symbol} />
           </Flex>)
         }
       </ValueWrap>
@@ -142,14 +137,6 @@ const TokenLabel = styled(Label)`
     margin-right: ${({ theme }) => theme.spacing.S_12}px;
   }
 `
-const StyledBalanceText = styled(BalanceText)`
-  color: ${({ theme }) => theme.colors.black};
-  ${({ theme }) => theme.textStyle.R_18M};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_16M};
-  }
-  margin-bottom: -3px;
-`
 const TotalLiquidityText = styled(CurrencyText)`
   color: ${({ theme }) => theme.colors.black};
   ${({ theme }) => theme.textStyle.R_18M};
@@ -173,23 +160,5 @@ const TokenNameText = styled(Text)`
   ${({ theme }) => theme.textStyle.R_12M};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-bottom: -1px;
-  }
-`
-
-const UnitText = styled(Text)`
-  margin-left: 4px;
-  ${({ theme }) => theme.textStyle.R_12M};
-  color: ${({ theme }) => theme.colors.deepgrey};
-  line-height: 1.9;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    line-height: 1.8;
-  }
-`
-
-const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_14R};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_12R};
   }
 `
