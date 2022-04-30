@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
 import { QuoteToken } from 'config/constants/types'
 import { useTranslation } from 'react-i18next'
@@ -153,12 +153,4 @@ const Wrap = styled(Flex)`
 `
 const ValueWrap = styled(Box)`
   margin-top: -2px;
-`
-const TokenNameText = styled(Text)`
-  padding-left: 2px;
-  color: ${({ theme }) => theme.colors.deepgrey};
-  ${({ theme }) => theme.textStyle.R_12M};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-bottom: -1px;
-  }
 `

@@ -7,7 +7,6 @@ import { QuoteToken } from 'config/constants/types'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
 import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/Text/CurrencyText'
 import { PriceText, StyledBalanceText, TitleSection } from './Styled'
 
 const HarvestAction: React.FC<{
@@ -28,7 +27,7 @@ const HarvestAction: React.FC<{
   const isInFarmAndPool = useMemo(() => ['farm', 'pool'].includes(componentType), [componentType])
   const [pendingTx, setPendingTx] = useState(false)
 
-  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
+  const { convertToPriceFromSymbol } = useConverter()
 
   const getPrice = useCallback((value, unitPrice) => {
     return new BigNumber(value).multipliedBy(unitPrice).toNumber()
