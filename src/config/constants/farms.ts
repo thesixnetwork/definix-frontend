@@ -240,7 +240,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 13,
-    lpSymbol: 'OXRP-oUSDT LP',
+    lpSymbol: 'oXRP-oUSDT LP',
     lpAddresses: getLpNetwork(OXRP, OUSDT),
     tokenSymbol: 'oXRP',
     tokenAddresses: OXRP,

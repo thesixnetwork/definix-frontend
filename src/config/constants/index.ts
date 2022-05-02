@@ -238,7 +238,7 @@ export const PINNED_PAIRS = {
       new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
-      new Token(intMainnetId, OXRP_ADDRESS[intMainnetId], 18, 'OXRP', 'OXRP Token'),
+      new Token(intMainnetId, OXRP_ADDRESS[intMainnetId], 18, 'oXRP', 'oXRP Token'),
       new Token(intMainnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
@@ -250,7 +250,7 @@ export const PINNED_PAIRS = {
       new Token(intMainnetId, OUSDT_ADDRESS[intMainnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intMainnetId, OXRP_ADDRESS[intMainnetId], 18, 'OXRP', 'OXRP Token'),
+      new Token(intMainnetId, OXRP_ADDRESS[intMainnetId], 18, 'oXRP', 'oXRP Token'),
       new Token(intMainnetId, OUSDT_ADDRESS[intMainnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
@@ -320,7 +320,7 @@ export const PINNED_PAIRS = {
       new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
-      new Token(intTestnetId, OXRP_ADDRESS[intTestnetId], 18, 'OXRP', 'OXRP Token'),
+      new Token(intTestnetId, OXRP_ADDRESS[intTestnetId], 18, 'oXRP', 'oXRP Token'),
       new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
@@ -332,7 +332,7 @@ export const PINNED_PAIRS = {
       new Token(intTestnetId, OUSDT_ADDRESS[intTestnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intTestnetId, OXRP_ADDRESS[intTestnetId], 18, 'OXRP', 'OXRP Token'),
+      new Token(intTestnetId, OXRP_ADDRESS[intTestnetId], 18, 'oXRP', 'oXRP Token'),
       new Token(intTestnetId, OUSDT_ADDRESS[intTestnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [

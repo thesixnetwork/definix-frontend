@@ -43,7 +43,7 @@ export default {
       logoURI: '/images/coins/KDAI.png',
     },
     {
-      name: 'oETH',
+      name: 'Orbit Bridge Klaytn Ethereum',
       symbol: 'oETH',
       address: process.env.REACT_APP_OETH_ADDRESS_TESTNET,
       chainId: 1001,
@@ -51,7 +51,7 @@ export default {
       logoURI: '/images/coins/OETH.png',
     },
     {
-      name: 'oWBTC',
+      name: 'Orbit Bridge Klaytn Wrapped BTC',
       symbol: 'oWBTC',
       address: process.env.REACT_APP_OWBTC_ADDRESS_TESTNET,
       chainId: 1001,
@@ -59,8 +59,8 @@ export default {
       logoURI: '/images/coins/OWBTC.png',
     },
     {
-      name: 'OXRP',
-      symbol: 'OXRP',
+      name: 'Orbit Bridge Klaytn Ripple',
+      symbol: 'oXRP',
       address: process.env.REACT_APP_OXRP_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
@@ -107,7 +107,7 @@ export default {
       logoURI: '/images/coins/six.png',
     },
     {
-      name: 'oUSDT',
+      name: 'Orbit Bridge Klaytn USD Tether',
       symbol: 'oUSDT',
       address: process.env.REACT_APP_OUSDT_ADDRESS_MAINNET,
       chainId: 8217,
@@ -123,7 +123,7 @@ export default {
       logoURI: '/images/coins/KDAI.png',
     },
     {
-      name: 'oETH',
+      name: 'Orbit Bridge Klaytn Ethereum',
       symbol: 'oETH',
       address: process.env.REACT_APP_OETH_ADDRESS_MAINNET,
       chainId: 8217,
@@ -131,7 +131,7 @@ export default {
       logoURI: '/images/coins/OETH.png',
     },
     {
-      name: 'oWBTC',
+      name: 'Orbit Bridge Klaytn Wrapped BTC',
       symbol: 'oWBTC',
       address: process.env.REACT_APP_OWBTC_ADDRESS_MAINNET,
       chainId: 8217,
