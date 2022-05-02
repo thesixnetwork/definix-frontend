@@ -38,7 +38,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         APR
       </Text>
       <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px', marginBottom: '-2px' }}>
-        {apy && isFarm ? convertToFarmAPRFormat(apy) : convertToPoolAPRFormat(apy)}%
+        {apy && (isFarm ? convertToFarmAPRFormat(apy) : convertToPoolAPRFormat(apy))}%
       </Text>
       <Box style={{ marginLeft: '4px' }}>
         <ApyButton lpLabel={tokenApyList.map(({ symbol }) => symbol).join('-')} addLiquidityUrl={addLiquidityUrl} apy={apy} coin={coin} />

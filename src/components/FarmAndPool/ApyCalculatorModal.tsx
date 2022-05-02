@@ -32,14 +32,14 @@ const Grid = styled.div`
 const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLabel, apy, addLiquidityUrl, coin }) => {
   const { t } = useTranslation()
   const { convertToPriceFromSymbol } = useConverter()
-  const finixPrice = convertToPriceFromSymbol()
+  const price = convertToPriceFromSymbol(coin)
   const farmApy = useMemo(() => apy.times(new BigNumber(100)).toNumber(), [apy])
 
   const getEarnedPerThousand = useCallback(
     (day: number) => {
-      return calculateFinixEarnedPerThousandDollars({ numberOfDays: day, farmApy, finixPrice })
+      return calculateFinixEarnedPerThousandDollars({ numberOfDays: day, farmApy, finixPrice: price })
     },
-    [farmApy, finixPrice],
+    [farmApy, price],
   )
 
   const headerData = useMemo(() => ['Timeframe', 'ROI', `${coin} per $1000`], [coin])
@@ -85,7 +85,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
             </Box>
             <Box>
               <Text textStyle="R_14M" color={ColorStyles.BLACK}>
-                {apyModalRoi({ amountEarned: row.earned, amountInvested: 1000 / finixPrice })} %
+                {apyModalRoi({ amountEarned: row.earned, amountInvested: 1000 / price })} %
               </Text>
             </Box>
             <Box>

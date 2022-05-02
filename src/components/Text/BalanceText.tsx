@@ -13,8 +13,8 @@ const BalanceText: React.FC<{
   const formatedValue = useMemo(() => new BigNumber(value).toFormat(decimalPlaces, 1), [value, decimalPlaces])
   return (
     <Text {...rest}>
-      {formatedValue}
-      {postfix && <span style={{ fontSize: '14px' }}> {postfix}</span>}
+      {value ? (value === '-' ? value : formatedValue) : '0'}
+      {postfix && <span className="unit"> {postfix}</span>}
     </Text>
   )
 }

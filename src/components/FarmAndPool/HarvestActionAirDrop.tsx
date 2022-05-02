@@ -7,8 +7,7 @@ import { QuoteToken } from 'config/constants/types'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
 import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/Text/CurrencyText'
-import { TitleSection } from './Styled'
+import { PriceText, StyledBalanceText, TitleSection } from './Styled'
 
 const HarvestAction: React.FC<{
   componentType: string
@@ -28,7 +27,7 @@ const HarvestAction: React.FC<{
   const isInFarmAndPool = useMemo(() => ['farm', 'pool'].includes(componentType), [componentType])
   const [pendingTx, setPendingTx] = useState(false)
 
-  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
+  const { convertToPriceFromSymbol } = useConverter()
 
   const getPrice = useCallback((value, unitPrice) => {
     return new BigNumber(value).multipliedBy(unitPrice).toNumber()
@@ -92,11 +91,11 @@ const HarvestAction: React.FC<{
     return <Flex key={tokenName} mb="8px">
       <TokenLabel type="token">{tokenName}</TokenLabel>
       <TokenValueWrap>
-        <BalanceText>{convertToBalanceFormat(balance)}</BalanceText>
+        <StyledBalanceText value={balance} />
         <PriceText value={price} prefix="=" />
       </TokenValueWrap>
     </Flex>
-  }, [convertToBalanceFormat])
+  }, [])
 
   return (
     <>
@@ -150,20 +149,6 @@ const TokenLabel = styled(Label)`
 `
 const TokenValueWrap = styled(Box)`
   margin-top: -3px;
-`
-const BalanceText = styled(Text)`
-  color: ${({ theme }) => theme.colors.black};
-  ${({ theme }) => theme.textStyle.R_18M};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_16M};
-  }
-`
-const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_14R};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_12R};
-  }
 `
 const HarvestButtonSectionInFarm = styled(Box)`
   width: 100px;

@@ -1,12 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
-import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/Text/CurrencyText'
+import { PlusIcon, MinusIcon, Button, ButtonVariants, Flex, Box } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
-import { TitleSection } from 'components/FarmAndPool/Styled'
+import { PriceText, StyledBalanceText, TitleSection } from 'components/FarmAndPool/Styled'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 
@@ -70,10 +68,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
   const renderBalance = useMemo(() => <Flex justifyContent="space-between">
       <Box>
-        <BalanceText>
-          {convertToBalanceFormat(getBalanceNumber(stakedBalance))}
-          <UnitText>{stakedBalanceUnit}</UnitText>
-        </BalanceText>
+        <StyledBalanceText value={getBalanceNumber(stakedBalance)} fixed="6" postfix={stakedBalanceUnit} />
         <PriceText value={stakedBalancePrice} prefix="=" />
         </Box>
     </Flex>
@@ -116,9 +111,9 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
 const renderFarm = useMemo(() => <Flex justifyContent="space-between">
   {hasAccount ? renderBalance : <Box>
-      <BalanceText>-</BalanceText>
-      </Box>}
-    </Flex>
+      <StyledBalanceText value="-" />
+    </Box>}
+  </Flex>
   , [hasAccount, renderBalance])
   
 
@@ -133,29 +128,3 @@ const renderFarm = useMemo(() => <Flex justifyContent="space-between">
 }
 
 export default React.memo(StakeAction)
-
-const BalanceText = styled(Text)`
-  display: flex;
-  align-items: flex-end;
-  color: ${({ theme }) => theme.colors.black};
-  ${({ theme }) => theme.textStyle.R_18M};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_16M};
-  }
-`
-const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_14R};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_12R};
-  }
-`
-const UnitText = styled(Text)`
-  margin-left: 4px;
-  ${({ theme }) => theme.textStyle.R_12M};
-  color: ${({ theme }) => theme.colors.deepgrey};
-  line-height: 1.9;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    line-height: 1.8;
-  }
-`
