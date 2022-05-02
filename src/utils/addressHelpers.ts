@@ -37,7 +37,7 @@ export const getKdaiAddress = () => {
   return getAddress(addresses.kdai)
 }
 export const getKusdtAddress = () => {
-  return getAddress(addresses.kusdt)
+  return getAddress(addresses.ousdt)
 }
 export const getKethAddress = () => {
   return getAddress(addresses.keth)

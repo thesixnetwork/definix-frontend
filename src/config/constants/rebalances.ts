@@ -1,5 +1,5 @@
 import { RebalanceConfig } from './types'
-import { FINIX, SIX, WKLAY, KWBTC, KETH, OXRP, KUSDT, KBNB } from './tokens'
+import { FINIX, SIX, WKLAY, KWBTC, KETH, OXRP, OUSDT, KBNB } from './tokens'
 
 const rebalances: RebalanceConfig[] = [
   {
@@ -36,10 +36,10 @@ const rebalances: RebalanceConfig[] = [
         address: KETH,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 0,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: OUSDT,
       },
     ],
     factsheet: {
@@ -88,10 +88,10 @@ const rebalances: RebalanceConfig[] = [
         address: KETH,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 50,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: OUSDT,
       },
     ],
     factsheet: {
@@ -146,10 +146,10 @@ const rebalances: RebalanceConfig[] = [
         address: KBNB,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 0,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: OUSDT,
       },
     ],
     factsheet: {
@@ -204,10 +204,10 @@ const rebalances: RebalanceConfig[] = [
         address: OXRP,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 20,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: OUSDT,
       },
     ],
     factsheet: {
@@ -268,10 +268,10 @@ const rebalances: RebalanceConfig[] = [
         address: OXRP,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 20,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: OUSDT,
       },
     ],
     factsheet: {
@@ -326,10 +326,10 @@ const rebalances: RebalanceConfig[] = [
         address: WKLAY,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 25,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: OUSDT,
       },
     ],
     factsheet: {
@@ -380,10 +380,10 @@ const rebalances: RebalanceConfig[] = [
         address: KBNB,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 10,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: OUSDT,
       },
     ],
     factsheet: {
@@ -456,10 +456,10 @@ const rebalances: RebalanceConfig[] = [
         address: OXRP,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 4,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: OUSDT,
       },
     ],
     factsheet: {
@@ -522,10 +522,10 @@ const rebalances: RebalanceConfig[] = [
         address: OXRP,
       },
       {
-        symbol: 'KUSDT',
+        symbol: 'oUSDT',
         value: 16.6,
         color: '#2A9D8F',
-        address: KUSDT,
+        address: OUSDT,
       },
     ],
     factsheet: {

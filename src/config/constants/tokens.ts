@@ -22,9 +22,9 @@ export const WKLAY = {
   [intMainnetId]: process.env.REACT_APP_WKLAY_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET,
 }
-export const KUSDT = {
-  [intMainnetId]: process.env.REACT_APP_KUSDT_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET,
+export const OUSDT = {
+  [intMainnetId]: process.env.REACT_APP_OUSDT_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_OUSDT_ADDRESS_TESTNET,
 }
 export const KDAI = {
   [intMainnetId]: process.env.REACT_APP_KDAI_ADDRESS_MAINNET,
@@ -62,7 +62,7 @@ export const allTokens = {
   SIX,
   FINIX,
   WKLAY,
-  KUSDT,
+  OUSDT,
   KDAI,
   KETH,
   KWBTC,

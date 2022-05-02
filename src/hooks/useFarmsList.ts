@@ -96,7 +96,7 @@ const useFarmsList = (farms: Farm[]): any => {
       // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
 
       let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-      if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
+      if (farm.quoteTokenSymbol === QuoteToken.OUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
         apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
       } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
         apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)

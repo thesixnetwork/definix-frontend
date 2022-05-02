@@ -27,12 +27,12 @@ export default {
       logoURI: '/images/coins/six.png',
     },
     {
-      name: 'KUSDT',
-      symbol: 'KUSDT',
-      address: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET,
+      name: 'oUSDT',
+      symbol: 'oUSDT',
+      address: process.env.REACT_APP_OUSDT_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KUSDT.png',
+      logoURI: '/images/coins/OUSDT.png',
     },
     {
       name: 'KDAI',
@@ -107,12 +107,12 @@ export default {
       logoURI: '/images/coins/six.png',
     },
     {
-      name: 'KUSDT',
-      symbol: 'KUSDT',
-      address: process.env.REACT_APP_KUSDT_ADDRESS_MAINNET,
+      name: 'oUSDT',
+      symbol: 'oUSDT',
+      address: process.env.REACT_APP_OUSDT_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 6,
-      logoURI: '/images/coins/KUSDT.png',
+      logoURI: '/images/coins/OUSDT.png',
     },
     {
       name: 'KDAI',

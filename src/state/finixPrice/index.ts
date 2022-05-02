@@ -180,9 +180,9 @@ const pairObjectCombination = (inputObject) => {
 }
 
 const findAndSelectPair = (pair) => {
-  if (pair.indexOf('KUSDT') >= 0) {
-    const firstKey = pair[0] === 'KUSDT' ? pair[1] : pair[0]
-    const secondKey = pair[0] === 'KUSDT' ? pair[0] : pair[1]
+  if (pair.indexOf('OUSDT') >= 0) {
+    const firstKey = pair[0] === 'OUSDT' ? pair[1] : pair[0]
+    const secondKey = pair[0] === 'OUSDT' ? pair[0] : pair[1]
     return [firstKey, secondKey]
   }
   if (pair.indexOf('FINIX') >= 0) {
@@ -194,9 +194,9 @@ const findAndSelectPair = (pair) => {
 }
 
 const findAndSelectPairToFavor = (pair) => {
-  if (pair.indexOf('KUSDT') >= 0) {
-    const firstKey = pair[0] === 'KUSDT' ? pair[1] : pair[0]
-    const secondKey = pair[0] === 'KUSDT' ? pair[0] : pair[1]
+  if (pair.indexOf('OUSDT') >= 0) {
+    const firstKey = pair[0] === 'OUSDT' ? pair[1] : pair[0]
+    const secondKey = pair[0] === 'OUSDT' ? pair[0] : pair[1]
     return [firstKey, secondKey]
   }
   if (pair.indexOf('FAVOR') >= 0) {
@@ -210,7 +210,7 @@ const findAndSelectPairToFavor = (pair) => {
 export const fetchFinixPrice = () => async (dispatch) => {
   const allTokenCombinationKeys = pairObjectCombination(allTokens)
   const allFinixPair = allTokenCombinationKeys.filter(
-    (item) => item.indexOf('FINIX') >= 0 || item.indexOf('KUSDT') >= 0,
+    (item) => item.indexOf('FINIX') >= 0 || item.indexOf('OUSDT') >= 0,
   )
   const sortedPair = compact(allFinixPair.map((pair) => findAndSelectPair(pair)))
   const searchablePair = {}
@@ -244,10 +244,10 @@ export const fetchFinixPrice = () => async (dispatch) => {
   const allPrices = allFetchedData.map((data, index) => {
     const currentPair = sortedPair[index]
     if (data && currentPair[0] === 'FINIX') {
-      if (currentPair[1] === 'KUSDT') {
+      if (currentPair[1] === 'OUSDT') {
         return [allRatio[index], allFetchedData[index][1]]
       }
-      const pairIndex = searchablePair[currentPair[1]].KUSDT
+      const pairIndex = searchablePair[currentPair[1]].OUSDT
       return [allRatio[index] * allRatio[pairIndex], allFetchedData[index][1]]
     }
     return undefined
@@ -266,7 +266,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
 export const fetchFavorPrice = () => async (dispatch) => {
   const allTokenCombinationKeys = pairObjectCombination(allTokens)
   const allFavorPair = allTokenCombinationKeys.filter(
-    (item) => item.indexOf('FAVOR') >= 0 || item.indexOf('KUSDT') >= 0,
+    (item) => item.indexOf('FAVOR') >= 0 || item.indexOf('OUSDT') >= 0,
   )
   const sortedPair = compact(allFavorPair.map((pair) => findAndSelectPairToFavor(pair)))
   const searchablePair = {}
@@ -300,10 +300,10 @@ export const fetchFavorPrice = () => async (dispatch) => {
   const allPrices = allFetchedData.map((data, index) => {
     const currentPair = sortedPair[index]
     if (data && (currentPair[0] === 'FAVOR')) {
-      if (currentPair[1] === 'KUSDT') {
+      if (currentPair[1] === 'OUSDT') {
         return [allRatio[index], allFetchedData[index][1]]
       }
-      const pairIndex = searchablePair[currentPair[1]].KUSDT
+      const pairIndex = searchablePair[currentPair[1]].OUSDT
       return [allRatio[index] * allRatio[pairIndex], allFetchedData[index][1]]
     }
     return undefined

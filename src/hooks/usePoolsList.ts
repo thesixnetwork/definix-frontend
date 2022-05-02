@@ -32,7 +32,7 @@ const usePoolsList = ({ farms, pools }) => {
       if (tokenName === 'KLAY') {
         return new BigNumber(1)
       }
-      if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
+      if (tokenPrice && quoteToken === QuoteToken.OUSDT) {
         return tokenPriceKLAYTN.div(klayPriceUSD)
       }
       return tokenPriceKLAYTN

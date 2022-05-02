@@ -2,7 +2,7 @@ export enum QuoteToken {
   'KLAY' = 'KLAY',
   'WKLAY' = 'WKLAY',
   'SYRUP' = 'SYRUP',
-  'KUSDT' = 'KUSDT',
+  'OUSDT' = 'oUSDT',
   'KDAI' = 'KDAI',
   'KETH' = 'KETH',
   'OXRP' = 'oXRP',
@@ -12,10 +12,10 @@ export enum QuoteToken {
   'FINIX' = 'FINIX',
   'VFINIX' = 'VFINIX',
   'SIXFINIX' = 'FINIX-SIX',
-  'FINIXKUSDT' = 'FINIX-KUSDT',
+  'FINIXOUSDT' = 'FINIX-oUSDT',
   'FINIXKLAY' = 'FINIX-KLAY',
-  'SIXKUSDT' = 'SIX-KUSDT',
-  'KDAIKUSDT' = 'KDAI-KUSDT',
+  'SIXOUSDT' = 'SIX-oUSDT',
+  'KDAIOUSDT' = 'KDAI-oUSDT',
   'KSP' = 'KSP',
   /**
    * @favor
