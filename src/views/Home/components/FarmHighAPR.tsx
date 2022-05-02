@@ -31,16 +31,36 @@ const FarmHighAPR = () => {
   const farmsLP = useFarms()
   const farmsWithApy = useFarmsList(farmsLP)
   const activeFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X' && farm.apy.toString() !== 'Infinity')
+  const activeFavorFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X' && farm.favorApy.toString() !== 'Infinity')
   const sortedFarmData = useMemo(() => activeFarms.sort((a, b) => +a.apy - +b.apy).reverse(), [activeFarms])
+  const sortedFavorFarmData = useMemo(() => activeFavorFarms.sort((a, b) => +a.favorApy - +b.favorApy).reverse(), [activeFavorFarms])
 
-  return sortedFarmData[0] ? (
+  const sortedData = useMemo(() => {
+    if (sortedFarmData[0] && sortedFavorFarmData[0]) {
+      const isFarmHighApy = sortedFarmData[0].apy.isGreaterThanOrEqualTo(sortedFavorFarmData[0].favorApy)
+      return isFarmHighApy ? {
+        lpSymbol: sortedFarmData[0].lpSymbol,
+        apy: sortedFarmData[0].apy,
+        lpSymbols: sortedFarmData[0].lpSymbols,
+        totalLiquidityValue: sortedFarmData[0].totalLiquidityValue,
+      } : {
+        lpSymbol: sortedFavorFarmData[0].lpSymbol,
+        apy: sortedFavorFarmData[0].favorApy,
+        lpSymbols: sortedFavorFarmData[0].lpSymbols,
+        totalLiquidityValue: sortedFavorFarmData[0].totalLiquidityValue,
+      }
+    }
+    return null;
+  }, [sortedFarmData, sortedFavorFarmData])
+
+  return sortedData ? (
     <FormAPR
-      title={sortedFarmData[0].lpSymbol}
-      totalAssetValue={get(sortedFarmData[0], 'totalLiquidityValue', 0)}
-      apr={numeral(sortedFarmData[0].apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}
+      title={sortedData.lpSymbol}
+      totalAssetValue={get(sortedData, 'totalLiquidityValue', 0)}
+      apr={numeral(sortedData.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}
       Images={
         <WrapImage>
-          <StyledLp lpSymbols={sortedFarmData[0].lpSymbols.map(({ symbol }) => symbol)} size="48px" />
+          <StyledLp lpSymbols={sortedData.lpSymbols.map(({ symbol }) => symbol)} size="48px" />
         </WrapImage>
       }
     />

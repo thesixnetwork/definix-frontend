@@ -3,7 +3,7 @@ import { provider } from 'web3-core'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
+import { useFarmFromSymbol, useFarmUnlockDate, useFarmUser } from 'state/hooks'
 import useConverter from 'hooks/useConverter'
 import { getContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
@@ -21,16 +21,18 @@ import {
   useMatchBreakpoints,
   Grid,
 } from '@fingerlabs/definixswap-uikit-v2'
-import CardHeading from './CardHeading'
-import { TotalLiquiditySection, EarningsSection } from './DetailsSection'
-import HarvestActionAirDrop from './HarvestActionAirDrop'
-import StakeAction from './StakeAction'
-import LinkListSection from './LinkListSection'
+import CardHeading from 'components/FarmAndPool/CardHeading'
+import { EarningsSection, TotalLiquiditySection } from 'components/FarmAndPool/DetailsSection'
+import HarvestActionAirDrop from 'components/FarmAndPool/HarvestActionAirDrop'
+import StakeAction from 'components/FarmAndPool/StakeAction'
+import LinkListSection from 'components/FarmAndPool/LinkListSection'
 import { FarmCardProps } from './types'
 import FarmContext from '../../FarmContext'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { TAG_COLORS } from 'config/constants/farms'
 import { QuoteToken } from 'config/constants/types'
+import { useApprove } from 'hooks/useApprove'
+import { useHarvest } from 'hooks/useHarvest'
 
 
 const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klaytn, account }) => {
@@ -45,6 +47,16 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
   const { earnings, stakedBalance, allowance, pendingRewards } = useFarmUser(pid)
   const lpContract = useMemo(() => getContract(klaytn as provider, getAddress(lpAddresses)), [klaytn, lpAddresses])
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
+  const { onApprove } = useApprove(lpContract)
+  const { onReward } = useHarvest(pid)
+
+  const farmUnlockDate = useFarmUnlockDate()
+  const isEnableAddStake = useMemo(() => {
+    return (
+      typeof farmUnlockDate === 'undefined' ||
+      (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())
+    )
+  }, [farmUnlockDate])
 
   const addLiquidityUrl = useMemo(() => {
     const liquidityUrlPathParts = getLiquidityUrlPathParts({
@@ -74,26 +86,37 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
     return convertToPriceFromToken(stakedTotalInQuoteToken, farm.quoteTokenSymbol)
   }, [farm, stakedBalance, convertToPriceFromToken])
 
+  const apyList = useMemo(() => {
+    return {
+      [QuoteToken.FAVOR]: farm.favorApy,
+      [QuoteToken.FINIX]: farm.apy,
+    }
+  }, [farm])
+
   const allEarnings = useMemo(() => {
     const result: {
-      token: QuoteToken
+      symbol: QuoteToken
       earnings: number
+      apy: BigNumber
     }[] = [];
     if (farm.bundleRewards) {
       farm.bundleRewards.forEach((bundle, bundleId) => {
         const pendingReward = pendingRewards.find((pr) => pr.bundleId === bundleId) || {}
         result.push({
-          token: bundle.rewardTokenInfo.name,
-          earnings: (getBalanceNumber(pendingReward.reward) || 0)
+          symbol: bundle.rewardTokenInfo.name,
+          earnings: (getBalanceNumber(pendingReward.reward) || 0),
+          apy: apyList[bundle.rewardTokenInfo.name]
         })
       })
     }
     result.push({
-      token: QuoteToken.FINIX,
+      symbol: QuoteToken.FINIX,
       earnings: getBalanceNumber(earnings),
+      apy: apyList[QuoteToken.FINIX],
     })
     return result
-  }, [earnings, farm.bundleRewards, pendingRewards])
+  }, [earnings, farm, pendingRewards, apyList])
+
 
   /**
    * Card Ribbon
@@ -106,17 +129,19 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
     }
     return null
   }, [farm.tag])
+
   /**
    * CardHeading
    */
   const renderCardHeading = useMemo(
     () => (
       <CardHeading
-        farm={farm}
-        lpLabel={lpTokenName}
+        tokenNames={lpTokenName}
+        tokenApyList={allEarnings}
         size="small"
-        addLiquidityUrl={addLiquidityUrl}
         componentType={componentType}
+        addLiquidityUrl={addLiquidityUrl}
+        isFarm={true}
       />
     ),
     [farm, lpTokenName, addLiquidityUrl, componentType],
@@ -160,6 +185,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
       addLiquidityUrl,
     }
   }, [farm, lpTokenName, myLiquidity, addLiquidityUrl])
+
+  
   const renderStakeAction = useMemo(
     () => (
       (type?: string) => 
@@ -170,28 +197,33 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
             hasAccount={hasAccount}
             hasUserData={hasUserData}
             hasAllowance={hasAllowance}
-            myLiquidity={stakedBalance}
-            myLiquidityPrice={myLiquidity}
-            lpContract={lpContract}
+
+            isEnableRemoveStake={stakedBalance.eq(new BigNumber(0))}
+            isEnableAddStake={isEnableAddStake}
+            onApprove={onApprove}
+            stakedBalance={stakedBalance}
+            stakedBalancePrice={myLiquidity.toNumber()}
+            stakedBalanceUnit="LP"
+
             onPresentDeposit={() => goDeposit(dataForNextState)}
             onPresentWithdraw={() => goWithdraw(dataForNextState)}
           />
         )}
       </FarmContext.Consumer>
     ),
-    [componentType, hasAccount, hasUserData, hasAllowance, stakedBalance, myLiquidity, lpContract, dataForNextState],
+    [componentType, stakedBalance, hasAccount, hasUserData, hasAllowance, stakedBalance, myLiquidity, lpContract, dataForNextState, onApprove],
   )
   /**
    * HarvestAction Section
    */
   const renderHarvestAction = useMemo(
-    () => <HarvestActionAirDrop allEarnings={allEarnings} componentType={componentType} pid={pid} lpSymbol={lpTokenName} />,
-    [earnings, pid, componentType, lpTokenName, allEarnings],
+    () => <HarvestActionAirDrop allEarnings={allEarnings} isEnableHarvest={allEarnings.reduce((sum, { earnings }) => sum + earnings, 0) === 0} onReward={onReward} componentType={componentType} tokenName={lpTokenName} />,
+    [earnings, componentType, lpTokenName, allEarnings, onReward],
   )
   /**
    * Link Section
    */
-  const renderLinkSection = useMemo(() => <LinkListSection lpAddresses={lpAddresses} />, [lpAddresses])
+  const renderLinkSection = useMemo(() => <LinkListSection contractAddress={lpAddresses} />, [lpAddresses])
 
   if (isInMyInvestment) {
     return (
@@ -220,7 +252,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
             {isOpenAccordion && (
               <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" pt="S_24" pb="S_28">
                 {renderHarvestAction}
-                <Box py="S_24">{renderStakeAction('farm-accordian')}</Box>
+                <Box py="S_24">{renderStakeAction('accordian')}</Box>
                 <Divider />
                 <Box pt="S_24">{renderTotalLiquiditySection}</Box>
                 <Box pt="S_28">{renderLinkSection}</Box>
@@ -245,7 +277,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
                 <Flex justifyContent="space-between">
                   <Box className="link-section">{renderLinkSection}</Box>
                   <Box className="harvest-action-section">{renderHarvestAction}</Box>
-                  <Box className="stake-action-section">{renderStakeAction('farm-accordian')}</Box>
+                  <Box className="stake-action-section">{renderStakeAction('accordian')}</Box>
                 </Flex>
               </Box>
             )}

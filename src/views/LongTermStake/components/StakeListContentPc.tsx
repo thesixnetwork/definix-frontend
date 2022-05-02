@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Divider, Helper } from '@fingerlabs/definixswap-uikit-v2'
@@ -6,6 +6,7 @@ import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import UnstakeButton from './UnstakeButton'
 import { AllDataLockType, IsMobileType } from './types'
+import { longTermDays } from 'config/constants/longTerm'
 
 interface ContentProps extends IsMobileType {
   allDataLock: AllDataLockType[]
@@ -13,6 +14,12 @@ interface ContentProps extends IsMobileType {
 
 const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) => {
   const { t, i18n } = useTranslation()
+
+  const getDays = useCallback((multiplier: number) => {
+    const obj = longTermDays.find((item) => item.multiplier === multiplier)
+    return obj ? obj.days : '';
+  }, [])
+
   const getEndDay = (endDay: string) => {
     if (i18n.language === 'ko') {
       return moment(endDay).format(`YYYY-MM-DD HH:mm:ss`)
@@ -28,7 +35,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
             <Flex width="100%" alignItems="center" py="S_16">
               <Flex pl="S_20" width="26%" flexDirection="column">
                 <Text textStyle="R_14R" color="black">
-                  {t(`${item.days} days`)}
+                  {t(`${getDays(item.multiplier)} days`)}
                 </Text>
                 {item.isTopup && (
                   <Flex alignItems="center">
@@ -49,7 +56,9 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
               <Flex width="52%" justifyContent="space-between">
                 <Flex flexDirection="column" justifyContent="center">
                   <Text textStyle="R_14R" color="black">
-                    {item.isPenalty ? getEndDay(item.penaltyUnlockTimestamp) : getEndDay(item.lockTimestamp)}
+                    {item.isPenalty
+                      ? getEndDay(item.penaltyUnlockTimestamp)
+                      : getEndDay(item.lockTimestamp)}
                   </Text>
                   <Text textStyle="R_12R" color="mediumgrey">
                     *GMT +9 {t('Asia/Seoul')}

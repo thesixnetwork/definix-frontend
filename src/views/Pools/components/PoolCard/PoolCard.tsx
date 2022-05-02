@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { getSwapUrlPathParts } from 'utils/getUrlPathParts'
+import useConverter from 'hooks/useConverter'
 import {
   Flex,
   Card,
@@ -17,15 +18,17 @@ import {
   useMatchBreakpoints,
   Grid,
 } from '@fingerlabs/definixswap-uikit-v2'
-import CardHeading from './CardHeading'
-import { TotalStakedSection } from './DetailsSection'
-import { EarningsSection } from '../../../Farms/components/FarmCard/DetailsSection'
-import HarvestActionAirDrop from './HarvestActionAirDrop'
-import StakeAction from './StakeAction'
-import LinkListSection from './LinkListSection'
+import CardHeading from 'components/FarmAndPool/CardHeading'
+import { EarningsSection, TotalStakedSection } from 'components/FarmAndPool/DetailsSection'
+import HarvestActionAirDrop from 'components/FarmAndPool/HarvestActionAirDrop'
+import StakeAction from 'components/FarmAndPool/StakeAction'
+import LinkListSection from 'components/FarmAndPool/LinkListSection'
 import PoolConText from '../../PoolContext'
 import { PoolCardProps } from './types'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useERC20 } from 'hooks/useContract'
+import { useSousApprove } from 'hooks/useApprove'
+import { useSousHarvest } from 'hooks/useHarvest'
 
 const CardWrap = styled(Card)`
   margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
@@ -67,13 +70,17 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
+  const { convertToPriceFromSymbol } = useConverter()
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
   const { account } = useWallet()
   const { sousId, tokenName, totalStaked } = pool
-
+  const stakingTokenContract = useERC20(pool.stakingTokenAddress)
+  const { onApprove } = useSousApprove(stakingTokenContract, pool.sousId)
+  
   const isBnbPool = useMemo(() => pool.poolCategory === PoolCategory.KLAYTN, [pool.poolCategory])
   const isOldSyrup = useMemo(() => pool.stakingTokenName === QuoteToken.SYRUP, [pool.stakingTokenName])
-
+  
+  const { onReward } = useSousHarvest(sousId, isBnbPool)
   const allowance = useMemo(() => new BigNumber(pool.userData?.allowance || 0), [pool.userData])
   const earnings = useMemo(() => new BigNumber(pool.userData?.pendingReward || 0), [pool.userData])
   const stakedBalance = useMemo(() => new BigNumber(pool.userData?.stakedBalance || 0), [pool.userData])
@@ -83,19 +90,28 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
     return `/swap/${swapUrlPathParts}`
   }, [pool.stakingTokenAddress])
 
+  const tokenApyList = useMemo(() => {
+    return [{
+      symbol: pool.tokenName,
+      apy: pool.apy
+    }]
+  }, [pool])
+
   /**
    * CardHeading
    */
   const renderCardHeading = useMemo(
     () => (
       <CardHeading
-        isOldSyrup={isOldSyrup}
-        pool={pool}
+        tokenNames={pool.tokenName}
+        // isOldSyrup={isOldSyrup}
+        tokenApyList={tokenApyList}
         size={isInMyInvestment && 'small'}
         componentType={componentType}
+        isFarm={false}
       />
     ),
-    [isOldSyrup, pool, isInMyInvestment, componentType],
+    [tokenApyList, isInMyInvestment, componentType, pool],
   )
   /**
    * IconButton
@@ -120,7 +136,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
    */
   const renderEarningsSection = useMemo(
     () => <EarningsSection allEarnings={[{
-      token: QuoteToken.FINIX,
+      symbol: QuoteToken.FINIX,
       earnings: getBalanceNumber(earnings)
     }]} isMobile={isMobile} />,
     [t, earnings, isMobile],
@@ -139,6 +155,14 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
       addSwapUrl,
     }
   }, [isOldSyrup, isBnbPool, pool, addSwapUrl])
+  const stakedBalancePrice = useMemo(() => {
+    const price = convertToPriceFromSymbol(pool.tokenName)
+    return new BigNumber(getBalanceNumber(stakedBalance)).multipliedBy(price).toNumber()
+  }, [stakedBalance, convertToPriceFromSymbol, pool.tokenName])
+
+  const isEnableAddStake = useMemo(() => {
+    return !isOldSyrup && !pool.isFinished && !isBnbPool
+  }, [isOldSyrup, pool.isFinished, isBnbPool])
 
   const renderStakeAction = useMemo(
     () => (type?: string) => (
@@ -146,13 +170,19 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
         {({ goDeposit, goWithdraw }) => (
           <StakeAction
             componentType={type || componentType}
-            isOldSyrup={isOldSyrup}
-            isBnbPool={isBnbPool}
+            // isOldSyrup={isOldSyrup}
+            // isBnbPool={isBnbPool}
             hasAccount={hasAccount}
             hasUserData={hasUserData}
             hasAllowance={hasAllowance}
-            pool={pool}
+
+            isEnableRemoveStake={stakedBalance.eq(new BigNumber(0))}
+            isEnableAddStake={isEnableAddStake}
             stakedBalance={stakedBalance}
+            stakedBalancePrice={stakedBalancePrice}
+            stakedBalanceUnit={pool.tokenName}
+            onApprove={onApprove}
+
             onPresentDeposit={() => goDeposit(dataForNextState)}
             onPresentWithdraw={() => goWithdraw(dataForNextState)}
           />
@@ -178,16 +208,17 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
     () => (
       <HarvestActionAirDrop
         componentType={componentType}
-        isBnbPool={isBnbPool}
-        isOldSyrup={isOldSyrup}
-        needsApprovalContract={!hasUserData || !hasAllowance || isBnbPool}
-        sousId={sousId}
-        earnings={earnings}
+        allEarnings={[{
+          symbol: QuoteToken.FINIX,
+          earnings: getBalanceNumber(earnings)
+        }]}
+        isEnableHarvest={!account || ((!hasUserData || !hasAllowance || isBnbPool) && !isOldSyrup) || !earnings.toNumber()}
         // farm={pool.farm}
         tokenName={tokenName}
+        onReward={onReward}
       />
     ),
-    [componentType, isBnbPool, isOldSyrup, hasUserData, hasAllowance, sousId, earnings, tokenName],
+    [componentType, account, isBnbPool, isOldSyrup, hasUserData, hasAllowance, sousId, earnings, tokenName, onReward],
   )
   /**
    * Link Section
@@ -225,7 +256,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" py="S_24">
               {renderHarvestActionAirDrop}
-              <Box py="S_24">{renderStakeAction('pool-accordian')}</Box>
+              <Box py="S_24">{renderStakeAction('accordian')}</Box>
               <Divider />
               <Box pt="S_24">{renderTotalStakedSection}</Box>
               <Box py="S_28">{renderLinkSection}</Box>
@@ -250,7 +281,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
               <Flex justifyContent="space-between">
                 <Box className="link-section">{renderLinkSection}</Box>
                 <Box className="harvest-action-section">{renderHarvestActionAirDrop}</Box>
-                <Box className="stake-action-section">{renderStakeAction('pool-accordian')}</Box>
+                <Box className="stake-action-section">{renderStakeAction('accordian')}</Box>
               </Flex>
             </Box>
           )}

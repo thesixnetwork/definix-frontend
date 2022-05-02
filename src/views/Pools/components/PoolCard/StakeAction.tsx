@@ -98,7 +98,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
   const renderPoolAccordian = useMemo(() => hasAccount ? (hasUserData && hasAllowance ? <Flex justifyContent="space-between">
     {renderBalance}
-    {componentType == 'pool-accordian' && <Box>
+    {componentType == 'accordian' && <Box>
         <Button
           minWidth="40px"
           md
@@ -143,7 +143,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     <>
       <TitleSection>{t('My Staked')}</TitleSection>
       {
-        componentType !== 'pool-accordian' ? renderPool : renderPoolAccordian
+        componentType !== 'accordian' ? renderPool : renderPoolAccordian
       }
     </>
   )

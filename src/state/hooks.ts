@@ -166,8 +166,8 @@ export const usePoolFromPid = (sousId): Pool => {
 
 // Prices
 export const usePriceKlayKusdt = (): BigNumber => {
-  // const pid = 5 // KLAY-KUSDT LP
-  const pid = parseInt(process.env.REACT_APP_KLAY_KUSDT_PID || '14') // KLAY-KUSDT LP
+  // const pid = 5 // KLAY-oUSDT LP
+  const pid = parseInt(process.env.REACT_APP_KLAY_OUSDT_PID || '14') // KLAY-oUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
@@ -179,16 +179,16 @@ export const usePriceSixKusdt = (): BigNumber => {
 }
 
 export const usePriceFinixKusdt = (): BigNumber => {
-  // const pid = 1 // FINIX-KUSDT LP
-  const pid = parseInt(process.env.REACT_APP_FINIX_KUSDT_PID || '5') // FINIX-KUSDT LP
+  // const pid = 1 // FINIX-oUSDT LP
+  const pid = parseInt(process.env.REACT_APP_FINIX_OUSDT_PID || '5') // FINIX-oUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
 }
 
 export const usePriceKethKusdt = (): BigNumber => {
-  // const pid = 6 // ETH-KUSDT LP
-  const pid = parseInt(process.env.REACT_APP_KETH_KUSDT_PID || '11') // KETH-KUSDT LP
+  // const pid = 6 // oETH-oUSDT LP
+  const pid = parseInt(process.env.REACT_APP_OETH_OUSDT_PID || '11') // oETH-oUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
@@ -272,8 +272,8 @@ export const usePriceSixUsdToNumber = (): number => {
 }
 
 export const usePriceKlayKusdtToNumber = (): number => {
-  // const pid = 5 // KLAY-KUSDT LP
-  const pid = parseInt(process.env.REACT_APP_KLAY_KUSDT_PID || '14') // KLAY-KUSDT LP
+  // const pid = 5 // KLAY-OUSDT LP
+  const pid = parseInt(process.env.REACT_APP_KLAY_OUSDT_PID || '14') // KLAY-OUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm || !farm.tokenPriceVsQuote) return 0
 
@@ -281,8 +281,8 @@ export const usePriceKlayKusdtToNumber = (): number => {
 }
 
 export const usePriceKethKusdtToNumber = (): number => {
-  // const pid = 6 // ETH-KUSDT LP
-  const pid = parseInt(process.env.REACT_APP_KETH_KUSDT_PID || '11') // KETH-KUSDT LP
+  // const pid = 6 // oETH-OUSDT LP
+  const pid = parseInt(process.env.REACT_APP_OETH_OUSDT_PID || '11') // oETH-OUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm || !farm.tokenPriceVsQuote) return 0
   return farm.tokenPriceVsQuote.toNumber ? farm.tokenPriceVsQuote.toNumber() : +farm.tokenPriceVsQuote

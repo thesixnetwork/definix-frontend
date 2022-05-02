@@ -1,4 +1,4 @@
-import { SIX, FINIX, WKLAY, KUSDT, KDAI, KETH, KWBTC, KXRP, KBNB, KSP, getLpNetwork, FAVOR } from './tokens'
+import { SIX, FINIX, WKLAY, OUSDT, KDAI, OETH, OWBTC, OXRP, KBNB, KSP, getLpNetwork, FAVOR } from './tokens'
 
 export default {
   bscFinix: {
@@ -18,12 +18,12 @@ export default {
     8217: process.env.REACT_APP_HERODOTUS_MAINNET,
   },
   wklay: WKLAY,
-  kusdt: KUSDT,
+  ousdt: OUSDT,
   kdai: KDAI,
   ksp: KSP,
-  keth: KETH,
-  kwbtc: KWBTC,
-  kxrp: KXRP,
+  oeth: OETH,
+  owbtc: OWBTC,
+  oxrp: OXRP,
   kbnb: KBNB,
   six: SIX,
   finix: FINIX,
@@ -33,27 +33,23 @@ export default {
   favor: FAVOR,
 
   finixSixLP: getLpNetwork(FINIX, SIX),
-  finixKusdtLP: getLpNetwork(FINIX, KUSDT),
+  finixKusdtLP: getLpNetwork(FINIX, OUSDT),
   finixKlayLP: getLpNetwork(FINIX, WKLAY),
   finixKspLP: getLpNetwork(FINIX, KSP),
-  sixKusdtLP: getLpNetwork(SIX, KUSDT),
+  sixKusdtLP: getLpNetwork(SIX, OUSDT),
   sixKlayLP: getLpNetwork(SIX, WKLAY),
-  klayKethLP: getLpNetwork(WKLAY, KETH),
-  klayKbtcLP: getLpNetwork(WKLAY, KWBTC),
-  klayKxrpLP: getLpNetwork(WKLAY, KXRP),
-  kethKusdtLP: getLpNetwork(KETH, KUSDT),
-  kbtcKusdtLP: getLpNetwork(KWBTC, KUSDT),
-  kxrpKusdtLP: getLpNetwork(KXRP, KUSDT),
-  klayKusdtLP: getLpNetwork(WKLAY, KUSDT),
-  kdaiKusdtLP: getLpNetwork(KDAI, KUSDT),
-  kbnbKusdtLP: getLpNetwork(KBNB, KUSDT),
+  klayKethLP: getLpNetwork(WKLAY, OETH),
+  klayKbtcLP: getLpNetwork(WKLAY, OWBTC),
+  klayOxrpLP: getLpNetwork(WKLAY, OXRP),
+  kethKusdtLP: getLpNetwork(OETH, OUSDT),
+  kbtcKusdtLP: getLpNetwork(OWBTC, OUSDT),
+  oxrpKusdtLP: getLpNetwork(OXRP, OUSDT),
+  klayKusdtLP: getLpNetwork(WKLAY, OUSDT),
+  kdaiKusdtLP: getLpNetwork(KDAI, OUSDT),
+  kbnbKusdtLP: getLpNetwork(KBNB, OUSDT),
   kbnbFinixLP: getLpNetwork(KBNB, FINIX),
-  /**
-   * @favor
-   */
-  favorKusdtLP: getLpNetwork(FAVOR, KUSDT),
 
-  definixKlayKusdtLP: getLpNetwork(WKLAY, KUSDT),
+  definixKlayKusdtLP: getLpNetwork(WKLAY, OUSDT),
   tradingCompetRegis: {
     1001: process.env.REACT_APP_TRADING_COMPET_REGIS_TESTNET,
     8217: process.env.REACT_APP_TRADING_COMPET_REGIS_MAINNET,

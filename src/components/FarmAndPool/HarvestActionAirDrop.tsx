@@ -4,29 +4,30 @@ import React, { useState, useMemo, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { QuoteToken } from 'config/constants/types'
-import { useHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
 import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/Text/CurrencyText'
+import { PriceText, StyledBalanceText, TitleSection } from './Styled'
 
 const HarvestAction: React.FC<{
   componentType: string
-  pid?: number
   allEarnings: {
     symbol: QuoteToken
     earnings: number
   }[]
-  lpSymbol: string
-}> = ({ pid, allEarnings, componentType = 'farm', lpSymbol }) => {
+  tokenName: string
+
+  isEnableHarvest: boolean
+  onReward: () => Promise<any>
+
+}> = ({ allEarnings, componentType = 'farm', tokenName, isEnableHarvest, onReward }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const navigate = useHistory()
-  const isInFarm = useMemo(() => componentType === 'farm', [componentType])
+  const isInFarmAndPool = useMemo(() => ['farm', 'pool'].includes(componentType), [componentType])
   const [pendingTx, setPendingTx] = useState(false)
 
-  const { onReward } = useHarvest(pid)
-  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
+  const { convertToPriceFromSymbol } = useConverter()
 
   const getPrice = useCallback((value, unitPrice) => {
     return new BigNumber(value).multipliedBy(unitPrice).toNumber()
@@ -36,7 +37,7 @@ const HarvestAction: React.FC<{
     (isSuccess: boolean) => {
       const toastDescription = (
         <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
-          {lpSymbol}
+          {tokenName}
         </Text>
       )
       const actionText = t('actionHarvest')
@@ -46,7 +47,7 @@ const HarvestAction: React.FC<{
         toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
       }
     },
-    [toastSuccess, toastError, t, lpSymbol],
+    [toastSuccess, toastError, t, tokenName],
   )
 
   const handleHarvest = useCallback(async () => {
@@ -67,14 +68,14 @@ const HarvestAction: React.FC<{
       <Button
         variant={ButtonVariants.RED}
         width="100%"
-        disabled={allEarnings.reduce((sum, { earnings }) => sum + earnings, 0) === 0}
+        disabled={isEnableHarvest}
         isLoading={pendingTx}
         onClick={handleHarvest}
       >
         {t('Harvest')}
       </Button>
     ),
-    [t, allEarnings, pendingTx, handleHarvest],
+    [t, isEnableHarvest, pendingTx, handleHarvest],
   )
 
   const renderDetailButton = useMemo(
@@ -90,16 +91,16 @@ const HarvestAction: React.FC<{
     return <Flex key={tokenName} mb="8px">
       <TokenLabel type="token">{tokenName}</TokenLabel>
       <TokenValueWrap>
-        <BalanceText>{convertToBalanceFormat(balance)}</BalanceText>
+        <StyledBalanceText value={balance} />
         <PriceText value={price} prefix="=" />
       </TokenValueWrap>
     </Flex>
-  }, [convertToBalanceFormat])
+  }, [])
 
   return (
     <>
       <Box>
-        <Wrap isInFarm={isInFarm}>
+        <Wrap isInFarmAndPool={isInFarmAndPool}>
           <Box>
             <TitleSection>{t('Earned Token')}</TitleSection>
             <HarvestInfo>
@@ -108,11 +109,11 @@ const HarvestAction: React.FC<{
                   allEarnings.length > 0 && allEarnings.map((item) => renderEarnedPrice(item.symbol, item.earnings, getPrice(item.earnings, convertToPriceFromSymbol(item.symbol))))
                 }
               </Flex>
-              {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton}</HarvestButtonSectionInFarm>}
+              {isInFarmAndPool && <HarvestButtonSectionInFarm>{renderHarvestButton}</HarvestButtonSectionInFarm>}
             </HarvestInfo>
           </Box>
 
-          {isInFarm ? null : (
+          {isInFarmAndPool ? null : (
             <HarvestButtonSectionInMyInvestment>
               {renderHarvestButton}
               {renderDetailButton}
@@ -126,19 +127,11 @@ const HarvestAction: React.FC<{
 
 export default React.memo(HarvestAction)
 
-const Wrap = styled(Flex)<{ isInFarm: boolean }>`
-  flex-direction: ${({ isInFarm }) => (isInFarm ? 'column' : 'row')};
+const Wrap = styled(Flex)<{ isInFarmAndPool: boolean }>`
+  flex-direction: ${({ isInFarmAndPool }) => (isInFarmAndPool ? 'column' : 'row')};
   justify-content: space-between;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     flex-direction: column;
-  }
-`
-const TitleSection = styled(Text)`
-  margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_12R};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
   }
 `
 const HarvestInfo = styled(Flex)`
@@ -156,20 +149,6 @@ const TokenLabel = styled(Label)`
 `
 const TokenValueWrap = styled(Box)`
   margin-top: -3px;
-`
-const BalanceText = styled(Text)`
-  color: ${({ theme }) => theme.colors.black};
-  ${({ theme }) => theme.textStyle.R_18M};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_16M};
-  }
-`
-const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_14R};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_12R};
-  }
 `
 const HarvestButtonSectionInFarm = styled(Box)`
   width: 100px;

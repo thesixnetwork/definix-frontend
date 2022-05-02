@@ -22,25 +22,25 @@ export const WKLAY = {
   [intMainnetId]: process.env.REACT_APP_WKLAY_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET,
 }
-export const KUSDT = {
-  [intMainnetId]: process.env.REACT_APP_KUSDT_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET,
+export const OUSDT = {
+  [intMainnetId]: process.env.REACT_APP_OUSDT_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_OUSDT_ADDRESS_TESTNET,
 }
 export const KDAI = {
   [intMainnetId]: process.env.REACT_APP_KDAI_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_KDAI_ADDRESS_TESTNET,
 }
-export const KETH = {
-  [intMainnetId]: process.env.REACT_APP_KETH_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KETH_ADDRESS_TESTNET,
+export const OETH = {
+  [intMainnetId]: process.env.REACT_APP_OETH_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_OETH_ADDRESS_TESTNET,
 }
-export const KWBTC = {
-  [intMainnetId]: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
+export const OWBTC = {
+  [intMainnetId]: process.env.REACT_APP_OWBTC_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_OWBTC_ADDRESS_TESTNET,
 }
-export const KXRP = {
-  [intMainnetId]: process.env.REACT_APP_KXRP_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KXRP_ADDRESS_TESTNET,
+export const OXRP = {
+  [intMainnetId]: process.env.REACT_APP_OXRP_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_OXRP_ADDRESS_TESTNET,
 }
 export const KBNB = {
   [intMainnetId]: process.env.REACT_APP_KBNB_ADDRESS_MAINNET,
@@ -62,11 +62,11 @@ export const allTokens = {
   SIX,
   FINIX,
   WKLAY,
-  KUSDT,
+  OUSDT,
   KDAI,
-  KETH,
-  KWBTC,
-  KXRP,
+  OETH,
+  OWBTC,
+  OXRP,
   KBNB,
   KSP,
   FAVOR,

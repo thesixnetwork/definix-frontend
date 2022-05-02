@@ -61,7 +61,7 @@ const FullPositionCard = ({ pair, isLastCard = false }: PositionCardProps) => {
       >
         <Flex alignItems="center" mb={isMobile ? '20px' : '0px'}>
           <Box mr="12px">
-            <Lp size="32px" lpSymbols={[currency0?.symbol, currency1?.symbol]} />
+            <Lp size="32px" lpSymbols={[currency0?.symbol.toUpperCase(), currency1?.symbol.toUpperCase()]} />
           </Box>
 
           <Flex flexDirection="column" mr="20px" justifyContent="center">

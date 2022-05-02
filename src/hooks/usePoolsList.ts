@@ -32,7 +32,7 @@ const usePoolsList = ({ farms, pools }) => {
       if (tokenName === 'KLAY') {
         return new BigNumber(1)
       }
-      if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
+      if (tokenPrice && quoteToken === QuoteToken.OUSDT) {
         return tokenPriceKLAYTN.div(klayPriceUSD)
       }
       return tokenPriceKLAYTN
@@ -53,7 +53,7 @@ const usePoolsList = ({ farms, pools }) => {
       if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.FINIX) {
         totalValue = finixPriceUSD.times(new BigNumber(currentTotalStaked))
       }
-      if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KETH) {
+      if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.OETH) {
         totalValue = kethPriceUsd.times(new BigNumber(currentTotalStaked))
       }
       if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
@@ -72,7 +72,7 @@ const usePoolsList = ({ farms, pools }) => {
 
       // tmp mulitplier to support ETH farms
       // Will be removed after the price api
-      const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KETH' ? ethPriceKlay : 1
+      const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'oETH' ? ethPriceKlay : 1
 
       // /!\ Assume that the farm quote price is KLAY
       const stakingTokenPriceInKLAY = isKlayPool
