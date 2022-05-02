@@ -1,4 +1,4 @@
-import { SIX, FINIX, WKLAY, OUSDT, KDAI, OETH, KWBTC, OXRP, KBNB, KSP, getLpNetwork, FAVOR } from './tokens'
+import { SIX, FINIX, WKLAY, OUSDT, KDAI, OETH, OWBTC, OXRP, KBNB, KSP, getLpNetwork, FAVOR } from './tokens'
 
 export default {
   bscFinix: {
@@ -22,7 +22,7 @@ export default {
   kdai: KDAI,
   ksp: KSP,
   oeth: OETH,
-  kwbtc: KWBTC,
+  owbtc: OWBTC,
   oxrp: OXRP,
   kbnb: KBNB,
   six: SIX,
@@ -39,10 +39,10 @@ export default {
   sixKusdtLP: getLpNetwork(SIX, OUSDT),
   sixKlayLP: getLpNetwork(SIX, WKLAY),
   klayKethLP: getLpNetwork(WKLAY, OETH),
-  klayKbtcLP: getLpNetwork(WKLAY, KWBTC),
+  klayKbtcLP: getLpNetwork(WKLAY, OWBTC),
   klayOxrpLP: getLpNetwork(WKLAY, OXRP),
   kethKusdtLP: getLpNetwork(OETH, OUSDT),
-  kbtcKusdtLP: getLpNetwork(KWBTC, OUSDT),
+  kbtcKusdtLP: getLpNetwork(OWBTC, OUSDT),
   oxrpKusdtLP: getLpNetwork(OXRP, OUSDT),
   klayKusdtLP: getLpNetwork(WKLAY, OUSDT),
   kdaiKusdtLP: getLpNetwork(KDAI, OUSDT),

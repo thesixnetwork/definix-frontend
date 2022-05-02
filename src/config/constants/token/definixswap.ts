@@ -51,12 +51,12 @@ export default {
       logoURI: '/images/coins/OETH.png',
     },
     {
-      name: 'KWBTC',
-      symbol: 'KWBTC',
-      address: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
+      name: 'oWBTC',
+      symbol: 'oWBTC',
+      address: process.env.REACT_APP_OWBTC_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KWBTC.png',
+      logoURI: '/images/coins/OWBTC.png',
     },
     {
       name: 'OXRP',
@@ -131,12 +131,12 @@ export default {
       logoURI: '/images/coins/OETH.png',
     },
     {
-      name: 'KWBTC',
-      symbol: 'KWBTC',
-      address: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,
+      name: 'oWBTC',
+      symbol: 'oWBTC',
+      address: process.env.REACT_APP_OWBTC_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 8,
-      logoURI: '/images/coins/KWBTC.png',
+      logoURI: '/images/coins/OWBTC.png',
     },
     {
       name: 'Orbit Bridge Klaytn Ripple',

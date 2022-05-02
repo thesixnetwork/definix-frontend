@@ -34,9 +34,9 @@ export const OETH = {
   [intMainnetId]: process.env.REACT_APP_OETH_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_OETH_ADDRESS_TESTNET,
 }
-export const KWBTC = {
-  [intMainnetId]: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
+export const OWBTC = {
+  [intMainnetId]: process.env.REACT_APP_OWBTC_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_OWBTC_ADDRESS_TESTNET,
 }
 export const OXRP = {
   [intMainnetId]: process.env.REACT_APP_OXRP_ADDRESS_MAINNET,
@@ -65,7 +65,7 @@ export const allTokens = {
   OUSDT,
   KDAI,
   OETH,
-  KWBTC,
+  OWBTC,
   OXRP,
   KBNB,
   KSP,

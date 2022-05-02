@@ -1,5 +1,5 @@
 import { RebalanceConfig } from './types'
-import { FINIX, SIX, WKLAY, KWBTC, OETH, OXRP, OUSDT, KBNB } from './tokens'
+import { FINIX, SIX, WKLAY, OWBTC, OETH, OXRP, OUSDT, KBNB } from './tokens'
 
 const rebalances: RebalanceConfig[] = [
   {
@@ -24,10 +24,10 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 70,
         color: '#ef9244',
-        address: KWBTC,
+        address: OWBTC,
       },
       {
         symbol: 'oETH',
@@ -76,10 +76,10 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 25,
         color: '#ef9244',
-        address: KWBTC,
+        address: OWBTC,
       },
       {
         symbol: 'oETH',
@@ -186,10 +186,10 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 40,
         color: '#ef9244',
-        address: KWBTC,
+        address: OWBTC,
       },
       {
         symbol: 'oETH',
@@ -244,10 +244,10 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 20,
         color: '#ef9244',
-        address: KWBTC,
+        address: OWBTC,
       },
       {
         symbol: 'oETH',
@@ -426,10 +426,10 @@ const rebalances: RebalanceConfig[] = [
         address: FINIX,
       },
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 16,
         color: '#ef9244',
-        address: KWBTC,
+        address: OWBTC,
       },
       {
         symbol: 'oETH',
@@ -498,10 +498,10 @@ const rebalances: RebalanceConfig[] = [
         address: FINIX,
       },
       {
-        symbol: 'KWBTC',
+        symbol: 'oWBTC',
         value: 16.6,
         color: '#ef9244',
-        address: KWBTC,
+        address: OWBTC,
       },
       {
         symbol: 'oETH',
