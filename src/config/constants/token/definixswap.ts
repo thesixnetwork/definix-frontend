@@ -45,7 +45,7 @@ export default {
     {
       name: 'oETH',
       symbol: 'oETH',
-      address: process.env.REACT_APP_KETH_ADDRESS_TESTNET,
+      address: process.env.REACT_APP_OETH_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
       logoURI: '/images/coins/OETH.png',
@@ -125,7 +125,7 @@ export default {
     {
       name: 'oETH',
       symbol: 'oETH',
-      address: process.env.REACT_APP_KETH_ADDRESS_MAINNET,
+      address: process.env.REACT_APP_OETH_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
       logoURI: '/images/coins/OETH.png',

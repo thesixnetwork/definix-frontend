@@ -66,8 +66,8 @@ export const WKLAY_ADDRESS = {
 }
 
 export const OETH_ADDRESS = {
-  [intMainnetId]: process.env.REACT_APP_KETH_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_KETH_ADDRESS_TESTNET || '',
+  [intMainnetId]: process.env.REACT_APP_OETH_ADDRESS_MAINNET || '',
+  [intTestnetId]: process.env.REACT_APP_OETH_ADDRESS_TESTNET || '',
 }
 
 export const KWBTC_ADDRESS = {

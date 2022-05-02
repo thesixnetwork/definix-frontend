@@ -188,7 +188,7 @@ export const usePriceFinixKusdt = (): BigNumber => {
 
 export const usePriceKethKusdt = (): BigNumber => {
   // const pid = 6 // oETH-oUSDT LP
-  const pid = parseInt(process.env.REACT_APP_KETH_OUSDT_PID || '11') // oETH-oUSDT LP
+  const pid = parseInt(process.env.REACT_APP_OETH_OUSDT_PID || '11') // oETH-oUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
@@ -282,7 +282,7 @@ export const usePriceKlayKusdtToNumber = (): number => {
 
 export const usePriceKethKusdtToNumber = (): number => {
   // const pid = 6 // oETH-OUSDT LP
-  const pid = parseInt(process.env.REACT_APP_KETH_OUSDT_PID || '11') // oETH-OUSDT LP
+  const pid = parseInt(process.env.REACT_APP_OETH_OUSDT_PID || '11') // oETH-OUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm || !farm.tokenPriceVsQuote) return 0
   return farm.tokenPriceVsQuote.toNumber ? farm.tokenPriceVsQuote.toNumber() : +farm.tokenPriceVsQuote
