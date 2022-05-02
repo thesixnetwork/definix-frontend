@@ -51,7 +51,7 @@ const useFarmsList = (farms: Farm[]): any => {
           if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
             totalValue = finixPrice.times(farm.lpTotalInQuoteToken)
           }
-          if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+          if (farm.quoteTokenSymbol === QuoteToken.OETH) {
             totalValue = kethPriceUsd.times(farm.lpTotalInQuoteToken)
           }
           if (farm.quoteTokenSymbol === QuoteToken.SIX) {
@@ -81,7 +81,7 @@ const useFarmsList = (farms: Farm[]): any => {
           if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
             totalValue = finixPrice.times(farm.lpTotalInQuoteToken)
           }
-          if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+          if (farm.quoteTokenSymbol === QuoteToken.OETH) {
             totalValue = kethPriceUsd.times(farm.lpTotalInQuoteToken)
           }
           if (farm.quoteTokenSymbol === QuoteToken.SIX) {
@@ -100,7 +100,7 @@ const useFarmsList = (farms: Farm[]): any => {
         apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
       } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
         apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-      } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+      } else if (farm.quoteTokenSymbol === QuoteToken.OETH) {
         apy = finixPrice.div(kethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
       } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
         apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)

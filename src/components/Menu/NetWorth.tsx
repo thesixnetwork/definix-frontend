@@ -144,7 +144,7 @@ const NetWorth = () => {
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
-    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KETH' ? ethPriceKlay : 1
+    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'oETH' ? ethPriceKlay : 1
 
     // /!\ Assume that the farm quote price is KLAY
     const stakingTokenPriceInKLAY = isKlayPool
@@ -243,7 +243,7 @@ const NetWorth = () => {
       if (d.quoteTokenSymbol === QuoteToken.FINIX) {
         totalValue = finixPrice.times(stakedTotalInQuoteToken)
       }
-      if (d.quoteTokenSymbol === QuoteToken.KETH) {
+      if (d.quoteTokenSymbol === QuoteToken.OETH) {
         totalValue = ethPriceUsd.times(stakedTotalInQuoteToken)
       }
       if (d.quoteTokenSymbol === QuoteToken.SIX) {
@@ -266,7 +266,7 @@ const NetWorth = () => {
       if (d.stakingTokenName === QuoteToken.FINIX) {
         totalValue = finixPrice.times(stakedTotal)
       }
-      if (d.stakingTokenName === QuoteToken.KETH) {
+      if (d.stakingTokenName === QuoteToken.OETH) {
         totalValue = ethPriceUsd.times(stakedTotal)
       }
       if (d.stakingTokenName === QuoteToken.SIX) {

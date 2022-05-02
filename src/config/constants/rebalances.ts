@@ -1,5 +1,5 @@
 import { RebalanceConfig } from './types'
-import { FINIX, SIX, WKLAY, KWBTC, KETH, OXRP, OUSDT, KBNB } from './tokens'
+import { FINIX, SIX, WKLAY, KWBTC, OETH, OXRP, OUSDT, KBNB } from './tokens'
 
 const rebalances: RebalanceConfig[] = [
   {
@@ -30,10 +30,10 @@ const rebalances: RebalanceConfig[] = [
         address: KWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 30,
         color: '#6D6D6D',
-        address: KETH,
+        address: OETH,
       },
       {
         symbol: 'oUSDT',
@@ -82,10 +82,10 @@ const rebalances: RebalanceConfig[] = [
         address: KWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 25,
         color: '#6D6D6D',
-        address: KETH,
+        address: OETH,
       },
       {
         symbol: 'oUSDT',
@@ -128,10 +128,10 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 33,
         color: '#6D6D6D',
-        address: KETH,
+        address: OETH,
       },
       {
         symbol: 'WKLAY',
@@ -192,10 +192,10 @@ const rebalances: RebalanceConfig[] = [
         address: KWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 20,
         color: '#6D6D6D',
-        address: KETH,
+        address: OETH,
       },
       {
         symbol: 'oXRP',
@@ -250,10 +250,10 @@ const rebalances: RebalanceConfig[] = [
         address: KWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 20,
         color: '#6D6D6D',
-        address: KETH,
+        address: OETH,
       },
       {
         symbol: 'KBNB',
@@ -308,10 +308,10 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 25,
         color: '#6D6D6D',
-        address: KETH,
+        address: OETH,
       },
       {
         symbol: 'KBNB',
@@ -362,10 +362,10 @@ const rebalances: RebalanceConfig[] = [
     },
     ratio: [
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 30,
         color: '#6D6D6D',
-        address: KETH,
+        address: OETH,
       },
       {
         symbol: 'oXRP',
@@ -432,10 +432,10 @@ const rebalances: RebalanceConfig[] = [
         address: KWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 16,
         color: '#6D6D6D',
-        address: KETH,
+        address: OETH,
       },
       {
         symbol: 'SIX',
@@ -504,10 +504,10 @@ const rebalances: RebalanceConfig[] = [
         address: KWBTC,
       },
       {
-        symbol: 'KETH',
+        symbol: 'oETH',
         value: 16.6,
         color: '#6D6D6D',
-        address: KETH,
+        address: OETH,
       },
       {
         symbol: 'KBNB',

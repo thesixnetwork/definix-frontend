@@ -43,12 +43,12 @@ export default {
       logoURI: '/images/coins/KDAI.png',
     },
     {
-      name: 'KETH',
-      symbol: 'KETH',
+      name: 'oETH',
+      symbol: 'oETH',
       address: process.env.REACT_APP_KETH_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KETH.png',
+      logoURI: '/images/coins/OETH.png',
     },
     {
       name: 'KWBTC',
@@ -123,12 +123,12 @@ export default {
       logoURI: '/images/coins/KDAI.png',
     },
     {
-      name: 'KETH',
-      symbol: 'KETH',
+      name: 'oETH',
+      symbol: 'oETH',
       address: process.env.REACT_APP_KETH_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
-      logoURI: '/images/coins/KETH.png',
+      logoURI: '/images/coins/OETH.png',
     },
     {
       name: 'KWBTC',

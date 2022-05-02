@@ -30,7 +30,7 @@ export const KDAI = {
   [intMainnetId]: process.env.REACT_APP_KDAI_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_KDAI_ADDRESS_TESTNET,
 }
-export const KETH = {
+export const OETH = {
   [intMainnetId]: process.env.REACT_APP_KETH_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_KETH_ADDRESS_TESTNET,
 }
@@ -64,7 +64,7 @@ export const allTokens = {
   WKLAY,
   OUSDT,
   KDAI,
-  KETH,
+  OETH,
   KWBTC,
   OXRP,
   KBNB,

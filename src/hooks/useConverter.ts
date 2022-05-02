@@ -19,7 +19,7 @@ export default function useConverter() {
     if (tokenSymbol === QuoteToken.FINIX) {
       return finixPrice.times(token)
     }
-    if (tokenSymbol === QuoteToken.KETH) {
+    if (tokenSymbol === QuoteToken.OETH) {
       return kethPrice.times(token)
     }
     if (tokenSymbol === QuoteToken.SIX) {
@@ -43,7 +43,7 @@ export default function useConverter() {
     if (symbol === QuoteToken.KLAY) {
       price = klayPrice
     }
-    if (symbol === QuoteToken.KETH) {
+    if (symbol === QuoteToken.OETH) {
       price = kethPrice
     }
     if (symbol === QuoteToken.SIX) {

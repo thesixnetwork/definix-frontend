@@ -40,7 +40,7 @@ export const getKusdtAddress = () => {
   return getAddress(addresses.ousdt)
 }
 export const getKethAddress = () => {
-  return getAddress(addresses.keth)
+  return getAddress(addresses.oeth)
 }
 export const getKbtcAddress = () => {
   return getAddress(addresses.kwbtc)
