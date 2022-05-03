@@ -36,7 +36,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock,
             <Flex mb="S_16">
               <Flex width="50%" flexDirection="column">
                 <Text mb="S_2" textStyle="R_12R" color="mediumgrey">
-                  {t('Stake Period')}
+                  {t('Long-term Stake')}
                 </Text>
                 <Text textStyle="R_14R" color="black">
                   {t(`${getDays(item.multiplier)} days`)}
@@ -66,7 +66,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock,
 
             <Flex mb="S_20" flexDirection="column">
               <Text mb="S_2" textStyle="R_12R" color="mediumgrey">
-                {t('Period End')}
+                {t('Stake End Date')}
               </Text>
               <Flex alignItems="center">
                 <Text textStyle="R_14R" color="black">
