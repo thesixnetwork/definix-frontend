@@ -624,5 +624,7 @@
   "FINIX Earned tab": "FINIX 획득 수량",
   "Total Earned": "현재 수령 가능",
   "FAVOR per $1000": "$1000 당 Favor 획득량",
-  "Add Token": "토큰 추가"
+  "Add Token": "토큰 추가",
+  "Stake End Date": "예치 종료일",
+  "Lock-up period on": "중도 해지 시 락업 기간"
 }
