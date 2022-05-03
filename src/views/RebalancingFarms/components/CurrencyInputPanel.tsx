@@ -82,7 +82,7 @@ const CurrencyInputPanel = ({
 
   const handleClick = useCallback(
     (ratio: number) => {
-      onUserInput(ratio === 1 ? max.toJSON() : String(max.times(ratio).toNumber()))
+      onUserInput(ratio === 1 ? max.toFixed(5, 1) : String(+max.toFixed(5, 1) * ratio))
     },
     [max, onUserInput],
   )
