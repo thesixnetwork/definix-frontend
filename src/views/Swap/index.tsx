@@ -194,24 +194,24 @@ const Swap: React.FC = () => {
     if (maxAmountInput) {
       if (window.localStorage.getItem('connector') === 'klip') {
         const floorDigit = 1000000
-        const valueMax = +maxAmountInput.toExact()
+        const valueMax = +maxAmountInput.toFixed(5)
         const max = Math.floor(valueMax * floorDigit) / floorDigit
         onUserInput(Field.INPUT, max.toString())
       } else {
-        onUserInput(Field.INPUT, maxAmountInput.toExact())
+        onUserInput(Field.INPUT, maxAmountInput.toFixed(5))
       }
     }
   }, [maxAmountInput, onUserInput])
 
   const handleQuarterInput = useCallback(() => {
     if (maxAmountInput) {
-      onUserInput(Field.INPUT, numeral(parseFloat(maxAmountInput.toExact()) / 4).format('0.00'))
+      onUserInput(Field.INPUT, numeral(parseFloat(maxAmountInput.toFixed(5)) / 4).format('0.00'))
     }
   }, [maxAmountInput, onUserInput])
 
   const handleHalfInput = useCallback(() => {
     if (maxAmountInput) {
-      onUserInput(Field.INPUT, numeral(parseFloat(maxAmountInput.toExact()) / 2).format('0.00'))
+      onUserInput(Field.INPUT, numeral(parseFloat(maxAmountInput.toFixed(5)) / 2).format('0.00'))
     }
   }, [maxAmountInput, onUserInput])
 

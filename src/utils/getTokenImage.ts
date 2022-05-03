@@ -8,7 +8,7 @@ export const getTokenImageUrl = (tokenName: string) => {
 
 const getSplittedLpSymbols = (lpSymbol: string) => {
   const symbol = lpSymbol
-    .toUpperCase()
+    // .toUpperCase()
     .replace(/(DEFINIX)|(LP)/g, '')
     .trim()
   return symbol.split('-')

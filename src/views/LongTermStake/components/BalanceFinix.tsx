@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js'
 import { useLocation } from 'react-router-dom'
 import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
+import { getBalanceRate } from 'utils/getBalanceRate'
 
 interface BalanceProps {
   hasAccount: boolean
@@ -86,8 +87,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
       return
     }
 
-    const value = rate === 1 ? balancefinix : balancefinix * rate
-    setInputBalance(String(Math.floor(value * 1000000) / 1000000))
+    setInputBalance(getBalanceRate(balancefinix, rate))
     setSelected(rate)
   }
 

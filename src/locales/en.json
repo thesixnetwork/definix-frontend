@@ -624,5 +624,7 @@
   "FINIX Earned tab": "FINIX Earned",
   "Total Earned": "Total Earned",
   "FAVOR per $1000": "Favor per $1000",
-  "Add Token": "Add Token"
+  "Add Token": "Add Token",
+  "Stake End Date": "Stake End Date",
+  "Lock-up period on": "Lock-up period on early unstaking"
 }

@@ -101,7 +101,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                 </Flex>
                 <Flex mb="S_8" justifyContent="space-between">
                   <Text textStyle="R_14R" color="mediumgrey">
-                    {t('Lock Up Period End')}
+                    {t('Lock-up period on')}
                   </Text>
                   <Flex flexDirection="column" alignItems="flex-end">
                     <Text textStyle="R_14M" color="deepgrey">

@@ -33,7 +33,7 @@ const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, endDay, 
       <Flex width="100%" mt={isMobile ? 'S_40' : 'S_32'} flexDirection="column">
         <Flex justifyContent="space-between">
           <Text textStyle="R_14R" color="mediumgrey">
-            {t('Estimated Period End')}
+            {t('Stake End Date')}
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">

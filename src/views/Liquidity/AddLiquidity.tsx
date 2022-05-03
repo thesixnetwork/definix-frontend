@@ -211,16 +211,16 @@ const AddLiquidity: React.FC = () => {
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
               onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toFixed(5) ?? '')
               }}
               onQuarter={() => {
                 onFieldAInput(
-                  numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || '') / 4).format('0.00') ?? '',
+                  numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toFixed(5) || '') / 4).format('0.00') ?? '',
                 )
               }}
               onHalf={() => {
                 onFieldAInput(
-                  numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || '') / 2).format('0.00') ?? '',
+                  numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toFixed(5) || '') / 2).format('0.00') ?? '',
                 )
               }}
               onCurrencySelect={handleCurrencyASelect}
@@ -241,16 +241,16 @@ const AddLiquidity: React.FC = () => {
               onUserInput={onFieldBInput}
               onCurrencySelect={handleCurrencyBSelect}
               onMax={() => {
-                onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+                onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toFixed(5) ?? '')
               }}
               onQuarter={() => {
                 onFieldBInput(
-                  numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || '') / 4).format('0.00') ?? '',
+                  numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toFixed(5) || '') / 4).format('0.00') ?? '',
                 )
               }}
               onHalf={() => {
                 onFieldBInput(
-                  numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || '') / 2).format('0.00') ?? '',
+                  numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toFixed(5) || '') / 2).format('0.00') ?? '',
                 )
               }}
               currency={currencies[Field.CURRENCY_B]}

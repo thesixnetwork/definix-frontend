@@ -184,7 +184,7 @@ const StakeModal: React.FC<ModalProps> = ({
             </Flex>
             <Flex mb="S_8" justifyContent="space-between">
               <Text textStyle="R_14R" color="mediumgrey">
-                {t('Period End')}
+                {t('Stake End Date')}
               </Text>
               <Flex flexDirection="column" alignItems="flex-end">
                 <Text textStyle="R_14M" color="deepgrey">

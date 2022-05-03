@@ -149,7 +149,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 6,
-    lpSymbol: 'SIX-OUSDT LP',
+    lpSymbol: 'SIX-oUSDT LP',
     lpAddresses: getLpNetwork(SIX, OUSDT),
     tokenSymbol: 'SIX',
     tokenAddresses: SIX,

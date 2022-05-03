@@ -19,7 +19,7 @@ const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, endDay, ear
         </Text>
         <Flex justifyContent="space-between">
           <Text textStyle="R_14R" color="mediumgrey">
-            {t('Period End')}
+            {t('Stake End Date')}
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">

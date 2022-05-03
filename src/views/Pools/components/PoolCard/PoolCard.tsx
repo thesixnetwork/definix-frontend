@@ -92,7 +92,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
 
   const tokenApyList = useMemo(() => {
     return [{
-      symbol: pool.tokenName,
+      symbol: QuoteToken.FINIX,
       apy: pool.apy
     }]
   }, [pool])
