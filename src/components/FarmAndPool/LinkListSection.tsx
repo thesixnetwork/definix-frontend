@@ -20,7 +20,7 @@ const LinkListSection: React.FC<{
     <>
       {!!Object.values(contractAddress).length && (
         <Link href={`${process.env.REACT_APP_KLAYTN_URL}/account/${contractAddress[process.env.REACT_APP_CHAIN_ID]}`}>
-          {t('KlaytnScope')}
+          {t('Klaytnscope')}
         </Link>
       )}
     </>
