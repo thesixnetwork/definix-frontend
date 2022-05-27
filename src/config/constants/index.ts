@@ -153,7 +153,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intTestnetId, OETH_ADDRESS[intTestnetId], 18, 'oETH', 'oETH Token'),
     new Token(intTestnetId, OWBTC_ADDRESS[intTestnetId], 18, 'oWBTC', 'oWBTC Token'),
     new Token(intTestnetId, OXRP_ADDRESS[intTestnetId], 18, 'oXRP', 'oXRP Token'),
-    new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'OBNB', 'OBNB Token'),
+    new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'oBNB', 'oBNB Token'),
     new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token')
   ],
   [intMainnetId]: [
@@ -170,7 +170,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intMainnetId, OWBTC_ADDRESS[intMainnetId], 18, 'oWBTC', 'oWBTC Token'),
     new Token(intMainnetId, OETH_ADDRESS[intMainnetId], 18, 'oETH', 'oETH Token'),
     new Token(intMainnetId, OXRP_ADDRESS[intMainnetId], 18, 'oXRP', 'oXRP Token'),
-    new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'OBNB', 'OBNB Token'),
+    new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'oBNB', 'oBNB Token'),
     new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token')
   ],
 }
@@ -254,11 +254,11 @@ export const PINNED_PAIRS = {
       new Token(intMainnetId, OUSDT_ADDRESS[intMainnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'OBNB', 'OBNB Token'),
+      new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'oBNB', 'oBNB Token'),
       new Token(intMainnetId, OUSDT_ADDRESS[intMainnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'OBNB', 'OBNB Token'),
+      new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'oBNB', 'oBNB Token'),
       new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
@@ -336,11 +336,11 @@ export const PINNED_PAIRS = {
       new Token(intTestnetId, OUSDT_ADDRESS[intTestnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'OBNB', 'OBNB Token'),
+      new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'oBNB', 'oBNB Token'),
       new Token(intTestnetId, OUSDT_ADDRESS[intTestnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'OBNB', 'OBNB Token'),
+      new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'oBNB', 'oBNB Token'),
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
