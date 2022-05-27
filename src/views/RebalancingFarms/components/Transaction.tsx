@@ -105,7 +105,7 @@ const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
                     color="mediumgrey"
                     href={`${process.env.REACT_APP_KLAYTN_URL}/tx/${r.transaction_hash}`}
                   >
-                    KlaytnScope
+                    {t('KlaytnScope')}
                   </LinkExternal>
                 </TD>
               </Fragment>

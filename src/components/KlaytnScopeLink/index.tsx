@@ -18,7 +18,7 @@ const KlaytnScopeLink: React.FC<IProps> = ({ hash }) => {
   return (
     <WrapLink href={href} target="_blank">
       <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} style={{ whiteSpace: 'pre' }}>
-        {t('View on KlaytnScope')}
+        {t('View on Klaytnscope')}
       </Text>
       <ArrowRightGIcon />
     </WrapLink>
