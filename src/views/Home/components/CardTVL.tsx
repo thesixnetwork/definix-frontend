@@ -99,7 +99,7 @@ const CardTVL = () => {
         <WrapTvl>
           <TvlItem>
             <Flex alignItems="center">
-              <Coin symbol="KBNB" size={isXxl ? '24px' : '22px'} />
+              <Coin symbol="oBNB" size={isXxl ? '24px' : '22px'} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
                 <Trans
                   i18nKey="TVL in <bold>BSC</bold>"

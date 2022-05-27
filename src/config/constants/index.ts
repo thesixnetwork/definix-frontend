@@ -80,9 +80,9 @@ export const OXRP_ADDRESS = {
   [intTestnetId]: process.env.REACT_APP_OXRP_ADDRESS_TESTNET || '',
 }
 
-export const KBNB_ADDRESS = {
-  [intMainnetId]: process.env.REACT_APP_KBNB_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_KBNB_ADDRESS_TESTNET || '',
+export const OBNB_ADDRESS = {
+  [intMainnetId]: process.env.REACT_APP_OBNB_ADDRESS_MAINNET || '',
+  [intTestnetId]: process.env.REACT_APP_OBNB_ADDRESS_TESTNET || '',
 }
 
 export const FAVOR_ADDRESS = {
@@ -99,7 +99,7 @@ export const allTokenAddresses = {
   OETH: OETH_ADDRESS,
   OWBTC: OWBTC_ADDRESS,
   OXRP: OXRP_ADDRESS,
-  KBNB: KBNB_ADDRESS,
+  OBNB: OBNB_ADDRESS,
   KSP: KSP_ADDRESS,
   FAVOR: FAVOR_ADDRESS
 }
@@ -153,7 +153,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intTestnetId, OETH_ADDRESS[intTestnetId], 18, 'oETH', 'oETH Token'),
     new Token(intTestnetId, OWBTC_ADDRESS[intTestnetId], 18, 'oWBTC', 'oWBTC Token'),
     new Token(intTestnetId, OXRP_ADDRESS[intTestnetId], 18, 'oXRP', 'oXRP Token'),
-    new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token'),
+    new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'OBNB', 'OBNB Token'),
     new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token')
   ],
   [intMainnetId]: [
@@ -170,7 +170,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intMainnetId, OWBTC_ADDRESS[intMainnetId], 18, 'oWBTC', 'oWBTC Token'),
     new Token(intMainnetId, OETH_ADDRESS[intMainnetId], 18, 'oETH', 'oETH Token'),
     new Token(intMainnetId, OXRP_ADDRESS[intMainnetId], 18, 'oXRP', 'oXRP Token'),
-    new Token(intMainnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
+    new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'OBNB', 'OBNB Token'),
     new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token')
   ],
 }
@@ -254,11 +254,11 @@ export const PINNED_PAIRS = {
       new Token(intMainnetId, OUSDT_ADDRESS[intMainnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intMainnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
+      new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'OBNB', 'OBNB Token'),
       new Token(intMainnetId, OUSDT_ADDRESS[intMainnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intMainnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
+      new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'OBNB', 'OBNB Token'),
       new Token(intMainnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
@@ -336,11 +336,11 @@ export const PINNED_PAIRS = {
       new Token(intTestnetId, OUSDT_ADDRESS[intTestnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token'),
+      new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'OBNB', 'OBNB Token'),
       new Token(intTestnetId, OUSDT_ADDRESS[intTestnetId], 18, 'oUSDT', 'oUSDT Token'),
     ],
     [
-      new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token'),
+      new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'OBNB', 'OBNB Token'),
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [

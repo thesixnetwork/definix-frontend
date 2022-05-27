@@ -1,5 +1,5 @@
 import { RebalanceConfig } from './types'
-import { FINIX, SIX, WKLAY, OWBTC, OETH, OXRP, OUSDT, KBNB } from './tokens'
+import { FINIX, SIX, WKLAY, OWBTC, OETH, OXRP, OUSDT, OBNB } from './tokens'
 
 const rebalances: RebalanceConfig[] = [
   {
@@ -140,10 +140,10 @@ const rebalances: RebalanceConfig[] = [
         address: WKLAY,
       },
       {
-        symbol: 'KBNB',
+        symbol: 'oBNB',
         value: 33,
         color: '#eeb80c',
-        address: KBNB,
+        address: OBNB,
       },
       {
         symbol: 'oUSDT',
@@ -256,10 +256,10 @@ const rebalances: RebalanceConfig[] = [
         address: OETH,
       },
       {
-        symbol: 'KBNB',
+        symbol: 'oBNB',
         value: 20,
         color: '#eeb80c',
-        address: KBNB,
+        address: OBNB,
       },
       {
         symbol: 'oXRP',
@@ -314,10 +314,10 @@ const rebalances: RebalanceConfig[] = [
         address: OETH,
       },
       {
-        symbol: 'KBNB',
+        symbol: 'oBNB',
         value: 25,
         color: '#eeb80c',
-        address: KBNB,
+        address: OBNB,
       },
       {
         symbol: 'WKLAY',
@@ -374,10 +374,10 @@ const rebalances: RebalanceConfig[] = [
         address: OXRP,
       },
       {
-        symbol: 'KBNB',
+        symbol: 'oBNB',
         value: 30,
         color: '#eeb80c',
-        address: KBNB,
+        address: OBNB,
       },
       {
         symbol: 'oUSDT',
@@ -510,10 +510,10 @@ const rebalances: RebalanceConfig[] = [
         address: OETH,
       },
       {
-        symbol: 'KBNB',
+        symbol: 'oBNB',
         value: 16.6,
         color: '#eeb80c',
-        address: KBNB,
+        address: OBNB,
       },
       {
         symbol: 'oXRP',
