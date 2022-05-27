@@ -48,8 +48,8 @@ export const getKbtcAddress = () => {
 export const getOxrpAddress = () => {
   return getAddress(addresses.oxrp)
 }
-export const getKbnbAddress = () => {
-  return getAddress(addresses.kbnb)
+export const getObnbAddress = () => {
+  return getAddress(addresses.obnb)
 }
 export const getFinixSixLPAddress = () => {
   return getAddress(addresses.finixSixLP)
@@ -92,12 +92,6 @@ export const getKlayKusdtLPAddress = () => {
 }
 export const getKdaiKusdtLPAddress = () => {
   return getAddress(addresses.kdaiKusdtLP)
-}
-export const getKbnbKusdtLPAddress = () => {
-  return getAddress(addresses.kbnbKusdtLP)
-}
-export const getKbnbFinixLPAddress = () => {
-  return getAddress(addresses.kbnbFinixLP)
 }
 export const getDefinixKlayKusdtLPAddress = () => {
   return getAddress(addresses.definixKlayKusdtLP)
