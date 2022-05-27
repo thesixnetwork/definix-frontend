@@ -350,7 +350,7 @@ export default function ConfirmRemoveModal({
         t('{{Action}} Complete', {
           Action: t('actionRemove Liquidty'),
         }),
-        <KlaytnScopeLink hash={txHash} />,
+        <KlaytnScopeLink hash={txHash} />
       )
       if (successTxCallback) {
         successTxCallback()
