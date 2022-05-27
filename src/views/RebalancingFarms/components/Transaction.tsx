@@ -103,7 +103,7 @@ const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
                   <LinkExternal
                     textStyle="R_14R"
                     color="mediumgrey"
-                    href={`https://scope.klaytn.com/tx/${r.transaction_hash}`}
+                    href={`${process.env.REACT_APP_KLAYTN_URL}/tx/${r.transaction_hash}`}
                   >
                     KlaytnScope
                   </LinkExternal>

@@ -167,7 +167,7 @@ const CardFinix = () => {
               width="100%"
               onClick={() =>
                 window.open(
-                  'https://scope.klaytn.com/account/0xd51c337147c8033a43f3b5ce0023382320c113aa?tabId=txList',
+                  `${process.env.REACT_APP_KLAYTN_URL}/account/0xd51c337147c8033a43f3b5ce0023382320c113aa?tabId=txList`,
                   '_blank',
                 )
               }

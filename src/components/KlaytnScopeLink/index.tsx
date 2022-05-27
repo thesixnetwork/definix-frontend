@@ -14,7 +14,7 @@ const WrapLink = styled.a`
 
 const KlaytnScopeLink: React.FC<IProps> = ({ hash }) => {
   const { t } = useTranslation()
-  const href = useMemo(() => `https://scope.klaytn.com/tx/${hash}`, [hash])
+  const href = useMemo(() => `${process.env.REACT_APP_KLAYTN_URL}/tx/${hash}`, [hash])
   return (
     <WrapLink href={href} target="_blank">
       <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} style={{ whiteSpace: 'pre' }}>
