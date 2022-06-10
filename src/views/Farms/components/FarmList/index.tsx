@@ -20,7 +20,8 @@ const FarmList: React.FC<{
   stakedOnly: boolean
   searchKeyword: string
   orderBy: DropdownOption
-}> = ({ stakedOnly, searchKeyword, orderBy }) => {
+  isFinished: boolean
+}> = ({ stakedOnly, searchKeyword, orderBy, isFinished }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { slowRefresh } = useRefresh()
@@ -31,10 +32,16 @@ const FarmList: React.FC<{
   const farmsWithApy: FarmWithStakedValue[] = useFarmsList(farmsLP)
 
   const filteredFarms = useMemo(() => {
-    return stakedOnly
-      ? farmsWithApy.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0))
-      : farmsWithApy
-  }, [stakedOnly, farmsWithApy])
+    let result = farmsWithApy;
+    
+    if (stakedOnly) {
+      result = result.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0))
+    }
+    if (isFinished) {
+      result = result.filter((farm) => farm.isFinished)
+    }
+    return result
+  }, [stakedOnly, farmsWithApy, isFinished])
 
   const orderedFarms = useMemo(() => {
     if (!orderBy) return filteredFarms

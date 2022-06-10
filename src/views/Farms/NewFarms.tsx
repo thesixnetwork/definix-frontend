@@ -23,6 +23,7 @@ const Farms: React.FC = () => {
   const { account }: { account: string } = useWallet()
   const { path } = useRouteMatch()
   const [stackedOnly, setStackedOnly] = useState(false)
+  const [isFinished, setIsFinished] = useState(false)
   const [pageState, setPageState] = useState('list')
   const [pageData, setPageData] = useState(null)
   const [selectedOrderBy, setSelectedOrderBy] = useState<DropdownOption>()
@@ -61,11 +62,13 @@ const Farms: React.FC = () => {
             <FarmFilter
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}
+              isFinished={isFinished}
+              setIsFinished={setIsFinished}
               orderBy={(order) => setSelectedOrderBy(order)}
               search={(keyword: string) => setSearchKeyword(keyword)}
             />
             <Route exact path={`${path}`}>
-              <FarmList stakedOnly={stackedOnly} searchKeyword={searchKeyword} orderBy={selectedOrderBy} />
+              <FarmList stakedOnly={stackedOnly} isFinished={isFinished} searchKeyword={searchKeyword} orderBy={selectedOrderBy} />
             </Route>
             {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
               Help
