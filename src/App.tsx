@@ -15,7 +15,7 @@ import sdkConfig from './sdkconfig'
 
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/Liquidity/redirects'
 import RemoveLiquidity from './views/RemoveLiquidity'
-import { RedirectToSwap } from './views/Swap/redirects'
+import RedirectPathToSwapOnly from './views/Swap/redirects'
 
 Config.configure(sdkConfig)
 
@@ -90,10 +90,10 @@ const App: React.FC = () => {
               <Swap />
             </Route>
             <Route exact path={ROUTES.SWAP_REDIRECT_AB}>
-              <RedirectToSwap />
+              <RedirectPathToSwapOnly />
             </Route>
             <Route exact path={ROUTES.SWAP_REDIRECT_A}>
-              <RedirectToSwap />
+              <RedirectPathToSwapOnly />
             </Route>
             <Route exact strict path={ROUTES.LIQUIDITY}>
               <Redirect to={ROUTES.LIQUIDITY_ADD} />

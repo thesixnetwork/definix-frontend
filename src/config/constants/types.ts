@@ -80,6 +80,7 @@ export interface FarmConfig {
   tag?: string
   firstSymbol?: string
   secondSymbol?: string
+  isFinished?: boolean;
 }
 
 export interface LongTermStakeConfig {

@@ -24,7 +24,7 @@ const SearchInputWrap = styled(Box)`
   }
 `
 
-const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
+const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search, isFinished, setIsFinished }) => {
   const { t } = useTranslation()
   const { isMaxXl } = useMatchBreakpoints()
 
@@ -71,12 +71,24 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
       <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
     </>
   )
+
+  const FinishedSection = () => (
+    <>
+      <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
+        {t('Finished')}
+      </Text>
+      <Toggle checked={isFinished} onChange={() => setIsFinished(!isFinished)} />
+    </>
+  )
   if (isMaxXl) {
     return (
       <Flex flexDirection="column">
         <Flex alignItems="center">
           <ToggleWrap>
             <StakedOnlySection />
+          </ToggleWrap>
+          <ToggleWrap>
+            <FinishedSection />
           </ToggleWrap>
         </Flex>
         <Flex mt="S_12">
@@ -102,6 +114,9 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
         </Box>
         <ToggleWrap ml="S_24">
           <StakedOnlySection />
+        </ToggleWrap>
+        <ToggleWrap ml="S_24">
+          <FinishedSection />
         </ToggleWrap>
       </Flex>
       <SearchInputWrap>

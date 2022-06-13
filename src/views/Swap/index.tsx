@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import numeral from 'numeral'
+import { useParams } from 'react-router-dom'
 import { CurrencyAmount, JSBI, Trade } from 'definixswap-sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -35,21 +36,15 @@ import {
 
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
-import { useAllTokens } from 'hooks/Tokens'
+import { useAllTokens, useCurrency } from 'hooks/Tokens'
 import { allTokenAddresses, LIMITED_PRICE_IMPACT } from 'config/constants/index'
-import { useLocation } from 'react-router'
-import qs from 'querystring'
 import useWallet from 'hooks/useWallet'
 
 const Swap: React.FC = () => {
+  const { currencyIdA, currencyIdB } = useParams<{ currencyIdA: string; currencyIdB: string }>()
+  const currencyA = useCurrency(currencyIdA === '0x0000000000000000000000000000000000000000' ? 'KLAY' : currencyIdA)
+  const currencyB = useCurrency(currencyIdB === '0x0000000000000000000000000000000000000000' ? 'KLAY' : currencyIdB)
   const [isApprovePending, setIsApprovePending] = useState<boolean>(false)
-
-  const location = useLocation()
-  const currencyQuerystring = useMemo(() => qs.parse(location.search), [location.search])
-  const outputQs = useMemo(
-    () => String(currencyQuerystring['?outputCurrency'] || currencyQuerystring.outputCurrency),
-    [currencyQuerystring],
-  )
 
   const { t, i18n } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()
@@ -258,16 +253,12 @@ const Swap: React.FC = () => {
 
   useEffect(() => {
     if (chainId) {
-      handleInputSelect(allTokens[allTokenAddresses.SIX[chainId]])
+      handleInputSelect(currencyA ? currencyA : allTokens[allTokenAddresses.SIX[chainId]])
+      if (currencyB) {
+        handleOutputSelect(currencyB)
+      }
     }
-  }, [chainId, outputQs, allTokens, handleInputSelect])
-
-  useEffect(() => {
-    if (outputQs) {
-      handleInputSelect('')
-      handleOutputSelect(allTokens[outputQs])
-    }
-  }, [outputQs, allTokens, handleInputSelect, handleOutputSelect])
+  }, [chainId, currencyA, currencyB])
 
   return (
     <Flex flexDirection="column" alignItems="center" pb={isMobile ? '40px' : '75px'}>

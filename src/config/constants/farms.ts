@@ -34,6 +34,7 @@ const farms: FarmConfig[] = [
     firstSymbol: QuoteToken.FAVOR,
     secondSymbol: QuoteToken.FINIX,
     tag: 'special',
+    isFinished: false,
   },
   {
     pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 35 : 96,
@@ -48,6 +49,7 @@ const farms: FarmConfig[] = [
     firstSymbol: QuoteToken.FAVOR,
     secondSymbol: QuoteToken.SIX,
     tag: 'special',
+    isFinished: false,
   },
   {
     pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 37 : 94,
@@ -62,6 +64,7 @@ const farms: FarmConfig[] = [
     firstSymbol: QuoteToken.FAVOR,
     secondSymbol: QuoteToken.KLAY,
     tag: 'special',
+    isFinished: false,
   },
   {
     pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 34 : 93,
@@ -76,6 +79,7 @@ const farms: FarmConfig[] = [
     firstSymbol: QuoteToken.FAVOR,
     secondSymbol: QuoteToken.OUSDT,
     tag: 'special',
+    isFinished: false,
   },
   {
     pid: 0,
@@ -85,6 +89,7 @@ const farms: FarmConfig[] = [
     tokenAddresses: FINIX,
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
+    isFinished: false,
   },
   {
     pid: 1,
@@ -94,6 +99,7 @@ const farms: FarmConfig[] = [
     tokenAddresses: SIX,
     quoteTokenSymbol: QuoteToken.SIX,
     quoteTokenAdresses: contracts.six,
+    isFinished: false,
   },
   {
     pid: 2,
@@ -108,6 +114,7 @@ const farms: FarmConfig[] = [
     firstSymbol: QuoteToken.FINIX,
     secondSymbol: QuoteToken.SIX,
     tag: 'hot',
+    isFinished: false,
   },
   {
     pid: 3,
@@ -122,6 +129,7 @@ const farms: FarmConfig[] = [
     firstSymbol: QuoteToken.FINIX,
     secondSymbol: QuoteToken.KLAY,
     tag: 'hot',
+    isFinished: false,
   },
   {
     pid: 4,
@@ -133,6 +141,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.finix,
     secondToken: contracts.ksp,
+    isFinished: false,
   },
   {
     pid: 5,
@@ -146,6 +155,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.ousdt,
     firstSymbol: QuoteToken.FINIX,
     secondSymbol: QuoteToken.OUSDT,
+    isFinished: false,
   },
   {
     pid: 6,
@@ -159,6 +169,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.ousdt,
     firstSymbol: QuoteToken.SIX,
     secondSymbol: QuoteToken.OUSDT,
+    isFinished: false,
   },
   {
     pid: 7,
@@ -172,6 +183,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.wklay,
     firstSymbol: QuoteToken.SIX,
     secondSymbol: QuoteToken.KLAY,
+    isFinished: false,
   },
   {
     pid: 8,
@@ -185,6 +197,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.oeth,
     firstSymbol: QuoteToken.KLAY,
     secondSymbol: QuoteToken.OETH,
+    isFinished: true,
   },
   {
     pid: 9,
@@ -198,6 +211,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.owbtc,
     firstSymbol: QuoteToken.KLAY,
     secondSymbol: QuoteToken.OWBTC,
+    isFinished: true,
   },
   {
     pid: 10,
@@ -211,6 +225,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.oxrp,
     firstSymbol: QuoteToken.KLAY,
     secondSymbol: QuoteToken.OXRP,
+    isFinished: true,
   },
   {
     pid: 11,
@@ -224,6 +239,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.ousdt,
     firstSymbol: QuoteToken.OETH,
     secondSymbol: QuoteToken.OUSDT,
+    isFinished: false,
   },
   {
     pid: 12,
@@ -237,6 +253,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.ousdt,
     firstSymbol: QuoteToken.OWBTC,
     secondSymbol: QuoteToken.OUSDT,
+    isFinished: false,
   },
   {
     pid: 13,
@@ -250,6 +267,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.ousdt,
     firstSymbol: QuoteToken.OXRP,
     secondSymbol: QuoteToken.OUSDT,
+    isFinished: false,
   },
   {
     pid: 14,
@@ -276,6 +294,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.ousdt,
     firstSymbol: QuoteToken.KDAI,
     secondSymbol: QuoteToken.OUSDT,
+    isFinished: false,
   },
   {
     pid: 16,
@@ -289,6 +308,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.ousdt,
     firstSymbol: QuoteToken.OBNB,
     secondSymbol: QuoteToken.OUSDT,
+    isFinished: true,
   },
   {
     pid: 17,
@@ -302,6 +322,7 @@ const farms: FarmConfig[] = [
     secondToken: contracts.finix,
     firstSymbol: QuoteToken.OBNB,
     secondSymbol: QuoteToken.FINIX,
+    isFinished: true,
   },
 ]
 
