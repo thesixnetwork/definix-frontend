@@ -87,9 +87,9 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search, isFinish
           <ToggleWrap>
             <StakedOnlySection />
           </ToggleWrap>
-          {/* <ToggleWrap>
+          <ToggleWrap ml="S_12">
             <FinishedSection />
-          </ToggleWrap> */}
+          </ToggleWrap>
         </Flex>
         <Flex mt="S_12">
           <Box minWidth={148} mr="S_6">
@@ -115,9 +115,9 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search, isFinish
         <ToggleWrap ml="S_24">
           <StakedOnlySection />
         </ToggleWrap>
-        {/* <ToggleWrap ml="S_24">
+        <ToggleWrap ml="S_24">
           <FinishedSection />
-        </ToggleWrap> */}
+        </ToggleWrap>
       </Flex>
       <SearchInputWrap>
         <SearchInput
