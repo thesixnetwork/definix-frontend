@@ -200,6 +200,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
 
             isEnableRemoveStake={stakedBalance.eq(new BigNumber(0))}
             isEnableAddStake={isEnableAddStake}
+            isFinished={farm.isFinished}
             onApprove={onApprove}
             stakedBalance={stakedBalance}
             stakedBalancePrice={myLiquidity.toNumber()}

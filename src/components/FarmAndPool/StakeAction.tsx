@@ -23,6 +23,7 @@ interface FarmStakeActionProps {
   stakedBalance: BigNumber
   stakedBalancePrice: number
   stakedBalanceUnit: string
+  isFinished?: boolean
 
 }
 
@@ -40,7 +41,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   stakedBalance,
   stakedBalancePrice,
   stakedBalanceUnit,
-
+  isFinished,
 
 }) => {
 
@@ -86,7 +87,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       >
         <MinusIcon />
       </Button>
-      {isEnableAddStake && (
+      {!isFinished && isEnableAddStake && (
         <Button
           minWidth="40px"
           md
@@ -107,7 +108,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     >
       {t('Approve Contract')}
     </Button>) : <UnlockButton />
-  , [hasAccount, hasUserData, hasAllowance, renderBalance, componentType, isEnableAddStake, isEnableRemoveStake, onPresentDeposit, isLoadingApproveContract, handleApprove, onPresentWithdraw])
+  , [isFinished, hasAccount, hasUserData, hasAllowance, renderBalance, componentType, isEnableAddStake, isEnableRemoveStake, onPresentDeposit, isLoadingApproveContract, handleApprove, onPresentWithdraw])
 
 const renderFarm = useMemo(() => <Flex justifyContent="space-between">
   {hasAccount ? renderBalance : <Box>
