@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button, Card, Heading, Text } from 'uikit-dev'
+import { Button, Card, Heading, Text, useMatchBreakpoints } from 'uikit-dev'
 import Slider from 'react-slick'
 import useTheme from 'hooks/useTheme'
 import 'slick-carousel/slick/slick.css'
@@ -13,6 +13,7 @@ import dingoxSix from 'uikit-dev/images/for-ui-v2/banner/dingoxsix.png'
 import logoDingoxSixBlack from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-black.png'
 import logoDingoxSixWhite from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-white.png'
 import logoRebalance from 'uikit-dev/images/for-ui-v2/banner/logo-rebalance.png'
+import logoFinixBannerFull from 'uikit-dev/images/for-ui-v2/banner/logo-banner-finix.png'
 
 const StyledBannerLongTerm = styled(Card)`
   width: 100%;
@@ -93,6 +94,63 @@ const StyledBannerVoting = styled(Card)`
       width: 46%;
       opacity: 1;
     }
+    h2 {
+      font-size: 28px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
+const StyledBannerFinixToken = styled(Card)`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 48px 24px;
+  position: relative;
+  overflow: visible;
+
+  &:before {
+    content: '';
+    width: 70%;
+    height: 100%;
+    background: ${({ theme }) => (theme.isDark ? `url(${logoFinixBannerFull})` : `url(${logoFinixBannerFull})`)};
+    background-size: contain;
+    background-position: right center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.2;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 90px 40% 48px 70px !important;
+    &:before {
+      margin-right: 70px !important;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 90px 40% 48px 24px;
+    border-radius: unset;
+    height: 327px;
+
+    &:before {
+      width: 40%;
+      opacity: 1;
+      margin-right: 40px;
+    }
+
     h2 {
       font-size: 28px !important;
     }
@@ -353,6 +411,8 @@ const StyledSlider = styled(Slider)`
 `
 const CardAutoRebalancing = ({ className = '' }) => {
   const { isDark } = useTheme()
+  const { isXl, isLg, isMd } = useMatchBreakpoints()
+  const isMobile = !isXl && !isLg && !isMd
 
   const settings = {
     dots: true,
@@ -368,6 +428,35 @@ const CardAutoRebalancing = ({ className = '' }) => {
   return (
     <div>
       <StyledSlider {...settings}>
+        <div>
+          <a href="https://sixnetwork.medium.com/finix-halving-update-en-6d6a8624ae7d" target="_blank" rel="noreferrer">
+            <StyledBannerFinixToken className={className}>
+              <div className="pos-relative" style={{ zIndex: 1 }}>
+                <Text
+                  color="primary"
+                  fontSize={isMobile ? '32px !important' : '50px !important'}
+                  bold
+                  className="mb-2"
+                  lineHeight="1"
+                >
+                  FINIX Token’s
+                </Text>
+                <Text
+                  color="text"
+                  fontSize={isMobile ? '28px !important' : '42px !important'}
+                  bold
+                  lineHeight="1"
+                  className="mb-2"
+                >
+                  2nd Halving
+                </Text>
+                <Text color="textSubtle" fontSize="16px">
+                  21 June 2022 at 04.00 P.M. (GMT +7)
+                </Text>
+              </div>
+            </StyledBannerFinixToken>
+          </a>
+        </div>
         <div>
           <StyledBannerRebalance className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
