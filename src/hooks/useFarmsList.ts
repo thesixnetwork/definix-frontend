@@ -19,7 +19,7 @@ const useFarmsList = (farms: Farm[]): any => {
 
   const getFarmsList = useCallback(() => {
     return farms.map((farm) => {
-      if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
+      if (!farm.tokenAmount || !farm.lpTotalInQuoteToken) {
         return {
           ...farm,
           apyValue: 0,
@@ -118,7 +118,6 @@ const useFarmsList = (farms: Farm[]): any => {
 
         apy = finixApy && dualApy && finixApy.plus(dualApy)
       }
-
       const finixApy = apy
       /* 
       // DO NOT DELETE THIS CODE 
@@ -152,7 +151,7 @@ const useFarmsList = (farms: Farm[]): any => {
 
   const getFilteredFarms = useCallback(() => {
     const farmsWithApy = getFarmsList()
-    const filteredFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
+    const filteredFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1/* && farm.multiplier !== '0X'*/)
     return !compact(filteredFarms.map((farm) => farm.lpTotalInQuoteToken)).length ? [] : filteredFarms
   }, [getFarmsList])
 
