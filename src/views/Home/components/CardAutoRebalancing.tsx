@@ -19,22 +19,24 @@ import logoDingoxSixBlack from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix
 import logoDingoxSixWhite from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-white.png'
 import logoVoteBannerWhite from 'uikit-dev/images/for-ui-v2/banner/logo-banner-white.png'
 import logoVoteBannerDark from 'uikit-dev/images/for-ui-v2/banner/logo-banner-dark.png'
-import logoFinixBannerFull from 'uikit-dev/images/for-ui-v2/banner/logo-banner-finix.png'
+import logoFinixHavingBanner from 'uikit-dev/images/for-ui-v2/banner/logo-banner-finix.png'
+import logoDefinixSixProtocol from 'uikit-dev/images/for-ui-v2/banner/logo-definix-six-protocol.png'
 
-const StyledBannerLady = styled(Card)`
+const StyledBannerFinixToken = styled(Card)`
   width: 100%;
   background: ${({ theme }) => theme.colors.card};
   padding: 48px 24px;
   position: relative;
   overflow: visible;
+  height: 326px;
 
   &:before {
     content: '';
     width: 70%;
     height: 100%;
-    background: url(${lady});
+    background: ${({ theme }) => (theme.isDark ? `url(${logoFinixHavingBanner})` : `url(${logoFinixHavingBanner})`)};
     background-size: contain;
-    background-position: right bottom;
+    background-position: right center;
     background-repeat: no-repeat;
     position: absolute;
     top: 0;
@@ -51,70 +53,34 @@ const StyledBannerLady = styled(Card)`
     margin-bottom: 4px;
   }
 
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 100px 24px;
+    height: 300px;
+  }
+
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 48px 40% 48px 24px;
+    padding: 90px 40% 48px 24px;
     border-radius: unset;
-    height: 327px;
+    height: 300px;
 
     &:before {
       width: 40%;
       opacity: 1;
+      margin-right: 40px;
     }
 
     h2 {
-      font-size: 32px !important;
+      font-size: 28px !important;
     }
     h3 {
       font-size: 16px !important;
     }
   }
-`
 
-const StyledBannerLongTerm = styled(Card)`
-  width: 100%;
-  background: ${({ theme }) => theme.colors.card};
-  padding: 48px 24px;
-  position: relative;
-  overflow: visible;
-
-  &:before {
-    content: '';
-    width: 70%;
-    height: 100%;
-    background: url(${definixLongTerm});
-    background-size: contain;
-    background-position: right bottom;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    right: 0;
-    opacity: 0.2;
-    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-  h3 {
-    font-size: 12px !important;
-    margin-bottom: 4px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 68px 40% 48px 24px;
-    border-radius: unset;
-    height: 327px;
-
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 90px 40% 48px 40px !important;
     &:before {
-      width: 40%;
-      opacity: 1;
-    }
-
-    h2 {
-      font-size: 32px !important;
-    }
-    h3 {
-      font-size: 16px !important;
+      margin-right: 40px !important;
     }
   }
 `
@@ -125,6 +91,7 @@ const StyledBannerVoting = styled(Card)`
   padding: 48px 24px;
   position: relative;
   overflow: visible;
+  height: 326px;
 
   &:before {
     content: '';
@@ -149,10 +116,15 @@ const StyledBannerVoting = styled(Card)`
     margin-bottom: 4px;
   }
 
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 38px 24px;
+    height: 300px;
+  }
+
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 90px 40% 48px 24px;
     border-radius: unset;
-    height: 327px;
+    height: 300px;
 
     &:before {
       width: 40%;
@@ -168,70 +140,13 @@ const StyledBannerVoting = styled(Card)`
     }
   }
 `
-
-const StyledBannerFinixToken = styled(Card)`
-  width: 100%;
-  background: ${({ theme }) => theme.colors.card};
-  padding: 48px 24px;
-  position: relative;
-  overflow: visible;
-
-  &:before {
-    content: '';
-    width: 70%;
-    height: 100%;
-    background: ${({ theme }) => (theme.isDark ? `url(${logoFinixBannerFull})` : `url(${logoFinixBannerFull})`)};
-    background-size: contain;
-    background-position: right center;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    right: 0;
-    opacity: 0.2;
-    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-  h3 {
-    font-size: 12px !important;
-    margin-bottom: 4px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding: 90px 40% 48px 40px !important;
-    &:before {
-      margin-right: 40px !important;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 90px 40% 48px 24px;
-    border-radius: unset;
-    height: 327px;
-
-    &:before {
-      width: 40%;
-      opacity: 1;
-      margin-right: 40px;
-    }
-
-    h2 {
-      font-size: 28px !important;
-    }
-    h3 {
-      font-size: 16px !important;
-    }
-  }
-`
-
 const StyledBannerSuperStake = styled(Card)`
   width: 100%;
   background: ${({ theme }) => theme.colors.card};
   padding: 48px 24px;
   position: relative;
   overflow: visible;
+  height: 326px;
 
   &:before {
     content: '';
@@ -256,10 +171,15 @@ const StyledBannerSuperStake = styled(Card)`
     margin-bottom: 4px;
   }
 
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 24px;
+    height: 300px;
+  }
+
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 48px 40% 48px 24px;
     border-radius: unset;
-    height: 327px;
+    height: 300px;
 
     &:before {
       width: 42%;
@@ -272,6 +192,177 @@ const StyledBannerSuperStake = styled(Card)`
     }
     h3 {
       font-size: 16px !important;
+    }
+  }
+`
+const StyledBannerLongTerm = styled(Card)`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 48px 24px;
+  position: relative;
+  overflow: visible;
+  height: 326px;
+
+  &:before {
+    content: '';
+    width: 70%;
+    height: 100%;
+    background: url(${definixLongTerm});
+    background-size: contain;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.2;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 30px 24px;
+    height: 300px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 68px 40% 48px 24px;
+    border-radius: unset;
+    height: 300px;
+
+    &:before {
+      width: 40%;
+      opacity: 1;
+    }
+
+    h2 {
+      font-size: 32px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
+const StyledBannerLady = styled(Card)`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 48px 24px;
+  position: relative;
+  overflow: visible;
+  height: 326px;
+
+  &:before {
+    content: '';
+    width: 70%;
+    height: 100%;
+    background: url(${lady});
+    background-size: contain;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.2;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 20px 24px;
+    height: 300px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 48px 40% 48px 24px;
+    border-radius: unset;
+    height: 300px;
+
+    &:before {
+      width: 40%;
+      opacity: 1;
+    }
+
+    h2 {
+      font-size: 32px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
+const StyledBannerSixProtocol = styled(Card)`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 48px 24px;
+  position: relative;
+  overflow: visible;
+  height: 326px;
+
+  &:before {
+    content: '';
+    width: 70%;
+    height: 100%;
+    background: ${({ theme }) => (theme.isDark ? `url(${logoDefinixSixProtocol})` : `url(${logoDefinixSixProtocol})`)};
+    background-size: contain;
+    background-position: right center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.2;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 80px 24px;
+    height: 300px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 90px 40% 48px 24px;
+    border-radius: unset;
+    height: 300px;
+
+    &:before {
+      width: 40%;
+      opacity: 1;
+      margin-right: 40px;
+    }
+
+    h2 {
+      font-size: 28px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 90px 40% 48px 40px !important;
+    &:before {
+      margin-right: 40px !important;
     }
   }
 `
@@ -365,16 +456,6 @@ const SpecialOutline = styled(Button)`
 `
 
 const StyledSlider = styled(Slider)`
-  .slick-prev {
-    width: 4rem;
-    height: 4rem;
-    left: -3rem;
-  }
-  .slick-next {
-    width: 4rem;
-    height: 4rem;
-    right: -3rem;
-  }
   .slick-prev:before,
   .slick-next:before {
     color: #0973b9;
@@ -394,17 +475,41 @@ const StyledSlider = styled(Slider)`
   .slick-list {
     border-radius: 8px;
   }
+  ${({ theme }) => theme.mediaQueries.xs} {
+    .slick-prev {
+      width: 5rem;
+      height: 4rem;
+      left: -3rem;
+    }
+    .slick-next {
+      width: 6rem;
+      height: 4rem;
+      right: -3rem;
+    }
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    .slick-prev {
+      width: 4rem;
+      height: 4rem;
+      left: -3rem;
+    }
+    .slick-next {
+      width: 4rem;
+      height: 4rem;
+      right: -3rem;
+    }
+  }
 `
 
 const CardAutoRebalancing = ({ className = '' }) => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    // speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplaySpeed: 10000,
-    autoplay: true,
+    // autoplay: true,
     dotsClass: 'slick-dots slick-thumb',
   }
 
@@ -426,7 +531,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
               <div className="pos-relative" style={{ zIndex: 1 }}>
                 <Text
                   color="primary"
-                  fontSize={isMobile ? '32px !important' : '50px !important'}
+                  fontSize={isMobile ? '26px !important' : '46px !important'}
                   bold
                   className="mb-2"
                   lineHeight="1"
@@ -435,7 +540,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 </Text>
                 <Text
                   color="text"
-                  fontSize={isMobile ? '28px !important' : '42px !important'}
+                  fontSize={isMobile ? '22px !important' : '32px !important'}
                   bold
                   lineHeight="1"
                   className="mb-2"
@@ -487,7 +592,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period
                 will not be extended.
               </Text>
-              <div className="mt-6">
+              <div className="mt-4">
                 <SpecialButton
                   onClick={() => {
                     onPresentConnectModal()
@@ -544,6 +649,35 @@ const CardAutoRebalancing = ({ className = '' }) => {
               </div>
             </div>
           </StyledBannerLady>
+        </div>
+        <div>
+          <a href="https://sixprotocol.com/" target="_blank" rel="noreferrer">
+            <StyledBannerSixProtocol className={className}>
+              <div className="pos-relative" style={{ zIndex: 1 }}>
+                <Text
+                  color="primary"
+                  fontSize={isMobile ? '32px !important' : '42px !important'}
+                  bold
+                  className="mb-2"
+                  lineHeight="1"
+                >
+                  Six Protocol
+                </Text>
+                <Text
+                  color="text"
+                  fontSize={isMobile ? '22px !important' : '26px !important'}
+                  bold
+                  lineHeight="1"
+                  className="mb-2"
+                >
+                  Infrastructure for Definix as an Investment Portal
+                </Text>
+                <Text color="textSubtle" fontSize="16px">
+                  (Update for Definix community is coming soon)
+                </Text>
+              </div>
+            </StyledBannerSixProtocol>
+          </a>
         </div>
       </StyledSlider>
     </div>
