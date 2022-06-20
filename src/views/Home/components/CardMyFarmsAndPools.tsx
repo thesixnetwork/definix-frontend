@@ -674,7 +674,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     poolVelo2.totalStaked = new BigNumber(totalStake)
 
     const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR).div(1e18).toNumber()
-
+    // eslint-disable-next-line
     const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
 
     const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve0).div(1e18)).dividedBy(

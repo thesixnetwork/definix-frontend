@@ -2,7 +2,6 @@
 /* eslint-disable react/require-default-props */
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
