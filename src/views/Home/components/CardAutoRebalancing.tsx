@@ -46,10 +46,11 @@ const StyledBannerFinixToken = styled(Card)`
   }
 
   h2 {
-    font-size: 24px;
+    font-size: 28px;
   }
+
   h3 {
-    font-size: 12px !important;
+    font-size: 14px !important;
     margin-bottom: 4px;
   }
 
@@ -61,7 +62,7 @@ const StyledBannerFinixToken = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 90px 40% 48px 24px;
     border-radius: unset;
-    height: 300px;
+    height: 304px;
 
     &:before {
       width: 40%;
@@ -70,17 +71,18 @@ const StyledBannerFinixToken = styled(Card)`
     }
 
     h2 {
-      font-size: 28px !important;
+      font-size: 42px !important;
     }
+
     h3 {
-      font-size: 16px !important;
+      font-size: 18px !important;
     }
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    padding: 90px 40% 48px 40px !important;
+    padding: 90px 40% 48px 50px !important;
     &:before {
-      margin-right: 40px !important;
+      margin-right: 50px !important;
     }
   }
 `
@@ -111,6 +113,7 @@ const StyledBannerVoting = styled(Card)`
   h2 {
     font-size: 24px;
   }
+
   h3 {
     font-size: 12px !important;
     margin-bottom: 4px;
@@ -122,9 +125,9 @@ const StyledBannerVoting = styled(Card)`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 90px 40% 48px 24px;
+    padding: 70px 40% 48px 24px;
     border-radius: unset;
-    height: 300px;
+    height: 304px;
 
     &:before {
       width: 40%;
@@ -179,7 +182,7 @@ const StyledBannerSuperStake = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 48px 40% 48px 24px;
     border-radius: unset;
-    height: 300px;
+    height: 304px;
 
     &:before {
       width: 42%;
@@ -232,9 +235,9 @@ const StyledBannerLongTerm = styled(Card)`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 68px 40% 48px 24px;
+    padding: 50px 40% 48px 24px;
     border-radius: unset;
-    height: 300px;
+    height: 304px;
 
     &:before {
       width: 40%;
@@ -287,9 +290,9 @@ const StyledBannerLady = styled(Card)`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 48px 40% 48px 24px;
+    padding: 32px 40% 48px 24px;
     border-radius: unset;
-    height: 300px;
+    height: 304px;
 
     &:before {
       width: 40%;
@@ -331,6 +334,7 @@ const StyledBannerSixProtocol = styled(Card)`
   h2 {
     font-size: 24px;
   }
+
   h3 {
     font-size: 12px !important;
     margin-bottom: 4px;
@@ -340,10 +344,11 @@ const StyledBannerSixProtocol = styled(Card)`
     padding: 80px 24px;
     height: 300px;
   }
+
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 90px 40% 48px 24px;
+    padding: 90px 42% 48px 24px;
     border-radius: unset;
-    height: 300px;
+    height: 304px;
 
     &:before {
       width: 40%;
@@ -352,7 +357,7 @@ const StyledBannerSixProtocol = styled(Card)`
     }
 
     h2 {
-      font-size: 28px !important;
+      font-size: 32px !important;
     }
     h3 {
       font-size: 16px !important;
@@ -439,7 +444,6 @@ const SpecialOutline = styled(Button)`
     &:before {
       transform-origin: 0;
       transform: scaleX(1);
-      // background: #d1eeff;
       border-radius: 40px;
     }
 
@@ -505,11 +509,11 @@ const CardAutoRebalancing = ({ className = '' }) => {
   const settings = {
     dots: true,
     infinite: true,
-    // speed: 500,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplaySpeed: 10000,
-    // autoplay: true,
+    autoplay: true,
     dotsClass: 'slick-dots slick-thumb',
   }
 
@@ -517,6 +521,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg && !isMd
   const { balancevfinix } = usePrivateData()
+
   // Super Stake
   const [onPresentConnectModal] = useModal(
     !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
@@ -529,25 +534,13 @@ const CardAutoRebalancing = ({ className = '' }) => {
           <a href="https://sixnetwork.medium.com/finix-halving-update-en-6d6a8624ae7d" target="_blank" rel="noreferrer">
             <StyledBannerFinixToken className={className}>
               <div className="pos-relative" style={{ zIndex: 1 }}>
-                <Text
-                  color="primary"
-                  fontSize={isMobile ? '26px !important' : '46px !important'}
-                  bold
-                  className="mb-2"
-                  lineHeight="1"
-                >
+                <Heading className="mb-2" color="primary">
                   FINIX Token’s
-                </Text>
-                <Text
-                  color="text"
-                  fontSize={isMobile ? '22px !important' : '32px !important'}
-                  bold
-                  lineHeight="1"
-                  className="mb-2"
-                >
+                </Heading>
+                <Text color="text" fontSize="22px !important" bold lineHeight="1" className="mb-2">
                   2nd Halving
                 </Text>
-                <Text color="textSubtle" fontSize="16px">
+                <Text color="textSubtle" fontSize="12px !important">
                   21 June 2022 at 04.00 P.M. (GMT +7)
                 </Text>
               </div>
@@ -654,25 +647,19 @@ const CardAutoRebalancing = ({ className = '' }) => {
           <a href="https://sixprotocol.com/" target="_blank" rel="noreferrer">
             <StyledBannerSixProtocol className={className}>
               <div className="pos-relative" style={{ zIndex: 1 }}>
-                <Text
-                  color="primary"
-                  fontSize={isMobile ? '32px !important' : '42px !important'}
-                  bold
-                  className="mb-2"
-                  lineHeight="1"
-                >
-                  Six Protocol
-                </Text>
+                <Heading className="mb-2" color="primary">
+                  BE PREPARE FOR THE USE OF DEFINIX
+                </Heading>
                 <Text
                   color="text"
-                  fontSize={isMobile ? '22px !important' : '26px !important'}
+                  fontSize={isMobile ? '16px !important' : '22px !important'}
                   bold
                   lineHeight="1"
                   className="mb-2"
                 >
-                  Infrastructure for Definix as an Investment Portal
+                  On SIX Protocol
                 </Text>
-                <Text color="textSubtle" fontSize="16px">
+                <Text color="textSubtle" fontSize="14px">
                   (Update for Definix community is coming soon)
                 </Text>
               </div>
