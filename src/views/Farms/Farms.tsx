@@ -55,7 +55,7 @@ const Farms: React.FC = () => {
   const ethPriceUsd = usePriceEthBusd()
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
-
+  const [liveOnly, setLiveOnly] = useState(true)
   const [stackedOnly, setStackedOnly] = useState(false)
   const [listView, setListView] = useState(true)
   const [isPhrase2, setIsPhrase2] = useState(false)
@@ -172,6 +172,10 @@ const Farms: React.FC = () => {
     }
   }, [])
 
+  const farmsLiveOnly = (live) => {
+    return live ? farmsList(activeFarms, false) : farmsList(inactiveFarms, false)
+  }
+
   return (
     <FarmContext.Provider
       value={{
@@ -214,13 +218,14 @@ const Farms: React.FC = () => {
               <FarmTabButtons
                 stackedOnly={stackedOnly}
                 setStackedOnly={setStackedOnly}
+                liveOnly={liveOnly}
+                setLiveOnly={setLiveOnly}
                 listView={listView}
                 setListView={setListView}
               />
-
               <FlexLayout cols={listView ? 1 : 3}>
                 <Route exact path={`${path}`}>
-                  {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
+                  {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsLiveOnly(liveOnly)}
                 </Route>
                 <Route exact path={`${path}/history`}>
                   {farmsList(inactiveFarms, true)}

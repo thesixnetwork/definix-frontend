@@ -1,7 +1,8 @@
+import useI18n from 'hooks/useI18n'
 import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
-import { Button, CardViewIcon, IconButton, ListViewIcon, useMatchBreakpoints } from 'uikit-dev'
+import { Button, CardViewIcon, IconButton, ListViewIcon, useMatchBreakpoints, Text, Toggle } from 'uikit-dev'
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,7 +16,19 @@ const Wrapper = styled.div`
   } ;
 `
 
-const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) => {
+const ToggleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 32px;
+
+  ${Text} {
+    margin-left: 8px;
+  }
+`
+
+const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, liveOnly, setLiveOnly, setListView }) => {
+  const TranslateString = useI18n()
   const { isDark } = useTheme()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -77,6 +90,11 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
       </div>
 
       <div className="flex">
+        <ToggleWrapper>
+          <Toggle checked={liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
+          <Text> {TranslateString(999, 'Live')}</Text>
+        </ToggleWrapper>
+
         <Button
           size="sm"
           onClick={() => {
