@@ -7,23 +7,23 @@
     "FALSE"
   ],
   "notice_2": [
-    "반감기 일정 조정 재투표 진행 중!",
-    "vFINIX 홀더 여러분의 투표를 통해 Definix 생태계 운영 방향이 결정됩니다. \nDefinix의 첫 거버넌스 투표에 많은 관심과 참여 부탁드립니다!",
-    "https://g2.klaytn.definix.com/voting",
-    "투표하러 가기",
-    "FALSE"
-  ],
-  "notice_3": [
     "클레이튼 체인 공식 디파이 Definix에 오신 것을 환영합니다!",
     "탈중앙 멀티 체인 디파이 프로토콜 Definix입니다. \n안전하게 암호화폐 자산을 관리하고, 특별한 장기예치 혜택을 누려보세요!",
     "https://sixnetwork.gitbook.io/definix-on-klaytn-kr/",
     "더 알아보기",
-    "FALSE"
+    "TRUE"
   ],
-  "notice_4": [
+  "notice_3": [
     "Favor 상장 및 팜 추가!",
     "Definix에 Favor 토큰이 최초로 상장되었습니다!\n토큰 스왑은 물론 팜에서 Favor 이자도 채굴하실 수 있습니다. ",
     "https://medium.com/fingerlabs/favor-%ED%86%A0%ED%81%B0-%EC%83%81%EC%9E%A5-%EB%B0%8F-%EC%8B%A0%EA%B7%9C-%ED%8C%9C-%EC%B6%94%EA%B0%80-3eb4448d1e9a",
+    "더 알아보기",
+    "TRUE"
+  ],
+  "notice_4": [
+    "Definix 반감기가 진행됩니다!",
+    "이번 반감기는 팜 개편이 함께 진행되며, \nDefinix는 느리더라도 꾸준히 앞으로 나아가고 있습니다. ",
+    "https://sixnetwork.medium.com/official-announcement-2nd-finix-token-halving-kr-7731524cec08",
     "더 알아보기",
     "TRUE"
   ]
