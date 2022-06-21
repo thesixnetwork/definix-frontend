@@ -448,7 +448,11 @@ const CardAutoRebalancing = ({ className = '' }) => {
     <div>
       <StyledSlider {...settings}>
         <div>
-          <a href="https://sixnetwork.medium.com/finix-halving-update-en-6d6a8624ae7d" target="_blank" rel="noreferrer">
+          <a
+            href="https://sixnetwork.medium.com/official-announcement-2nd-finix-token-halving-en-c8cadbafadf4"
+            target="_blank"
+            rel="noreferrer"
+          >
             <StyledBannerFinixToken className={className}>
               <div className="pos-relative" style={{ zIndex: 1 }}>
                 <Heading className="mb-2" color="primary">
