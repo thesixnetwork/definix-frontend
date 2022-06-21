@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
