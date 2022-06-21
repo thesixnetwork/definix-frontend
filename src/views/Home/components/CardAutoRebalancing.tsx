@@ -541,7 +541,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
                   2nd Halving
                 </Text>
                 <Text color="textSubtle" fontSize="12px !important">
-                  21 June 2022 at 04.00 P.M. (GMT +7)
+                  21 June 2022 at 07.00 P.M. (GMT +9)
                 </Text>
               </div>
             </StyledBannerFinixToken>
