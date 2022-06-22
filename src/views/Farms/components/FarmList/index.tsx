@@ -39,6 +39,8 @@ const FarmList: React.FC<{
     }
     if (isFinished) {
       result = result.filter((farm) => farm.isFinished)
+    } else {
+      result = result.filter((farm) => !farm.isFinished)
     }
     return result
   }, [stakedOnly, farmsWithApy, isFinished])
