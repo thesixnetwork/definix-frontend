@@ -7,23 +7,23 @@
     "FALSE"
   ],
   "notice_2": [
-    "Halving schedule adjustment voting is open!",
-    "The direction of Definix ecosystem is determined by the votes of vFINIX holders.\nWe ask for your interest and participation in Definix's first governance vote!",
-    "https://g2.klaytn.definix.com/voting ",
-    "Feedback",
-    "FALSE"
-  ],
-  "notice_3": [
     "Definix - Official DeFi protocol of Klaytn chain",
     "Welcome to the decentralized multi-chain Defi protocol Definix.\nManage your crypto assets safely and enjoy exclusive benefits for Long-term staking!",
     "https://sixnetwork.gitbook.io/definix-on-klaytn-en/",
     "Learn more",
-    "FALSE"
+    "TRUE"
   ],
-  "notice_4": [
+  "notice_3": [
     "Favor listed and new farms added!",
     "Favor is being listed on Definix!\nYou can swap token to get Favor and earn through yield farming!",
     "https://medium.com/fingerlabs/favor-token-initial-listing-and-new-farms-added-14e994270ba8",
+    "Learn more",
+    "TRUE"
+  ],
+  "notice_4": [
+    "Halving is come!",
+    "Along with this halving, Farm reorganization is being proceeded.\nDefinix keeps moving forward even though it is slow. ",
+    "https://sixnetwork.medium.com/official-announcement-2nd-finix-token-halving-en-c8cadbafadf4",
     "Learn more",
     "TRUE"
   ]
