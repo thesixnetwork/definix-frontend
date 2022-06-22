@@ -1,6 +1,6 @@
 {
   "name": "definix-frontend",
-  "version": "2.5.19",
+  "version": "2.5.20",
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
