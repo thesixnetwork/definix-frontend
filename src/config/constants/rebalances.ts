@@ -156,98 +156,6 @@ const rebalances: RebalanceConfig[] = [
   // },
 
   {
-    title: 'Game Index',
-    description:
-      'Major GameFi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
-    fullDescription:
-      'Game-Fi has been a recent hype in the DeFi world especially Game NFT, and the rebranding announcement of Facebook to Meta. It drives the internet world crazy. Game-Fi can be super volatile and give a super high profit. We also added the BUSD to this farm to help mitigate the loss that might occur from the negative price fluctuations. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
-    icon: ['/images/vaults/game1.png', '/images/vaults/game2.png'],
-    address: {
-      56: '0xB7d9f0aEdFd9270f3BD676450208a41e49385872',
-      97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
-    },
-    router: [
-      customRouter.pancake,
-      customRouter.pancake,
-      customRouter.pancake,
-      customRouter.pancake,
-      customRouter.pancake,
-      customRouter.pancake,
-    ],
-    factory: [
-      customFactory.pancake,
-      customFactory.pancake,
-      customFactory.pancake,
-      customFactory.pancake,
-      customFactory.pancake,
-      customFactory.pancake,
-    ],
-    initCodeHash: [
-      customInitCodeHash.pancake,
-      customInitCodeHash.pancake,
-      customInitCodeHash.pancake,
-      customInitCodeHash.pancake,
-      customInitCodeHash.pancake,
-      customInitCodeHash.pancake,
-    ],
-    fee: {
-      management: 0.5,
-      buyback: 1.0,
-      // bounty: 0.3,
-    },
-    ratio: [
-      // THG, AXS, MBOX, TLM, ALICE, BUSD
-      {
-        symbol: 'THG',
-        value: 10,
-        color: '#00f059',
-        address: THG,
-      },
-      {
-        symbol: 'AXS',
-        value: 30,
-        color: '#00ebfc',
-        address: AXS,
-      },
-      {
-        symbol: 'MBOX',
-        value: 30,
-        color: '#0247dc',
-        address: MBOX,
-      },
-      {
-        symbol: 'TLM',
-        value: 10,
-        color: '#eacb7d',
-        address: TLM,
-      },
-      {
-        symbol: 'ALICE',
-        value: 10,
-        color: '#e88095',
-        address: ALICE,
-      },
-      {
-        symbol: 'BUSD',
-        value: 10,
-        color: '#eeb80c',
-        address: BUSD,
-      },
-    ],
-    factsheet: {
-      name: 'Game Index',
-      inceptionDate: 'Thursday, November 4, 2021 09:27:19 (UTC+7)',
-      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
-      vault: '0xB7d9f0aEdFd9270f3BD676450208a41e49385872',
-      management: '0x5c966A18e964b875Fc7002707ff598dB7aebBa68',
-      finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
-      bountyFee: '',
-    },
-    type: 'new',
-    badge: 'risk',
-  },
-
-  {
     title: 'Bullish Giant',
     description:
       'Withstanding the trend in the market with both giants in the area. The rebalancing will trigger every time the value of the farm is covered with the rebalancing fee.',
@@ -779,6 +687,97 @@ const rebalances: RebalanceConfig[] = [
     },
     type: 'old',
     badge: '',
+  },
+  {
+    title: 'Game Index',
+    description:
+      'Major GameFi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
+    fullDescription:
+      'Game-Fi has been a recent hype in the DeFi world especially Game NFT, and the rebranding announcement of Facebook to Meta. It drives the internet world crazy. Game-Fi can be super volatile and give a super high profit. We also added the BUSD to this farm to help mitigate the loss that might occur from the negative price fluctuations. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
+    icon: ['/images/vaults/game1.png', '/images/vaults/game2.png'],
+    address: {
+      56: '0xB7d9f0aEdFd9270f3BD676450208a41e49385872',
+      97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
+    },
+    router: [
+      customRouter.pancake,
+      customRouter.pancake,
+      customRouter.pancake,
+      customRouter.pancake,
+      customRouter.pancake,
+      customRouter.pancake,
+    ],
+    factory: [
+      customFactory.pancake,
+      customFactory.pancake,
+      customFactory.pancake,
+      customFactory.pancake,
+      customFactory.pancake,
+      customFactory.pancake,
+    ],
+    initCodeHash: [
+      customInitCodeHash.pancake,
+      customInitCodeHash.pancake,
+      customInitCodeHash.pancake,
+      customInitCodeHash.pancake,
+      customInitCodeHash.pancake,
+      customInitCodeHash.pancake,
+    ],
+    fee: {
+      management: 0.5,
+      buyback: 1.0,
+      // bounty: 0.3,
+    },
+    ratio: [
+      // THG, AXS, MBOX, TLM, ALICE, BUSD
+      {
+        symbol: 'THG',
+        value: 10,
+        color: '#00f059',
+        address: THG,
+      },
+      {
+        symbol: 'AXS',
+        value: 30,
+        color: '#00ebfc',
+        address: AXS,
+      },
+      {
+        symbol: 'MBOX',
+        value: 30,
+        color: '#0247dc',
+        address: MBOX,
+      },
+      {
+        symbol: 'TLM',
+        value: 10,
+        color: '#eacb7d',
+        address: TLM,
+      },
+      {
+        symbol: 'ALICE',
+        value: 10,
+        color: '#e88095',
+        address: ALICE,
+      },
+      {
+        symbol: 'BUSD',
+        value: 10,
+        color: '#eeb80c',
+        address: BUSD,
+      },
+    ],
+    factsheet: {
+      name: 'Game Index',
+      inceptionDate: 'Thursday, November 4, 2021 09:27:19 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0xB7d9f0aEdFd9270f3BD676450208a41e49385872',
+      management: '0x5c966A18e964b875Fc7002707ff598dB7aebBa68',
+      finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
+      bountyFee: '',
+    },
+    type: 'new',
+    badge: 'risk',
   },
 ]
 

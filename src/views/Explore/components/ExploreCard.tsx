@@ -207,30 +207,16 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   }, [combinedAmount])
 
   const renderSash = () => {
-    // Badge new
-    if (isMobile && isHorizontal && rebalance.badge === 'new' && rebalance.type === 'new') {
-      return <RebalanceSash view="listCard" badge="new" />
+    if (isMobile && isHorizontal && rebalance.rebalance === 'New') {
+      return <RebalanceSash type="listCard" />
     }
 
-    if (isHorizontal && rebalance.badge === 'new' && rebalance.type === 'new') {
-      return <RebalanceSash view="list" badge="new" />
+    if (isHorizontal && rebalance.rebalance === 'New') {
+      return <RebalanceSash type="list" />
     }
 
-    if (!isHorizontal && rebalance.badge === 'new' && rebalance.type === 'new') {
-      return <RebalanceSash view="card" badge="new" />
-    }
-
-    // Badge risk
-    if (isMobile && isHorizontal && rebalance.badge === 'risk' && rebalance.type === 'new') {
-      return <RebalanceSash view="listCard" badge="risk" />
-    }
-
-    if (isHorizontal && rebalance.badge === 'risk' && rebalance.type === 'new') {
-      return <RebalanceSash view="list" badge="risk" />
-    }
-
-    if (!isHorizontal && rebalance.badge === 'risk' && rebalance.type === 'new') {
-      return <RebalanceSash view="card" badge="risk" />
+    if (!isHorizontal && rebalance.rebalance === 'New') {
+      return <RebalanceSash type="card" />
     }
 
     return null
