@@ -4,7 +4,7 @@ import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
 import React, { useContext } from 'react'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
-import { Menu as UikitMenu } from 'uikit-dev'
+import { MenuV2 as UikitMenu } from 'uikit-dev/widgets/Menu'
 import config from './config'
 
 const Menu = (props) => {

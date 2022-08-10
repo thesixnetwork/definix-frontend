@@ -6,7 +6,7 @@ import { Line } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import axios from 'axios'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const Box = styled.div`
   canvas {
