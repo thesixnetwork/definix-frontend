@@ -63,11 +63,6 @@ const ResetCSS = createGlobalStyle`
   *::after {
     box-sizing: border-box;
   }
-  * {
-    font-family: 'Prompt', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
   /* Scrollbar */
   // ::-webkit-scrollbar {
   //   width: 8px;

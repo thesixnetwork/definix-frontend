@@ -4,7 +4,7 @@ import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
 import React, { useContext } from 'react'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
-import { MenuV2 as UikitMenu } from 'uikit-dev/widgets/Menu'
+import WrapperV2 from 'uikitV2/components/WrapperV2'
 import config from './config'
 
 const Menu = (props) => {
@@ -15,7 +15,7 @@ const Menu = (props) => {
   const { profile } = useProfile()
 
   return (
-    <UikitMenu
+    <WrapperV2
       account={account}
       login={connect}
       logout={reset}

@@ -1,12 +1,13 @@
 import { Box, Drawer } from '@mui/material'
 import React from 'react'
-import { Login } from '../WalletModal/types'
-import PanelBody from './PanelBody'
-import PanelFooter from './PanelFooter'
-import { PanelProps, PushedProps } from './types'
+import PanelFooter from 'uikit-dev/widgets/Menu/PanelFooter'
+import { PanelProps, PushedProps } from 'uikit-dev/widgets/Menu/types'
+import { Login } from 'uikit-dev/widgets/WalletModal/types'
+import PanelBodyV2 from './PanelBodyV2'
 
 interface Props extends PanelProps, PushedProps {
   showMenu: boolean
+  setShowMenu: (boolean) => void
   isMobile: boolean
   account?: string
   login: Login
@@ -15,41 +16,38 @@ interface Props extends PanelProps, PushedProps {
   drawerWidth: number
 }
 
-const PanelV2: React.FC<Props> = ({ drawerWidth, ...props }) => {
-  const [mobileOpen, setMobileOpen] = React.useState(false)
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen)
+const PanelV2: React.FC<Props> = ({ drawerWidth, showMenu, setShowMenu, ...props }) => {
+  const onClose = () => {
+    setShowMenu(false)
   }
 
   const content = (
     <>
-      <PanelBody {...props} />
+      <PanelBodyV2 {...props} />
       <PanelFooter {...props} />
     </>
   )
 
   return (
-    <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
+    <Box component="nav" sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}>
       <Drawer
         variant="temporary"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
+        open={showMenu}
+        onClose={onClose}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}
         sx={{
-          display: { xs: 'block', sm: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 300 },
         }}
       >
         {content}
       </Drawer>
-
       <Drawer
         variant="permanent"
         sx={{
-          display: { xs: 'none', sm: 'block' },
+          display: { xs: 'none', md: 'block' },
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
         }}
         open
