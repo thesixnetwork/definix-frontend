@@ -5,68 +5,12 @@ import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
-import { Text } from 'uikit-dev/components/Text'
 import logoDesktop from 'uikit-dev/images/Definix-advance-crypto-assets.png'
 import logoWhite from 'uikit-dev/images/definix-white-logo.png'
-import FinixCoin from 'uikit-dev/images/finix-coin.png'
-import Accordion from 'uikit-dev/widgets/Menu/Accordion'
-import { LinkLabel, MenuEntry } from 'uikit-dev/widgets/Menu/MenuEntry'
-import MenuLink from 'uikit-dev/widgets/Menu/MenuLink'
 import { PanelProps, PushedProps } from 'uikit-dev/widgets/Menu/types'
 import UserBlock from 'uikit-dev/widgets/Menu/UserBlock'
-import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import { Login } from 'uikit-dev/widgets/WalletModal/types'
 import definix from '../images/definix-full.svg'
-
-// const OldMenu = ({ menu }) => {
-//   const calloutClass = menu.calloutClass ? menu.calloutClass : undefined
-//   const isActive = location.pathname === menu.href && !menu.notHighlight
-
-//   if (menu.items) {
-//     const itemsMatchIndex = menu.items.findIndex((item) => item.href === location.pathname)
-//     const initialOpenState = menu.initialOpenState === true ? menu.initialOpenState : itemsMatchIndex >= 0
-
-//     return (
-//       <Accordion
-//         key={menu.label}
-//         isPushed={isPushed}
-//         pushNav={pushNav}
-//         icon={<img src={isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />}
-//         label={menu.label}
-//         initialOpenState={initialOpenState}
-//         className={calloutClass}
-//       >
-//         {isPushed &&
-//           menu.items.map((item) => (
-//             <MenuEntry
-//               key={item.label}
-//               isActive={item.href === location.pathname && !item.notHighlight}
-//               className={calloutClass}
-//               style={{ border: 'none' }}
-//             >
-//               <MenuLink
-//                 href={item.customHref ? (item.customHref || {})[(currentLang || '').toLowerCase()] : item.href}
-//                 onClick={handleClick}
-//                 target={item.newTab ? '_blank' : ''}
-//                 style={{ paddingLeft: '40px' }}
-//               >
-//                 <LinkLabel isPushed={isPushed}>{item.label}</LinkLabel>
-//               </MenuLink>
-//             </MenuEntry>
-//           ))}
-//       </Accordion>
-//     )
-//   }
-
-//   return (
-//     <MenuEntry key={menu.label} isActive={isActive} className={calloutClass}>
-//       <MenuLink href={menu.href} onClick={handleClick} target={menu.newTab ? '_blank' : ''}>
-//         <img src={isActive || isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
-//         <LinkLabel isPushed={isPushed}>{menu.label}</LinkLabel>
-//       </MenuLink>
-//     </MenuEntry>
-//   )
-// }
 
 interface Props extends PanelProps, PushedProps {
   isMobile: boolean
@@ -93,15 +37,17 @@ const StyledLink = styled(Link)`
   }
 `
 
-const MenuItem = ({ menu, currentLang }) => {
+const MenuItem = ({ menu }) => {
   const location = useLocation()
   const isActive = location.pathname === menu.href && !menu.notHighlight
+  const isExternal = menu.href.indexOf('http') > -1
 
   return (
     <ListItemButton
+      component={isExternal ? 'a' : Link}
       selected={isActive}
-      to={menu.customHref ? (menu.customHref || {})[(currentLang || '').toLowerCase()] : menu.href}
-      component={Link}
+      to={menu.href}
+      target={menu.newTab ? '_blank' : '_self'}
     >
       <ListItemIcon>
         <img src={menu.icon} alt="" width="24" />
@@ -111,10 +57,11 @@ const MenuItem = ({ menu, currentLang }) => {
   )
 }
 
-const GroupMenuItem = ({ menu, currentLang }) => {
+const GroupMenuItem = ({ menu }) => {
   const [open, setOpen] = useState(false)
   const location = useLocation()
-  const isActive = location.pathname === menu.href && !menu.notHighlight
+  const isActive = menu.items.filter((m) => m.href === location.pathname).length > 0 && !menu.notHighlight
+  const isExternal = menu.href.indexOf('http') > -1
 
   return (
     <Box>
@@ -135,9 +82,10 @@ const GroupMenuItem = ({ menu, currentLang }) => {
           {menu.items.map((m) => (
             <ListItemButton
               sx={{ pl: 5 }}
+              component={isExternal ? 'a' : Link}
               selected={location.pathname === m.href && !m.notHighlight}
-              to={m.customHref ? (m.customHref || {})[(currentLang || '').toLowerCase()] : m.href}
-              component={Link}
+              to={m.href}
+              target={m.newTab ? '_blank' : '_self'}
             >
               <ListItemText primary={m.label} />
             </ListItemButton>
@@ -150,7 +98,7 @@ const GroupMenuItem = ({ menu, currentLang }) => {
 
 const PanelBodyV2: React.FC<Props> = (props) => {
   const { isDark } = useTheme()
-  const { isMobile, links, account, login, logout, currentLang } = props
+  const { isMobile, links, account, login, logout } = props
 
   return (
     <Box display="flex" flexDirection="column">
@@ -174,11 +122,7 @@ const PanelBodyV2: React.FC<Props> = (props) => {
 
         <List component="nav">
           {links.map((link) =>
-            link.items ? (
-              <GroupMenuItem key={link.label} menu={link} currentLang={currentLang} />
-            ) : (
-              <MenuItem key={link.label} menu={link} currentLang={currentLang} />
-            ),
+            link.items ? <GroupMenuItem key={link.label} menu={link} /> : <MenuItem key={link.label} menu={link} />,
           )}
         </List>
       </Box>

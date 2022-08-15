@@ -23,15 +23,18 @@ const SwitchStyle = styled(Box)(({ theme, isBsc = true }: CustomBoxProps & BoxPr
     textTransform: `initial`,
     paddingLeft: `10px`,
     paddingRight: `16px`,
-    height: `100%`,
+    height: `calc(100% + 2px)`,
     borderRadius: `32px`,
+    position: 'relative',
 
     '&:first-child': {
+      left: '-1px',
       background: `${isBsc ? '#fcbd1b' : 'transparent'}`,
       color: `${isBsc ? 'white' : theme.palette.text.secondary}`,
     },
 
     '&:last-child': {
+      right: '-1px',
       background: `${!isBsc ? '#5e515f' : 'transparent'}`,
       color: `${!isBsc ? 'white' : theme.palette.text.secondary}`,
     },

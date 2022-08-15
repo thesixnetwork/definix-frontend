@@ -49,6 +49,7 @@ let muiTheme = createTheme({
           borderRadius: '8px',
           color: '#666666',
           transition: '0.1s',
+          minHeight: '40px',
 
           '&.Mui-selected': {
             background: '#ff5532 !important',

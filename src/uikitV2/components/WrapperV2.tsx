@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { Box, styled, Toolbar } from '@mui/material'
+import { Box, styled, Toolbar, useMediaQuery, useTheme } from '@mui/material'
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import axios from 'axios'
 import _ from 'lodash'
@@ -41,17 +41,6 @@ const MobileOnlyOverlay = styled(Overlay)`
   height: 100%;
 `
 
-const Price = styled('a')`
-  display: flex;
-  align-items: center;
-  font-size: 0.5rem;
-
-  img {
-    width: 20px;
-    margin-right: 8px;
-  }
-`
-
 const WrapperV2 = ({
   account,
   login,
@@ -68,9 +57,12 @@ const WrapperV2 = ({
 }) => {
   const location = useLocation()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const theme = useTheme()
+  const mdUp = useMediaQuery(theme.breakpoints.up('md'))
+
   const isMobile = !isMd && !isXl && !isLg
   const [isPushed, setIsPushed] = useState(false)
-  const [showMenu, setShowMenu] = useState(true)
+  const [showMenu, setShowMenu] = useState(mdUp)
   const refPrevOffset = useRef(window.pageYOffset)
   const [onPresentDisclaimersModal] = useModal(<DisclaimersModal />)
   const endRegisterTimestamp = process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP
@@ -96,34 +88,34 @@ const WrapperV2 = ({
   //   })?.language
   // }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentOffset = window.pageYOffset
-      const isBottomOfPage = window.document.body.clientHeight === currentOffset + window.innerHeight
-      const isTopOfPage = currentOffset === 0
-      // Always show the menu when user reach the top
-      if (isTopOfPage) {
-        setShowMenu(true)
-      }
-      // Avoid triggering anything at the bottom because of layout shift
-      else if (!isBottomOfPage) {
-        if (currentOffset < refPrevOffset.current) {
-          // Has scroll up
-          setShowMenu(true)
-        } else {
-          // Has scroll down
-          setShowMenu(false)
-        }
-      }
-      refPrevOffset.current = currentOffset
-    }
-    const throttledHandleScroll = throttle(handleScroll, 200)
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const currentOffset = window.pageYOffset
+  //     const isBottomOfPage = window.document.body.clientHeight === currentOffset + window.innerHeight
+  //     const isTopOfPage = currentOffset === 0
+  //     // Always show the menu when user reach the top
+  //     if (isTopOfPage) {
+  //       setShowMenu(true)
+  //     }
+  //     // Avoid triggering anything at the bottom because of layout shift
+  //     else if (!isBottomOfPage) {
+  //       if (currentOffset < refPrevOffset.current) {
+  //         // Has scroll up
+  //         setShowMenu(true)
+  //       } else {
+  //         // Has scroll down
+  //         setShowMenu(false)
+  //       }
+  //     }
+  //     refPrevOffset.current = currentOffset
+  //   }
+  //   const throttledHandleScroll = throttle(handleScroll, 200)
 
-    window.addEventListener('scroll', throttledHandleScroll)
-    return () => {
-      window.removeEventListener('scroll', throttledHandleScroll)
-    }
-  }, [])
+  //   window.addEventListener('scroll', throttledHandleScroll)
+  //   return () => {
+  //     window.removeEventListener('scroll', throttledHandleScroll)
+  //   }
+  // }, [])
 
   // Find the home link if provided
   const homeLink = links.find((link) => link.label === 'Home')
