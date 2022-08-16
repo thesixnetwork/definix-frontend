@@ -353,6 +353,10 @@ const GlobalStyle = createGlobalStyle`
   .mr-9 {
     margin-right: 6rem !important;
   }
+
+  .mr-auto {
+    margin-right: auto !important;
+  }
   
   .mx-0 {
     margin-left: 0 !important;

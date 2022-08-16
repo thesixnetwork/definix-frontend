@@ -1,4 +1,5 @@
 /* eslint-disable import/no-mutable-exports */
+import { ExpandMoreRounded } from '@mui/icons-material'
 import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 
 let muiTheme = createTheme({
@@ -38,6 +39,10 @@ let muiTheme = createTheme({
         sizeSmall: {
           height: '32px',
           fontSize: '0.75rem',
+        },
+        sizeLarge: {
+          fontSize: '0.875rem',
+          minHeight: '40px',
         },
       },
     },
@@ -79,6 +84,77 @@ let muiTheme = createTheme({
           margin: '0',
 
           '& + svg': { color: 'inherit', width: '20px', height: '20px', opacity: '0.6' },
+        },
+      },
+    },
+    MuiSelect: {
+      defaultProps: {
+        IconComponent: ExpandMoreRounded,
+      },
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+
+          fieldset: {
+            borderWidth: '1px !important',
+            borderColor: '#e0e0e0 !important',
+          },
+
+          svg: {
+            width: '20px',
+            height: '20px',
+            opacity: '0.6',
+            top: 'calc(50% - 10px)',
+          },
+        },
+        select: {
+          color: '#666666',
+          display: 'flex',
+          alignItems: 'center',
+          background: 'white',
+        },
+      },
+    },
+    MuiMenu: {
+      defaultProps: {
+        elevation: 3,
+      },
+      styleOverrides: {
+        paper: {
+          border: '1px solid #e0e0e0',
+          borderRadius: '8px !important',
+
+          '.MuiList-root': {
+            padding: '0',
+          },
+
+          '.MuiMenuItem-root': {
+            minHeight: '40px',
+            color: '#666666',
+
+            p: {
+              fontWeight: 'normal',
+            },
+
+            '&:hover': {
+              background: 'rgba(0, 0, 0, 0.04) !important',
+            },
+
+            '&.Mui-selected': {
+              background: 'transparent',
+
+              p: {
+                fontWeight: 'bold',
+              },
+            },
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: '#5e515f',
         },
       },
     },

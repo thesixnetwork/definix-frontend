@@ -1,9 +1,9 @@
 import { Box, Drawer } from '@mui/material'
 import React from 'react'
-import PanelFooter from 'uikit-dev/widgets/Menu/PanelFooter'
 import { PanelProps, PushedProps } from 'uikit-dev/widgets/Menu/types'
 import { Login } from 'uikit-dev/widgets/WalletModal/types'
 import PanelBodyV2 from './PanelBodyV2'
+import PanelFooterV2 from './PanelFooterV2'
 
 interface Props extends PanelProps, PushedProps {
   showMenu: boolean
@@ -24,7 +24,7 @@ const PanelV2: React.FC<Props> = ({ drawerWidth, showMenu, setShowMenu, ...props
   const content = (
     <>
       <PanelBodyV2 {...props} />
-      <PanelFooter {...props} />
+      <PanelFooterV2 {...props} />
     </>
   )
 

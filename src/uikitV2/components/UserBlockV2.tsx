@@ -15,6 +15,7 @@ interface Props {
   logout: () => void
   className?: string
   position?: Position
+  size?: any
 }
 
 const ConnectButton = styled(Button)`
@@ -38,7 +39,14 @@ const AccountButton = styled(ConnectButton)`
   }
 `
 
-const UserBlockV2: React.FC<Props> = ({ account, login, logout, className = '', position = 'bottom-right' }) => {
+const UserBlockV2: React.FC<Props> = ({
+  account,
+  login,
+  logout,
+  className = '',
+  position = 'bottom-right',
+  size = 'small',
+}) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
   const accountEllipsis = account ? `${account.substring(0, 6)}...${account.substring(account.length - 4)}` : null
 
@@ -103,9 +111,9 @@ const UserBlockV2: React.FC<Props> = ({ account, login, logout, className = '', 
           }}
           disabled={!!account}
           variant="contained"
-          size="small"
+          size={size}
           className="px-5"
-          sx={{ width: '142px' }}
+          sx={{ width: size === 'small' ? '142px' : '186px' }}
         >
           Connect Wallet
         </Button>
