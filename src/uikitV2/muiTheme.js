@@ -5,6 +5,20 @@ import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 let muiTheme = createTheme({
   typography: {
     fontFamily: ['Roboto', 'Noto Sans KR', 'sans-serif'].join(','),
+    h2: {
+      fontSize: '2rem',
+      fontWeight: '600',
+      color: '#000',
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1536,
+    },
   },
   palette: {
     primary: {

@@ -40,7 +40,7 @@ TagManager.initialize(tagManagerArgs)
 // Only pool is included in the main bundle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
 const Pools = lazy(() => import('./views/Pools'))
-const Farms = lazy(() => import('./views/Farms'))
+const Farm = lazy(() => import('uikitV2/pages/Farm'))
 const Explore = lazy(() => import('./views/Explore'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
@@ -111,7 +111,7 @@ const App: React.FC = () => {
               <Pools />
             </Route>
             <Route path="/farm">
-              <Farms />
+              <Farm />
             </Route>
             <Route path="/info">
               <Info />
