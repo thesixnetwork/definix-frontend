@@ -313,6 +313,10 @@ const GlobalStyle = createGlobalStyle`
   .ml-9 {
     margin-left: 6rem !important;
   }
+
+  .ml-auto {
+    margin-left: auto !important;
+  }
   
   .mr-0 {
     margin-right: 0 !important;

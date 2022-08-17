@@ -5,7 +5,7 @@ import FinixCoin from 'uikit-dev/images/finix-coin.png'
 const CopyFinixAddress = () => {
   const addressFinix = '0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d'
   const addressEllipsis = addressFinix
-    ? `${addressFinix.substring(0, 6)}...${addressFinix.substring(addressFinix.length - 4)}`
+    ? `${addressFinix.substring(0, 6)}...${addressFinix.substring(addressFinix.length - 6)}`
     : null
 
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)

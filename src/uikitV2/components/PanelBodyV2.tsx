@@ -131,7 +131,7 @@ const PanelBodyV2: React.FC<Props> = (props) => {
         </Box>
       )}
 
-      <Box flexGrow={1} overflow="auto" height="calc(100% - 94px)">
+      <Box flexGrow={1} overflow="auto" height="calc(100% - 94px)" pb="80px">
         {!mdUp && (
           <Box px="16px" minHeight={148} display="flex" justifyContent="center" alignItems="center" className="bd-b">
             <UserBlockV2 account={account} login={login} logout={logout} className="ml-3" size="large" />

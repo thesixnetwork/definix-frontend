@@ -3,13 +3,11 @@ import { Box, styled, Toolbar, useMediaQuery, useTheme } from '@mui/material'
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import axios from 'axios'
 import _ from 'lodash'
-import throttle from 'lodash/throttle'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import BannerEllipsis from 'uikit-dev/components/BannerEllipsis'
 import Button from 'uikit-dev/components/Button/Button'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
-import Footer from 'uikit-dev/components/Footer'
 import Overlay from 'uikit-dev/components/Overlay/Overlay'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
 import { Text } from 'uikit-dev/components/Text'
@@ -19,6 +17,7 @@ import logoNoti from 'uikit-dev/images/for-ui-v2/noti.png'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import muiTheme from 'uikitV2/muiTheme'
 import DisclaimersModal from 'views/Explore/components/DisclaimersModal'
+import FooterV2 from './FooterV2'
 import HeaderV2 from './HeaderV2'
 import PanelV2 from './PanelV2'
 
@@ -81,44 +80,6 @@ const WrapperV2 = ({
   const endTradingTimestamp = process.env.REACT_APP_END_TRADE_COMPETITION_TIMESTAMP
     ? parseInt(process.env.REACT_APP_END_TRADE_COMPETITION_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
-
-  // const getLanguageName = (lang) => {
-  //   return langs.find((l) => {
-  //     return l.code === lang
-  //   })?.language
-  // }
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const currentOffset = window.pageYOffset
-  //     const isBottomOfPage = window.document.body.clientHeight === currentOffset + window.innerHeight
-  //     const isTopOfPage = currentOffset === 0
-  //     // Always show the menu when user reach the top
-  //     if (isTopOfPage) {
-  //       setShowMenu(true)
-  //     }
-  //     // Avoid triggering anything at the bottom because of layout shift
-  //     else if (!isBottomOfPage) {
-  //       if (currentOffset < refPrevOffset.current) {
-  //         // Has scroll up
-  //         setShowMenu(true)
-  //       } else {
-  //         // Has scroll down
-  //         setShowMenu(false)
-  //       }
-  //     }
-  //     refPrevOffset.current = currentOffset
-  //   }
-  //   const throttledHandleScroll = throttle(handleScroll, 200)
-
-  //   window.addEventListener('scroll', throttledHandleScroll)
-  //   return () => {
-  //     window.removeEventListener('scroll', throttledHandleScroll)
-  //   }
-  // }, [])
-
-  // Find the home link if provided
-  const homeLink = links.find((link) => link.label === 'Home')
 
   // API TRADING COMPET
   const [valuePnl, setValuePnl] = React.useState(0)
@@ -256,7 +217,7 @@ const WrapperV2 = ({
             <div style={{ width: '100%', flexGrow: 1 }}>{children}</div>
           </InnerBg>
 
-          <Footer />
+          <FooterV2 />
 
           <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" zIndex={21} />
         </Box>
