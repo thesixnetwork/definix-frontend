@@ -43,12 +43,6 @@ const ModalWrapper = styled.div`
   background-repeat: no-repeat;
 `
 
-const MaxWidth = styled.div`
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-`
-
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
   const { account } = useWallet()

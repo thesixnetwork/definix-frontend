@@ -11,7 +11,6 @@ import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Link } from 'uikit-dev'
 import PageTitle from 'uikitV2/components/PageTitle'
 import poolImg from 'uikitV2/images/pool.png'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -36,16 +35,6 @@ const ModalWrapper = styled.div`
   background: url(${({ theme }) => theme.colors.backgroundPolygon});
   background-size: cover;
   background-repeat: no-repeat;
-`
-
-const MaxWidth = styled.div`
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-`
-
-const TutorailsLink = styled(Link)`
-  text-decoration-line: underline;
 `
 
 const Farm: React.FC = () => {
