@@ -9,7 +9,7 @@ import SwitchNetworkV2 from './SwitchNetworkV2'
 import UserBlockV2 from './UserBlockV2'
 
 const ElevationScroll = (props) => {
-  const { children, window } = props
+  const { children, window, theme } = props
 
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -19,8 +19,12 @@ const ElevationScroll = (props) => {
 
   return React.cloneElement(children, {
     sx: trigger
-      ? { ...children.props.sx, background: 'white', borderColor: (theme) => `${theme.palette.divider} !important` }
-      : { ...children.props.sx, background: 'transparent', borderColor: 'transparent' },
+      ? { ...children.props.sx, background: 'white', borderColor: theme.palette.divider }
+      : {
+          ...children.props.sx,
+          background: { xs: 'white', md: 'transparent' },
+          borderColor: { xs: theme.palette.divider, md: 'transparent' },
+        },
   })
 }
 
@@ -34,15 +38,15 @@ const HeaderV2 = (props) => {
   }
 
   return (
-    <ElevationScroll {...props}>
+    <ElevationScroll theme={theme} {...props}>
       <AppBar
         position="fixed"
         elevation={0}
         sx={{
           width: { md: `calc(100% - ${drawerWidth}px)` },
           ml: { md: `${drawerWidth}px` },
-          borderBottom: { xs: `1px solid ${theme.palette.divider}`, md: '1px solid transparent' },
-          transition: '0.2s',
+          borderBottom: '1px solid transparent',
+          transition: 'background-color 0.2s ease 0s',
         }}
       >
         <Toolbar

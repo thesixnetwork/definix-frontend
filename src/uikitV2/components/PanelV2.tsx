@@ -1,14 +1,13 @@
 import { Box, Drawer } from '@mui/material'
 import React from 'react'
-import { PanelProps, PushedProps } from 'uikit-dev/widgets/Menu/types'
+import { PanelProps } from 'uikit-dev/widgets/Menu/types'
 import { Login } from 'uikit-dev/widgets/WalletModal/types'
 import PanelBodyV2 from './PanelBodyV2'
 import PanelFooterV2 from './PanelFooterV2'
 
-interface Props extends PanelProps, PushedProps {
+interface Props extends PanelProps {
   showMenu: boolean
   setShowMenu: (boolean) => void
-  isMobile: boolean
   account?: string
   login: Login
   logout: () => void

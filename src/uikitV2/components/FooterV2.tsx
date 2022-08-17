@@ -13,6 +13,7 @@ const FooterStyle = styled(Box)`
   padding: 20px 0px 40px;
   display: flex;
   flex-direction: column-reverse;
+  background: white;
 
   ${({ theme }) => theme.breakpoints.up('md')} {
     padding: 30px 60px 60px;

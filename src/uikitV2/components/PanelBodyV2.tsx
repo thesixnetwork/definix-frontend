@@ -15,39 +15,19 @@ import {
 } from '@mui/material'
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import styled from 'styled-components'
 import FinixCoin from 'uikit-dev/images/finix-coin.png'
-import { PanelProps, PushedProps } from 'uikit-dev/widgets/Menu/types'
+import { PanelProps } from 'uikit-dev/widgets/Menu/types'
 import { Login } from 'uikit-dev/widgets/WalletModal/types'
 import definix from '../images/definix-full.svg'
 import CopyFinixAddress from './CopyFinixAddress'
 import SwitchNetworkV2 from './SwitchNetworkV2'
 import UserBlockV2 from './UserBlockV2'
 
-interface Props extends PanelProps, PushedProps {
-  isMobile: boolean
+interface Props extends PanelProps {
   account?: string
   login: Login
   logout: () => void
 }
-
-const StyledLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  justify-content: center;
-  margin-bottom: 16px;
-
-  img {
-    height: 14px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.nav} {
-    img {
-      height: 24px;
-    }
-  }
-`
 
 const MenuItem = ({ menu }) => {
   const location = useLocation()

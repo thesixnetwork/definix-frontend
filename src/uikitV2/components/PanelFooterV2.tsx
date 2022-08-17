@@ -1,12 +1,10 @@
 import { Box, MenuItem, Select, styled, Typography } from '@mui/material'
 import { allLanguages } from 'config/localisation/languageCodes'
 import React from 'react'
-import { PanelProps, PushedProps } from 'uikit-dev/widgets/Menu/types'
+import { PanelProps } from 'uikit-dev/widgets/Menu/types'
 
 // import { SettingsRounded } from '@mui/icons-material'
 // import { IconButton } from '@mui/material'
-
-interface Props extends PanelProps, PushedProps {}
 
 const Container = styled(Box)`
   padding: 20px 8px 20px 16px;
@@ -19,12 +17,13 @@ const Container = styled(Box)`
   justify-content: space-between;
 `
 
-const PanelFooterV2: React.FC<Props> = ({ currentLang, setLang }) => {
+const PanelFooterV2: React.FC<PanelProps> = ({ currentLang, setLang }) => {
   return (
     <Container>
       <Select
         value={currentLang}
         size="small"
+        sx={{ width: '100px' }}
         MenuProps={{
           anchorOrigin: {
             vertical: 'top',
