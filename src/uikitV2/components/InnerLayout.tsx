@@ -21,7 +21,12 @@ const InnerLayout = ({ children }) => {
     <BoxStyle>
       <Container
         maxWidth="lg"
-        sx={{ px: { xs: '1.25rem !important', lg: '3.75rem !important' }, pt: { xs: '84px', lg: '108px' } }}
+        sx={{
+          px: { xs: '1.25rem !important', lg: '3.75rem !important' },
+          pt: { xs: '84px', lg: '108px' },
+          position: 'relative',
+          zIndex: 1,
+        }}
       >
         {children}
       </Container>

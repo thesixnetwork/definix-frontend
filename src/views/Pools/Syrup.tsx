@@ -9,10 +9,11 @@ import partition from 'lodash/partition'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd, usePriceFinixUsd } from 'state/hooks'
+import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link } from 'uikit-dev'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import { Link } from 'uikit-dev'
+import PageTitle from 'uikitV2/components/PageTitle'
+import poolImg from 'uikitV2/images/pool.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
@@ -274,77 +275,55 @@ const Farm: React.FC = () => {
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
-        <LeftPanel isShowRightPanel={false}>
-          <MaxWidth>
-            <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                  Pool
-                </Heading>
-                <div className="mt-2 flex align-center justify-center">
-                  <Text paddingRight="1">I’m new to this,</Text>
-                  <TutorailsLink
-                    href="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
-                    target="_blank"
-                  >
-                    How to stake.
-                  </TutorailsLink>
-                </div>
-                {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-                  Help
-                </HelpButton> */}
-              </div>
-              <Text>
-                Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.
-                <br />
-                The amount of returns will be calculated by the annual percentage rate (APR).
-              </Text>
-            </div>
 
-            <PoolTabButtons
-              stackedOnly={stackedOnly}
-              setStackedOnly={setStackedOnly}
-              liveOnly={liveOnly}
-              setLiveOnly={setLiveOnly}
-              listView={listView}
-              setListView={setListView}
-            />
+      <PageTitle
+        title="Pool"
+        caption="Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX. The amount of returns will be calculated by the annual percentage rate (APR)."
+        linkLabel="How to stake."
+        link="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
+        img={poolImg}
+      />
 
-            <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
-              {IS_GENESIS ? (
-                <div>
-                  <Route exact path={`${path}`}>
-                    <>
-                      {poolsWithApy.map((pool) => (
-                        <PoolCardGenesis key={pool.sousId} pool={pool} />
-                      ))}
-                      {/* <Coming /> */}
-                    </>
-                  </Route>
-                </div>
-              ) : (
-                <FlexLayout cols={listView ? 1 : 3}>
-                  <Route exact path={`${path}`}>
-                    {liveOnly
-                      ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
-                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
-                        )
-                      : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
-                        )}
-                  </Route>
-                  <Route path={`${path}/history`}>
-                    {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-                      <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-                    ))}
-                  </Route>
-                </FlexLayout>
-              )}
-            </TimerWrapper>
-          </MaxWidth>
-        </LeftPanel>
-      </TwoPanelLayout>
+      <PoolTabButtons
+        stackedOnly={stackedOnly}
+        setStackedOnly={setStackedOnly}
+        liveOnly={liveOnly}
+        setLiveOnly={setLiveOnly}
+        listView={listView}
+        setListView={setListView}
+      />
+
+      <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
+        {IS_GENESIS ? (
+          <div>
+            <Route exact path={`${path}`}>
+              <>
+                {poolsWithApy.map((pool) => (
+                  <PoolCardGenesis key={pool.sousId} pool={pool} />
+                ))}
+                {/* <Coming /> */}
+              </>
+            </Route>
+          </div>
+        ) : (
+          <FlexLayout cols={listView ? 1 : 3}>
+            <Route exact path={`${path}`}>
+              {liveOnly
+                ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
+                    <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                  ))
+                : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
+                    (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                  )}
+            </Route>
+            <Route path={`${path}/history`}>
+              {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+              ))}
+            </Route>
+          </FlexLayout>
+        )}
+      </TimerWrapper>
 
       {isOpenModal && React.isValidElement(modalNode) && (
         <ModalWrapper>

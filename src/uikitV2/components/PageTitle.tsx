@@ -22,7 +22,7 @@ const ImgStyle = styled('img')`
   }
 `
 
-const PageTitle = ({ title, caption, link, linkLabel, img = undefined }) => {
+const PageTitle = ({ title = '', caption = '', link = '', linkLabel = '', img = '' }) => {
   return (
     <BoxStyle>
       <Typography variant="h2">

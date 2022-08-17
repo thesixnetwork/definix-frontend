@@ -2,31 +2,30 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
+import Apollo from 'config/abi/Apollo.json'
+import erc20 from 'config/abi/erc20.json'
+import PairAbi from 'config/abi/uni_v2_lp.json'
+import { VeloPool } from 'config/constants'
+import AddressTokens from 'config/constants/contracts'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-
 import useBlock from 'hooks/useBlock'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { getContract } from 'utils/web3'
-import Apollo from 'config/abi/Apollo.json'
-import PairAbi from 'config/abi/uni_v2_lp.json'
-import erc20 from 'config/abi/erc20.json'
 // import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text } from 'uikit-dev'
-import { VeloPool } from 'config/constants'
+import PageTitle from 'uikitV2/components/PageTitle'
+import poolImg from 'uikitV2/images/pool.png'
 import { getAddress } from 'utils/addressHelpers'
-import AddressTokens from 'config/constants/contracts'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getContract } from 'utils/web3'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
+import { PoolWithApy } from './components/PoolCard/types'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
 import PoolContext from './PoolContext'
-import { PoolWithApy } from './components/PoolCard/types'
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -358,89 +357,64 @@ const Farm: React.FC = () => {
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
-        <LeftPanel isShowRightPanel={false}>
-          <MaxWidth>
-            <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                  Partnership Pool
-                </Heading>
-                <div className="mt-2 flex align-center justify-center">
-                  {/* <Text paddingRight="1">I’m new to this,</Text> */}
-                  {/* <TutorailsLink
-                    href="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
-                    target="_blank"
-                  >
-                    How to stake.
-                  </TutorailsLink> */}
-                </div>
-                {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-                  Help
-                </HelpButton> */}
+
+      <PageTitle
+        title="Partnership Pool"
+        caption="The Partnership Pool is a place you can stake your single tokens in order to generate high returns in the form of external partner assets. The amount of returns will be calculated by the annual percentage rate (APR)."
+        img={poolImg}
+      />
+
+      <PoolTabButtons
+        stackedOnly={stackedOnly}
+        setStackedOnly={setStackedOnly}
+        liveOnly={liveOnly}
+        setLiveOnly={setLiveOnly}
+        listView={listView}
+        setListView={setListView}
+      />
+
+      <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
+        {IS_GENESIS ? (
+          <div>
+            <Route exact path={`${path}`}>
+              <>
+                {poolsWithApy.map((pool) => (
+                  <PoolCardGenesis key={pool.sousId} pool={pool} />
+                ))}
+                {/* <Coming /> */}
+              </>
+            </Route>
+          </div>
+        ) : (
+          <FlexLayout cols={listView ? 1 : 3}>
+            <Route exact path={`${path}`}>
+              <div>
+                <PoolCard
+                  key={poolVelo2.sousId}
+                  pool={poolVelo2}
+                  isHorizontal={listView}
+                  veloAmount={amountVfinix2}
+                  account={account}
+                  veloId={2}
+                />
+                <PoolCard
+                  key={poolVelo1.sousId}
+                  pool={poolVelo1}
+                  isHorizontal={listView}
+                  veloAmount={amountVfinix1}
+                  account={account}
+                  veloId={1}
+                />
               </div>
-              <Text>
-                The Partnership Pool is a place you can stake your single tokens in order to generate high returns in
-                the form of external partner assets.
-                <br />
-                The amount of returns will be calculated by the annual percentage rate (APR).
-              </Text>
-            </div>
-
-            <PoolTabButtons
-              stackedOnly={stackedOnly}
-              setStackedOnly={setStackedOnly}
-              liveOnly={liveOnly}
-              setLiveOnly={setLiveOnly}
-              listView={listView}
-              setListView={setListView}
-            />
-
-            <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
-              {IS_GENESIS ? (
-                <div>
-                  <Route exact path={`${path}`}>
-                    <>
-                      {poolsWithApy.map((pool) => (
-                        <PoolCardGenesis key={pool.sousId} pool={pool} />
-                      ))}
-                      {/* <Coming /> */}
-                    </>
-                  </Route>
-                </div>
-              ) : (
-                <FlexLayout cols={listView ? 1 : 3}>
-                  <Route exact path={`${path}`}>
-                    <div>
-                      <PoolCard
-                        key={poolVelo2.sousId}
-                        pool={poolVelo2}
-                        isHorizontal={listView}
-                        veloAmount={amountVfinix2}
-                        account={account}
-                        veloId={2}
-                      />
-                      <PoolCard
-                        key={poolVelo1.sousId}
-                        pool={poolVelo1}
-                        isHorizontal={listView}
-                        veloAmount={amountVfinix1}
-                        account={account}
-                        veloId={1}
-                      />
-                    </div>
-                  </Route>
-                  {/* <Route path={`${path}/history`}>
+            </Route>
+            {/* <Route path={`${path}/history`}>
                     {orderBy(finishedPools, ['sortOrder']).map((pool) => (
                       <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                     ))}
                   </Route> */}
-                </FlexLayout>
-              )}
-            </TimerWrapper>
-          </MaxWidth>
-        </LeftPanel>
-      </TwoPanelLayout>
+          </FlexLayout>
+        )}
+      </TimerWrapper>
 
       {isOpenModal && React.isValidElement(modalNode) && (
         <ModalWrapper>

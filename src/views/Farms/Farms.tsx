@@ -12,8 +12,9 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link } from 'uikit-dev'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import { Link } from 'uikit-dev'
+import PageTitle from 'uikitV2/components/PageTitle'
+import farmImg from 'uikitV2/images/farm.png'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
@@ -189,55 +190,33 @@ const Farms: React.FC = () => {
       <Helmet>
         <title>Farm - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
-        <LeftPanel isShowRightPanel={false}>
-          <MaxWidth>
-            <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                  Farm
-                </Heading>
-                <div className="mt-2 flex align-center justify-center">
-                  <Text paddingRight="1">I’m new to this,</Text>
-                  <TutorailsLink
-                    href="https://sixnetwork.gitbook.io/definix/yield-farming/how-to-yield-farm-on-definix"
-                    target="_blank"
-                  >
-                    How to stake.
-                  </TutorailsLink>
-                </div>
-                {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-                  Help
-                </HelpButton> */}
-              </div>
-              <Text>
-                Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.
-                <br />
-                The amount of returns will be calculated by the annual percentage rate (APR).
-              </Text>
-            </div>
 
-            <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
-              <FarmTabButtons
-                stackedOnly={stackedOnly}
-                setStackedOnly={setStackedOnly}
-                liveOnly={liveOnly}
-                setLiveOnly={setLiveOnly}
-                listView={listView}
-                setListView={setListView}
-              />
-              <FlexLayout cols={listView ? 1 : 3}>
-                <Route exact path={`${path}`}>
-                  {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsLiveOnly(liveOnly)}
-                </Route>
-                <Route exact path={`${path}/history`}>
-                  {farmsList(inactiveFarms, true)}
-                </Route>
-              </FlexLayout>
-            </TimerWrapper>
-          </MaxWidth>
-        </LeftPanel>
-      </TwoPanelLayout>
+      <PageTitle
+        title="Farm"
+        caption="Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. The amount of returns will be calculated by the annual percentage rate (APR)."
+        linkLabel="How to stake."
+        link="https://sixnetwork.gitbook.io/definix/yield-farming/how-to-yield-farm-on-definix"
+        img={farmImg}
+      />
+
+      <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
+        <FarmTabButtons
+          stackedOnly={stackedOnly}
+          setStackedOnly={setStackedOnly}
+          liveOnly={liveOnly}
+          setLiveOnly={setLiveOnly}
+          listView={listView}
+          setListView={setListView}
+        />
+        <FlexLayout cols={listView ? 1 : 3}>
+          <Route exact path={`${path}`}>
+            {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsLiveOnly(liveOnly)}
+          </Route>
+          <Route exact path={`${path}/history`}>
+            {farmsList(inactiveFarms, true)}
+          </Route>
+        </FlexLayout>
+      </TimerWrapper>
 
       {isOpenModal && React.isValidElement(modalNode) && (
         <ModalWrapper>
