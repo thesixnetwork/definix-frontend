@@ -1,39 +1,27 @@
-import Checkbox from '@mui/material/Checkbox'
-import FormControlLabel from '@mui/material/FormControlLabel'
+import { CheckCircleRounded, RadioButtonUnchecked } from '@mui/icons-material'
+import { Box, Button, Checkbox, FormControlLabel, styled, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import Button from 'uikit-dev/components/Button/Button'
-import Heading from 'uikit-dev/components/Heading/Heading'
-import CheckmarkIcon from 'uikit-dev/components/Svg/Icons/Checkmark'
-import Text from 'uikit-dev/components/Text/Text'
-import Modal from 'uikit-dev/widgets/Modal/Modal'
+import ModalV2 from 'uikitV2/components/ModalV2'
 
-const Box = styled.div`
+const BoxStyle = styled(Box)`
+  border: 1px solid ${({ theme }) => theme.palette.divider};
+  border-radius: 8px;
   padding: 16px;
-  background: ${({ theme }) => theme.colors.backgroundBox};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.card};
+  overflow: auto;
+  margin-bottom: 24px;
 `
 
 const RoundCheckbox = styled(Checkbox)`
-  width: 28px !important;
-  height: 28px !important;
-  margin-right: 16px !important;
-  border-radius: 50% !important;
-  background: transparent !important;
-  border: 2px solid rgba(0, 0, 0, 0.54) !important;
-
-  &.Mui-checked {
-    background: ${({ theme }) => theme.colors.primary} !important;
-    border-color: ${({ theme }) => theme.colors.primary} !important;
+  svg {
+    width: 28px;
+    height: 28px;
   }
+
+  margin-right: 16px;
+  padding: 0;
 `
 
-const CustomCheckbox = styled(Checkbox)`
-  &.Mui-checked {
-    color: ${({ theme }) => theme.colors.primary} !important;
-  }
-`
+const CustomCheckbox = styled(Checkbox)``
 
 const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
   const [isAccept, setIsAccept] = useState(false)
@@ -58,98 +46,93 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
       <FormControlLabel
         style={{ marginLeft: '-6px' }}
         control={<CustomCheckbox onChange={onCheckBoxChange} checked={isSkip} color="primary" size="small" />}
-        label={<Text>Do not show this message for 14 days</Text>}
+        label={
+          <Typography variant="caption" sx={{ color: (theme) => theme.palette.text.disabled }}>
+            Do not show this message for 14 days
+          </Typography>
+        }
       />
     )
   }
   return (
-    <Modal
-      title=""
-      isRainbow={false}
-      hideCloseButton
-      classHeader="pa-0"
-      maxWidth="500px"
-      maxHeight="calc(100vh - 48px)"
-      onDismiss={onDismiss}
-    >
-      <Heading as="h1" fontSize="28px !important" className="mb-4">
-        Disclaimers
-      </Heading>
+    <ModalV2 title="Disclaimers" hideCloseButton maxWidth="486px" maxHeight="600px" onDismiss={onDismiss}>
+      <Box display="flex" flexDirection="column" height="100%">
+        <BoxStyle>
+          <Typography variant="caption" color="textSecondary" className="d-block mb-4">
+            Definix is solely a marketplace (the “Marketplace”) which provides a tool. The Rebalancing Farm (the “Farm”)
+            has been managed by a 3rd party called “Enigma” (the “Manager”). The information about the Farm has been
+            displayed on Definix website (this “Website”) for informational purposes only in relation to a potential
+            opportunity available in the Farm.
+          </Typography>
+          <Typography variant="body2" className="d-block mb-1">
+            No advice on investment; Risk of Loss
+          </Typography>
+          <Typography variant="caption" color="textSecondary" className="d-block mb-4">
+            Each investor must undertake its own independent examination and investigation of the Marketplace and the
+            Farm, including the merits and risks involved in an investment in the Farm, and must base its investment
+            decision - including a determination whether the Farm would be a suitable investment for the investor - on
+            such examination and investigation and must not rely on the Manager in making such investment decision.
+            Prospective investors must not construe the contents of this Website as legal, tax, investment, or other
+            advice. Prospective investors must acknowledge that the Farm may be affected by factors, including technical
+            difficulties with the performance, bugs, glitches, lack of functionality, and attacks. The Marketplace will
+            not be liable for any loss, whether such loss is direct, indirect, special or consequential, suffered by any
+            party as a result of their use of the Marketplace and the Farm. Each investor must be solely responsible for
+            any damage to any loss that results from any activities on the Marketplace and the Farm.
+          </Typography>
+          <Typography variant="body2" className="d-block mb-1">
+            Performance Disclosures
+          </Typography>
+          <Typography variant="caption" color="textSecondary" className="d-block mb-4">
+            Performance information is provided for informational purposes only. Past performance of the Farm and/or the
+            Manager is not necessarily indicative of future results, and there can be no assurance that any projections,
+            targets or estimates of future performance will be realized. Future performance of the Farm may vary
+            substantially from the performance provided on this Website. An investor may lose all or a substantial part
+            of its investment in the Farm.
+          </Typography>
+          <Typography variant="caption" color="textSecondary">
+            The information on this Website may be subject to change at any time without prior notice to the user.
+          </Typography>
+        </BoxStyle>
 
-      <Box>
-        <Text className="mb-3">
-          Definix is solely a marketplace (the “Marketplace”) which provides a tool. The Rebalancing Farm (the “Farm”)
-          has been managed by a 3rd party called “Enigma” (the “Manager”). The information about the Farm has been
-          displayed on Definix website (this “Website”) for informational purposes only in relation to a potential
-          opportunity available in the Farm.
-        </Text>
-
-        <Text className="mb-3">
-          No advice on investment; Risk of Loss
-          <br />
-          Each investor must undertake its own independent examination and investigation of the Marketplace and the
-          Farm, including the merits and risks involved in an investment in the Farm, and must base its investment
-          decision - including a determination whether the Farm would be a suitable investment for the investor - on
-          such examination and investigation and must not rely on the Manager in making such investment decision.
-          Prospective investors must not construe the contents of this Website as legal, tax, investment, or other
-          advice. Prospective investors must acknowledge that the Farm may be affected by factors, including technical
-          difficulties with the performance, bugs, glitches, lack of functionality, and attacks. The Marketplace will
-          not be liable for any loss, whether such loss is direct, indirect, special or consequential, suffered by any
-          party as a result of their use of the Marketplace and the Farm. Each investor must be solely responsible for
-          any damage to any loss that results from any activities on the Marketplace and the Farm.
-        </Text>
-
-        <Text className="mb-3">
-          Performance Disclosures
-          <br />
-          Performance information is provided for informational purposes only. Past performance of the Farm and/or the
-          Manager is not necessarily indicative of future results, and there can be no assurance that any projections,
-          targets or estimates of future performance will be realized. Future performance of the Farm may vary
-          substantially from the performance provided on this Website. An investor may lose all or a substantial part of
-          its investment in the Farm.
-        </Text>
-
-        <Text>
-          The information on this Website may be subject to change at any time without prior notice to the user.
-        </Text>
-      </Box>
-
-      {isConfirm ? (
-        <div className="mt-5 flex flex-column">
-          <FormControlLabel
-            value={isAccept}
-            className="ml-0 mb-2"
-            onChange={() => {
-              setIsAccept(!isAccept)
-            }}
-            control={
-              <RoundCheckbox
-                color="primary"
-                size="medium"
-                checkedIcon={<CheckmarkIcon color="#ffffff" />}
-                icon={<></>}
+        <Box className="mt-auto">
+          {isConfirm ? (
+            <>
+              <FormControlLabel
+                value={isAccept}
+                className="ml-0 mb-2"
+                onChange={() => {
+                  setIsAccept(!isAccept)
+                }}
+                control={
+                  <RoundCheckbox
+                    color="primary"
+                    size="medium"
+                    checkedIcon={<CheckCircleRounded />}
+                    icon={<RadioButtonUnchecked />}
+                  />
+                }
+                label={
+                  <Typography variant="body2">
+                    I have read all the information above and agree to using the service.
+                  </Typography>
+                }
               />
-            }
-            label={
-              <Text fontSize="16px" bold>
-                I have read all the information above and agree to using the service.
-              </Text>
-            }
-          />
-          {renderCheckBox()}
-          <Button fullWidth onClick={onExit} radii="card" className="mt-5" disabled={!isAccept}>
-            Confirm
-          </Button>
-        </div>
-      ) : (
-        <>
-          {renderCheckBox()}
-          <Button fullWidth onClick={onDismiss} radii="card" className="mt-5">
-            Close
-          </Button>
-        </>
-      )}
-    </Modal>
+              {renderCheckBox()}
+              <Button fullWidth size="large" variant="contained" onClick={onExit} className="mt-5" disabled={!isAccept}>
+                Confirm
+              </Button>
+            </>
+          ) : (
+            <>
+              {renderCheckBox()}
+              <Button fullWidth onClick={onDismiss} className="mt-5">
+                Close
+              </Button>
+            </>
+          )}
+        </Box>
+      </Box>
+    </ModalV2>
   )
 }
 

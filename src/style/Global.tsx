@@ -89,6 +89,8 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .d-block { display: block !important; }
+
   .flex {
     display: flex !important;
   
@@ -232,6 +234,10 @@ const GlobalStyle = createGlobalStyle`
   
   .mt-9 {
     margin-top: 6rem !important;
+  }
+
+  .mt-auto {
+    margin-top: auto !important;
   }
   
   .mb-0 {

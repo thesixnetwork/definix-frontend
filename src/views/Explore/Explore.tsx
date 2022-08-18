@@ -1,4 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Backdrop } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import React, { useEffect, useState } from 'react'
@@ -8,7 +9,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { useRebalanceAddress, useRebalanceBalances, useRebalanceRewards, useRebalances } from 'state/hooks'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import PageTitle from 'uikitV2/components/PageTitle'
-import farmImg from 'uikitV2/images/farm.png'
+import rebancingImg from 'uikitV2/images/rebalancing.png'
 import { getAddress } from 'utils/addressHelpers'
 import { Rebalance } from '../../state/types'
 import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
@@ -64,7 +65,7 @@ const Explore: React.FC = () => {
           <title>Explore - Definix - Advance Your Crypto Assets</title>
         </Helmet>
 
-        <PageTitle title="Rebalancing Farm" img={farmImg} />
+        <PageTitle title="Rebalancing Farm" img={rebancingImg} />
 
         <ExploreTabButtons
           listView={listView}

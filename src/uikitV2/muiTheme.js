@@ -8,7 +8,10 @@ let muiTheme = createTheme({
     h2: {
       fontSize: '2rem',
       fontWeight: '600',
-      color: '#000',
+    },
+    h6: {
+      fontSize: '1.125rem',
+      fontWeight: '500',
     },
   },
   breakpoints: {
@@ -28,9 +31,9 @@ let muiTheme = createTheme({
       main: '#5e515f',
     },
     text: {
-      primary: '#222222',
+      primary: '#000000',
       secondary: '#666666',
-      tertiary: '#999999',
+      disabled: '#999999',
     },
     divider: 'rgba(224, 224, 224, 0.5)',
     bsc: '#fcbd1b',
@@ -169,6 +172,27 @@ let muiTheme = createTheme({
       styleOverrides: {
         root: {
           color: '#5e515f',
+        },
+      },
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgba(0,0,0,0.3)',
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: '1rem',
+        },
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: '#e0e0e0',
         },
       },
     },

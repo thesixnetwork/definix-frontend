@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Box, styled, useMediaQuery, useTheme } from '@mui/material'
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import React, { useState } from 'react'
-import muiTheme from 'uikitV2/muiTheme'
 import FooterV2 from './FooterV2'
 import HeaderV2 from './HeaderV2'
 import InnerLayout from './InnerLayout'
@@ -35,44 +33,42 @@ const WrapperV2 = ({
   const [showMenu, setShowMenu] = useState(mdUp)
 
   return (
-    <MuiThemeProvider theme={muiTheme}>
-      <WrapperStyle>
-        <HeaderV2
-          account={account}
-          login={login}
-          logout={logout}
-          price={price}
-          drawerWidth={drawerWidth}
-          showMenu={showMenu}
-          setShowMenu={setShowMenu}
-        />
-        <PanelV2
-          showMenu={showMenu}
-          setShowMenu={setShowMenu}
-          isDark={isDark}
-          toggleTheme={toggleTheme}
-          langs={langs}
-          setLang={setLang}
-          currentLang={currentLang}
-          finixPriceUsd={finixPriceUsd}
-          links={links}
-          account={account}
-          login={login}
-          logout={logout}
-          drawerWidth={drawerWidth}
-        />
+    <WrapperStyle>
+      <HeaderV2
+        account={account}
+        login={login}
+        logout={logout}
+        price={price}
+        drawerWidth={drawerWidth}
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+      />
+      <PanelV2
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        isDark={isDark}
+        toggleTheme={toggleTheme}
+        langs={langs}
+        setLang={setLang}
+        currentLang={currentLang}
+        finixPriceUsd={finixPriceUsd}
+        links={links}
+        account={account}
+        login={login}
+        logout={logout}
+        drawerWidth={drawerWidth}
+      />
 
-        <Box
-          component="main"
-          className="flex flex-column flex-grow"
-          sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` }, background: '#ffedcb' }}
-        >
-          <InnerLayout>{children}</InnerLayout>
+      <Box
+        component="main"
+        className="flex flex-column flex-grow"
+        sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` }, background: '#ffedcb' }}
+      >
+        <InnerLayout>{children}</InnerLayout>
 
-          <FooterV2 />
-        </Box>
-      </WrapperStyle>
-    </MuiThemeProvider>
+        <FooterV2 />
+      </Box>
+    </WrapperStyle>
   )
 }
 

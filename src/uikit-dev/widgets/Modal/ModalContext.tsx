@@ -1,6 +1,6 @@
+import { Backdrop } from '@mui/material'
 import React, { createContext, useState } from 'react'
 import styled from 'styled-components'
-import Overlay from '../../components/Overlay/Overlay'
 import { Handler } from './types'
 
 interface ModalsContext {
@@ -19,7 +19,8 @@ const ModalWrapper = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: ${({ theme }) => theme.zIndices.modal - 1};
+  // z-index: ${({ theme }) => theme.zIndices.modal - 1};
+  z-index: 9999;
 `
 
 export const Context = createContext<ModalsContext>({
@@ -59,7 +60,7 @@ const ModalProvider: React.FC = ({ children }) => {
     >
       {isOpen && (
         <ModalWrapper>
-          <Overlay show onClick={handleOverlayDismiss} />
+          <Backdrop open onClick={handleOverlayDismiss} />
           {React.isValidElement(modalNode) &&
             React.cloneElement(modalNode, {
               onDismiss: handleDismiss,
