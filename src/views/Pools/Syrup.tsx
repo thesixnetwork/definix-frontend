@@ -267,20 +267,20 @@ const Farm: React.FC = () => {
 
       <PageTitle
         title="Pool"
-        caption="Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX. The amount of returns will be calculated by the annual percentage rate (APR)."
-        linkLabel="How to stake."
+        caption="Deposit a single token to get stable returns with low risk."
+        linkLabel="Learn how to stake in Pool"
         link="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
         img={poolImg}
-      />
-
-      <PoolTabButtons
-        stackedOnly={stackedOnly}
-        setStackedOnly={setStackedOnly}
-        liveOnly={liveOnly}
-        setLiveOnly={setLiveOnly}
-        listView={listView}
-        setListView={setListView}
-      />
+      >
+        <PoolTabButtons
+          stackedOnly={stackedOnly}
+          setStackedOnly={setStackedOnly}
+          liveOnly={liveOnly}
+          setLiveOnly={setLiveOnly}
+          listView={listView}
+          setListView={setListView}
+        />
+      </PageTitle>
 
       <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
         {IS_GENESIS ? (

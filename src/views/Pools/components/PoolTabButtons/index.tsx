@@ -2,7 +2,9 @@ import useI18n from 'hooks/useI18n'
 import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
-import { Button, CardViewIcon, IconButton, ListViewIcon, Text, Toggle, useMatchBreakpoints } from 'uikit-dev'
+import { Text, useMatchBreakpoints } from 'uikit-dev'
+import { Box, FormControlLabel, Typography } from '@mui/material'
+import CustomSwitch from 'uikitV2/components/CustomSwitch'
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,91 +38,38 @@ const ToggleWrapper = styled.div`
 
 const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, listView, setListView }) => {
   const TranslateString = useI18n()
-  const { isDark } = useTheme()
+  // const { isDark } = useTheme()
   const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  // const isMobile = !isXl
 
   return (
-    <Wrapper className="flex">
-      {isMobile ? (
-        <div className="flex justify-self-start">
-          <IconButton
-            size="sm"
-            onClick={() => {
-              setListView(true)
-            }}
-            variant="text"
-            className="mr-1"
-            isStroke
-          >
-            <ListViewIcon isStroke color={listView || isDark ? 'primary' : 'textSubtle'} />
-          </IconButton>
-          <IconButton
-            size="sm"
-            onClick={() => {
-              setListView(false)
-            }}
-            isStroke
-            variant="text"
-          >
-            <CardViewIcon isStroke color={!listView || isDark ? 'primary' : 'textSubtle'} />
-          </IconButton>
-        </div>
-      ) : (
-        <div className="flex">
-          <Button
-            size="sm"
-            onClick={() => {
-              setListView(true)
-            }}
-            startIcon={<ListViewIcon isStroke color={listView || isDark ? 'white' : 'primary'} />}
-            variant={listView ? 'primary' : 'secondary'}
-            className="mr-2"
-            isStroke
-          >
-            List View
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => {
-              setListView(false)
-            }}
-            variant={!listView ? 'primary' : 'secondary'}
-            startIcon={<CardViewIcon isStroke color={!listView || isDark ? 'white' : 'primary'} />}
-            isStroke
-          >
-            Card View
-          </Button>
-        </div>
-      )}
+    <div className="flex mt-3">
+      <Box className="mr-3" display="flex" alignItems="center" mt="30px">
+        <FormControlLabel
+          labelPlacement="start"
+          className="ml-0"
+          label={
+            <Typography variant="body2" color="textSecondary">
+              {TranslateString(999, 'Live')}
+            </Typography>
+          }
+          control={<CustomSwitch checked={liveOnly} onChange={() => setLiveOnly(!liveOnly)} />}
+        />
+      </Box>
 
-      <div className="flex mt-3">
-        <ToggleWrapper>
-          <Toggle checked={liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
-          <Text> {TranslateString(999, 'Live')}</Text>
-        </ToggleWrapper>
-
-        <Button
-          size="sm"
-          onClick={() => {
-            setStackedOnly(false)
-          }}
-          variant={!stackedOnly ? 'primary' : 'secondary'}
-          className="mr-2"
-        >
-          All Pool
-        </Button>
-        <Button
-          size="sm"
-          onClick={() => {
-            setStackedOnly(true)
-          }}
-          variant={stackedOnly ? 'primary' : 'secondary'}
-        >
-          Staked
-        </Button>
-      </div>
-    </Wrapper>
+      <Box display="flex" alignItems="center" mt="30px">
+        <FormControlLabel
+          labelPlacement="start"
+          className="ml-0"
+          label={
+            <Typography variant="body2" color="textSecondary">
+              Staked only
+            </Typography>
+          }
+          control={<CustomSwitch checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />}
+        />
+      </Box>
+    </div>
   )
 }
 
