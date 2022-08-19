@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Text } from 'uikit-dev'
 
 interface AssetRatioType {
-  isHorizontal: boolean
+  isHorizontal?: boolean
   className?: string
   ratio: Ratio[] | any
 }
@@ -55,7 +55,7 @@ const Coin = styled.div<{ isHorizontal?: boolean }>`
   }
 `
 
-const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className = '', ratio = [] }) => {
+const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = true, className = '', ratio = [] }) => {
   return (
     <div className={className}>
       <Text

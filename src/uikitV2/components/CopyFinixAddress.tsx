@@ -1,3 +1,4 @@
+import { ContentCopyRounded } from '@mui/icons-material'
 import { Button, Tooltip, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import FinixCoin from 'uikit-dev/images/finix-coin.png'
@@ -5,7 +6,7 @@ import FinixCoin from 'uikit-dev/images/finix-coin.png'
 const CopyFinixAddress = () => {
   const addressFinix = '0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d'
   const addressEllipsis = addressFinix
-    ? `${addressFinix.substring(0, 6)}...${addressFinix.substring(addressFinix.length - 6)}`
+    ? `${addressFinix.substring(0, 6)}...${addressFinix.substring(addressFinix.length - 4)}`
     : null
 
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
@@ -48,9 +49,11 @@ const CopyFinixAddress = () => {
       >
         <img src={FinixCoin} alt="FinixCoin" width="16" />
 
-        <Typography variant="body2" fontWeight="bold" className="px-2 mr-auto">
+        <Typography variant="body2" fontWeight="bold" className="pl-2 pr-1 mr-auto">
           {addressEllipsis}
         </Typography>
+
+        <ContentCopyRounded fontSize="small" />
       </Button>
     </Tooltip>
   )

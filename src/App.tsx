@@ -1,22 +1,21 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Loading } from '@fingerlabs/definixswap-uikit-v2'
 import BigNumber from 'bignumber.js'
+import { Config } from 'definixswap-sdk'
 import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
 import { Route, Router, Switch } from 'react-router-dom'
-import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
-
 import Menu from './components/Menu'
-import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
-import GlobalStyle from './style/Global'
 import sdkConfig from './sdkconfig'
+import GlobalStyle from './style/Global'
 
 // import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
@@ -96,7 +95,7 @@ const App: React.FC = () => {
       <ResetCSS />
       <GlobalStyle />
       <Menu>
-        <Suspense fallback={<PageLoader />}>
+        <Suspense fallback={<Loading />}>
           <Switch>
             <Route path="/" exact>
               <Home />

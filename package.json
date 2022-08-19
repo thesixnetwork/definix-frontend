@@ -44,6 +44,7 @@
     "@ethersproject/address": "^5.0.0-beta",
     "@ethersproject/experimental": "^5.0.1",
     "@ethersproject/solidity": "^5.0.0-beta",
+    "@fingerlabs/definixswap-uikit-v2": "^1.4.10",
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.94",
     "@mui/material": "^5.10.0",

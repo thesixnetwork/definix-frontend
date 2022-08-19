@@ -1,5 +1,4 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Backdrop } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import React, { useEffect, useState } from 'react'
@@ -14,8 +13,8 @@ import { getAddress } from 'utils/addressHelpers'
 import { Rebalance } from '../../state/types'
 import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
 import DisclaimersModal from './components/DisclaimersModal'
-import ExploreCard from './components/ExploreCard'
 import ExploreTabButtons from './components/ExploreTabButtons'
+import NewExploreCard from './components/NewExploreCard'
 import ExploreDetail from './ExploreDetail'
 import Invest from './Invest'
 import Withdraw from './Withdraw'
@@ -81,7 +80,7 @@ const Explore: React.FC = () => {
             )
             .map((rebalance) => {
               return (
-                <ExploreCard
+                <NewExploreCard
                   key={rebalance.title}
                   isHorizontal={listView}
                   rebalance={rebalance}

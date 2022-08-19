@@ -37,7 +37,7 @@ const SkewImg = styled.img`
 
 const CardHeading: React.FC<CardHeadingType> = ({
   isSkew = false,
-  isHorizontal = false,
+  isHorizontal = true,
   className = '',
   showAccordion = false,
   isOpenAccordion = false,
