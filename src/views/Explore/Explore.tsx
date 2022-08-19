@@ -13,8 +13,8 @@ import { getAddress } from 'utils/addressHelpers'
 import { Rebalance } from '../../state/types'
 import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
 import DisclaimersModal from './components/DisclaimersModal'
+import ExploreCard from './components/ExploreCard'
 import ExploreTabButtons from './components/ExploreTabButtons'
-import NewExploreCard from './components/NewExploreCard'
 import ExploreDetail from './ExploreDetail'
 import Invest from './Invest'
 import Withdraw from './Withdraw'
@@ -64,14 +64,9 @@ const Explore: React.FC = () => {
           <title>Explore - Definix - Advance Your Crypto Assets</title>
         </Helmet>
 
-        <PageTitle title="Rebalancing Farm" img={rebancingImg} />
-
-        <ExploreTabButtons
-          listView={listView}
-          setListView={setListView}
-          isInvested={isInvested}
-          setIsInvested={setIsInvested}
-        />
+        <PageTitle title="Rebalancing Farm" img={rebancingImg}>
+          <ExploreTabButtons isInvested={isInvested} setIsInvested={setIsInvested} />
+        </PageTitle>
 
         <FlexLayout cols={listView ? 1 : 3}>
           {(rebalances || [])
@@ -80,7 +75,7 @@ const Explore: React.FC = () => {
             )
             .map((rebalance) => {
               return (
-                <NewExploreCard
+                <ExploreCard
                   key={rebalance.title}
                   isHorizontal={listView}
                   rebalance={rebalance}

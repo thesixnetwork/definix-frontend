@@ -24,6 +24,7 @@ const InnerLayout = ({ children }) => {
         sx={{
           px: { xs: '1.25rem !important', lg: '3.75rem !important' },
           pt: { xs: '84px', lg: '108px' },
+          mb: { xs: '40px', lg: '80px' },
           position: 'relative',
           zIndex: 1,
         }}

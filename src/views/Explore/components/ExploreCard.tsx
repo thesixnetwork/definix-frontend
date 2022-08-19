@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import numeral from 'numeral'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
-import styled from 'styled-components'
 import { Button, useMatchBreakpoints } from 'uikit-dev'
+import Card from 'uikitV2/components/Card'
 import { getAddress } from 'utils/addressHelpers'
+import { useBalances, usePriceFinixUsd, useRebalanceBalances } from '../../../state/hooks'
 import { Rebalance } from '../../../state/types'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
@@ -15,7 +16,6 @@ import Harvest from './Harvest'
 import MiniChart from './MiniChart'
 import RebalanceSash from './RebalanceSash'
 import TwoLineFormat from './TwoLineFormat'
-import { useBalances, usePriceFinixUsd, useRebalanceBalances } from '../../../state/hooks'
 
 interface ExploreCardType {
   isHorizontal: boolean
@@ -24,35 +24,6 @@ interface ExploreCardType {
   pendingReward: BigNumber
   onClickViewDetail: () => void
 }
-
-const CardStyle = styled.div`
-  background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme }) => theme.radii.default};
-  box-shadow: ${({ theme }) => theme.shadows.elevation1};
-`
-
-const VerticalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-`
-
-const HorizontalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
-`
-
-const HorizontalMobileStyle = styled(CardStyle)`
-  .accordion-content {
-    &.hide {
-      display: none;
-    }
-
-    &.show {
-      display: block;
-    }
-  }
-`
 
 const SharePrice = ({ rebalance, className = '' }) => {
   return (
@@ -126,13 +97,7 @@ const CurrentInvestment = ({ balance, percentage, diffAmount, rebalance, classNa
   )
 }
 
-const ExploreCard: React.FC<ExploreCardType> = ({
-  balance,
-  isHorizontal = false,
-  rebalance = {},
-  onClickViewDetail,
-  pendingReward,
-}) => {
+const ExploreCard: React.FC<ExploreCardType> = ({ balance, rebalance = {}, onClickViewDetail, pendingReward }) => {
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -206,147 +171,53 @@ const ExploreCard: React.FC<ExploreCardType> = ({
     combinedAmount()
   }, [combinedAmount])
 
-  const renderSash = () => {
-    if (isMobile && isHorizontal && rebalance.rebalance === 'New') {
-      return <RebalanceSash type="listCard" />
-    }
-
-    if (isHorizontal && rebalance.rebalance === 'New') {
-      return <RebalanceSash type="list" />
-    }
-
-    if (!isHorizontal && rebalance.rebalance === 'New') {
-      return <RebalanceSash type="card" />
-    }
-
-    return null
-  }
-
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || [])])
-  if (isHorizontal) {
-    if (isMobile) {
-      return (
-        <HorizontalMobileStyle className="mb-3">
-          {renderSash()}
-          <CardHeading
-            className="pa-4"
-            showAccordion
-            isHorizontal
-            isOpenAccordion={isOpenAccordion}
-            setIsOpenAccordion={setIsOpenAccordion}
-            rebalance={rebalance}
-          />
-          <div style={{ display: isOpenAccordion ? 'block' : 'none' }}>
-            <div className="flex justify-space-between pa-4 pt-0">
-              <TotalAssetValue rebalance={rebalance} />
-              <SharePrice rebalance={rebalance} />
+
+  return (
+    <Card className="flex align-strench mb-3">
+      {rebalance.rebalance && <RebalanceSash title={rebalance.rebalance} />}
+
+      <CardHeading rebalance={rebalance} className="col-3 pr-3 bd-r" />
+
+      <div className="col-9 flex">
+        <div className="col-6 flex flex-column justify-space-between px-3 bd-r">
+          <div className="flex mb-2">
+            <SharePrice rebalance={rebalance} className="col-6" />
+
+            <div className="col-6 pl-2">
+              <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={50} />
             </div>
+          </div>
 
-            <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} />
+          <AssetRatio ratio={ratio} className="mb-2" />
 
-            <div className="pa-4">
-              <div className="flex align-end justify-space-between mb-3">
-                <YieldAPR rebalance={rebalance} />
-                <CurrentInvestment
-                  balance={balance}
-                  percentage={percentage}
-                  diffAmount={diffAmount}
-                  rebalance={rebalance}
-                />
-              </div>
-              <Harvest value={pendingReward} rebalance={rebalance} large />
+          <div className="flex justify-space-between">
+            <TotalAssetValue rebalance={rebalance} className="col-5" />
+            <YieldAPR rebalance={rebalance} className="col-5" />
+          </div>
+        </div>
 
+        <div className="col-6 pl-3">
+          <Harvest value={pendingReward} rebalance={rebalance} large />
+
+          <div className="flex align-center">
+            <CurrentInvestment
+              balance={balance}
+              percentage={percentage}
+              diffAmount={diffAmount}
+              rebalance={rebalance}
+              className="col-6"
+            />
+
+            <div className="col-6 pl-2">
               <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
                 View Details
               </Button>
             </div>
-
-            <AssetRatio ratio={ratio} isHorizontal={false} className="px-4 py-3 bd-t" />
-          </div>
-        </HorizontalMobileStyle>
-      )
-    }
-
-    return (
-      <HorizontalStyle className="flex align-strench mb-5 pa-5">
-        {renderSash()}
-        <CardHeading isHorizontal={isHorizontal} rebalance={rebalance} className="col-3 pr-3 bd-r" />
-
-        <div className="col-9 flex">
-          <div className="col-6 flex flex-column justify-space-between px-3 bd-r">
-            <div className="flex mb-2">
-              <SharePrice rebalance={rebalance} className="col-6" />
-
-              <div className="col-6 pl-2">
-                <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={50} />
-              </div>
-            </div>
-
-            <AssetRatio isHorizontal={isHorizontal} ratio={ratio} className="mb-2" />
-
-            <div className="flex justify-space-between">
-              <TotalAssetValue rebalance={rebalance} className="col-5" />
-              <YieldAPR rebalance={rebalance} className="col-5" />
-            </div>
-          </div>
-
-          <div className="col-6 pl-3">
-            <Harvest value={pendingReward} rebalance={rebalance} large />
-
-            <div className="flex align-center">
-              <CurrentInvestment
-                balance={balance}
-                percentage={percentage}
-                diffAmount={diffAmount}
-                rebalance={rebalance}
-                className="col-6"
-              />
-
-              <div className="col-6 pl-2">
-                <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
-                  View Details
-                </Button>
-              </div>
-            </div>
           </div>
         </div>
-      </HorizontalStyle>
-    )
-  }
-
-  return (
-    <VerticalStyle className="mb-7">
-      {renderSash()}
-      <CardHeading className="pa-4" isSkew isHorizontal={isHorizontal} rebalance={rebalance} />
-
-      <div className="flex justify-space-between pa-4 pt-0">
-        <TotalAssetValue rebalance={rebalance} />
-        <SharePrice rebalance={rebalance} />
       </div>
-
-      <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} />
-
-      <div className="pa-4">
-        <div className="flex align-end justify-space-between mb-3">
-          <YieldAPR rebalance={rebalance} />
-          <CurrentInvestment
-            balance={balance}
-            percentage={percentage}
-            diffAmount={diffAmount}
-            rebalance={rebalance}
-            className="col-6"
-          />
-        </div>
-
-        <Harvest value={pendingReward} rebalance={rebalance} large />
-
-        <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
-          View Details
-        </Button>
-      </div>
-
-      <AssetRatio isHorizontal={isHorizontal} ratio={ratio} className="px-4 py-3 bd-t" />
-    </VerticalStyle>
+    </Card>
   )
 }
 

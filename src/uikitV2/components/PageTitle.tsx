@@ -3,10 +3,10 @@ import React from 'react'
 
 const BoxStyle = styled(Box)`
   position: relative;
-  padding: 0 0 28px 0;
+  padding: 0 0 16px 0;
 
   ${({ theme }) => theme.breakpoints.up('md')} {
-    padding: 0 224px 40px 0;
+    padding: 0 224px 24px 0;
   }
 `
 
@@ -22,9 +22,17 @@ const ImgStyle = styled('img')`
   }
 `
 
-const PageTitle = ({ title = '', caption = '', link = '', linkLabel = '', img = '' }) => {
+const PageTitle = ({
+  title = '',
+  caption = '',
+  link = '',
+  linkLabel = '',
+  img = '',
+  children = undefined,
+  sx = undefined,
+}) => {
   return (
-    <BoxStyle>
+    <BoxStyle sx={sx}>
       <Typography variant="h2">
         {title}
         {link && (
@@ -39,6 +47,8 @@ const PageTitle = ({ title = '', caption = '', link = '', linkLabel = '', img = 
           {caption}
         </Typography>
       )}
+
+      {children}
 
       {img && <ImgStyle src={img} alt="" />}
     </BoxStyle>

@@ -1,19 +1,22 @@
-/* eslint-disable no-nested-ternary */
-import styled from 'styled-components'
-import newCardImg from 'uikit-dev/images/new-badge/new-badge-card.png'
-import newListImg from 'uikit-dev/images/new-badge/new-badge-list.png'
+import { Box, styled } from '@mui/material'
+import React from 'react'
 
-const RebalanceSash = styled.div<{ type?: string }>`
-  background-image: url(${({ type }) => (type === 'listCard' || type === 'list' ? newListImg : newCardImg)});
-  background-repeat: no-repeat;
-  background-size: contain;
-  height: 60px;
-  width: 60px;
+const RebalanceSashStyle = styled(Box)`
+  background-color: #fea948;
   position: absolute;
-  right: ${({ type }) => type === 'card' && 0};
-  left: ${({ type }) => (type === 'list' ? 0 : 'unset')};
-  top: ${({ type }) => (type === 'list' || type === 'card' ? 0 : 'unset')};
-  z-index: 1;
+  left: unset;
+  top: 16px;
+  padding: 5px 20px;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  z-index: 2;
+  line-height: 1.5;
+  color: white;
+  font-size: 0.75rem;
 `
+
+const RebalanceSash = ({ title, ...props }) => {
+  return <RebalanceSashStyle {...props}>{title}</RebalanceSashStyle>
+}
 
 export default RebalanceSash
