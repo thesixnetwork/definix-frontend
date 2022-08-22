@@ -1,12 +1,12 @@
 /* eslint-disable no-nested-ternary */
+import { Button } from '@mui/material'
 import BigNumber from 'bignumber.js'
-import React, { useState } from 'react'
-import numeral from 'numeral'
-import { Button } from 'uikit-dev'
-import { usePriceFinixUsd } from 'state/hooks'
 import { useRebalanceHarvest } from 'hooks/useHarvest'
+import numeral from 'numeral'
+import React, { useState } from 'react'
+import { usePriceFinixUsd } from 'state/hooks'
 import finix from 'uikit-dev/images/finix-coin.png'
-import TwoLineFormat from './TwoLineFormat'
+import TwoLineFormatV2 from 'uikitV2/components/TwoLineFormatV2'
 import { Rebalance } from '../../../state/types'
 
 interface HarvestType {
@@ -15,29 +15,30 @@ interface HarvestType {
   isVertical?: boolean
   large?: boolean
   rebalance: Rebalance | any
+  className?: string
 }
 
-const Harvest: React.FC<HarvestType> = ({ value, isVertical = false, large = false, rebalance }) => {
+const Harvest: React.FC<HarvestType> = ({ value, isVertical = false, large = false, rebalance, className = '' }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const finixPriceUsd = usePriceFinixUsd()
   const { onReward } = useRebalanceHarvest(rebalance.apollo)
 
   return (
-    <div className={isVertical ? '' : `flex align-center ${large ? 'mb-3' : 'mb-2'}`}>
-      <TwoLineFormat
+    <div className={isVertical ? '' : `flex align-center ${large ? 'mb-3' : 'mb-2'} ${className}`}>
+      <TwoLineFormatV2
         className={isVertical ? 'pa-3' : large ? 'col-6' : 'col-7'}
         title="FINIX Earned"
         value={`${numeral(value).format('0,0.[000]')}`}
         subValue={`= $${numeral(value.times(finixPriceUsd)).format('0,0.[00]')}`}
-        coin={finix}
-        large={large}
+        icon={finix}
       />
 
       <div className={isVertical ? 'pa-3 bd-t' : large ? 'col-6 pl-2' : 'col-5 pl-2'}>
         <Button
           fullWidth
-          radii="small"
-          variant="success"
+          size="large"
+          variant="contained"
+          sx={{ height: '48px' }}
           disabled={value.toNumber() === 0 || pendingTx}
           onClick={async () => {
             setPendingTx(true)

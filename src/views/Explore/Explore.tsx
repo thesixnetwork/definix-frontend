@@ -64,7 +64,11 @@ const Explore: React.FC = () => {
           <title>Explore - Definix - Advance Your Crypto Assets</title>
         </Helmet>
 
-        <PageTitle title="Rebalancing Farm" img={rebancingImg}>
+        <PageTitle
+          title="Rebalancing Farm"
+          caption="A Farm that automatically performs a rebalancing strategy. Minimize risk and enjoy the benefits of long-term investments."
+          img={rebancingImg}
+        >
           <ExploreTabButtons isInvested={isInvested} setIsInvested={setIsInvested} />
         </PageTitle>
 

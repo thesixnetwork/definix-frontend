@@ -33,7 +33,6 @@ const SocialStyle = styled(Box)`
     cursor: pointer;
     width: 24px;
     height: 24px;
-    margin: 0 8px;
 
     &:first-child {
       margin-left: 0;
@@ -47,6 +46,10 @@ const SocialStyle = styled(Box)`
     width: auto;
     justify-content: center;
     padding: 0;
+
+    a {
+      margin: 0 8px;
+    }
   }
 `
 
