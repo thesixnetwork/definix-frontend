@@ -1,60 +1,35 @@
-import styled from 'styled-components'
+import { styled } from '@mui/material'
 
-export const Table = styled.table`
+export const Table = styled('table')`
   width: 100%;
   border-collapse: separate;
 `
 
-export const TR = styled.tr`
-  td,
-  th {
-    &:first-child {
-      border-left: 1px solid ${({ theme }) => theme.colors.border};
-    }
-    &:last-child {
-      border-right: 1px solid ${({ theme }) => theme.colors.border};
-    }
-  }
-
+export const TR = styled('tr')`
   &:first-child {
     td,
     th {
-      border-top: 1px solid ${({ theme }) => theme.colors.border};
-
-      &:first-child {
-        border-top-left-radius: ${({ theme }) => theme.radii.card};
-      }
-      &:last-child {
-        border-top-right-radius: ${({ theme }) => theme.radii.card};
-      }
-    }
-  }
-
-  &:last-child {
-    td,
-    th {
-      &:first-child {
-        border-bottom-left-radius: ${({ theme }) => theme.radii.card};
-      }
-      &:last-child {
-        border-bottom-right-radius: ${({ theme }) => theme.radii.card};
-      }
+      border-top: 1px solid ${({ theme }) => theme.palette.divider};
     }
   }
 `
 
-export const TH = styled.th<{ align?: string }>`
-  background: ${({ theme }) => theme.colors.backgroundDisabled};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 8px 16px;
+export const TH = styled('th')<{ align?: string }>`
+  background: rgba(224, 224, 224, 0.2);
+  border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
+  padding: 12px 24px;
+  text-transform: initial;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.palette.text.disabled};
 `
 
-export const TD = styled.td<{ align?: string }>`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 16px;
-  height: 64px;
+export const TD = styled('td')<{ align?: string }>`
+  border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
+  padding: 16px 24px;
+  height: 60px;
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
 `
