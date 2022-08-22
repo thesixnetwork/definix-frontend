@@ -130,13 +130,13 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
   }, [fetchGraphData])
 
   const data = (canvas) => {
-    const color = '#30ADFF'
+    const color = '#ff5532'
 
     const ctx = canvas.getContext('2d')
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 140)
-    gradient.addColorStop(0, color)
-    gradient.addColorStop(0.5, isDark ? 'transparent' : 'white')
+    gradient.addColorStop(0, 'rgba(250,85,51,0.1)')
+    gradient.addColorStop(0.4, 'white')
 
     return {
       labels: _.get(graphData, 'labels', []),
@@ -204,7 +204,7 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
 
   return (
     <RelativeDiv>
-      <Box className={className}>
+      <Box className={className} style={{ height }}>
         <Line data={data} options={options} height={height} />
       </Box>
       {isDark && isLoading && (

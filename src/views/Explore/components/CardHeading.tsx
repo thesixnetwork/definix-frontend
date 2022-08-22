@@ -1,8 +1,5 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+import { Box, Divider, styled, Typography } from '@mui/material'
 import React from 'react'
-import styled from 'styled-components'
-import { Text, ChevronUpIcon, ChevronDownIcon } from 'uikit-dev'
 import { Rebalance } from '../../../state/types'
 
 interface CardHeadingType {
@@ -15,65 +12,65 @@ interface CardHeadingType {
   rebalance: Rebalance | any
 }
 
-const CardHeadingStyle = styled.div<{ isSkew?: boolean }>`
-  padding-left: ${({ isSkew }) => (isSkew ? '116px !important' : '0')};
-`
+const CardHeadingStyle = styled(Box)`
+  padding: 20px 20px 0 20px;
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
 
-const FocusImg = styled.img<{ isHorizontal: boolean }>`
-  width: 120px;
-  height: auto;
-  margin-right: ${({ isHorizontal }) => (isHorizontal ? '' : '16px')};
-  margin-bottom: ${({ isHorizontal }) => (isHorizontal ? '8px' : '')};
-  background: ${({ theme }) => theme.colors.backgroundBox};
-`
+  .MuiDivider-root {
+    display: none;
+  }
 
-const SkewImg = styled.img`
-  width: 106px;
-  height: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
+  img {
+    border-radius: 6px;
+    width: 100%;
+    height: auto;
+    background: rgba(186, 191, 199, 0.12);
+    margin: 0 0 24px 0;
+    flex-shrink: 0;
+    max-width: 400px;
+  }
+
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    padding: 32px 32px 0 32px;
+
+    .MuiDivider-root {
+      display: block;
+    }
+
+    img {
+      width: 160px;
+      margin: 0 32px 0 0;
+    }
+  }
 `
 
 const CardHeading: React.FC<CardHeadingType> = ({
-  isSkew = false,
-  isHorizontal = true,
   className = '',
-  showAccordion = false,
-  isOpenAccordion = false,
-  setIsOpenAccordion,
+
   rebalance = {},
 }) => {
   return (
-    <CardHeadingStyle
-      className={`${className} flex justify-space-between pos-relative`}
-      onClick={
-        showAccordion
-          ? () => {
-              setIsOpenAccordion(!isOpenAccordion)
-            }
-          : undefined
-      }
-      isSkew={isSkew}
-    >
-      <div className={`flex ${isHorizontal ? 'flex-column justify-center' : 'align-center'}`}>
-        {!isSkew ? (
-          <FocusImg src={rebalance.icon[0]} alt="" isHorizontal={isHorizontal} />
-        ) : (
-          <SkewImg src={rebalance.icon[1]} alt="" />
-        )}
+    <CardHeadingStyle className={className}>
+      <img src={rebalance.icon[0]} alt="" />
 
-        <div>
-          <Text color="primary" bold fontSize="16px" textTransform="uppercase">
-            {rebalance.title}
-          </Text>
-          <Text fontSize="10px">{rebalance.description}</Text>
-        </div>
-      </div>
+      <Box>
+        <Typography
+          variant="h6"
+          fontSize="1rem !important"
+          textTransform="uppercase"
+          fontWeight="bold"
+          className="mb-1"
+        >
+          {rebalance.title}
+        </Typography>
+        <Typography variant="caption" sx={{ color: (theme) => theme.palette.text.disabled, display: 'block' }}>
+          {rebalance.description}
+        </Typography>
+      </Box>
 
-      {showAccordion && (
-        <>{isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}</>
-      )}
+      <Divider sx={{ width: '100%', pt: 4, display: { xs: 'none', md: 'block' } }} />
     </CardHeadingStyle>
   )
 }

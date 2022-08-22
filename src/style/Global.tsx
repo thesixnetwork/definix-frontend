@@ -136,15 +136,13 @@ const GlobalStyle = createGlobalStyle`
     .col-12 { width: 100%; }
   }
 
-  .bd { border: 1px solid ${({ theme }) => theme.colors.border}; }
-  .bd-t { border-top: 1px solid ${({ theme }) => theme.colors.border}; }
-  .bd-r { border-right: 1px solid ${({ theme }) => theme.colors.border}; }
-  .bd-b { border-bottom: 1px solid ${({ theme }) => theme.colors.border}; }
-  .bd-l { border-left: 1px solid ${({ theme }) => theme.colors.border}; }
-  .bd-x { border-right: 1px solid ${({ theme }) => theme.colors.border}; border-left: 1px solid ${({ theme }) =>
-  theme.colors.border}; }
-  .bd-y { border-top: 1px solid ${({ theme }) => theme.colors.border}; border-bottom: 1px solid ${({ theme }) =>
-  theme.colors.border}; }
+  .bd { border: 1px solid rgba(224, 224, 224, 0.5); }
+  .bd-t { border-top: 1px solid rgba(224, 224, 224, 0.5); }
+  .bd-r { border-right: 1px solid rgba(224, 224, 224, 0.5); }
+  .bd-b { border-bottom: 1px solid rgba(224, 224, 224, 0.5); }
+  .bd-l { border-left: 1px solid rgba(224, 224, 224, 0.5); }
+  .bd-x { border-right: 1px solid rgba(224, 224, 224, 0.5); border-left: 1px solid rgba(224, 224, 224, 0.5); }
+  .bd-y { border-top: 1px solid rgba(224, 224, 224, 0.5); border-bottom: 1px solid rgba(224, 224, 224, 0.5); }
   .bd-t-n { border-top: none !important; }
   .bd-r-n { border-right: none !important; }
   .bd-b-n { border-bottom: none !important; }

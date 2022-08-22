@@ -35,6 +35,12 @@ let muiTheme = createTheme({
       secondary: '#666666',
       disabled: '#999999',
     },
+    info: {
+      main: '#b4a9a8',
+    },
+    error: {
+      main: '#ff5532',
+    },
     divider: 'rgba(224, 224, 224, 0.5)',
     bsc: '#fcbd1b',
     klaytn: '#5e515f',
@@ -193,6 +199,18 @@ let muiTheme = createTheme({
       styleOverrides: {
         root: {
           color: '#e0e0e0',
+        },
+      },
+    },
+    MuiTooltip: {
+      defaultProps: {
+        placement: 'top',
+      },
+      styleOverrides: {
+        tooltip: {
+          fontWeight: 'normal',
+          padding: '8px 12px',
+          lineHeight: '1.5',
         },
       },
     },

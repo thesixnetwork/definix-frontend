@@ -1,12 +1,13 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Box, Button, useMediaQuery, useTheme } from '@mui/material'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import numeral from 'numeral'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, useMatchBreakpoints } from 'uikit-dev'
 import Card from 'uikitV2/components/Card'
+import TwoLineFormatV2 from 'uikitV2/components/TwoLineFormatV2'
 import { getAddress } from 'utils/addressHelpers'
 import { useBalances, usePriceFinixUsd, useRebalanceBalances } from '../../../state/hooks'
 import { Rebalance } from '../../../state/types'
@@ -15,7 +16,6 @@ import CardHeading from './CardHeading'
 import Harvest from './Harvest'
 import MiniChart from './MiniChart'
 import RebalanceSash from './RebalanceSash'
-import TwoLineFormat from './TwoLineFormat'
 
 interface ExploreCardType {
   isHorizontal: boolean
@@ -27,10 +27,8 @@ interface ExploreCardType {
 
 const SharePrice = ({ rebalance, className = '' }) => {
   return (
-    <TwoLineFormat
-      title="Share price"
-      subTitle="(Since inception)"
-      subTitleFontSize="11px"
+    <TwoLineFormatV2
+      title="Share Price (Since Inception)"
       className={className}
       value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
       percent={`${
@@ -38,8 +36,8 @@ const SharePrice = ({ rebalance, className = '' }) => {
           ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
           : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
       }%`}
-      percentClass={(() => {
-        if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
+      percentColor={(() => {
+        if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'error'
         if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
         return ''
       })()}
@@ -49,8 +47,8 @@ const SharePrice = ({ rebalance, className = '' }) => {
 
 const TotalAssetValue = ({ rebalance, className = '' }) => {
   return (
-    <TwoLineFormat
-      title="Total asset value"
+    <TwoLineFormatV2
+      title="Total Asset Value"
       value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.[00]')}`}
       className={className}
     />
@@ -61,9 +59,8 @@ const YieldAPR = ({ rebalance, className = '' }) => {
   const finixPrice = usePriceFinixUsd()
 
   return (
-    <TwoLineFormat
+    <TwoLineFormatV2
       title="Yield APR"
-      className={className}
       value={`${numeral(
         finixPrice
           .times(_.get(rebalance, 'finixRewardPerYearFromApollo', new BigNumber(0)))
@@ -71,25 +68,26 @@ const YieldAPR = ({ rebalance, className = '' }) => {
           .times(100)
           .toFixed(2),
       ).format('0,0.[00]')}%`}
-      hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+      tooltip="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+      className={className}
     />
   )
 }
 
 const CurrentInvestment = ({ balance, percentage, diffAmount, rebalance, className = '' }) => {
   return (
-    <TwoLineFormat
-      title="Current investment"
+    <TwoLineFormatV2
+      title="Current Investment"
       className={className}
       value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-      currentInvestPercentDiff={`(${
+      percent={`(${
         percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
       }%)`}
       diffAmounts={`${
         percentage > 0 ? `+${numeral(diffAmount).format('0,0.[000]')}` : `${numeral(diffAmount).format('0,0.[000]')}`
       }`}
-      percentClass={(() => {
-        if (percentage < 0) return 'failure'
+      percentColor={(() => {
+        if (percentage < 0) return 'error'
         if (percentage > 0) return 'success'
         return ''
       })()}
@@ -98,17 +96,9 @@ const CurrentInvestment = ({ balance, percentage, diffAmount, rebalance, classNa
 }
 
 const ExploreCard: React.FC<ExploreCardType> = ({ balance, rebalance = {}, onClickViewDetail, pendingReward }) => {
-  const [isOpenAccordion, setIsOpenAccordion] = useState(false)
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const theme = useTheme()
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
   const { ratio } = rebalance
-
-  useEffect(() => {
-    return () => {
-      setIsOpenAccordion(false)
-    }
-  }, [])
-
   const { account } = useWallet()
   const balances = useBalances(account)
   const rebalanceBalances = useRebalanceBalances(account)
@@ -174,49 +164,67 @@ const ExploreCard: React.FC<ExploreCardType> = ({ balance, rebalance = {}, onCli
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || [])])
 
   return (
-    <Card className="flex align-strench mb-3">
+    <Card className="mb-3">
       {rebalance.rebalance && <RebalanceSash title={rebalance.rebalance} />}
 
-      <CardHeading rebalance={rebalance} className="col-3 pr-3 bd-r" />
+      <CardHeading rebalance={rebalance} />
 
-      <div className="col-9 flex">
-        <div className="col-6 flex flex-column justify-space-between px-3 bd-r">
-          <div className="flex mb-2">
-            <SharePrice rebalance={rebalance} className="col-6" />
+      <Box display="flex" flexWrap="wrap" py={{ xs: '20px', lg: 4 }}>
+        <Box
+          sx={{ width: { xs: '100%', lg: '45%' } }}
+          px={{ xs: '20px', lg: 4 }}
+          pb={{ xs: '20px', lg: 0 }}
+          mb={{ xs: '20px', lg: 0 }}
+          className={lgUp ? 'bd-r' : 'bd-b'}
+        >
+          <Box display="flex">
+            <TotalAssetValue rebalance={rebalance} className="col-6 mb-3" />
+            <YieldAPR rebalance={rebalance} className="col-6 mb-3" />
+          </Box>
 
-            <div className="col-6 pl-2">
-              <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={50} />
-            </div>
-          </div>
+          {!lgUp && <SharePrice rebalance={rebalance} className="mb-3" />}
 
-          <AssetRatio ratio={ratio} className="mb-2" />
+          <AssetRatio ratio={ratio} />
+        </Box>
 
-          <div className="flex justify-space-between">
-            <TotalAssetValue rebalance={rebalance} className="col-5" />
-            <YieldAPR rebalance={rebalance} className="col-5" />
-          </div>
-        </div>
+        {lgUp && (
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            sx={{ width: '27.5%' }}
+            className="bd-r"
+            px={4}
+          >
+            <SharePrice rebalance={rebalance} className="mb-3" />
+            <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={48} />
+          </Box>
+        )}
 
-        <div className="col-6 pl-3">
-          <Harvest value={pendingReward} rebalance={rebalance} large />
+        <Box sx={{ width: { xs: '100%', lg: '27.5%' } }} px={{ xs: '20px', lg: 4 }}>
+          <CurrentInvestment
+            balance={balance}
+            percentage={percentage}
+            diffAmount={diffAmount}
+            rebalance={rebalance}
+            className="mb-3"
+          />
+          {account && <Harvest value={pendingReward} rebalance={rebalance} className="mb-3" />}
 
-          <div className="flex align-center">
-            <CurrentInvestment
-              balance={balance}
-              percentage={percentage}
-              diffAmount={diffAmount}
-              rebalance={rebalance}
-              className="col-6"
-            />
-
-            <div className="col-6 pl-2">
-              <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
-                View Details
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+          <Button
+            variant="contained"
+            size="large"
+            color="info"
+            sx={{ color: 'white', height: '48px' }}
+            fullWidth
+            component={Link}
+            to="/rebalancing/detail"
+            onClick={onClickViewDetail}
+          >
+            View Details
+          </Button>
+        </Box>
+      </Box>
     </Card>
   )
 }
