@@ -41,6 +41,9 @@ let muiTheme = createTheme({
     error: {
       main: '#ff5532',
     },
+    success: {
+      main: '#02a1a1',
+    },
     divider: 'rgba(224, 224, 224, 0.5)',
     bsc: '#fcbd1b',
     klaytn: '#5e515f',
@@ -211,6 +214,35 @@ let muiTheme = createTheme({
           fontWeight: 'normal',
           padding: '8px 12px',
           lineHeight: '1.5',
+        },
+      },
+    },
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          position: 'relative',
+
+          '&:before': {
+            content: '""',
+            width: '100%',
+            height: '2px',
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            background: 'rgba(224, 224, 224, 0.5)',
+          },
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          height: '64px',
+          color: '#222222',
+          textTransform: 'initial',
+          padding: '20px 48px',
+          fontSize: '1rem',
+          fontWeight: 'bold',
         },
       },
     },

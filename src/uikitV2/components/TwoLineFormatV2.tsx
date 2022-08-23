@@ -8,17 +8,18 @@ const TwoLineFormatV2 = ({
   value = '',
   subValue = '',
   tooltip = '',
-  className,
+  className = '',
   children = undefined,
   percent = '',
   percentColor = '',
   diffAmounts = '',
   diffAmountsColor = '',
+  large = false,
 }) => {
   return (
     <Box className={className}>
       <Typography
-        variant="caption"
+        variant={large ? 'body2' : 'caption'}
         sx={{ color: (theme) => theme.palette.text.disabled, display: 'flex', alignItems: 'center' }}
       >
         {icon && <img src={icon} alt="" width="20px" height="20px" style={{ marginRight: '6px' }} />}
@@ -33,7 +34,11 @@ const TwoLineFormatV2 = ({
       </Typography>
 
       {value && (
-        <Typography fontSize="1.125rem" fontWeight="500" sx={{ display: 'flex', alignItems: 'baseline' }}>
+        <Typography
+          fontSize={large ? '1.25rem' : '1.125rem'}
+          fontWeight="500"
+          sx={{ display: 'flex', alignItems: 'baseline' }}
+        >
           {value}
 
           {subValue && (

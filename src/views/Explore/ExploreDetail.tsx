@@ -1,50 +1,46 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { ArrowBackRounded } from '@mui/icons-material'
+import { Box, Button, Tab, Tabs, useMediaQuery, useTheme } from '@mui/material'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import moment from 'moment'
-import { Helmet } from 'react-helmet'
-import { Link, Redirect } from 'react-router-dom'
-import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
+import { useDispatch } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
+import { useMatchBreakpoints } from 'uikit-dev'
+import Card from 'uikitV2/components/Card'
+import TwoLineFormatV2 from 'uikitV2/components/TwoLineFormatV2'
 import { getAddress } from 'utils/addressHelpers'
-import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
 import { usePriceFinixUsd } from '../../state/hooks'
+import { Rebalance } from '../../state/types'
+import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
+import AssetDetail from './components/AssetDetail'
 import CardHeading from './components/CardHeading'
+import FactSheet from './components/FactSheet'
 import FullAssetRatio from './components/FullAssetRatio'
 import FullChart from './components/FullChart'
 import FundAction from './components/FundAction'
-import FundDetail from './components/FundDetail'
-import SelectTime from './components/SelectTime'
 import SelectChart, { TypeChartName } from './components/SelectChart'
-import TradeStrategy from './components/TradeStrategy'
+import SelectTime from './components/SelectTime'
 import Transaction from './components/Transaction'
 import TwoLineFormat from './components/TwoLineFormat'
 import WithDrawalFees from './components/WithdrawalFees'
-import { Rebalance } from '../../state/types'
 
-const MaxWidth = styled.div`
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-`
-
-const LeftPanelAbsolute = styled(LeftPanel)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  padding-bottom: 24px;
-`
 interface ExploreDetailType {
   rebalance: Rebalance | any
+}
+
+const TabPanel = (props) => {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div role="tabpanel" hidden={value !== index} {...other}>
+      {value === index && <Box>{children}</Box>}
+    </div>
+  )
 }
 
 const modder = {
@@ -72,6 +68,7 @@ const usePrevious = (value, initialValue) => {
 }
 
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
+  const [currentTab, setCurrentTab] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
   const [chartName, setChartName] = useState<TypeChartName>('Normalize')
@@ -86,6 +83,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const prevRebalance = usePrevious(rebalance, {})
   const prevTimeframe = usePrevious(timeframe, '')
   const [periodPriceTokens, setPeriodPriceTokens] = useState([])
+  const theme = useTheme()
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
 
   const [sharpRatio, setSharpRatio] = useState(0)
 
@@ -482,6 +481,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
       }
     }
   }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
+
   useEffect(() => {
     fetchReturnData()
     if (chartName === 'Price') {
@@ -498,163 +498,150 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
       <Helmet>
         <title>Explore - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <TwoPanelLayout>
-        <LeftPanelAbsolute isShowRightPanel={false}>
-          <MaxWidth className={!isMobile ? 'flex' : ''}>
-            <div className={!isMobile ? 'col-9' : ''}>
-              <Card className="mb-4">
-                <div className="pa-4 pt-3 bd-b">
-                  <Button
-                    variant="text"
-                    as={Link}
-                    to="/rebalancing"
-                    ml="-12px"
-                    mb="12px"
-                    padding="0 12px"
-                    size="sm"
-                    startIcon={<ArrowBackIcon color="textSubtle" />}
-                  >
-                    <Text fontSize="14px" color="textSubtle">
-                      Back
-                    </Text>
-                  </Button>
 
-                  <div className="flex justify-space-between align-end mb-3">
-                    <CardHeading rebalance={rebalance} className="pr-4" />
-                    {!isMobile && (
-                      <TwoLineFormat
-                        className="flex-shrink"
-                        title="Share price"
-                        subTitle="(Since inception)"
-                        subTitleFontSize="11px"
-                        value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
-                            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
-                        percentClass={(() => {
-                          if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                          if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                          return ''
-                        })()}
-                      />
-                    )}
-                  </div>
+      <Box className="mb-2">
+        <Button
+          variant="text"
+          component={Link}
+          to="/rebalancing"
+          startIcon={<ArrowBackRounded color="inherit" />}
+          sx={{ fontWeight: 'normal', color: theme.palette.text.disabled }}
+        >
+          Back
+        </Button>
+      </Box>
 
-                  <div className="flex flex-wrap">
-                    <TwoLineFormat
-                      className={isMobile ? 'col-6 my-2' : 'col-3'}
-                      title="Total asset value"
-                      value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
-                    />
-                    {isMobile && (
-                      <TwoLineFormat
-                        className={isMobile ? 'col-6 my-2' : 'col-3'}
-                        title="Share price"
-                        subTitle="(Since inception)"
-                        subTitleFontSize="11px"
-                        value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
-                            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
-                        percentClass={(() => {
-                          if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                          if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                          return ''
-                        })()}
-                      />
-                    )}
-                    <TwoLineFormat
-                      className={isMobile ? 'col-6' : 'col-3'}
-                      title="Yield APR"
-                      value={numeral(
-                        finixPrice
-                          .times(_.get(rebalance, 'finixRewardPerYearFromApollo', new BigNumber(0)))
-                          .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
-                          .times(100)
-                          .toFixed(2),
-                      ).format('0,0.[00]')}
-                      hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-                    />
-                    {/* <TwoLineFormat
-                      className={isMobile ? 'col-6' : 'col-3'}
-                      title="Investors"
-                      value={numeral(rebalance.activeUserCountNumber).format('0,0')}
-                    /> */}
-                  </div>
-                </div>
+      <Card className="mb-3">
+        <CardHeading rebalance={rebalance} />
+        <Box display="flex" flexWrap="wrap" py={{ xs: '20px', lg: 4 }}>
+          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'col-3 bd-r' : 'col-6 mb-3'}>
+            <TwoLineFormatV2
+              large
+              title="Total Asset Value"
+              value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
+            />
+          </Box>
+          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'col-3 bd-r' : 'col-6 mb-3'}>
+            <TwoLineFormatV2
+              large
+              title="Yield APR"
+              value={numeral(
+                finixPrice
+                  .times(_.get(rebalance, 'finixRewardPerYearFromApollo', new BigNumber(0)))
+                  .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+                  .times(100)
+                  .toFixed(2),
+              ).format('0,0.[00]')}
+              tooltip="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+            />
+          </Box>
+          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'col-3 bd-r' : 'col-6'}>
+            <TwoLineFormatV2
+              large
+              title="Share Price (Since inception)"
+              value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+              percent={`${
+                rebalance.sharedPricePercentDiff >= 0
+                  ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                  : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+              }%`}
+              percentColor={(() => {
+                if (rebalance.sharedPricePercentDiff < 0) return 'error'
+                if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                return ''
+              })()}
+            />
+          </Box>
 
-                <div className="pa-4 pt-5">
-                  <div className="flex flex-wrap align-center justify-space-between mb-3">
-                    <div className="flex flex-wrap align-center justify-space-between mb-3">
-                      <div>
-                        <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
-                      </div>
-                      <div style={{ marginLeft: isMobile ? '0px' : '20px', marginTop: isMobile ? '10px' : '0px' }}>
-                        <SelectChart chartName={chartName} setChartName={setChartName} />
-                      </div>
-                    </div>
-                    <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-                      {false && (
-                        <TwoLineFormat
-                          title="24H Performance"
-                          value={`$${numeral(_.get(rebalance, 'twentyHperformance', 0)).format('0,0.[00]')}`}
-                          valueClass={(() => {
-                            if (_.get(rebalance, 'twentyHperformance', 0) < 0) return 'failure'
-                            if (_.get(rebalance, 'twentyHperformance', 0) > 0) return 'success'
-                            return ''
-                          })()}
-                          className="mr-6"
-                        />
-                      )}
+          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'col-3' : 'col-6'}>
+            {' '}
+            <TwoLineFormatV2 large title="Risk-O-Meter" value="Medium" />
+          </Box>
+        </Box>
+      </Card>
 
-                      <TwoLineFormat
-                        title="Return"
-                        value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
-                        hint="Probability return on investment measures approximately over a period of time."
-                        hintPosition="left"
-                      />
-                    </div>
-                  </div>
+      <Card className="mb-3">
+        <Tabs
+          textColor="inherit"
+          indicatorColor="secondary"
+          value={currentTab}
+          onChange={(e, newTab) => {
+            setCurrentTab(newTab)
+          }}
+        >
+          <Tab label="Overview" value={0} />
+          <Tab label="Performance" value={1} />
+          <Tab label="Transaction" value={2} />
+        </Tabs>
 
-                  <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio]} />
-                </div>
+        <TabPanel value={currentTab} index={0}>
+          <FullAssetRatio ratio={ratio} className="mb-4" />
+          <AssetDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
+          <FactSheet rebalance={rebalance} />
+          <WithDrawalFees
+            managementFee={_.get(rebalance, 'fee.management', 0.5)}
+            buybackFee={_.get(rebalance, 'fee.buyback', 1.0)}
+            className="mb-4"
+          />
+        </TabPanel>
 
-                <div className="flex bd-t">
-                  <TwoLineFormat className="px-4 py-3 col-4 bd-r" title="Risk-O-Meter" value="Medium" />
-                  <TwoLineFormat
-                    className="px-4 py-3 col-4 bd-r"
-                    title="Sharpe ratio"
-                    value={`${numeral(sharpRatio).format('0,0.00')}`}
-                    hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
-                  />
-                  <TwoLineFormat
-                    className="px-4 py-3 col-4"
-                    title="Max Drawdown"
-                    value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
-                    hint="The differentiation between the historical peak and low point through the portfolio."
-                  />
-                </div>
-              </Card>
-
-              <FullAssetRatio ratio={ratio} className="mb-4" />
-              <TradeStrategy className="mb-4" description={rebalance.fullDescription} />
-              <WithDrawalFees
-                managementFee={_.get(rebalance, 'fee.management', 0.5)}
-                buybackFee={_.get(rebalance, 'fee.buyback', 1.0)}
-                className="mb-4"
-              />
-              <FundDetail className="mb-4" rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
-              <Transaction className="mb-4" rbAddress={rebalance.address} />
+        <TabPanel value={currentTab} index={1}>
+          <div className="flex flex-wrap align-center justify-space-between mb-3">
+            <div className="flex flex-wrap align-center justify-space-between mb-3">
+              <div>
+                <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
+              </div>
+              <div style={{ marginLeft: isMobile ? '0px' : '20px', marginTop: isMobile ? '10px' : '0px' }}>
+                <SelectChart chartName={chartName} setChartName={setChartName} />
+              </div>
             </div>
+            <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
+              {false && (
+                <TwoLineFormat
+                  title="24H Performance"
+                  value={`$${numeral(_.get(rebalance, 'twentyHperformance', 0)).format('0,0.[00]')}`}
+                  valueClass={(() => {
+                    if (_.get(rebalance, 'twentyHperformance', 0) < 0) return 'failure'
+                    if (_.get(rebalance, 'twentyHperformance', 0) > 0) return 'success'
+                    return ''
+                  })()}
+                  className="mr-6"
+                />
+              )}
 
-            <FundAction rebalance={rebalance} isVertical={!isMobile} className={!isMobile ? 'col-3' : ''} />
-          </MaxWidth>
-        </LeftPanelAbsolute>
-      </TwoPanelLayout>
+              <TwoLineFormat
+                title="Return"
+                value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
+                hint="Probability return on investment measures approximately over a period of time."
+                hintPosition="left"
+              />
+            </div>
+          </div>
+
+          <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio]} />
+
+          <TwoLineFormat
+            className="px-4 py-3 col-4 bd-r"
+            title="Sharpe ratio"
+            value={`${numeral(sharpRatio).format('0,0.00')}`}
+            hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
+          />
+          <TwoLineFormat
+            className="px-4 py-3 col-4"
+            title="Max Drawdown"
+            value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
+            hint="The differentiation between the historical peak and low point through the portfolio."
+          />
+        </TabPanel>
+
+        <TabPanel value={currentTab} index={2}>
+          <Transaction className="mb-4" rbAddress={rebalance.address} />
+        </TabPanel>
+      </Card>
+
+      <Card>
+        <FundAction rebalance={rebalance} isVertical={!isMobile} className={!isMobile ? 'col-3' : ''} />
+      </Card>
     </>
   )
 }

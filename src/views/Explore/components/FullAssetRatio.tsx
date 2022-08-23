@@ -1,7 +1,8 @@
+import { Box, Typography } from '@mui/material'
+import { Ratio } from 'config/constants/types'
 import React from 'react'
 import styled from 'styled-components'
-import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
-import { Ratio } from 'config/constants/types'
+import { useMatchBreakpoints } from 'uikit-dev'
 
 interface FullAssetRatioType {
   className?: string
@@ -18,19 +19,20 @@ const Coin = styled.div<{ width: string; isMobile: boolean }>`
 
     img {
       flex-shrink: 0;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       border-radius: ${({ theme }) => theme.radii.circle};
-      margin-right: 6px;
+      margin-right: 4px;
     }
   }
 `
 
 const Bar = styled.div<{ color: string }>`
   background: ${({ color }) => color};
-  height: 12px;
+  height: 24px;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  border-right: 1px solid white;
 `
 
 const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = '' }) => {
@@ -38,10 +40,10 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
   const isMobile = !isXl
 
   return (
-    <Card className={`pa-4 ${className}`}>
-      <Text bold className="mb-2">
-        ASSET RATIO
-      </Text>
+    <Box p={{ xs: '20px', lg: 4 }}>
+      <Typography color="textSecondary" fontWeight={500} sx={{ mb: '20px' }}>
+        Asset Ratio
+      </Typography>
 
       <div className="flex">
         {ratio.map((m) => (
@@ -49,12 +51,12 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
             <Bar color={m.color} />
             <div className="name">
               <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
-              <Text fontSize="16px">{m.value}%</Text>
+              <Typography variant="body2">{m.value}%</Typography>
             </div>
           </Coin>
         ))}
       </div>
-    </Card>
+    </Box>
   )
 }
 
