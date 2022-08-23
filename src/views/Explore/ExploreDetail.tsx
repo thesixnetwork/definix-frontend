@@ -27,7 +27,6 @@ import SelectChart, { TypeChartName } from './components/SelectChart'
 import SelectTime from './components/SelectTime'
 import Transaction from './components/Transaction'
 import TwoLineFormat from './components/TwoLineFormat'
-import WithDrawalFees from './components/WithdrawalFees'
 
 interface ExploreDetailType {
   rebalance: Rebalance | any
@@ -38,7 +37,7 @@ const TabPanel = (props) => {
 
   return (
     <div role="tabpanel" hidden={value !== index} {...other}>
-      {value === index && <Box>{children}</Box>}
+      {value === index && <Box p={{ xs: '20px', lg: 4 }}>{children}</Box>}
     </div>
   )
 }
@@ -578,11 +577,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           <FullAssetRatio ratio={ratio} className="mb-4" />
           <AssetDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
           <FactSheet rebalance={rebalance} />
-          <WithDrawalFees
-            managementFee={_.get(rebalance, 'fee.management', 0.5)}
-            buybackFee={_.get(rebalance, 'fee.buyback', 1.0)}
-            className="mb-4"
-          />
         </TabPanel>
 
         <TabPanel value={currentTab} index={1}>
