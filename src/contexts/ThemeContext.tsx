@@ -17,11 +17,6 @@ const ThemeContextProvider = ({ children }) => {
     return isDarkUserSetting ? JSON.parse(isDarkUserSetting) : false
   })
 
-  console.log(light)
-
-  // eslint-disable-next-line no-debugger
-  debugger
-
   const toggleTheme = (isDarkMode) => {
     setIsDark(() => {
       localStorage.setItem(CACHE_KEY, JSON.stringify(isDarkMode))
