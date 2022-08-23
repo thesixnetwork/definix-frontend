@@ -4,7 +4,18 @@ import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { useMatchBreakpoints } from 'uikit-dev'
+import {
+  Flex,
+  Card,
+  IconButton,
+  Box,
+  ArrowBottomGIcon,
+  ArrowTopGIcon,
+  Divider,
+  ColorStyles,
+  useMatchBreakpoints,
+  Grid,
+} from '@fingerlabs/definixswap-uikit-v2'
 import PoolContext from 'views/Pools/PoolContext'
 import DepositModal from '../DepositModal'
 import PoolSash from '../PoolSash'
@@ -48,6 +59,41 @@ const HorizontalMobileStyle = styled(CardStyle)`
     &.show {
       display: block;
     }
+  }
+`
+
+const CardWrap = styled(Card)`
+  margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    .card-heading {
+      width: 204px;
+    }
+    .total-staked-section {
+      width: 144px;
+    }
+    .my-balance-section {
+      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      width: 232px;
+    }
+    .earnings-section {
+      width: 200px;
+    }
+    .link-section {
+      width: 166px;
+    }
+    .harvest-action-section {
+      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      width: 358px;
+    }
+    .stake-action-section {
+      width: 276px;
+    }
+  }
+`
+const Wrap = styled(Box)<{ paddingLg: boolean }>`
+  padding: ${({ theme, paddingLg }) => (paddingLg ? theme.spacing.S_40 : theme.spacing.S_32)}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: ${({ theme }) => theme.spacing.S_20}px;
   }
 `
 
@@ -196,6 +242,14 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   //   ),
   //   [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
   // )
+  const renderToggleButton = useMemo(
+    () => (
+      <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
+        {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
+      </IconButton>
+    ),
+    [isOpenAccordion],
+  )
 
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (
@@ -214,56 +268,43 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     setIsOpenAccordion(false)
   }, [])
 
-  if (isHorizontal) {
-    if (isMobile) {
-      return (
-        <HorizontalMobileStyle className="mb-3">
-          {renderSash()}
-          <CardHeadingAccordion
-            tokenName={tokenName}
-            isOldSyrup={isOldSyrup}
-            apy={apy}
-            className=""
-            isOpenAccordion={isOpenAccordion}
-            setIsOpenAccordion={setIsOpenAccordion}
-          />
-          <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-            {renderStakeAction('pa-5')}
-            {renderHarvestAction('pa-5')}
-            {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
-            {renderDetailsSection('px-5 py-3', false)}
-          </div>
-        </HorizontalMobileStyle>
-      )
-    }
-
-    return (
-      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-        {renderSash()}
-        {renderCardHeading('col-3 pos-static')}
-
-        <div className="col-4 bd-x flex flex-column justify-space-between px-5">
-          {renderStakeAction('pb-4')}
-          {renderDetailsSection('', true)}
-        </div>
-
-        {renderHarvestAction('col-5 pl-5 flex-grow')}
-        {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
-      </HorizontalStyle>
-    )
-  }
-
   return (
-    <VerticalStyle className="mb-7">
-      {renderSash()}
-      <div className="flex flex-column flex-grow">
-        {renderCardHeading('pt-7')}
-        {renderStakeAction('pa-5')}
-        {renderHarvestAction('pa-5')}
-        {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
-      </div>
-      {renderDetailsSection('px-5 py-3', false)}
-    </VerticalStyle>
+    <CardWrap>
+      <>
+        <Wrap paddingLg={false}>
+          <Flex justifyContent="space-between">
+            <Flex className="card-heading" alignItems="center">
+              {renderCardHeading}
+            </Flex>
+            <Box className="total-staked-section">
+              <p>renderTotalStakedSection</p>
+            </Box>
+            <Box className="my-balance-section">
+              <p>renderStakeAction</p>
+            </Box>
+            <Box className="earnings-section">
+              <p>renderEarningsSection</p>
+            </Box>
+            {renderToggleButton}
+          </Flex>
+        </Wrap>
+        {isOpenAccordion && (
+          <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
+            <Flex justifyContent="space-between">
+              <Box className="link-section">
+                <p>renderLinkSection</p>
+              </Box>
+              <Box className="harvest-action-section">
+                <p>renderHarvestActionAirDrop</p>
+              </Box>
+              <Box className="stake-action-section">
+                <p>renderStakeAction</p>
+              </Box>
+            </Flex>
+          </Box>
+        )}
+      </>
+    </CardWrap>
   )
 }
 
