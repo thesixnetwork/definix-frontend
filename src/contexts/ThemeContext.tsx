@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ThemeProvider as SCThemeProvider } from 'styled-components'
-import { dark, light } from '@fingerlabs/definixswap-uikit-v2'
+import { light } from '@fingerlabs/definixswap-uikit-v2'
 
 const CACHE_KEY = 'IS_DARK'
 
@@ -17,6 +17,11 @@ const ThemeContextProvider = ({ children }) => {
     return isDarkUserSetting ? JSON.parse(isDarkUserSetting) : false
   })
 
+  console.log(light)
+
+  // eslint-disable-next-line no-debugger
+  debugger
+
   const toggleTheme = (isDarkMode) => {
     setIsDark(() => {
       localStorage.setItem(CACHE_KEY, JSON.stringify(isDarkMode))
@@ -26,7 +31,7 @@ const ThemeContextProvider = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-      <SCThemeProvider theme={isDark ? dark : light}>{children}</SCThemeProvider>
+      <SCThemeProvider theme={light}>{children}</SCThemeProvider>
     </ThemeContext.Provider>
   )
 }

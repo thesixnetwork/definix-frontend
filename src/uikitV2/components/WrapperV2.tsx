@@ -62,7 +62,7 @@ const WrapperV2 = ({
       <Box
         component="main"
         className="flex flex-column flex-grow"
-        sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` }, background: '#ffedcb' }}
+        sx={{ width: { xs: '100vw', sm: `calc(100% - ${drawerWidth}px)` }, background: '#ffedcb' }}
       >
         <InnerLayout>{children}</InnerLayout>
 

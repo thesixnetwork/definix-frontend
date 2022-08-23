@@ -1,16 +1,16 @@
 import Checkbox from '@mui/material/Checkbox'
-import _ from 'lodash'
+import CircularProgress from '@mui/material/CircularProgress'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
+import useTheme from 'hooks/useTheme'
+import _ from 'lodash'
 import React, { useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
-import CircularProgress from '@mui/material/CircularProgress'
-import useTheme from 'hooks/useTheme'
 import { TypeChartName } from './SelectChart'
 
-const rebalanceColor = '#30ADFF'
+const rebalanceColor = '#ff5532'
 
 const Box = styled.div`
   canvas {
@@ -89,12 +89,10 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
   }
 
   return (
-    <FormGroup row className="flex flex-wrap mb-5">
-      <LegendItem className={isMobile ? 'col-6' : 'mr-6'}>
+    <FormGroup row className="flex flex-wrap my-6">
+      <LegendItem className={isMobile ? 'col-6' : 'mr-6'} style={{ minWidth: '132px' }}>
         <div className="rebalancing" />
-        <Text fontSize="14px" bold>
-          Rebalancing
-        </Text>
+        <Text fontSize="14px">Rebalancing</Text>
       </LegendItem>
 
       {tokens.map((c) => {
@@ -105,6 +103,7 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
         })()
         return (
           <FormControlLabelCustom
+            style={{ minWidth: '132px' }}
             className={isMobile ? 'col-6 ma-0' : ' mr-6'}
             control={
               <Checkbox size="small" color="primary" checked={!!selectedTokens[c.symbol]} onChange={onCheck(c)} />
@@ -112,9 +111,7 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
             label={
               <LegendItem>
                 <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
-                <Text fontSize="14px" bold>
-                  {thisName}
-                </Text>
+                <Text fontSize="14px">{thisName}</Text>
               </LegendItem>
             }
           />
@@ -160,15 +157,15 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
             chartName: _.get(graphData, `chartName`, ''),
             data: thisData.values || [],
             dataPrice: thisData.valuesPrice || [],
-            fill: true,
+            fill: false,
             borderColor: thisData.color,
             tension: 0,
             ...(thisName === 'rebalance'
               ? {
                   borderColor: rebalanceColor,
                   backgroundColor: gradient,
-                  pointBackgroundColor: 'transparent',
-                  pointBorderColor: 'transparent',
+                  pointBackgroundColor: rebalanceColor,
+                  pointBorderColor: rebalanceColor,
                 }
               : {}),
           }
@@ -225,9 +222,8 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
 
   return (
     <div className={className}>
-      <Legend tokens={tokens} selectedTokens={selectedTokens} setSelectedTokens={setSelectedTokens} />
       <RelativeDiv>
-        <Box>
+        <Box style={{ height }}>
           <Line data={data} options={options} height={height} legend={{ display: false }} />
         </Box>
         {isDark && isLoading && (
@@ -241,6 +237,8 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
           </FullDiv>
         )}
       </RelativeDiv>
+
+      <Legend tokens={tokens} selectedTokens={selectedTokens} setSelectedTokens={setSelectedTokens} />
     </div>
   )
 }

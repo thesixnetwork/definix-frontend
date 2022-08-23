@@ -17,22 +17,22 @@ const Providers: React.FC = ({ children }) => {
   return (
     <Provider store={store}>
       <ThemeContextProvider>
-      <MuiThemeProvider theme={muiTheme}>
-        <LanguageContextProvider>
-          <UseWalletProvider
-            chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
-            connectors={{
-              walletconnect: { rpcUrl },
-              bsc,
-            }}
-          >
-            <BlockContextProvider>
-              <RefreshContextProvider>
-                <ModalProvider>{children}</ModalProvider>
-              </RefreshContextProvider>
-            </BlockContextProvider>
-          </UseWalletProvider>
-        </LanguageContextProvider>
+        <MuiThemeProvider theme={muiTheme}>
+          <LanguageContextProvider>
+            <UseWalletProvider
+              chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
+              connectors={{
+                walletconnect: { rpcUrl },
+                bsc,
+              }}
+            >
+              <BlockContextProvider>
+                <RefreshContextProvider>
+                  <ModalProvider>{children}</ModalProvider>
+                </RefreshContextProvider>
+              </BlockContextProvider>
+            </UseWalletProvider>
+          </LanguageContextProvider>
         </MuiThemeProvider>
       </ThemeContextProvider>
     </Provider>

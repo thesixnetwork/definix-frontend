@@ -48,28 +48,29 @@ const FactSheet = ({ rebalance }) => {
           {rebalance.fullDescription}
         </Typography>
       )}
-
-      <Table>
-        <FactRow name="Name" value={rebalance.factsheet.name} isCopy={false} bold />
-        <FactRow name="Inception Date" value={rebalance.factsheet.inceptionDate} isCopy={false} />
-        <FactRow name="Manager" value={rebalance.factsheet.manager} isCopy={rebalance.factsheet.manager} />
-        <FactRow name="Vault" value={rebalance.factsheet.vault} isCopy={rebalance.factsheet.vault} />
-        <FactRow
-          name="Management Fee"
-          tooltip="Fee collected for vault management."
-          value={rebalance.factsheet.management}
-          isCopy={rebalance.factsheet.management}
-          percent={`${_.get(rebalance, 'fee.management', 0.5)}%`}
-        />
-        <FactRow
-          name="FINIX Buyback Fee"
-          tooltip="Fee collected for buyback and burn of FINIX as deflationary purpose."
-          value={rebalance.factsheet.finixBuyBackFee}
-          isCopy={rebalance.factsheet.finixBuyBackFee}
-          percent={`${_.get(rebalance, 'fee.buyback', 1.0)}%`}
-        />
-        {/* <FactRow name="Ecosystem fee" value={rebalance.factsheet.bountyFee} isCopy={rebalance.factsheet.bountyFee} /> */}
-      </Table>
+      <Box sx={{ width: '100%', overflow: 'auto' }}>
+        <Table>
+          <FactRow name="Name" value={rebalance.factsheet.name} isCopy={false} bold />
+          <FactRow name="Inception Date" value={rebalance.factsheet.inceptionDate} isCopy={false} />
+          <FactRow name="Manager" value={rebalance.factsheet.manager} isCopy={rebalance.factsheet.manager} />
+          <FactRow name="Vault" value={rebalance.factsheet.vault} isCopy={rebalance.factsheet.vault} />
+          <FactRow
+            name="Management Fee"
+            tooltip="Fee collected for vault management."
+            value={rebalance.factsheet.management}
+            isCopy={rebalance.factsheet.management}
+            percent={`${_.get(rebalance, 'fee.management', 0.5)}%`}
+          />
+          <FactRow
+            name="FINIX Buyback Fee"
+            tooltip="Fee collected for buyback and burn of FINIX as deflationary purpose."
+            value={rebalance.factsheet.finixBuyBackFee}
+            isCopy={rebalance.factsheet.finixBuyBackFee}
+            percent={`${_.get(rebalance, 'fee.buyback', 1.0)}%`}
+          />
+          {/* <FactRow name="Ecosystem fee" value={rebalance.factsheet.bountyFee} isCopy={rebalance.factsheet.bountyFee} /> */}
+        </Table>
+      </Box>
     </Box>
   )
 }

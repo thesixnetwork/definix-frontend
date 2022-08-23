@@ -240,9 +240,32 @@ let muiTheme = createTheme({
           height: '64px',
           color: '#222222',
           textTransform: 'initial',
-          padding: '20px 48px',
           fontSize: '1rem',
           fontWeight: 'bold',
+        },
+      },
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'initial',
+
+          '&:first-child': {
+            borderTopLeftRadius: '8px',
+            borderBottomLeftRadius: '8px',
+          },
+          '&:last-child': {
+            borderTopRightRadius: '8px',
+            borderBottomRightRadius: '8px',
+          },
+          '&.Mui-selected': {
+            background: '#ff5532 !important',
+            color: 'white',
+          },
+        },
+        sizeSmall: {
+          height: '32px',
+          padding: '0 16px',
         },
       },
     },

@@ -1,6 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { ArrowBackRounded } from '@mui/icons-material'
-import { Box, Button, Tab, Tabs, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button, Tab, Tabs, useMediaQuery, useTheme, Divider } from '@mui/material'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
@@ -551,9 +551,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               })()}
             />
           </Box>
-
           <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'col-3' : 'col-6'}>
-            {' '}
             <TwoLineFormatV2 large title="Risk-O-Meter" value="Medium" />
           </Box>
         </Box>
@@ -567,10 +565,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           onChange={(e, newTab) => {
             setCurrentTab(newTab)
           }}
+          variant={lgUp ? 'standard' : 'fullWidth'}
         >
-          <Tab label="Overview" value={0} />
-          <Tab label="Performance" value={1} />
-          <Tab label="Transaction" value={2} />
+          <Tab label="Overview" value={0} sx={{ px: { lg: '48px' } }} />
+          <Tab label="Performance" value={1} sx={{ px: { lg: '48px' } }} />
+          <Tab label="Transaction" value={2} sx={{ px: { lg: '48px' } }} />
         </Tabs>
 
         <TabPanel value={currentTab} index={0}>
@@ -580,52 +579,59 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         </TabPanel>
 
         <TabPanel value={currentTab} index={1}>
-          <div className="flex flex-wrap align-center justify-space-between mb-3">
-            <div className="flex flex-wrap align-center justify-space-between mb-3">
-              <div>
-                <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
-              </div>
-              <div style={{ marginLeft: isMobile ? '0px' : '20px', marginTop: isMobile ? '10px' : '0px' }}>
-                <SelectChart chartName={chartName} setChartName={setChartName} />
-              </div>
-            </div>
-            <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-              {false && (
-                <TwoLineFormat
-                  title="24H Performance"
-                  value={`$${numeral(_.get(rebalance, 'twentyHperformance', 0)).format('0,0.[00]')}`}
-                  valueClass={(() => {
-                    if (_.get(rebalance, 'twentyHperformance', 0) < 0) return 'failure'
-                    if (_.get(rebalance, 'twentyHperformance', 0) > 0) return 'success'
-                    return ''
-                  })()}
-                  className="mr-6"
-                />
-              )}
+          <Box display="flex" flexWrap="wrap" mb={2}>
+            <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} className="mb-2 mr-3" />
+            <SelectChart chartName={chartName} setChartName={setChartName} />
+          </Box>
 
-              <TwoLineFormat
+          <FullChart
+            isLoading={isLoading}
+            graphData={graphData}
+            tokens={[...rebalance.ratio]}
+            height={lgUp ? 500 : 320}
+          />
+
+          <Divider className="mt-4" />
+
+          <Box display="flex" flexWrap="wrap" pt={{ xs: '20px', lg: 3 }}>
+            <Box px={{ lg: 3 }} className={lgUp ? 'col-4 bd-r' : 'col-6 mb-3'}>
+              <TwoLineFormatV2
+                large
+                title="Sharpe"
+                value={`${numeral(sharpRatio).format('0,0.00')}`}
+                tooltip="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
+              />
+            </Box>
+            <Box px={{ lg: 3 }} className={lgUp ? 'col-4 bd-r' : 'col-6 mb-3'}>
+              <TwoLineFormatV2
+                large
+                title="MDD"
+                value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
+                tooltip="The differentiation between the historical peak and low point through the portfolio."
+              />
+            </Box>
+            <Box px={{ lg: 3 }} className={lgUp ? 'col-4' : 'col-6'}>
+              <TwoLineFormatV2
+                large
                 title="Return"
                 value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
-                hint="Probability return on investment measures approximately over a period of time."
-                hintPosition="left"
+                tooltip="Probability return on investment measures approximately over a period of time."
               />
-            </div>
-          </div>
-
-          <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio]} />
-
-          <TwoLineFormat
-            className="px-4 py-3 col-4 bd-r"
-            title="Sharpe ratio"
-            value={`${numeral(sharpRatio).format('0,0.00')}`}
-            hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
-          />
-          <TwoLineFormat
-            className="px-4 py-3 col-4"
-            title="Max Drawdown"
-            value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
-            hint="The differentiation between the historical peak and low point through the portfolio."
-          />
+            </Box>
+            {/* <Box px={{ lg: 3 }} className={lgUp ? 'col-3' : 'col-6'}>
+          <TwoLineFormatV2
+          large
+              title="24H Performance"
+              value={`$${numeral(_.get(rebalance, 'twentyHperformance', 0)).format('0,0.[00]')}`}
+              valueClass={(() => {
+                if (_.get(rebalance, 'twentyHperformance', 0) < 0) return 'error'
+                if (_.get(rebalance, 'twentyHperformance', 0) > 0) return 'success'
+                return ''
+              })()}
+              
+            />
+          </Box> */}
+          </Box>
         </TabPanel>
 
         <TabPanel value={currentTab} index={2}>
