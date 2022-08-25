@@ -71,7 +71,7 @@ const CopyToClipboard: React.FC<Props> = ({
       noPadding={noPadding}
       {...props}
     >
-      <CopyIcon width={iconWidth} color={color || 'primary'} mr={noText ? '' : '8px'} />
+      <CopyIcon width={iconWidth} color={color || '#999999'} mr={noText ? '' : '8px'} />
       {children}
       <Tooltip isTooltipDisplayed={isTooltipDisplayed} tooltipPos={tooltipPos}>
         Copied

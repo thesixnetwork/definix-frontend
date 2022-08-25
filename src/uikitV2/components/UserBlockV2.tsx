@@ -8,6 +8,7 @@ import Text from 'uikit-dev/components/Text/Text'
 import { useWalletModal } from 'uikit-dev/widgets/WalletModal'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import { Login } from 'uikit-dev/widgets/WalletModal/types'
+import { localStorageKey } from 'uikit-dev/widgets/WalletModal/config'
 
 interface Props {
   account?: string
@@ -88,9 +89,8 @@ const UserBlockV2: React.FC<Props> = ({
             <CopyToClipboard noPadding toCopy={account}>
               Copy Address
             </CopyToClipboard>
-            {/* <Button
+            <Button
               size="small"
-              variant="secondary"
               fullWidth
               className="mt-4"
               onClick={() => {
@@ -101,7 +101,7 @@ const UserBlockV2: React.FC<Props> = ({
               }}
             >
               Disconnect
-            </Button> */}
+            </Button>
           </div>
         </Dropdown>
       ) : (

@@ -29,7 +29,6 @@ const CopyFinixAddress = () => {
       <Button
         variant="outlined"
         fullWidth
-        size="large"
         sx={{
           color: (theme) => theme.palette.text.secondary,
           borderColor: (theme) => `${theme.palette.grey[300]} !important`,

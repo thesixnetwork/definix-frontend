@@ -29,7 +29,7 @@ const FactRow = ({ name, value, isCopy, bold = false, percent = undefined, toolt
           <Typography variant="body2" className={isCopy ? 'mr-2' : ''} fontWeight={bold ? 'bold' : 'normal'}>
             {value}
           </Typography>
-          {isCopy && <CopyToClipboard toCopy={isCopy} iconWidth="16px" noText color="#999999" />}
+          {isCopy && <CopyToClipboard toCopy={isCopy} iconWidth="14px" noText />}
         </div>
       </TD>
     </TR>
@@ -38,7 +38,7 @@ const FactRow = ({ name, value, isCopy, bold = false, percent = undefined, toolt
 
 const FactSheet = ({ rebalance }) => {
   return (
-    <Box pt={{ xs: '20px', lg: 4 }}>
+    <Box p={{ xs: '20px', lg: 4 }}>
       <Typography color="textSecondary" fontWeight={500} sx={{ mb: '20px' }}>
         Key Facts
       </Typography>

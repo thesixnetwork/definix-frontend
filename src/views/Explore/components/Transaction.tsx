@@ -1,16 +1,16 @@
 /* eslint-disable no-nested-ternary */
-import CircularProgress from '@mui/material/CircularProgress'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded'
+import { Box, FormControlLabel, Link, Typography } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
 import axios from 'axios'
 import isEmpty from 'lodash/isEmpty'
 import moment from 'moment'
 import numeral from 'numeral'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import styled from 'styled-components'
-import { AddIcon, Card, LinkExternal, MinusIcon, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
+import CustomSwitch from 'uikitV2/components/CustomSwitch'
 import { getAddress } from 'utils/addressHelpers'
-import CardTab from './CardTab'
 import PaginationCustom from './Pagination'
 import { Table, TD, TH, TR } from './Table'
 
@@ -23,9 +23,9 @@ const EmptyData = ({ text }) => (
   <TR>
     <TD colSpan={6}>
       <div className="flex align-center justify-center" style={{ height: '400px' }}>
-        <Text textAlign="center" color="textSubtle">
+        <Typography variant="body2" textAlign="center" color="text.disabled">
           {text}
-        </Text>
+        </Typography>
       </div>
     </TD>
   </TR>
@@ -36,31 +36,24 @@ const LoadingData = () => (
     <TD colSpan={6}>
       <div className="flex align-center justify-center" style={{ height: '400px' }}>
         <CircularProgress size={16} color="inherit" className="mr-2" />
-        <Text>Loading...</Text>
+        <Typography variant="body2" color="text.disabled">
+          Loading...
+        </Typography>
       </div>
     </TD>
   </TR>
 )
 
-const Overflow = styled.div`
-  overflow: auto;
-`
-
 const TransactionTable = ({ rows, empText, isLoading }) => {
-  const [cols] = useState(['INVESTORS', 'ACTION', 'SHARES', 'TOTAL AMOUNT', 'DATE'])
+  const [cols] = useState(['Investors', 'Action', 'Shares', 'Total Amount', 'Date', 'BscScan'])
 
   return (
-    <Overflow className="pa-4 pt-0">
+    <Box px={{ xs: '20px', lg: 4 }} overflow="auto">
       <Table>
         <TR>
           {cols.map((c) => (
-            <TH key={c}>
-              <Text color="textSubtle" fontSize="12px" bold>
-                {c}
-              </Text>
-            </TH>
+            <TH key={c}>{c}</TH>
           ))}
-          <TH />
         </TR>
 
         {isLoading ? (
@@ -72,70 +65,73 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
             <TR key={`tsc-${r.block_number}`}>
               <TD>
                 <div className="flex">
-                  <Text className="mr-2">
+                  <Typography variant="body2" className="mr-2">
                     {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)}
-                  </Text>
-                  <CopyToClipboard toCopy={r.user_address} iconWidth="16px" noText />
+                  </Typography>
+                  <CopyToClipboard toCopy={r.user_address} iconWidth="14px" noText />
                 </div>
               </TD>
               <TD>
-                <div className="flex align-center">
-                  {r.event_name === 'AddFundAmount' ? (
-                    <>
-                      <AddIcon color="success" className="mr-1" />
-                      <Text>Invest</Text>
-                    </>
-                  ) : (
-                    <>
-                      <MinusIcon color="failure" className="mr-1" />
-                      <Text>Withdraw</Text>
-                    </>
-                  )}
-                </div>
+                {r.event_name === 'AddFundAmount' ? (
+                  <Typography variant="body2" color="success.main">
+                    + Invest
+                  </Typography>
+                ) : (
+                  <Typography variant="body2" color="error.main">
+                    - Withdraw
+                  </Typography>
+                )}
               </TD>
               <TD>
-                <Text>{numeral(r.lp_amount).format('0,0.000')}</Text>
+                <Typography variant="body2">{numeral(r.lp_amount).format('0,0.000')}</Typography>
               </TD>
               <TD>
-                <Text>{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
+                <Typography variant="body2">{`$${numeral(r.total_value).format('0,0.00')}`}</Typography>
               </TD>
               <TD>
-                <Text>{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
+                <Typography variant="body2">{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Typography>
               </TD>
               <TD>
-                <LinkExternal noIcon href={`https://bscscan.com/tx/${r.transaction_hash}`} fontSize="12px">
-                  Bscscan
-                </LinkExternal>
+                <Link
+                  variant="body2"
+                  color="text.disabled"
+                  href={`https://bscscan.com/tx/${r.transaction_hash}`}
+                  className="flex align-center"
+                  target="_blank"
+                >
+                  BscScan
+                  <OpenInNewRoundedIcon className="ml-2" sx={{ fontSize: '16px' }} />
+                </Link>
               </TD>
             </TR>
           ))
         )}
       </Table>
-    </Overflow>
+    </Box>
   )
 }
 
-const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) => {
+const Transaction: React.FC<TransactionType> = ({ rbAddress }) => {
   const address = getAddress(rbAddress)
   const { account } = useWallet()
 
   const [isLoading, setIsLoading] = useState(false)
-  const [currentTab, setCurrentTab] = useState(0)
+  const [myTransaction, setMyTransaction] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
   const [transactions, setTransactions] = useState([])
   const [total, setTotal] = useState(0)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
 
-  const setDefault = (tab) => {
-    setCurrentTab(tab)
+  const setDefault = () => {
     setCurrentPage(1)
     setTransactions([])
     setTotal(0)
   }
 
   const fetchTransaction = useCallback(async () => {
-    if (currentTab === 1 && !account) {
+    if (myTransaction && !account) {
+      setDefault()
       return
     }
 
@@ -145,18 +141,15 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
       params: {
         pool: (address || '').toLowerCase(),
         limit: 10,
-        address: currentTab === 0 ? '' : account,
+        address: myTransaction ? account : '',
         page: currentPage,
       },
     })
     setIsLoading(false)
     setTotal(response.data.total)
     setTransactions(response.data.result)
-  }, [account, address, currentPage, currentTab])
+  }, [account, address, currentPage, myTransaction])
 
-  const onTabChange = (tab) => {
-    setDefault(tab)
-  }
   const onPageChange = (e, page) => {
     setCurrentPage(page)
   }
@@ -167,13 +160,41 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
 
   useEffect(() => {
     return () => {
-      setDefault(0)
+      setDefault()
     }
   }, [])
 
   return (
-    <Card className={className}>
-      <CardTab menus={['ALL TRANSACTIONS', 'MY TRANSACTIONS']} current={currentTab} setCurrent={onTabChange} />
+    <>
+      <Box display="flex" justifyContent="flex-end" py={{ xs: '20px', lg: '24px' }} px={{ xs: '20px', lg: 4 }}>
+        <FormControlLabel
+          labelPlacement="start"
+          className="ml-auto"
+          label={
+            <Typography variant="body2" color="textSecondary">
+              My Transaction only
+            </Typography>
+          }
+          control={
+            <CustomSwitch
+              checked={myTransaction}
+              onChange={() => {
+                setMyTransaction(!myTransaction)
+              }}
+            />
+          }
+        />
+      </Box>
+
+      <TransactionTable
+        rows={transactions}
+        isLoading={isLoading}
+        empText={
+          myTransaction
+            ? 'You haven`t made any transactions in this farm.'
+            : 'Don`t have any transactions in this farm.'
+        }
+      />
 
       <PaginationCustom
         page={currentPage}
@@ -181,20 +202,9 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         size="small"
         hidePrevButton
         hideNextButton
-        className="px-4 py-2"
         onChange={onPageChange}
       />
-
-      <TransactionTable
-        rows={transactions}
-        isLoading={isLoading}
-        empText={
-          currentTab === 0
-            ? 'Don`t have any transactions in this farm.'
-            : 'You haven`t made any transactions in this farm.'
-        }
-      />
-    </Card>
+    </>
   )
 }
 

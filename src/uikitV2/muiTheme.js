@@ -61,14 +61,30 @@ let muiTheme = createTheme({
         disableElevation: true,
       },
       styleOverrides: {
-        root: { textTransform: 'initial', borderRadius: '8px', fontWeight: 'bold' },
+        root: {
+          textTransform: 'initial',
+          borderRadius: '8px',
+          fontWeight: 'bold',
+          ':disabled': {
+            background: 'rgb(224, 224, 224)',
+            color: 'rgba(255, 255, 255, 0.8)',
+            cursor: 'not-allowed',
+          },
+        },
         sizeSmall: {
           height: '32px',
           fontSize: '0.75rem',
         },
-        sizeLarge: {
+        sizeMedium: {
           fontSize: '0.875rem',
           minHeight: '40px',
+        },
+        sizeLarge: {
+          fontSize: '0.875rem',
+          minHeight: '48px',
+        },
+        containedInfo: {
+          color: 'white',
         },
       },
     },

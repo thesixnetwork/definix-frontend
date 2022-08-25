@@ -14,7 +14,7 @@ const Bar = styled('span')`
 `
 
 const AssetDetail = ({ rebalance, periodPriceTokens }) => {
-  const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
+  const cols = ['Asset', 'Balance', 'Price', 'Value', 'Change', 'Weight']
   let tokens = _.compact([...((rebalance || {}).tokens || [])])
 
   if (tokens.length === 0) tokens = rebalance.ratio
@@ -30,7 +30,7 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
   // }
 
   return (
-    <Box sx={{ width: '100%', overflow: 'auto' }}>
+    <Box px={{ xs: '20px', lg: 4 }} sx={{ width: '100%', overflow: 'auto' }}>
       <Table>
         <TR>
           {cols.map((c, idx) => (

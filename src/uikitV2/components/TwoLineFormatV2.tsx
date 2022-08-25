@@ -5,6 +5,7 @@ import React from 'react'
 const TwoLineFormatV2 = ({
   icon = '',
   title,
+  subTitle = '',
   value = '',
   subValue = '',
   tooltip = '',
@@ -25,6 +26,12 @@ const TwoLineFormatV2 = ({
         {icon && <img src={icon} alt="" width="20px" height="20px" style={{ marginRight: '6px' }} />}
 
         {title}
+
+        {subTitle && (
+          <Typography fontSize="0.75rem" color="textSecondary" className="ml-2">
+            {subTitle}
+          </Typography>
+        )}
 
         {tooltip && (
           <Tooltip title={tooltip}>

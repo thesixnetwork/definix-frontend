@@ -1,9 +1,8 @@
-import Pagination from '@mui/material/Pagination'
+import { Pagination, styled } from '@mui/material'
 import React from 'react'
-import styled from 'styled-components'
 
 const PaginationStyle = styled(Pagination)`
-  height: 42px;
+  padding: 20px;
 
   .MuiPagination-ul {
     justify-content: flex-end;
@@ -11,22 +10,18 @@ const PaginationStyle = styled(Pagination)`
 
   .MuiPaginationItem-root {
     background: transparent !important;
-    color: ${({ theme }) => theme.colors.textSubtle};
+    color: ${({ theme }) => theme.palette.text.disabled};
     font: inherit;
-    font-size: 12px;
     margin: 0;
-
-    &:hover {
-      color: ${({ theme }) => theme.colors.primary};
-    }
-
-    span {
-      display: none;
-    }
+    font-size: 0.875rem;
   }
 
   .Mui-selected {
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.palette.primary.main};
+  }
+
+  ${({ theme }) => theme.breakpoints.up('lg')} {
+    padding: 24px 32px;
   }
 `
 

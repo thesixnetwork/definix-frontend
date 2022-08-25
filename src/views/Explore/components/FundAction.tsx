@@ -1,36 +1,49 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import axios from 'axios'
-import UnlockButton from 'components/UnlockButton'
-import _ from 'lodash'
-import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { AddIcon, Button, Card, MinusIcon } from 'uikit-dev'
+import { Box, Button, Divider, styled } from '@mui/material'
+import axios from 'axios'
+import BigNumber from 'bignumber.js'
+import _ from 'lodash'
+import numeral from 'numeral'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import TwoLineFormatV2 from 'uikitV2/components/TwoLineFormatV2'
+import UserBlockV2 from 'uikitV2/components/UserBlockV2'
 import { getAddress } from 'utils/addressHelpers'
 import { useBalances, useRebalanceBalances, useRebalanceRewards } from '../../../state/hooks'
 import { Rebalance } from '../../../state/types'
 import Harvest from './Harvest'
-import TwoLineFormat from './TwoLineFormat'
 
 interface FundActionType {
-  className?: string
   rebalance?: Rebalance | any
-  isVertical?: boolean
 }
 
-const StickyBox = styled.div<{ isVertical: boolean }>`
-  position: sticky;
-  top: ${({ isVertical }) => (isVertical ? '0' : 'initial')};
-  bottom: ${({ isVertical }) => (isVertical ? 'initial' : '0')};
-  align-self: start;
-  left: 0;
-  margin-left: ${({ isVertical }) => (isVertical ? '1.25rem' : 'initial')};
-  border-top: ${({ isVertical, theme }) => (isVertical ? '' : `1px solid ${theme.colors.border}`)};
+const OverlayStyle = styled(Box)`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(180, 169, 168, 0.9);
+  pointer-events: initial;
+
+  button {
+    height: 36px;
+  }
 `
 
-const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => {
+const OverlayAction = ({ account, login, logout }) => {
+  return (
+    <OverlayStyle>
+      <UserBlockV2 account={account} login={login} logout={logout} />
+    </OverlayStyle>
+  )
+}
+
+const CurrentInvestment = ({ rebalance }) => {
   const { account } = useWallet()
   const balances = useBalances(account)
   const rebalanceBalances = useRebalanceBalances(account)
@@ -94,98 +107,63 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
   }, [combinedAmount])
 
   return (
-    <div className={isVertical ? '' : 'flex align-center'}>
-      <TwoLineFormat
-        title="Current investment"
+    <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
+      <TwoLineFormatV2
+        large
+        title="Current Investment"
         subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
         value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-        className={isVertical ? 'pa-3' : 'col-7'}
-        large={large}
-        currentInvestPercentDiff={`(${
+        percent={`(${
           percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
         }%)`}
         diffAmounts={`${
           percentage > 0 ? `+${numeral(diffAmount).format('0,0.[000]')}` : `${numeral(diffAmount).format('0,0.[000]')}`
         }`}
-        percentClass={(() => {
-          if (percentage < 0) return 'failure'
-          if (percentage > 0) return 'success'
+        percentColor={(() => {
+          if (percentage < 0) return 'error.main'
+          if (percentage > 0) return 'success.main'
           return ''
         })()}
       />
 
-      {account ? (
-        <>
-          {isVertical ? (
-            <div className="bd-t pa-3">
-              <Button as={Link} to="/rebalancing/invest" fullWidth radii="small" className="mb-3" variant="primary">
-                INVEST
-              </Button>
-              <Button as={Link} to="/rebalancing/withdraw" variant="secondary" fullWidth radii="small">
-                WITHDRAW
-              </Button>
-            </div>
-          ) : (
-            <div className="flex col-5 pl-2 justify-end">
-              <Button
-                as={Link}
-                to="/rebalancing/invest"
-                size="md"
-                radii="small"
-                className="mr-2 px-3"
-                variant="primary"
-                fullWidth
-              >
-                <AddIcon color="white" />
-              </Button>
-              <Button
-                as={Link}
-                to="/rebalancing/withdraw"
-                variant="secondary"
-                size="md"
-                radii="small"
-                className="px-3"
-                fullWidth
-              >
-                <MinusIcon color="primary" />
-              </Button>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className={isVertical ? 'pa-3 bd-t' : 'col-5 pl-2'}>
-          <UnlockButton fullWidth />
-        </div>
-      )}
-    </div>
+      <Box display="flex" alignItems="center" flexGrow={{ xs: 1, sm: 0 }} pt={{ xs: '0.75rem', sm: 0 }}>
+        <Button
+          component={Link}
+          to="/rebalancing/invest"
+          fullWidth
+          variant="contained"
+          sx={{ minWidth: { sm: '160px' }, mr: '0.75rem' }}
+        >
+          Invest
+        </Button>
+        <Button
+          component={Link}
+          to="/rebalancing/withdraw"
+          fullWidth
+          variant="contained"
+          sx={{ minWidth: { sm: '160px' } }}
+          color="info"
+        >
+          Withdraw
+        </Button>
+      </Box>
+    </Box>
   )
 }
 
-const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical = false }) => {
-  const { account } = useWallet()
+const FundAction: React.FC<FundActionType> = ({ rebalance }) => {
+  const { account, connect, reset } = useWallet()
   const rebalanceRewards = useRebalanceRewards(account)
 
   const currentReward = (rebalanceRewards || {})[getAddress(rebalance.address)] || new BigNumber(0)
 
   return (
-    <StickyBox isVertical={isVertical} className={className}>
-      {isVertical ? (
-        <>
-          <Card className={isVertical ? 'mb-4' : 'pa-4 pb-0'}>
-            <Harvest value={currentReward} rebalance={rebalance} isVertical large />
-          </Card>
-
-          <Card>
-            <CurrentInvestment rebalance={rebalance} isVertical large />
-          </Card>
-        </>
-      ) : (
-        <Card className={isVertical ? 'mb-4' : 'pa-4'}>
-          <Harvest value={currentReward} rebalance={rebalance} />
-          <CurrentInvestment rebalance={rebalance} />
-        </Card>
-      )}
-    </StickyBox>
+    <Box p={{ xs: '20px', lg: '24px 32px' }}>
+      {!account && <OverlayAction account={account} login={connect} logout={reset} />}
+      <Harvest value={currentReward} rebalance={rebalance} />
+      <Divider sx={{ my: { xs: 2, sm: 0.5 }, opacity: { xs: 1, sm: 0 } }} />
+      <CurrentInvestment rebalance={rebalance} />
+    </Box>
   )
 }
 

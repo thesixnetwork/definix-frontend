@@ -1,6 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { ArrowBackRounded } from '@mui/icons-material'
-import { Box, Button, Tab, Tabs, useMediaQuery, useTheme, Divider } from '@mui/material'
+import { Box, Button, Divider, Tab, Tabs, useMediaQuery, useTheme } from '@mui/material'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
@@ -26,7 +26,6 @@ import FundAction from './components/FundAction'
 import SelectChart, { TypeChartName } from './components/SelectChart'
 import SelectTime from './components/SelectTime'
 import Transaction from './components/Transaction'
-import TwoLineFormat from './components/TwoLineFormat'
 
 interface ExploreDetailType {
   rebalance: Rebalance | any
@@ -36,9 +35,9 @@ const TabPanel = (props) => {
   const { children, value, index, ...other } = props
 
   return (
-    <div role="tabpanel" hidden={value !== index} {...other}>
-      {value === index && <Box p={{ xs: '20px', lg: 4 }}>{children}</Box>}
-    </div>
+    <Box role="tabpanel" hidden={value !== index} {...other}>
+      {value === index && children}
+    </Box>
   )
 }
 
@@ -545,8 +544,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
               }%`}
               percentColor={(() => {
-                if (rebalance.sharedPricePercentDiff < 0) return 'error'
-                if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                if (rebalance.sharedPricePercentDiff < 0) return 'error.main'
+                if (rebalance.sharedPricePercentDiff > 0) return 'success.main'
                 return ''
               })()}
             />
@@ -578,10 +577,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           <FactSheet rebalance={rebalance} />
         </TabPanel>
 
-        <TabPanel value={currentTab} index={1}>
-          <Box display="flex" flexWrap="wrap" mb={2}>
-            <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} className="mb-2 mr-3" />
-            <SelectChart chartName={chartName} setChartName={setChartName} />
+        <TabPanel value={currentTab} index={1} p={{ xs: '20px', lg: 4 }}>
+          <Box display="flex" flexWrap="wrap" mb="16px">
+            <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} className="mr-3 mb-2" />
+            <SelectChart chartName={chartName} setChartName={setChartName} className="mb-2" />
           </Box>
 
           <FullChart
@@ -635,12 +634,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         </TabPanel>
 
         <TabPanel value={currentTab} index={2}>
-          <Transaction className="mb-4" rbAddress={rebalance.address} />
+          <Transaction rbAddress={rebalance.address} />
         </TabPanel>
       </Card>
 
-      <Card>
-        <FundAction rebalance={rebalance} isVertical={!isMobile} className={!isMobile ? 'col-3' : ''} />
+      <Card sx={{ position: 'sticky', bottom: 0, left: 0 }}>
+        <FundAction rebalance={rebalance} />
       </Card>
     </>
   )

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { Button } from '@mui/material'
+import { Button, Box } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import { useRebalanceHarvest } from 'hooks/useHarvest'
 import numeral from 'numeral'
@@ -24,32 +24,29 @@ const Harvest: React.FC<HarvestType> = ({ value, isVertical = false, large = fal
   const { onReward } = useRebalanceHarvest(rebalance.apollo)
 
   return (
-    <div className={isVertical ? '' : `flex align-center ${large ? 'mb-3' : 'mb-2'} ${className}`}>
+    <Box display="flex" justifyContent="space-between" alignItems="center" className={className}>
       <TwoLineFormatV2
-        className={isVertical ? 'pa-3' : large ? 'col-6' : 'col-7'}
         title="FINIX Earned"
         value={`${numeral(value).format('0,0.[000]')}`}
         subValue={`= $${numeral(value.times(finixPriceUsd)).format('0,0.[00]')}`}
         icon={finix}
+        large={large}
       />
 
-      <div className={isVertical ? 'pa-3 bd-t' : large ? 'col-6 pl-2' : 'col-5 pl-2'}>
-        <Button
-          fullWidth
-          size="large"
-          variant="contained"
-          sx={{ height: '48px' }}
-          disabled={value.toNumber() === 0 || pendingTx}
-          onClick={async () => {
-            setPendingTx(true)
-            await onReward()
-            setPendingTx(false)
-          }}
-        >
-          Harvest
-        </Button>
-      </div>
-    </div>
+      <Button
+        size={large ? 'large' : 'medium'}
+        variant="contained"
+        disabled={value.toNumber() === 0 || pendingTx}
+        onClick={async () => {
+          setPendingTx(true)
+          await onReward()
+          setPendingTx(false)
+        }}
+        sx={{ minWidth: { sm: '100px' } }}
+      >
+        Harvest
+      </Button>
+    </Box>
   )
 }
 

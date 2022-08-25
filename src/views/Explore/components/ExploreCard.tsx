@@ -37,8 +37,8 @@ const SharePrice = ({ rebalance, className = '' }) => {
           : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
       }%`}
       percentColor={(() => {
-        if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'error'
-        if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
+        if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'error.main'
+        if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success.main'
         return ''
       })()}
     />
@@ -87,8 +87,8 @@ const CurrentInvestment = ({ balance, percentage, diffAmount, rebalance, classNa
         percentage > 0 ? `+${numeral(diffAmount).format('0,0.[000]')}` : `${numeral(diffAmount).format('0,0.[000]')}`
       }`}
       percentColor={(() => {
-        if (percentage < 0) return 'error'
-        if (percentage > 0) return 'success'
+        if (percentage < 0) return 'error.main'
+        if (percentage > 0) return 'success.main'
         return ''
       })()}
     />
@@ -209,13 +209,11 @@ const ExploreCard: React.FC<ExploreCardType> = ({ balance, rebalance = {}, onCli
             rebalance={rebalance}
             className="mb-3"
           />
-          {account && <Harvest value={pendingReward} rebalance={rebalance} className="mb-3" />}
-
+          <Harvest value={pendingReward} rebalance={rebalance} className="mb-3" large />
           <Button
             variant="contained"
             size="large"
             color="info"
-            sx={{ color: 'white', height: '48px' }}
             fullWidth
             component={Link}
             to="/rebalancing/detail"

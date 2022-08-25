@@ -118,7 +118,7 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
                 }
               />
               {renderCheckBox()}
-              <Button fullWidth size="large" variant="contained" onClick={onExit} className="mt-5" disabled={!isAccept}>
+              <Button fullWidth variant="contained" onClick={onExit} className="mt-5" disabled={!isAccept}>
                 Confirm
               </Button>
             </>

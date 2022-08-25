@@ -114,7 +114,7 @@ const PanelBodyV2: React.FC<Props> = (props) => {
       <Box flexGrow={1} overflow="auto" height="calc(100% - 94px)" pb="80px">
         {!mdUp && (
           <Box px="16px" minHeight={148} display="flex" justifyContent="center" alignItems="center" className="bd-b">
-            <UserBlockV2 account={account} login={login} logout={logout} className="ml-3" size="large" />
+            <UserBlockV2 account={account} login={login} logout={logout} className="ml-3" />
           </Box>
         )}
         <List component="nav" sx={{ px: '16px', py: { xs: '32px', md: '8px' } }}>
@@ -131,7 +131,6 @@ const PanelBodyV2: React.FC<Props> = (props) => {
             href="https://bsc.definix.com/"
             target="_blank"
             fullWidth
-            size="large"
             sx={{
               color: theme.palette.text.secondary,
               borderColor: `${theme.palette.grey[300]} !important`,
