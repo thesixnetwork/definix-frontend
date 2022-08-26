@@ -4,18 +4,10 @@ import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import {
-  Flex,
-  Card,
-  IconButton,
-  Box,
-  ArrowBottomGIcon,
-  ArrowTopGIcon,
-  Divider,
-  ColorStyles,
-  useMatchBreakpoints,
-  Grid,
-} from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, ChevronDownIcon, ChevronUpIcon, useMatchBreakpoints } from 'uikit-dev'
+import { Box, IconButton, Button, useMediaQuery, useTheme } from '@mui/material'
+import Card from 'uikitV2/components/Card'
+import { usePriceFinixUsd } from 'state/hooks'
 import PoolContext from 'views/Pools/PoolContext'
 import DepositModal from '../DepositModal'
 import PoolSash from '../PoolSash'
@@ -27,6 +19,8 @@ import HarvestAction from './HarvestAction'
 // import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { PoolCardProps } from './types'
+import EarningHarvest from './EarningHarvest'
+import MyStake from './MyStake'
 
 const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
@@ -63,8 +57,8 @@ const HorizontalMobileStyle = styled(CardStyle)`
 `
 
 const CardWrap = styled(Card)`
-  margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
-  ${({ theme }) => theme.mediaQueries.xl} {
+  margin-bottom: 26px;
+  @media screen and (min-width: 1280px) {
     .card-heading {
       width: 204px;
     }
@@ -72,7 +66,7 @@ const CardWrap = styled(Card)`
       width: 144px;
     }
     .my-balance-section {
-      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      margin: 0 24px;
       width: 232px;
     }
     .earnings-section {
@@ -82,7 +76,7 @@ const CardWrap = styled(Card)`
       width: 166px;
     }
     .harvest-action-section {
-      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      margin: 0 24px;
       width: 358px;
     }
     .stake-action-section {
@@ -91,9 +85,9 @@ const CardWrap = styled(Card)`
   }
 `
 const Wrap = styled(Box)<{ paddingLg: boolean }>`
-  padding: ${({ theme, paddingLg }) => (paddingLg ? theme.spacing.S_40 : theme.spacing.S_32)}px;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    padding: ${({ theme }) => theme.spacing.S_20}px;
+  padding: ${({ paddingLg }) => (paddingLg ? '40' : '32')}px;
+  @media screen and (min-width: 1280px) {
+    padding: 32px;
   }
 `
 
@@ -115,6 +109,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
 
+  const finixPrice = usePriceFinixUsd()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
@@ -126,6 +121,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     () => new BigNumber(userData?.stakingTokenBalance || 0),
     [userData?.stakingTokenBalance],
   )
+  // numeral(getBalanceNumber(earnings).toLocaleString() * finixPrice.toNumber()).format('0,0.0000');
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
 
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
@@ -147,17 +143,33 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     return null
   }
 
+  const tokenApyList = useMemo(() => {
+    return [
+      {
+        symbol: QuoteToken.FINIX,
+        apy: pool.apy,
+      },
+    ]
+  }, [pool])
+
   const renderCardHeading = useCallback(
     (className?: string) => (
       <CardHeading
-        tokenName={tokenName}
-        isOldSyrup={isOldSyrup}
-        apy={apy}
-        isHorizontal={isHorizontal}
-        className={className}
+        // tokenNames={tokenName}
+        // isOldSyrup={isOldSyrup}
+        // apy={apy}
+        // isHorizontal={isHorizontal}
+        // className={className}
+
+        tokenNames={tokenName}
+        // isOldSyrup={isOldSyrup}
+        tokenApyList={tokenApyList}
+        size={isHorizontal && 'small'}
+        componentType="pool"
+        isFarm={false}
       />
     ),
-    [apy, isHorizontal, isOldSyrup, tokenName],
+    [isHorizontal, tokenApyList, tokenName],
   )
 
   const renderDepositModal = useCallback(() => {
@@ -212,9 +224,54 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     ],
   )
 
+  const renderMyStake = useCallback(
+    (className?: string) => (
+      <MyStake
+        sousId={sousId}
+        isOldSyrup={isOldSyrup}
+        tokenName={tokenName}
+        stakingTokenAddress={stakingTokenAddress}
+        stakedBalance={stakedBalance}
+        needsApproval={needsApproval}
+        isFinished={isFinished}
+        onUnstake={onUnstake}
+        onPresentDeposit={renderDepositModal}
+        onPresentWithdraw={renderWithdrawModal}
+        className={className}
+      />
+    ),
+    [
+      isFinished,
+      isOldSyrup,
+      needsApproval,
+      onUnstake,
+      renderDepositModal,
+      renderWithdrawModal,
+      sousId,
+      stakedBalance,
+      stakingTokenAddress,
+      tokenName,
+    ],
+  )
+
   const renderHarvestAction = useCallback(
     (className?: string) => (
       <HarvestAction
+        sousId={sousId}
+        isBnbPool={isBnbPool}
+        earnings={earnings}
+        tokenDecimals={tokenDecimals}
+        needsApproval={needsApproval}
+        isOldSyrup={isOldSyrup}
+        className={className}
+      />
+    ),
+    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
+  )
+
+  const renderEarningHarvest = useCallback(
+    (className?: string) => (
+      <EarningHarvest
         sousId={sousId}
         isBnbPool={isBnbPool}
         earnings={earnings}
@@ -242,10 +299,11 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   //   ),
   //   [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
   // )
+
   const renderToggleButton = useMemo(
     () => (
-      <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
-        {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
+      <IconButton size="small" onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
+        {isOpenAccordion ? <ChevronUpIcon /> : <ChevronDownIcon />}
       </IconButton>
     ),
     [isOpenAccordion],
@@ -274,38 +332,80 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         <Wrap paddingLg={false}>
           <Flex justifyContent="space-between">
             <Flex className="card-heading" alignItems="center">
-              {renderCardHeading}
+              {renderCardHeading('')}
             </Flex>
-            <Box className="total-staked-section">
-              <p>renderTotalStakedSection</p>
-            </Box>
-            <Box className="my-balance-section">
-              <p>renderStakeAction</p>
-            </Box>
-            <Box className="earnings-section">
-              <p>renderEarningsSection</p>
-            </Box>
+            <Box className="total-staked-section">{renderDetailsSection('', true)}</Box>
+            <Box className="my-balance-section">{renderMyStake('')}</Box>
+            <Box className="earnings-section">{renderEarningHarvest('')}</Box>
             {renderToggleButton}
           </Flex>
         </Wrap>
         {isOpenAccordion && (
-          <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
+          <Box style={{ backgroundColor: 'rgba(224, 224, 224, 0.2)' }} className="px-5 py-4">
             <Flex justifyContent="space-between">
-              <Box className="link-section">
-                <p>renderLinkSection</p>
-              </Box>
+              <Box className="link-section" />
               <Box className="harvest-action-section">
-                <p>renderHarvestActionAirDrop</p>
+                {renderHarvestAction('flex align-center justify-space-between')}
               </Box>
-              <Box className="stake-action-section">
-                <p>renderStakeAction</p>
-              </Box>
+              <Box className="stake-action-section">{renderStakeAction('')}</Box>
             </Flex>
           </Box>
         )}
       </>
     </CardWrap>
   )
+
+  //   if (isHorizontal) {
+  //   if (isMobile) {
+  //     return (
+  //       <HorizontalMobileStyle className="mb-3">
+  //         {renderSash()}
+  //         <CardHeadingAccordion
+  //           tokenName={tokenName}
+  //           isOldSyrup={isOldSyrup}
+  //           apy={apy}
+  //           className=""
+  //           isOpenAccordion={isOpenAccordion}
+  //           setIsOpenAccordion={setIsOpenAccordion}
+  //         />
+  //         <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
+  //           {renderStakeAction('pa-5')}
+  //           {renderHarvestAction('pa-5')}
+  //           {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
+  //           {renderDetailsSection('px-5 py-3', false)}
+  //         </div>
+  //       </HorizontalMobileStyle>
+  //     )
+  //   }
+
+  //   return (
+  //     <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
+  //       {renderSash()}
+  //       {renderCardHeading('col-3 pos-static')}
+
+  //       <div className="col-4 bd-x flex flex-column justify-space-between px-5">
+  //         {renderStakeAction('pb-4')}
+  //         {renderDetailsSection('', true)}
+  //       </div>
+
+  //       {renderHarvestAction('col-5 pl-5 flex-grow')}
+  //       {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
+  //     </HorizontalStyle>
+  //   )
+  // }
+
+  // return (
+  //   <VerticalStyle className="mb-7">
+  //     {renderSash()}
+  //     <div className="flex flex-column flex-grow">
+  //       {renderCardHeading('pt-7')}
+  //       {renderStakeAction('pa-5')}
+  //       {renderHarvestAction('pa-5')}
+  //       {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
+  //     </div>
+  //     {renderDetailsSection('px-5 py-3', false)}
+  //   </VerticalStyle>
+  // )
 }
 
 export default PoolCard

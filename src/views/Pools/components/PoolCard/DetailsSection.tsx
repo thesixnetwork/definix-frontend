@@ -2,7 +2,7 @@ import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronRightIcon, Link, Text } from 'uikit-dev'
+import { ChevronRightIcon, Flex, Link, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { DetailsSectionProps } from './types'
 
@@ -38,13 +38,22 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
 
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
-      <div className="flex align-baseline flex-wrap justify-space-between">
-        <Text color="textSubtle">Total {tokenName} Staked</Text>
-
-        <Text bold className="flex-shrink">
-          {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
+      <Flex flexDirection="column" justifyContent="flex-start" alignItems="flex-start">
+        <Text fontSize="0.75rem" color="textSubtle">
+          Total staked
         </Text>
-      </div>
+        <div className="flex" style={{ alignItems: 'baseline' }}>
+          <Text bold className="flex-shrink" fontSize="1.125rem">
+            {numeral(getBalanceNumber(totalStaked)).format('0,0')}
+          </Text>
+          <Text style={{ marginLeft: 4 }} fontSize="0.75rem" fontWeight="500" color="rgb(102, 102, 102)">
+            FINIX
+          </Text>
+        </div>
+        <Text fontSize="0.875rem" color="textSubtle" textAlign="left" className="mt-1">
+          = ${numeral(rawEarningsBalance * finixPrice.toNumber()).format('0,0.0000')}
+        </Text>
+      </Flex>
 
       {false && (
         <div className="flex justify-end mt-1" style={{ marginRight: '-6px' }}>

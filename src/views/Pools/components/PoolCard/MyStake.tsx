@@ -1,7 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Button as ButtonMUI } from '@mui/material'
 import BigNumber from 'bignumber.js'
-import ConnectButton from 'components/ConnectButton'
+import UnlockButton from 'components/UnlockButton'
 import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
@@ -19,7 +18,7 @@ const IconButtonWrapper = styled.div`
   }
 `
 
-const StakeAction: React.FC<StakeActionProps> = ({
+const MyStake: React.FC<StakeActionProps> = ({
   sousId,
   isOldSyrup,
   tokenName,
@@ -138,19 +137,9 @@ const StakeAction: React.FC<StakeActionProps> = ({
         1074,
         'My Staked',
       )}`}</Text>
-      {!account ? (
-        <ButtonMUI
-          variant="contained"
-          color="secondary"
-          style={{ padding: '10px 20px', fontSize: '0.875rem', width: '100%', fontWeight: 'bold' }}
-        >
-          Connect Wallet
-        </ButtonMUI>
-      ) : (
-        renderApprovalOrStakeButton()
-      )}
+      <Text>-</Text>
     </div>
   )
 }
 
-export default StakeAction
+export default MyStake
