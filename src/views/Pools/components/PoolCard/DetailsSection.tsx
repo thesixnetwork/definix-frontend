@@ -51,7 +51,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
           </Text>
         </div>
         <Text fontSize="0.875rem" color="textSubtle" textAlign="left" className="mt-1">
-          = ${numeral(rawEarningsBalance * finixPrice.toNumber()).format('0,0.0000')}
+          = $ 0{/* {numeral(rawEarningsBalance * finixPrice.toNumber()).format('0,0.0000')} */}
         </Text>
       </Flex>
 
