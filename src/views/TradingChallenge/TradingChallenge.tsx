@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { Button, Card, Heading, Text, useMatchBreakpoints, useModal } from 'uikit-dev'
 import routeLarge from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-25.png'
 import route from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-26.png'
-import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
+import ConnectModalV2 from 'uikitV2/components/ConnectModalV2'
 import Flip from '../../uikit-dev/components/Flip'
 import TraderProfileModal from './components/TraderProfileModal'
 import TradingChallengeBanner from './components/TradingChallengeBanner'
@@ -58,7 +58,7 @@ const TradingChallenge = () => {
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false)
   const { isSm } = useMatchBreakpoints()
 
-  const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
+  const [onPresentConnectModal] = useModal(<ConnectModalV2 login={connect} />)
 
   const handleModalSuccess = async () => {
     await tradingCompetRegisContract.methods

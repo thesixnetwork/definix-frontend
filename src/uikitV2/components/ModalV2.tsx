@@ -11,6 +11,7 @@ interface Props extends InjectedProps {
   className?: string
   onBack?: () => void
   onDismiss?: () => void
+  sx?: any
 }
 
 const CardStyle = styled(Card)`
@@ -38,20 +39,23 @@ const ModalV2: React.FC<Props> = ({
   className = '',
   onDismiss,
   onBack,
+  ...props
 }) => (
-  <CardStyle sx={{ maxWidth: { md: maxWidth }, maxHeight: { md: maxHeight } }} className={className}>
-    <Box px={3} py="20px">
-      {onBack && (
-        <IconButton onClick={onBack}>
-          <ArrowBackIosRounded />{' '}
-        </IconButton>
-      )}
+  <CardStyle sx={{ maxWidth: { md: maxWidth }, maxHeight: { md: maxHeight } }} className={className} {...props}>
+    <Box px={3} py="20px" display="flex" alignItems="center" justifyContent="space-between">
+      <Box display="flex" alignItems="center">
+        {onBack && (
+          <IconButton size="small" onClick={onBack} className="mr-2">
+            <ArrowBackIosRounded />
+          </IconButton>
+        )}
 
-      <Typography variant="h6">{title}</Typography>
+        <Typography variant="h6">{title}</Typography>
+      </Box>
 
       {onDismiss && !hideCloseButton && (
-        <IconButton onClick={onDismiss}>
-          <CloseRounded />{' '}
+        <IconButton size="small" onClick={onDismiss}>
+          <CloseRounded />
         </IconButton>
       )}
     </Box>

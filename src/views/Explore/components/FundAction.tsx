@@ -132,7 +132,7 @@ const CurrentInvestment = ({ rebalance }) => {
           to="/rebalancing/invest"
           fullWidth
           variant="contained"
-          sx={{ minWidth: { sm: '160px' }, mr: '0.75rem' }}
+          sx={{ width: { xs: '100px', sm: '120px' }, mr: '0.75rem' }}
         >
           Invest
         </Button>
@@ -141,7 +141,7 @@ const CurrentInvestment = ({ rebalance }) => {
           to="/rebalancing/withdraw"
           fullWidth
           variant="contained"
-          sx={{ minWidth: { sm: '160px' } }}
+          sx={{ width: { xs: '100px', sm: '120px' } }}
           color="info"
         >
           Withdraw

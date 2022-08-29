@@ -179,7 +179,7 @@ let muiTheme = createTheme({
             },
 
             '&:hover': {
-              background: 'rgba(0, 0, 0, 0.04) !important',
+              background: 'rgba(218, 208, 197, 0.2) !important',
             },
 
             '&.Mui-selected': {
@@ -203,7 +203,9 @@ let muiTheme = createTheme({
     MuiBackdrop: {
       styleOverrides: {
         root: {
-          backgroundColor: 'rgba(0,0,0,0.3)',
+          '&:not(.MuiBackdrop-invisible)': {
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          },
         },
       },
     },
