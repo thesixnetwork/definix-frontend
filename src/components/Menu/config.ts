@@ -136,9 +136,9 @@ const config: MenuEntry[] = [
     label: 'Bridge',
     icon: bridgeBlack,
     iconActive: bridgeWhite,
-    href: 'https://bridge.six.network',
-    notHighlight: true,
-    newTab: true,
+    href: '/bridge',
+    notHighlight: false,
+    newTab: false,
   },
   // {
   //   label: 'Tutorial',

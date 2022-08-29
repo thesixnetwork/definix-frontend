@@ -41,6 +41,7 @@ const Home = lazy(() => import('./views/Home'))
 const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
 const Explore = lazy(() => import('./views/Explore'))
+const Bridge = lazy(() => import('./views/Bridge'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 const PartnershipPool = lazy(() => import('./views/PartnershipPool'))
@@ -117,6 +118,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/rebalancing">
               <Explore />
+            </Route>
+            <Route path="/bridge">
+              <Bridge />
             </Route>
             <Route path="/AirdropKlay">
               <AirdropKlay />

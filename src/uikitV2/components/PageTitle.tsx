@@ -1,4 +1,4 @@
-import { Box, Link, styled, Typography } from '@mui/material'
+import { Box, Link, styled, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React from 'react'
 
 const BoxStyle = styled(Box)`
@@ -31,6 +31,9 @@ const PageTitle = ({
   children = undefined,
   sx = undefined,
 }) => {
+  const theme = useTheme()
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
+
   return (
     <BoxStyle sx={sx}>
       <Typography variant="h2">
@@ -50,7 +53,7 @@ const PageTitle = ({
 
       {children}
 
-      {img && <ImgStyle src={img} alt="" />}
+      {img && lgUp && <ImgStyle src={img} alt="" />}
     </BoxStyle>
   )
 }
