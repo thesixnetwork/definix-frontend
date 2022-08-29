@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 
-import { Heading, Text } from 'uikit-dev'
+import { Flex, Heading, Text } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { HarvestActionProps } from './types'
@@ -74,20 +74,33 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           </div>
         </div>
       </div>
-      <Button
-        color="secondary"
-        disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
-        onClick={async () => {
-          setPendingTx(true)
-          await onReward()
-          setPendingTx(false)
-        }}
-        style={{ width: '30%' }}
-      >
-        {TranslateString(562, 'Harvest')}
-      </Button>
+      <HarvestButtonSectionInMyInvestment>
+        <Button
+          fullWidth
+          color="secondary"
+          disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
+          onClick={async () => {
+            setPendingTx(true)
+            await onReward()
+            setPendingTx(false)
+          }}
+        >
+          {TranslateString(562, 'Harvest')}
+        </Button>
+      </HarvestButtonSectionInMyInvestment>
     </div>
   )
 }
 
 export default HarvestAction
+
+const HarvestButtonSectionInMyInvestment = styled(Flex)`
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 24px;
+  width: 100%;
+  @media screen and (min-width: 1280px) {
+    flex-direction: row;
+    width: 150px;
+  }
+`

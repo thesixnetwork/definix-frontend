@@ -43,7 +43,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
           Total staked
         </Text>
         <div className="flex" style={{ alignItems: 'baseline', paddingTop: 6 }}>
-          <Text bold className="flex-shrink" fontSize="1.125rem">
+          <Text bold className="flex-shrink" fontSize="1rem">
             {numeral(getBalanceNumber(totalStaked)).format('0,0')}
           </Text>
           <Text style={{ marginLeft: 4 }} fontSize="0.75rem" fontWeight="500" color="rgb(102, 102, 102)">

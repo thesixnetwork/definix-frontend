@@ -11,7 +11,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { HarvestActionProps } from './types'
 
 const MiniLogo = styled.img`
-  width: 20px;
+  width: 14px;
   height: auto;
   margin-right: 8px;
   display: inline-block;
@@ -39,8 +39,8 @@ const EarningHarvest: React.FC<HarvestActionProps> = ({
   return (
     <div className={className}>
       <Text fontSize="0.75rem" textAlign="left" className="mb-2 flex align-center" color="textSubtle">
-        {`${TranslateString(1072, 'Earned')}  `}
-        <MiniLogo style={{ marginLeft: 2 }} src={miniLogo} alt="" />
+        {`${TranslateString(1072, 'Earned')}`}
+        <MiniLogo style={{ marginLeft: 6 }} src={miniLogo} alt="" />
       </Text>
 
       <div className="flex align-center">

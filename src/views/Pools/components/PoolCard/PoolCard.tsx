@@ -328,30 +328,52 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
 
   return (
     <CardWrap>
-      <>
-        <Wrap paddingLg={false}>
-          <Flex justifyContent="space-between">
-            <Flex className="card-heading" alignItems="center">
-              {renderCardHeading('')}
-            </Flex>
-            <Box className="total-staked-section">{renderDetailsSection('', true)}</Box>
-            <Box className="my-balance-section">{renderMyStake('')}</Box>
-            <Box className="earnings-section">{renderEarningHarvest('')}</Box>
-            {renderToggleButton}
-          </Flex>
-        </Wrap>
-        {isOpenAccordion && (
-          <Box style={{ backgroundColor: 'rgba(224, 224, 224, 0.2)' }} className="px-5 py-4">
+      {isMobile ? (
+        <>
+          <Wrap paddingLg={false}>
             <Flex justifyContent="space-between">
-              <Box className="link-section" />
-              <Box className="harvest-action-section">
-                {renderHarvestAction('flex align-center justify-space-between')}
-              </Box>
-              <Box className="stake-action-section">{renderStakeAction('')}</Box>
+              {renderCardHeading('')}
+              {renderToggleButton}
             </Flex>
-          </Box>
-        )}
-      </>
+            {renderEarningHarvest('mt-5')}
+          </Wrap>
+          {isOpenAccordion && (
+            <Box style={{ backgroundColor: 'rgba(224, 224, 224, 0.2)' }} className="px-4 py-5">
+              {renderHarvestAction('')}
+              <Box className="py-5">{renderStakeAction('accordian')}</Box>
+              <div style={{ backgroundColor: 'rgba(224, 224, 224, 0.5)', height: 1 }} />
+              <Box className="pt-5" style={{}}>
+                {renderDetailsSection('', true)}
+              </Box>
+            </Box>
+          )}
+        </>
+      ) : (
+        <>
+          <Wrap paddingLg={false}>
+            <Flex justifyContent="space-between">
+              <Flex className="card-heading" alignItems="center">
+                {renderCardHeading('')}
+              </Flex>
+              <Box className="total-staked-section">{renderDetailsSection('', true)}</Box>
+              <Box className="my-balance-section">{renderMyStake('')}</Box>
+              <Box className="earnings-section">{renderEarningHarvest('')}</Box>
+              {renderToggleButton}
+            </Flex>
+          </Wrap>
+          {isOpenAccordion && (
+            <Box style={{ backgroundColor: 'rgba(224, 224, 224, 0.2)' }} className="px-5 py-4">
+              <Flex justifyContent="space-between">
+                <Box className="link-section" />
+                <Box className="harvest-action-section">
+                  {renderHarvestAction('flex align-center justify-space-between')}
+                </Box>
+                <Box className="stake-action-section">{renderStakeAction('')}</Box>
+              </Flex>
+            </Box>
+          )}
+        </>
+      )}
     </CardWrap>
   )
 
