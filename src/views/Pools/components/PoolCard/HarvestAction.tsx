@@ -82,6 +82,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           await onReward()
           setPendingTx(false)
         }}
+        style={{ width: '30%' }}
       >
         {TranslateString(562, 'Harvest')}
       </Button>

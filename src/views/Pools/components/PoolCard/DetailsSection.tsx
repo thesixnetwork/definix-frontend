@@ -42,7 +42,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
         <Text fontSize="0.75rem" color="textSubtle">
           Total staked
         </Text>
-        <div className="flex" style={{ alignItems: 'baseline' }}>
+        <div className="flex" style={{ alignItems: 'baseline', paddingTop: 6 }}>
           <Text bold className="flex-shrink" fontSize="1.125rem">
             {numeral(getBalanceNumber(totalStaked)).format('0,0')}
           </Text>
@@ -50,7 +50,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
             FINIX
           </Text>
         </div>
-        <Text fontSize="0.875rem" color="textSubtle" textAlign="left" className="mt-1">
+        <Text fontSize="0.875rem" color="textSubtle" textAlign="left">
           = $ 0{/* {numeral(rawEarningsBalance * finixPrice.toNumber()).format('0,0.0000')} */}
         </Text>
       </Flex>
