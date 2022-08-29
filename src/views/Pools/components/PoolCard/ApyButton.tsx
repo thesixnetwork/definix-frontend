@@ -16,8 +16,8 @@ const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, finixPrice, apy, addLiqu
   )
 
   return (
-    <IconButton onClick={onPresentApyModal} size="sm" variant="text" color="primary" className="ml-1">
-      <CalculateIcon color="primary" />
+    <IconButton style={{ height: '24px', width: '24px' }} onClick={onPresentApyModal} variant="text" color="#5e515f">
+      <CalculateIcon color="#5e515f" style={{ padding: 0, height: '24px' }} />
     </IconButton>
   )
 }
