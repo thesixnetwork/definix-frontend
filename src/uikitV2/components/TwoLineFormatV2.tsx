@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { HelpOutlineRounded } from '@mui/icons-material'
 import { Box, Tooltip, Typography } from '@mui/material'
 import React from 'react'
@@ -16,12 +17,19 @@ const TwoLineFormatV2 = ({
   diffAmounts = '',
   diffAmountsColor = '',
   large = false,
+  extraLarge = false,
 }) => {
   return (
     <Box className={className}>
       <Typography
-        variant={large ? 'body2' : 'caption'}
-        sx={{ color: (theme) => theme.palette.text.disabled, display: 'flex', alignItems: 'center' }}
+        variant={extraLarge ? 'body1' : large ? 'body2' : 'caption'}
+        sx={{
+          color: (theme) => theme.palette.text.disabled,
+          display: 'flex',
+          alignItems: 'center',
+          fontWeight: extraLarge ? '500' : 'normal',
+          mb: extraLarge ? '8px' : '',
+        }}
       >
         {icon && <img src={icon} alt="" width="20px" height="20px" style={{ marginRight: '6px' }} />}
 

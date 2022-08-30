@@ -10,6 +10,7 @@ import numeral from 'numeral'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import CustomSwitch from 'uikitV2/components/CustomSwitch'
+import NoData from 'uikitV2/components/NoData'
 import { getAddress } from 'utils/addressHelpers'
 import PaginationCustom from './Pagination'
 import { Table, TD, TH, TR } from './Table'
@@ -22,11 +23,7 @@ interface TransactionType {
 const EmptyData = ({ text }) => (
   <TR>
     <TD colSpan={6}>
-      <div className="flex align-center justify-center" style={{ height: '400px' }}>
-        <Typography variant="body2" textAlign="center" color="text.disabled">
-          {text}
-        </Typography>
-      </div>
+      <NoData text={text} />
     </TD>
   </TR>
 )

@@ -287,6 +287,20 @@ let muiTheme = createTheme({
         },
       },
     },
+    MuiChip: {
+      styleOverrides: {
+        sizeSmall: {
+          minHeight: '26px',
+          fontSize: '0.875rem',
+          fontWeight: 'normal',
+          color: '#666666',
+        },
+        outlined: {
+          borderColor: '#e0e0e0',
+          background: 'rgba(224, 224, 224, 0.3)',
+        },
+      },
+    },
   },
 })
 

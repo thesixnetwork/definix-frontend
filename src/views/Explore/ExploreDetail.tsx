@@ -1,6 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { ArrowBackRounded } from '@mui/icons-material'
-import { Box, Button, Divider, Tab, Tabs, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Divider, Tab, Tabs, useMediaQuery, useTheme } from '@mui/material'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
@@ -9,8 +8,9 @@ import numeral from 'numeral'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { useMatchBreakpoints } from 'uikit-dev'
+import BackV2 from 'uikitV2/components/BackV2'
 import Card from 'uikitV2/components/Card'
 import TwoLineFormatV2 from 'uikitV2/components/TwoLineFormatV2'
 import { getAddress } from 'utils/addressHelpers'
@@ -497,17 +497,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         <title>Explore - Definix - Advance Your Crypto Assets</title>
       </Helmet>
 
-      <Box className="mb-2">
-        <Button
-          variant="text"
-          component={Link}
-          to="/rebalancing"
-          startIcon={<ArrowBackRounded color="inherit" />}
-          sx={{ fontWeight: 'normal', color: theme.palette.text.disabled }}
-        >
-          Back
-        </Button>
-      </Box>
+      <BackV2 to="/rebalancing" />
 
       <Card className="mb-3">
         <CardHeading rebalance={rebalance} />

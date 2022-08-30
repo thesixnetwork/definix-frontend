@@ -46,7 +46,7 @@ const PageTitle = ({
       </Typography>
 
       {caption && (
-        <Typography variant="body1" fontSize="1.125rem" color="#999999" className="mt-3">
+        <Typography variant="body1" fontSize="1.125rem" color="#999999" sx={{ mt: '12px' }}>
           {caption}
         </Typography>
       )}

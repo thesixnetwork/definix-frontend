@@ -1,4 +1,4 @@
-import { Box, Divider, styled, Typography } from '@mui/material'
+import { Box, BoxProps, Divider, styled, Typography } from '@mui/material'
 import React from 'react'
 import { Rebalance } from '../../../state/types'
 
@@ -10,67 +10,83 @@ interface CardHeadingType {
   className?: string
   setIsOpenAccordion?: (open: boolean) => void
   rebalance: Rebalance | any
+  hideDescription?: boolean
+  large?: boolean
 }
 
-const CardHeadingStyle = styled(Box)`
-  padding: 20px 20px 0 20px;
-  display: flex;
-  position: relative;
-  flex-wrap: wrap;
+interface CustomBoxProps {
+  hideDescription?: boolean
+}
 
-  .MuiDivider-root {
-    display: none;
-  }
+const CardHeadingStyle = styled(Box)<CustomBoxProps & BoxProps>(({ theme, hideDescription = false }) => ({
+  padding: '20px 20px 0 20px',
+  display: 'flex',
+  position: 'relative',
+  flexWrap: 'wrap',
+  flexDirection: 'column',
 
-  img {
-    border-radius: 6px;
-    width: 100%;
-    height: auto;
-    background: rgba(186, 191, 199, 0.12);
-    margin: 0 0 24px 0;
-    flex-shrink: 0;
-    max-width: 400px;
-  }
+  '.MuiDivider-root': {
+    display: 'none',
+  },
 
-  ${({ theme }) => theme.breakpoints.up('lg')} {
-    padding: 32px 32px 0 32px;
+  img: {
+    borderRadius: '6px',
+    width: '100%',
+    height: 'auto',
+    background: 'rgba(186, 191, 199, 0.12)',
+    margin: '0 0 24px 0',
+    flexShrink: '0',
+    maxWidth: '400px',
+  },
 
-    .MuiDivider-root {
-      display: block;
-    }
+  [theme.breakpoints.up('lg')]: {
+    padding: '32px 32px 0 32px',
+    flexDirection: 'row',
+    alignItems: hideDescription ? 'center' : 'initial',
 
-    img {
-      width: 160px;
-      margin: 0 32px 0 0;
-    }
-  }
-`
+    '.MuiDivider-root': {
+      display: 'block',
+    },
+
+    img: {
+      width: '160px',
+      margin: '0 32px 0 0',
+    },
+  },
+}))
 
 const CardHeading: React.FC<CardHeadingType> = ({
   className = '',
-
   rebalance = {},
+  hideDescription = false,
+  large = false,
 }) => {
   return (
-    <CardHeadingStyle className={className}>
+    <CardHeadingStyle hideDescription={hideDescription} className={className}>
       <img src={rebalance.icon[0]} alt="" />
 
       <Box>
         <Typography
           variant="h6"
-          fontSize="1rem !important"
+          fontSize={`${large ? '1.25rem' : '1rem'} !important`}
           textTransform="uppercase"
           fontWeight="bold"
-          className="mb-1"
         >
           {rebalance.title}
         </Typography>
-        <Typography variant="caption" sx={{ color: (theme) => theme.palette.text.disabled, display: 'block' }}>
-          {rebalance.description}
-        </Typography>
+
+        {!hideDescription && (
+          <Typography
+            variant="caption"
+            sx={{ color: (theme) => theme.palette.text.disabled, display: 'block' }}
+            className="mt-1"
+          >
+            {rebalance.description}
+          </Typography>
+        )}
       </Box>
 
-      <Divider sx={{ width: '100%', pt: 4, display: { xs: 'none', md: 'block' } }} />
+      {!hideDescription && <Divider sx={{ width: '100%', pt: 4, display: { xs: 'none', md: 'block' } }} />}
     </CardHeadingStyle>
   )
 }

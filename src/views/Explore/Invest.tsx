@@ -1,38 +1,39 @@
 /* eslint-disable no-nested-ternary */
-import numeral from 'numeral'
-import BigNumber from 'bignumber.js'
-import moment from 'moment'
-import React, { useRef, useCallback, useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
-import Lottie from 'react-lottie'
-import { Link, Redirect } from 'react-router-dom'
-import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { AbiItem } from 'web3-utils'
-import { provider } from 'web3-core'
-import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Box, Button, Divider, useMediaQuery, useTheme } from '@mui/material'
+import BigNumber from 'bignumber.js'
+import rebalanceAbi from 'config/abi/rebalance.json'
 import _ from 'lodash'
+import moment from 'moment'
+import numeral from 'numeral'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import Lottie from 'react-lottie'
+import { useDispatch } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
+import { ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
+import success from 'uikit-dev/animation/complete.json'
+import BackV2 from 'uikitV2/components/BackV2'
+import Card from 'uikitV2/components/Card'
+import CurrencyInputV2 from 'uikitV2/components/CurrencyInputV2'
+import PageTitle from 'uikitV2/components/PageTitle'
+import SmallestLayout from 'uikitV2/components/SmallestLayout'
+import TwoLineFormatV2 from 'uikitV2/components/TwoLineFormatV2'
 import { getAddress } from 'utils/addressHelpers'
 import { approveOther } from 'utils/callHelpers'
-import rebalanceAbi from 'config/abi/rebalance.json'
 import { getContract, getCustomContract } from 'utils/erc20'
-import success from 'uikit-dev/animation/complete.json'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
-import { useDispatch } from 'react-redux'
-import useTheme from 'hooks/useTheme'
-import { Rebalance } from '../../state/types'
-import { useBalances, useAllowances, useSlippage } from '../../state/hooks'
-import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
+import { provider } from 'web3-core'
+import { AbiItem } from 'web3-utils'
+import { simulateInvest } from '../../offline-pool'
+import { useAllowances, useBalances, usePriceFinixUsd, useSlippage } from '../../state/hooks'
 import { fetchRebalances } from '../../state/rebalance'
+import { Rebalance } from '../../state/types'
+import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
-import CurrencyInputPanel from './components/CurrencyInputPanel'
 import PriceUpdate from './components/PriceUpdate'
 import SettingButton from './components/SettingButton'
 import Share from './components/Share'
 import SpaceBetweenFormat from './components/SpaceBetweenFormat'
-import TwoLineFormat from './components/TwoLineFormat'
 import VerticalAssetRatio from './components/VerticalAssetRatio'
-import { simulateInvest } from '../../offline-pool'
 
 interface InvestType {
   rebalance: Rebalance | any
@@ -43,23 +44,6 @@ const SuccessOptions = {
   autoplay: true,
   animationData: success,
 }
-
-const MaxWidth = styled.div`
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-`
-
-const LeftPanelAbsolute = styled(LeftPanel)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  padding-bottom: 24px;
-`
 
 const CardInput = ({
   isSimulating,
@@ -76,7 +60,6 @@ const CardInput = ({
   const isMobile = !isXl
   const dispatch = useDispatch()
   const { account, ethereum } = useWallet()
-  const { isDark } = useTheme()
 
   const onApprove = (token) => async () => {
     const tokenContract = getContract(ethereum as provider, getAddress(token.address).toLowerCase())
@@ -105,49 +88,12 @@ const CardInput = ({
     <Card className="mb-4">
       <div className={isMobile ? 'pa-4 pt-2' : 'pa-6 pt-4'}>
         <div className="flex justify-space-between align-center mb-2">
-          <Button
-            variant="text"
-            as={Link}
-            to="/rebalancing/detail"
-            ml="-12px"
-            padding="0 12px"
-            size="sm"
-            startIcon={<ArrowBackIcon color="textSubtle" />}
-          >
-            <Text fontSize="14px" color="textSubtle">
-              Back
-            </Text>
-          </Button>
           <SettingButton />
         </div>
 
-        <TwoLineFormat
-          title="Share price"
-          subTitle="(Since inception)"
-          subTitleFontSize="11px"
-          titleColor={isDark ? '#ADB4C2' : ''}
-          value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-          percent={`${
-            rebalance.sharedPricePercentDiff >= 0
-              ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-              : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-          }%`}
-          percentClass={(() => {
-            if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-            if (rebalance.sharedPricePercentDiff > 0) return 'success'
-            return ''
-          })()}
-          large
-          className="mb-4"
-        />
-
-        <div className="flex">
-          <Text className="mb-2">Invest</Text>
-        </div>
-
-        <div className="mb-4">
+        <Box>
           {rebalance.ratio.map((c) => (
-            <CurrencyInputPanel
+            <CurrencyInputV2
               currency={c}
               balance={_.get(balances, findAddress(c))}
               id={`invest-${c.symbol}`}
@@ -156,7 +102,6 @@ const CardInput = ({
                 String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber()) !==
                 currentInput[getAddress(c.address).toLowerCase()]
               }
-              className="mb-2"
               value={currentInput[getAddress(c.address).toLowerCase()]}
               label=""
               onMax={() => {
@@ -191,13 +136,17 @@ const CardInput = ({
               }}
             />
           ))}
-        </div>
+        </Box>
 
-        <SpaceBetweenFormat
-          className="mb-4"
-          title="Total value"
-          value={`$${numeral(totalUSDAmount).format('0,0.[0000]')}`}
-        />
+        <Box my={4}>
+          <TwoLineFormatV2 extraLarge title="Total Amount" value="" />
+        </Box>
+
+        <Divider />
+
+        <Box my={4}>
+          <TwoLineFormatV2 extraLarge title="Total Value" value={`$${numeral(totalUSDAmount).format('0,0.[0000]')}`} />
+        </Box>
 
         {(() => {
           const totalInput = rebalance.ratio.map((c) => currentInput[getAddress(c.address).toLowerCase()]).join('')
@@ -212,14 +161,14 @@ const CardInput = ({
           })
           if (needsApproval) {
             return (
-              <Button fullWidth radii="small" disabled={isApproving} onClick={onApprove(needsApproval)}>
+              <Button size="large" fullWidth disabled={isApproving} onClick={onApprove(needsApproval)}>
                 Approve {needsApproval.symbol}
               </Button>
             )
           }
           return (
-            <Button fullWidth radii="small" disabled={isSimulating || totalInput.length === 0} onClick={onNext}>
-              Calculate invest amount
+            <Button size="large" fullWidth disabled={isSimulating || totalInput.length === 0} onClick={onNext}>
+              Calculate Invest amount
             </Button>
           )
         })()}
@@ -311,12 +260,6 @@ const CardCalculate = ({
   return (
     <Card className="mb-4">
       <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-6 py-4'} `}>
-        <Button variant="text" ml="-12px" mb="8px" padding="0 12px" startIcon={<ArrowBackIcon />} onClick={onBack}>
-          <Text fontSize="14px" color="textSubtle">
-            Back
-          </Text>
-        </Button>
-
         <CardHeading rebalance={rebalance} />
       </div>
 
@@ -368,7 +311,7 @@ const CardCalculate = ({
         />
         {/* <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" /> */}
 
-        <Button fullWidth radii="small" className="mt-2" disabled={isInvesting || isSimulating} onClick={onInvest}>
+        <Button fullWidth className="mt-2" disabled={isInvesting || isSimulating} onClick={onInvest}>
           Invest
         </Button>
       </div>
@@ -452,7 +395,7 @@ const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
           className="mb-2"
         />
 
-        <Button as={Link} to="/rebalancing/detail" fullWidth radii="small" className="mt-3">
+        <Button component={Link} to="/rebalancing/detail" fullWidth className="mt-3">
           Back to Rebalancing
         </Button>
       </div>
@@ -485,6 +428,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const prevRebalance = usePrevious(rebalance, {})
   const prevBalances = usePrevious(balances, {})
   const prevCurrentInput = usePrevious(currentInput, {})
+  const theme = useTheme()
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
+  const finixPrice = usePriceFinixUsd()
 
   useEffect(() => {
     if (account && rebalance) {
@@ -550,55 +496,89 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
     .div(new BigNumber(10).pow(usdToken.decimals || 18))
     .toNumber()
   return (
-    <>
-      <Helmet>
-        <title>Explore - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
+    <SmallestLayout>
+      <BackV2 to="/rebalancing/detail" />
+      <PageTitle title="Invest" caption="Invest in auto rebalancing products." sx={{ mb: '20px' }} />
 
-      <TwoPanelLayout>
-        <LeftPanelAbsolute isShowRightPanel={false}>
-          <MaxWidth>
-            {isInputting && (
-              <CardInput
-                rebalance={rebalance}
-                currentInput={currentInput}
-                setCurrentInput={setCurrentInput}
-                balances={balances}
-                allowances={allowances}
-                onNext={() => {
-                  setIsInputting(false)
-                  setIsCalculating(true)
-                }}
-                totalUSDAmount={totalUSDAmount}
-                isSimulating={isSimulating}
-              />
-            )}{' '}
-            {isCalculating && (
-              <CardCalculate
-                setTx={setTx}
-                currentInput={currentInput}
-                isInvesting={isInvesting}
-                setIsInvesting={setIsInvesting}
-                isSimulating={isSimulating}
-                recalculate={fetchData}
-                poolUSDBalances={poolUSDBalances}
-                poolAmounts={poolAmounts}
-                rebalance={rebalance}
-                onBack={() => {
-                  setIsCalculating(false)
-                  setIsInputting(true)
-                }}
-                onNext={() => {
-                  setIsCalculating(false)
-                  setIsInvested(true)
-                }}
-              />
-            )}
-            {isInvested && <CardResponse poolUSDBalances={poolUSDBalances} tx={tx} rebalance={rebalance} />}
-          </MaxWidth>
-        </LeftPanelAbsolute>
-      </TwoPanelLayout>
-    </>
+      <Card className="mb-3">
+        <CardHeading rebalance={rebalance} hideDescription large />
+        <Box display="flex" flexWrap="wrap" pb={{ xs: '20px', lg: 4 }} pt={{ xs: '20px', lg: 3 }}>
+          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'bd-r' : 'col-6 mb-3'}>
+            <TwoLineFormatV2
+              large
+              title="Yield APR"
+              value={numeral(
+                finixPrice
+                  .times(_.get(rebalance, 'finixRewardPerYearFromApollo', new BigNumber(0)))
+                  .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+                  .times(100)
+                  .toFixed(2),
+              ).format('0,0.[00]')}
+              tooltip="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+            />
+          </Box>
+          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'bd-r' : 'col-6'}>
+            <TwoLineFormatV2
+              large
+              title="Share Price (Since inception)"
+              value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+              percent={`${
+                rebalance.sharedPricePercentDiff >= 0
+                  ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                  : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+              }%`}
+              percentColor={(() => {
+                if (rebalance.sharedPricePercentDiff < 0) return 'error.main'
+                if (rebalance.sharedPricePercentDiff > 0) return 'success.main'
+                return ''
+              })()}
+            />
+          </Box>
+          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? '' : 'col-6'}>
+            <TwoLineFormatV2 large title="Risk-O-Meter" value="Medium" />
+          </Box>
+        </Box>
+      </Card>
+
+      {isInputting && (
+        <CardInput
+          rebalance={rebalance}
+          currentInput={currentInput}
+          setCurrentInput={setCurrentInput}
+          balances={balances}
+          allowances={allowances}
+          onNext={() => {
+            setIsInputting(false)
+            setIsCalculating(true)
+          }}
+          totalUSDAmount={totalUSDAmount}
+          isSimulating={isSimulating}
+        />
+      )}
+
+      {isCalculating && (
+        <CardCalculate
+          setTx={setTx}
+          currentInput={currentInput}
+          isInvesting={isInvesting}
+          setIsInvesting={setIsInvesting}
+          isSimulating={isSimulating}
+          recalculate={fetchData}
+          poolUSDBalances={poolUSDBalances}
+          poolAmounts={poolAmounts}
+          rebalance={rebalance}
+          onBack={() => {
+            setIsCalculating(false)
+            setIsInputting(true)
+          }}
+          onNext={() => {
+            setIsCalculating(false)
+            setIsInvested(true)
+          }}
+        />
+      )}
+      {isInvested && <CardResponse poolUSDBalances={poolUSDBalances} tx={tx} rebalance={rebalance} />}
+    </SmallestLayout>
   )
 }
 
