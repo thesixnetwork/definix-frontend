@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethers } from 'ethers'
+import ConnectButton from 'components/ConnectButton'
 import { StakeActionProps } from './types'
 
 const IconButtonWrapper = styled.div`
@@ -71,6 +72,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     if (!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished) {
       return (
         <Button
+          color="rgb(94, 81, 95)"
           onClick={() => {
             setReadyToStake(true)
           }}
@@ -85,6 +87,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     return (
       <IconButtonWrapper>
         <Button
+          color="rgb(94, 81, 95)"
           variant="secondary"
           disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
           onClick={
@@ -103,6 +106,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
         {!isOldSyrup && !isFinished && veloId !== 1 && (
           <Button
+            color="rgb(94, 81, 95)"
             variant="secondary"
             disabled={isFinished || veloId === 1}
             onClick={onPresentDeposit}
@@ -118,7 +122,13 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const renderApprovalOrStakeButton = () => {
     if (needsApproval && !isOldSyrup) {
       return (
-        <Button fullWidth radii="small" disabled={isFinished || requestedApproval} onClick={handleApprove}>
+        <Button
+          color="rgb(94, 81, 95)"
+          fullWidth
+          radii="small"
+          disabled={isFinished || requestedApproval}
+          onClick={handleApprove}
+        >
           {TranslateString(758, 'Approve Contract')}
         </Button>
       )
@@ -142,11 +152,21 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
   return (
     <div className={className}>
-      <Text textAlign="left" className="mb-2 flex align-center" color="textSubtle">
+      <Text fontSize="0.75rem" textAlign="left" className="mb-2 flex align-center" color="textSubtle">
         <MiniLogo src="/images/coins/finix.png" alt="" />
-        {`FINIX ${TranslateString(1074, 'Staked')}`}
+        {`${TranslateString(1074, 'My Staked')}`}
       </Text>
-      {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
+      {!account ? (
+        <ConnectButton
+          variant="contained"
+          color="secondary"
+          style={{ padding: '10px 20px', fontSize: '0.875rem', width: '100%', fontWeight: 'bold' }}
+        >
+          Connect Wallet
+        </ConnectButton>
+      ) : (
+        renderApprovalOrStakeButton()
+      )}
     </div>
   )
 }
