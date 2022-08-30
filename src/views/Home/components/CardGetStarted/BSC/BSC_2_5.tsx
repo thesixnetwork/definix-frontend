@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import React, { memo } from 'react'
 import { Heading, Text } from 'uikit-dev'

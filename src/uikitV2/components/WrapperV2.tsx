@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Box, styled, useMediaQuery, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import FooterV2 from './FooterV2'
