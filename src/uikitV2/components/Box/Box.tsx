@@ -1,7 +1,7 @@
-import { background, border, layout, position, space, color } from "styled-system";
-import styled from "styled-components";
-import { BoxProps } from "./types";
-import { getVariantTextStyle } from "../../text";
+import { background, border, layout, position, space, color } from 'styled-system'
+import styled from 'styled-components'
+import { BoxProps } from './types'
+import { getVariantTextStyle } from '../../text'
 
 const Box = styled.div<BoxProps>`
   ${background}
@@ -11,6 +11,6 @@ const Box = styled.div<BoxProps>`
   ${position}
   ${space}
   ${getVariantTextStyle()}
-`;
+`
 
-export default Box;
+export default Box

@@ -1,12 +1,12 @@
-import React, { useState, Children, ReactElement, cloneElement } from "react";
-import styled from "styled-components";
-import { layout, position as sPosition } from "styled-system";
-import DropdownButton from "../Button/DropdownButton";
-import DropdownItem from "./DropdownItem";
-import { DropdownSetProps, Position } from "./types";
+import React, { useState, Children, ReactElement, cloneElement } from 'react'
+import styled from 'styled-components'
+import { layout, position as sPosition } from 'styled-system'
+import DropdownButton from '../Button/DropdownButton'
+import DropdownItem from './DropdownItem'
+import { DropdownSetProps, Position } from './types'
 
 const DropdownContent = styled.div<{ position: Position; isOpen: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
 
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(34, 34, 34, 0.1);
@@ -26,21 +26,21 @@ const DropdownContent = styled.div<{ position: Position; isOpen: boolean }>`
   }
 
   ${({ position }) => `
-    ${position === "top" ? "bottom" : "top"}: 100%;
-    margin-${position === "top" ? "bottom" : "top"}: 4px;
+    ${position === 'top' ? 'bottom' : 'top'}: 100%;
+    margin-${position === 'top' ? 'bottom' : 'top'}: 4px;
   `}
   ${sPosition}
   ${layout}
-`;
+`
 
 const Container = styled.div`
   position: relative;
   width: 100%;
   height: max-content;
-`;
+`
 
 const DropdownSet: React.FC<DropdownSetProps> = ({
-  position = "bottom",
+  position = 'bottom',
   options,
   scale,
   isOpen,
@@ -65,15 +65,15 @@ const DropdownSet: React.FC<DropdownSetProps> = ({
             >
               {option.label}
             </DropdownItem>
-          );
+          )
         })}
       </DropdownContent>
     </Container>
-  );
-};
+  )
+}
 DropdownSet.defaultProps = {
-  position: "bottom",
-  scale: "md",
-};
+  position: 'bottom',
+  scale: 'md',
+}
 
-export default DropdownSet;
+export default DropdownSet

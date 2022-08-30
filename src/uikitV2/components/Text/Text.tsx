@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { space, typography, color, layout } from "styled-system";
-import { getVariantTextStyle } from "../../text";
-import { TextProps } from "./types";
+import styled from 'styled-components'
+import { space, typography, color, layout } from 'styled-system'
+import { getVariantTextStyle } from '../../text'
+import { TextProps } from './types'
 
 const Text = styled.div<TextProps>`
   white-space: pre-line;
@@ -12,10 +12,10 @@ const Text = styled.div<TextProps>`
   ${getVariantTextStyle()}
   ${color}
   ${layout}
-`;
+`
 
 Text.defaultProps = {
   small: false,
-};
+}
 
-export default Text;
+export default Text

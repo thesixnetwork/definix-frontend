@@ -1,11 +1,11 @@
-import React, { cloneElement, ElementType, isValidElement } from "react";
-import styled, { keyframes } from "styled-components";
-import getExternalLinkProps from "../../util/getExternalLinkProps";
-import StyledButton from "./StyledButton";
-import { ButtonProps, ButtonVariants, ButtonScales } from "./types";
+import React, { cloneElement, ElementType, isValidElement } from 'react'
+import styled, { keyframes } from 'styled-components'
+import getExternalLinkProps from '../../util/getExternalLinkProps'
+import StyledButton from './StyledButton'
+import { ButtonProps, ButtonVariants, ButtonScales } from './types'
 
 interface LoadingDot {
-  index: number;
+  index: number
 }
 
 const bounce = keyframes`
@@ -18,7 +18,7 @@ const bounce = keyframes`
   100% {
     opacity: 1;
   }
-`;
+`
 
 const StyledLoadingDot = styled.div<LoadingDot>`
   width: 5px;
@@ -26,27 +26,27 @@ const StyledLoadingDot = styled.div<LoadingDot>`
   background-color: #ffffff;
   border-radius: 5px;
   animation: ${bounce} 1.5s ${({ index }) => index * 0.2}s infinite;
-`;
+`
 
 const StyledLoading = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   column-gap: 4px;
-`;
+`
 
-const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.Element => {
-  const { startIcon, endIcon, external, className, isLoading, disabled, children, ...rest } = props;
-  const scaleAttr: ButtonScales = Object.values(ButtonScales).find((scale) => (rest as any)[scale]) || ButtonScales.MD;
-  const internalProps = external ? getExternalLinkProps() : {};
-  const isDisabled = isLoading || disabled;
-  const classNames = className ? [className] : [];
+const Button = <E extends ElementType = 'button'>(props: ButtonProps<E>): JSX.Element => {
+  const { startIcon, endIcon, external, className, isLoading, disabled, children, ...rest } = props
+  const scaleAttr: ButtonScales = Object.values(ButtonScales).find((scale) => (rest as any)[scale]) || ButtonScales.MD
+  const internalProps = external ? getExternalLinkProps() : {}
+  const isDisabled = isLoading || disabled
+  const classNames = className ? [className] : []
 
   if (isLoading) {
-    classNames.push("definix-button--loading");
+    classNames.push('definix-button--loading')
   }
 
   if (isDisabled && !isLoading) {
-    classNames.push("definix-button--disabled");
+    classNames.push('definix-button--disabled')
   }
 
   return (
@@ -58,7 +58,7 @@ const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.El
             endIcon,
           })}
       $isLoading={isLoading}
-      className={classNames.join(" ")}
+      className={classNames.join(' ')}
       disabled={isDisabled}
       {...internalProps}
       {...{
@@ -78,24 +78,24 @@ const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.El
         <>
           {isValidElement(startIcon) &&
             cloneElement(startIcon, {
-              className: "mr-s6",
+              className: 'mr-s6',
             })}
           {children}
           {isValidElement(endIcon) &&
             cloneElement(endIcon, {
-              className: "ml-s12",
+              className: 'ml-s12',
             })}
         </>
       )}
     </StyledButton>
-  );
-};
+  )
+}
 
 Button.defaultProps = {
   isLoading: false,
   external: false,
   variant: ButtonVariants.RED,
   disabled: false,
-};
+}
 
-export default Button;
+export default Button

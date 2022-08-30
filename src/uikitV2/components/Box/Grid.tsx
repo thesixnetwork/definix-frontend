@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import { background, border, layout, position, space, color, grid } from "styled-system";
-import { getVariantTextStyle } from "../../text";
-import Box from "./Box";
-import { GridComponentProps } from "./types";
+import styled from 'styled-components'
+import { background, border, layout, position, space, color, grid } from 'styled-system'
+import { getVariantTextStyle } from '../../text'
+import Box from './Box'
+import { GridComponentProps } from './types'
 
 const Grid = styled(Box)<GridComponentProps>`
   display: grid;
@@ -14,6 +14,6 @@ const Grid = styled(Box)<GridComponentProps>`
   ${space}
   ${grid}
   ${getVariantTextStyle()}
-`;
+`
 
-export default Grid;
+export default Grid

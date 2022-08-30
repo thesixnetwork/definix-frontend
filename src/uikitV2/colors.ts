@@ -1,5 +1,5 @@
-import { darken, lighten, rgba } from "polished";
-import { hexToRGB } from "./mixin";
+import { darken, lighten, rgba } from 'polished'
+import { hexToRGB } from './mixin'
 /*
 :root {
   --01-main-red: #ff5532;
@@ -21,50 +21,50 @@ import { hexToRGB } from "./mixin";
 */
 
 export enum ColorStyles {
-  RED = "red",
-  ORANGE = "orange",
-  YELLOW = "yellow",
-  GREEN = "green",
-  PALE = "pale",
-  LIGHTBROWN = "lightbrown",
-  BROWN = "brown",
-  DEEPBROWN = "deepbrown",
-  WHITE = "white",
-  LIGHTGREY = "lightgrey",
-  MEDIUMGREY = "mediumgrey",
-  DEEPGREY = "deepgrey",
-  BLACK = "black",
-  YELLOWBG2 = "yellowBg2",
-  YELLOWBG1 = "yellowBg1",
-  LIGHTGREY_20 = "lightGrey20",
-  LIGHTGREY_50 = "lightGrey50",
-  GREY = "grey",
-  LIGHTBROWN_20 = "lightBrown20",
-  LIGHTBROWN_50 = "lightBrown50",
-  BROWN_30 = "brown30",
-  WHITE_30 = "white30",
-  LIGHTGREY_30 = "lightGrey30",
-  YELLOW_20 = "yellow20",
+  RED = 'red',
+  ORANGE = 'orange',
+  YELLOW = 'yellow',
+  GREEN = 'green',
+  PALE = 'pale',
+  LIGHTBROWN = 'lightbrown',
+  BROWN = 'brown',
+  DEEPBROWN = 'deepbrown',
+  WHITE = 'white',
+  LIGHTGREY = 'lightgrey',
+  MEDIUMGREY = 'mediumgrey',
+  DEEPGREY = 'deepgrey',
+  BLACK = 'black',
+  YELLOWBG2 = 'yellowBg2',
+  YELLOWBG1 = 'yellowBg1',
+  LIGHTGREY_20 = 'lightGrey20',
+  LIGHTGREY_50 = 'lightGrey50',
+  GREY = 'grey',
+  LIGHTBROWN_20 = 'lightBrown20',
+  LIGHTBROWN_50 = 'lightBrown50',
+  BROWN_30 = 'brown30',
+  WHITE_30 = 'white30',
+  LIGHTGREY_30 = 'lightGrey30',
+  YELLOW_20 = 'yellow20',
 }
 
 const colorHex = {
-  [ColorStyles.RED]: "#ff5532",
-  [ColorStyles.ORANGE]: "#ff6828",
-  [ColorStyles.YELLOW]: "#fea948",
-  [ColorStyles.GREEN]: "#02a1a1",
-  [ColorStyles.PALE]: "#dad0c5",
-  [ColorStyles.LIGHTBROWN]: "#b4a9a8",
-  [ColorStyles.BROWN]: "#5e515f",
-  [ColorStyles.DEEPBROWN]: "#413343",
-  [ColorStyles.WHITE]: "#ffffff",
-  [ColorStyles.LIGHTGREY]: "#e0e0e0",
-  [ColorStyles.MEDIUMGREY]: "#999999",
-  [ColorStyles.DEEPGREY]: "#666666",
-  [ColorStyles.BLACK]: "#222222",
-  [ColorStyles.YELLOWBG2]: "#ffedcb",
-  [ColorStyles.YELLOWBG1]: "#fffbf5",
-  [ColorStyles.GREY]: "#cccccc",
-};
+  [ColorStyles.RED]: '#ff5532',
+  [ColorStyles.ORANGE]: '#ff6828',
+  [ColorStyles.YELLOW]: '#fea948',
+  [ColorStyles.GREEN]: '#02a1a1',
+  [ColorStyles.PALE]: '#dad0c5',
+  [ColorStyles.LIGHTBROWN]: '#b4a9a8',
+  [ColorStyles.BROWN]: '#5e515f',
+  [ColorStyles.DEEPBROWN]: '#413343',
+  [ColorStyles.WHITE]: '#ffffff',
+  [ColorStyles.LIGHTGREY]: '#e0e0e0',
+  [ColorStyles.MEDIUMGREY]: '#999999',
+  [ColorStyles.DEEPGREY]: '#666666',
+  [ColorStyles.BLACK]: '#222222',
+  [ColorStyles.YELLOWBG2]: '#ffedcb',
+  [ColorStyles.YELLOWBG1]: '#fffbf5',
+  [ColorStyles.GREY]: '#cccccc',
+}
 
 export const baseColors = {
   ...colorHex,
@@ -90,10 +90,10 @@ export const baseColors = {
   textInvert: colorHex.white,
   textSubtle: colorHex.mediumgrey,
   background: colorHex.yellowBg2,
-  backgroundBlueGradient: "linear-gradient(#0D418E #349BE7)",
-  backgroundBox: rgba("#babfc7", 0.12),
+  backgroundBlueGradient: 'linear-gradient(#0D418E #349BE7)',
+  backgroundBox: rgba('#babfc7', 0.12),
   backgroundDisabled: rgba(colorHex.lightgrey, 0.2),
-  connectBtnInner: "#8C90A5",
+  connectBtnInner: '#8C90A5',
   contrast: colorHex.black,
   secondary: colorHex.green,
   tertiary: colorHex.yellow,
@@ -104,12 +104,12 @@ export const baseColors = {
   white80: hexToRGB(colorHex.white, 0.8),
   brown30: hexToRGB(colorHex.brown, 0.3),
   yellow20: hexToRGB(colorHex.yellow, 0.2),
-};
+}
 
 export const brandColors = {
-  binance: "#F0B90B",
-  klaytn: "#4F463C",
-};
+  binance: '#F0B90B',
+  klaytn: '#4F463C',
+}
 
 export const customColors = {
   [ColorStyles.LIGHTGREY_20]: hexToRGB(baseColors[ColorStyles.LIGHTGREY], 0.2),
@@ -120,17 +120,17 @@ export const customColors = {
   [ColorStyles.LIGHTBROWN_50]: hexToRGB(baseColors[ColorStyles.LIGHTBROWN], 0.5),
   [ColorStyles.BROWN_30]: hexToRGB(baseColors[ColorStyles.BROWN], 0.3),
   [ColorStyles.WHITE_30]: hexToRGB(baseColors[ColorStyles.WHITE], 0.3),
-};
+}
 
 export const lightColors = {
   ...baseColors,
   ...brandColors,
   ...customColors,
-};
+}
 
 export const darkColors = {
   ...baseColors,
   ...brandColors,
   ...customColors,
-};
-export default {};
+}
+export default {}

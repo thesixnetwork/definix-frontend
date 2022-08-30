@@ -1,35 +1,35 @@
-import { ColorStyles } from "../../colors";
-import { textStyle } from "../../text";
-import { ButtonScales, ButtonVariants } from "./types";
+import { ColorStyles } from '../../colors'
+import { textStyle } from '../../text'
+import { ButtonScales, ButtonVariants } from './types'
 
 export const scaleVariants = {
   [ButtonScales.XS]: {
-    height: "32px",
-    padding: "7px 12px",
+    height: '32px',
+    padding: '7px 12px',
     // minWidth: "142px",
     ...textStyle.R_12B,
   },
   [ButtonScales.SM]: {
-    height: "36px",
-    padding: "0 16px",
+    height: '36px',
+    padding: '0 16px',
     ...textStyle.R_12B,
   },
   [ButtonScales.MD]: {
-    height: "40px",
-    padding: "10px 12px",
+    height: '40px',
+    padding: '10px 12px',
     // minWidth: "186px",
     ...textStyle.R_14B,
   },
   [ButtonScales.LG]: {
-    height: "48px",
-    padding: "10px 12px",
+    height: '48px',
+    padding: '10px 12px',
     // minWidth: "186px",
     ...textStyle.R_16B,
   },
   [ButtonScales.ICON]: {
-    height: "32px",
+    height: '32px',
   },
-};
+}
 export const styleVariants = {
   [ButtonVariants.RED]: {
     backgroundColor: ColorStyles.RED,
@@ -50,12 +50,12 @@ export const styleVariants = {
   [ButtonVariants.LINE]: {
     backgroundColor: ColorStyles.WHITE,
     color: ColorStyles.DEEPGREY,
-    borderWidth: "1px",
-    borderStyle: "solid",
+    borderWidth: '1px',
+    borderStyle: 'solid',
     borderColor: ColorStyles.LIGHTGREY,
   },
   [ButtonVariants.TRANSPARENT]: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
   [ButtonVariants.YELLOW]: {
     backgroundColor: ColorStyles.YELLOW,
@@ -80,20 +80,20 @@ export const styleVariants = {
   },
 
   [ButtonVariants.SUBTLE]: {
-    backgroundColor: "textSubtle",
-    color: "white",
+    backgroundColor: 'textSubtle',
+    color: 'white',
   },
   [ButtonVariants.DANGER]: {
-    backgroundColor: "failure",
-    color: "white",
+    backgroundColor: 'failure',
+    color: 'white',
   },
   [ButtonVariants.SUCCESS]: {
-    backgroundColor: "success",
-    color: "white",
+    backgroundColor: 'success',
+    color: 'white',
   },
   [ButtonVariants.TEXT]: {
-    backgroundColor: "transparent",
-    color: "textSubtle",
-    boxShadow: "none",
+    backgroundColor: 'transparent',
+    color: 'textSubtle',
+    boxShadow: 'none',
   },
-};
+}
