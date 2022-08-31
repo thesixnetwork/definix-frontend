@@ -52,6 +52,12 @@ const Farm: React.FC = () => {
   const [isPhrase1, setIsPhrase1] = useState(false)
   const [listView, setListView] = useState(true)
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [allDisplayChiose, setAllDisplayChiose] = useState([
+    { key: 'Recommend', value: 'sortOrder' },
+    { key: 'APR', value: 'apr' },
+    { key: 'Total staked', value: 'total' },
+  ])
+  const [selectDisplay, setSelectDisplay] = useState('recommend')
   const [modalNode, setModalNode] = useState<React.ReactNode>()
 
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
@@ -279,39 +285,29 @@ const Farm: React.FC = () => {
           setLiveOnly={setLiveOnly}
           listView={listView}
           setListView={setListView}
+          selectDisplay={selectDisplay}
+          allDisplayChiose={allDisplayChiose}
+          setSelectDisplay={setSelectDisplay}
         />
       </PageTitle>
 
       <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
-        {IS_GENESIS ? (
-          <div>
-            <Route exact path={`${path}`}>
-              <>
-                {poolsWithApy.map((pool) => (
-                  <PoolCardGenesis key={pool.sousId} pool={pool} />
-                ))}
-                {/* <Coming /> */}
-              </>
-            </Route>
-          </div>
-        ) : (
-          <FlexLayout cols={listView ? 1 : 3}>
-            <Route exact path={`${path}`}>
-              {liveOnly
-                ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
-                    <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-                  ))
-                : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                    (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
-                  )}
-            </Route>
-            <Route path={`${path}/history`}>
-              {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-                <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-              ))}
-            </Route>
-          </FlexLayout>
-        )}
+        <FlexLayout cols={listView ? 1 : 3}>
+          <Route exact path={`${path}`}>
+            {liveOnly
+              ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
+                  <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                ))
+              : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
+                  (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                )}
+          </Route>
+          <Route path={`${path}/history`}>
+            {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+              <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+            ))}
+          </Route>
+        </FlexLayout>
       </TimerWrapper>
 
       {isOpenModal && React.isValidElement(modalNode) && (

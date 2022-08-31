@@ -52,6 +52,12 @@ const Farm: React.FC = () => {
   const [isPhrase1, setIsPhrase1] = useState(false)
   const [listView, setListView] = useState(true)
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [allDisplayChiose, setAllDisplayChiose] = useState([
+    { key: 'Recommend', value: 'recommend' },
+    { key: 'APR', value: 'apr' },
+    { key: 'Total staked', value: 'total' },
+  ])
+  const [selectDisplay, setSelectDisplay] = useState('recommend')
   const [modalNode, setModalNode] = useState<React.ReactNode>()
 
   const [poolVelo1, setPoolVelo1] = useState<PoolWithApy>({
@@ -356,58 +362,48 @@ const Farm: React.FC = () => {
         title="Partnership Pool"
         caption="The Partnership Pool is a place you can stake your single tokens in order to generate high returns in the form of external partner assets. The amount of returns will be calculated by the annual percentage rate (APR)."
         img={poolImg}
-      />
-
-      <PoolTabButtons
-        stackedOnly={stackedOnly}
-        setStackedOnly={setStackedOnly}
-        liveOnly={liveOnly}
-        setLiveOnly={setLiveOnly}
-        listView={listView}
-        setListView={setListView}
-      />
+      >
+        <PoolTabButtons
+          stackedOnly={stackedOnly}
+          setStackedOnly={setStackedOnly}
+          liveOnly={liveOnly}
+          setLiveOnly={setLiveOnly}
+          listView={listView}
+          setListView={setListView}
+          selectDisplay={selectDisplay}
+          allDisplayChiose={allDisplayChiose}
+          setSelectDisplay={setSelectDisplay}
+        />
+      </PageTitle>
 
       <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
-        {IS_GENESIS ? (
-          <div>
-            <Route exact path={`${path}`}>
-              <>
-                {poolsWithApy.map((pool) => (
-                  <PoolCardGenesis key={pool.sousId} pool={pool} />
-                ))}
-                {/* <Coming /> */}
-              </>
-            </Route>
-          </div>
-        ) : (
-          <FlexLayout cols={listView ? 1 : 3}>
-            <Route exact path={`${path}`}>
-              <div>
-                <PoolCard
-                  key={poolVelo2.sousId}
-                  pool={poolVelo2}
-                  isHorizontal={listView}
-                  veloAmount={amountVfinix2}
-                  account={account}
-                  veloId={2}
-                />
-                <PoolCard
-                  key={poolVelo1.sousId}
-                  pool={poolVelo1}
-                  isHorizontal={listView}
-                  veloAmount={amountVfinix1}
-                  account={account}
-                  veloId={1}
-                />
-              </div>
-            </Route>
-            {/* <Route path={`${path}/history`}>
+        <FlexLayout cols={listView ? 1 : 3}>
+          <Route exact path={`${path}`}>
+            <div>
+              <PoolCard
+                key={poolVelo2.sousId}
+                pool={poolVelo2}
+                isHorizontal={listView}
+                veloAmount={amountVfinix2}
+                account={account}
+                veloId={2}
+              />
+              <PoolCard
+                key={poolVelo1.sousId}
+                pool={poolVelo1}
+                isHorizontal={listView}
+                veloAmount={amountVfinix1}
+                account={account}
+                veloId={1}
+              />
+            </div>
+          </Route>
+          {/* <Route path={`${path}/history`}>
                     {orderBy(finishedPools, ['sortOrder']).map((pool) => (
                       <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                     ))}
                   </Route> */}
-          </FlexLayout>
-        )}
+        </FlexLayout>
       </TimerWrapper>
 
       {isOpenModal && React.isValidElement(modalNode) && (
