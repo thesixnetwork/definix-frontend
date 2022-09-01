@@ -1,0 +1,67 @@
+import React, { useMemo } from 'react'
+import { get } from 'lodash-es'
+import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
+import { Flex } from '@fingerlabs/definixswap-uikit-v2'
+import { usePriceFinixUsd, useRebalances } from 'state/hooks'
+import { Rebalance } from 'state/types'
+import FormAPR from './FormAPR'
+
+interface ExtendRebalance extends Rebalance {
+  apr: number
+}
+
+const WrapImage = styled(Flex)`
+  width: 120px;
+  height: 48px;
+  align-items: flex-end;
+  border-radius: 4px;
+  overflow: hidden;
+  @media screen and (max-width: 1280px) {
+    width: 90px;
+    height: 36px;
+  }
+`
+
+const ExploreHighAPR: React.FC = () => {
+  const rebalances = useRebalances()
+  const finixPrice = usePriceFinixUsd()
+
+  const highAprRebalance = useMemo(() => {
+    return rebalances.reduce<ExtendRebalance>((acc, rebalance) => {
+      const temp = {
+        ...rebalance,
+        apr: new BigNumber(finixPrice)
+          .times(get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+          .div(get(rebalance, 'totalAssetValue', new BigNumber(0)))
+          .times(100)
+          .toNumber(),
+      }
+
+      //   if (!acc.apr || acc.apr < temp.apr) {
+      //     acc = temp
+      //   }
+
+      return temp
+    }, {} as ExtendRebalance)
+  }, [finixPrice, rebalances])
+
+  return highAprRebalance ? (
+    <FormAPR
+      isFarm={false}
+      title={highAprRebalance.title}
+      totalAssetValue={get(highAprRebalance, 'totalAssetValue', 0).valueOf() as number}
+      apr={numeral(highAprRebalance.apr).format('0,0.00')}
+      Images={
+        <WrapImage>
+          <img src={highAprRebalance.icon[0]} alt="" />
+        </WrapImage>
+      }
+    />
+  ) : (
+    <></>
+  )
+}
+
+export default ExploreHighAPR
