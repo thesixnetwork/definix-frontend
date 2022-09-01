@@ -217,7 +217,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ balance, rebalance = {}, onCli
               component={Link}
               to="/rebalancing/detail"
               onClick={onClickViewDetail}
-              sx={{ width: { xs: '100px', sm: '120px' }, px: 1 }}
+              sx={{ width: '120px', px: 1 }}
             >
               View Details
             </Button>

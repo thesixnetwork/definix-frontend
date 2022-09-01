@@ -107,7 +107,13 @@ const CurrentInvestment = ({ rebalance }) => {
   }, [combinedAmount])
 
   return (
-    <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      flexDirection={{ xs: 'column', sm: 'row' }}
+      alignItems={{ xs: 'initial', sm: 'center' }}
+      flexWrap="wrap"
+    >
       <TwoLineFormatV2
         large
         title="Current Investment"
@@ -126,24 +132,18 @@ const CurrentInvestment = ({ rebalance }) => {
         })()}
       />
 
-      <Box display="flex" alignItems="center" flexGrow={{ xs: 1, sm: 0 }} pt={{ xs: '0.75rem', sm: 0 }}>
-        <Button
-          component={Link}
-          to="/rebalancing/invest"
-          fullWidth
-          variant="contained"
-          sx={{ width: { xs: '100px', sm: '120px' }, mr: '0.75rem' }}
-        >
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent={{ xs: 'initial', sm: 'flex-end' }}
+        flexGrow={{ xs: 1, sm: 0 }}
+        pt={{ xs: '0.75rem', sm: 0 }}
+        sx={{ width: { xs: '100%', sm: '252px' } }}
+      >
+        <Button component={Link} to="/rebalancing/invest" fullWidth variant="contained" sx={{ mr: '0.75rem' }}>
           Invest
         </Button>
-        <Button
-          component={Link}
-          to="/rebalancing/withdraw"
-          fullWidth
-          variant="contained"
-          sx={{ width: { xs: '100px', sm: '120px' } }}
-          color="info"
-        >
+        <Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info">
           Withdraw
         </Button>
       </Box>

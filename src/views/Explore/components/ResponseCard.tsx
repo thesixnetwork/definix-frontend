@@ -67,7 +67,7 @@ const ResponseCard = ({ tx, rebalance, poolUSDBalances }) => {
         />
 
         {transactionHash && (
-          <Box display="flex" justifyContent="space-between">
+          <Box display="flex" justifyContent="space-between" flexWrap="wrap">
             <Typography variant="body2" color="text.secondary">
               Transaction Hash
               <Typography variant="body2" fontWeight="bold" className="ml-2" component="span">
