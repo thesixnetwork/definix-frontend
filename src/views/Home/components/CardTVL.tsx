@@ -2,15 +2,18 @@ import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import useI18n from 'hooks/useI18n'
 import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { usePriceTVL, usePriceCaverTVL } from 'state/hooks'
 import styled from 'styled-components'
-import { Card, Heading, Text } from 'uikit-dev'
+import { CardBody, Text, Flex, Coin } from '@fingerlabs/definixswap-uikit-v2'
+import { Heading, useMatchBreakpoints } from 'uikit-dev'
+import Card from 'uikitV2/components/Card'
 import Helper from 'uikit-dev/components/Helper'
 import bscWhite from 'uikit-dev/images/bsc-white.png'
 import klaytnWhite from 'uikit-dev/images/klaytn-white.png'
 import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
+import CurrencyText from 'components/Text/CurrencyText'
 import CardValue from './CardValue'
 
 const Total = styled.div`
@@ -40,22 +43,174 @@ const Row = styled.div`
   }
 `
 
+const Title = styled(Text)`
+  margin-top: 0;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.44;
+  letter-spacing: normal;
+  color: #999;
+  @media screen and (max-width: 1280px) {
+    margin-top: 0;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+  }
+`
+
+const TotalTvlValue = styled(Text)`
+  color: #222;
+  margin-top: 0;
+  font-size: 32px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  margin-top: 8px;
+  @media screen and (max-width: 1280px) {
+    margin-top: 0;
+    font-size: 26px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.38;
+    letter-spacing: normal;
+    margin-top: 6px;
+  }
+`
+
+const WrapTvl = styled(Flex)`
+  margin-top: 40px;
+  @media screen and (max-width: 1280px) {
+    margin-top: 30px;
+    flex-direction: column;
+  }
+`
+
+const TvlItem = styled(Flex)`
+  flex-direction: column;
+  width: 50%;
+  :last-child {
+    border-left: 1px solid #e0e0e0;
+    padding-left: 40px;
+  }
+  @media screen and (max-width: 1280px) {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    :last-child {
+      margin-bottom: 0;
+      padding-left: 0;
+      border-left: none;
+    }
+  }
+`
+
+const TvlValue = styled(Text)`
+  margin-top: 8px;
+  font-size: 23px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  @media screen and (max-width: 1280px) {
+    margin-top: 0;
+    font-size: 16px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+  }
+`
+
+const WrapCardBody = styled(CardBody)`
+  padding: 40px;
+  @media screen and (max-width: 1280px) {
+    margin-top: 0;
+    padding: 24px;
+  }
+`
+
 const CardTVL = ({ className = '' }) => {
-  const { fastRefresh } = useRefresh()
-  const totalTVL = usePriceTVL().toNumber()
-  const totalCaverTVL = usePriceCaverTVL().toNumber()
   const TranslateString = useI18n()
   // const data = useGetStats()
   // const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = getBalanceNumber(totalSupply)
-  // const transfer = 500000
-  // const actualBurn = burnedBalance - transfer
+
+  const { isXxl } = useMatchBreakpoints()
+  const { fastRefresh } = useRefresh()
+  const totalTVL = usePriceTVL().toNumber()
+  // const totalWeb3TVL = usePriceWeb3TVL().toNumber()
+  const totalCaverTVL = usePriceCaverTVL().toNumber()
+  const total = useMemo(() => (totalTVL || 0) + (totalCaverTVL || 0), [totalTVL, totalCaverTVL])
 
   useEffect(() => {
     fetchTVL()
   }, [fastRefresh])
+
+  return (
+    <Card>
+      <WrapCardBody>
+        <Title>Total Value Locked (TVL)</Title>
+        <TotalTvlValue>{total <= 0 ? 'N/A' : <CurrencyText value={total} toFixed={0} />}</TotalTvlValue>
+        <WrapTvl>
+          <TvlItem>
+            <Flex alignItems="center">
+              <Coin symbol="oBNB" size={isXxl ? '24px' : '22px'} />
+              <Text
+                marginLeft="8px"
+                style={{
+                  fontSize: '14px',
+                  fontWeight: 'normal',
+                  fontStretch: 'normal',
+                  fontStyle: 'normal',
+                  lineHeight: 1.43,
+                  letterSpacing: 'normal',
+                  color: '#999',
+                }}
+              >
+                TVL in <strong>BSC</strong>
+              </Text>
+            </Flex>
+            <TvlValue>
+              <CurrencyText value={totalCaverTVL} toFixed={0} />
+            </TvlValue>
+          </TvlItem>
+          <TvlItem>
+            <Flex alignItems="center">
+              <Coin symbol="KLAY" size={isXxl ? '24px' : '22px'} />
+              <Text
+                marginLeft="8px"
+                style={{
+                  fontSize: '14px',
+                  fontWeight: 'normal',
+                  fontStretch: 'normal',
+                  fontStyle: 'normal',
+                  lineHeight: 1.43,
+                  letterSpacing: 'normal',
+                  color: '#999',
+                }}
+              >
+                TVL in <strong>Klaytn</strong>
+              </Text>
+            </Flex>
+            <TvlValue>
+              <CurrencyText value={totalTVL} toFixed={0} />
+            </TvlValue>
+          </TvlItem>
+        </WrapTvl>
+      </WrapCardBody>
+    </Card>
+  )
 
   return (
     <Card className={className}>
