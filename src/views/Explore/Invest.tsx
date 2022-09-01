@@ -123,10 +123,16 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       <BackV2 to="/rebalancing/detail" />
       <PageTitle title="Invest" caption="Invest in auto rebalancing products." sx={{ mb: '20px' }} />
 
-      <Card className="mb-3">
-        <CardHeading rebalance={rebalance} hideDescription large />
-        <Box display="flex" flexWrap="wrap" pb={{ xs: '20px', lg: 4 }} pt={{ xs: '20px', lg: 3 }}>
-          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'bd-r' : 'col-6 mb-3'}>
+      <Card className="mb-3" sx={{ p: { xs: '20px', sm: '40px' } }}>
+        <CardHeading
+          rebalance={rebalance}
+          hideDescription
+          large
+          className="pa-0"
+          breakpoint={theme.breakpoints.values.sm}
+        />
+        <Box display="flex" flexWrap="wrap" pt={{ xs: '20px', sm: 3 }}>
+          <Box pr={{ lg: 4 }} className={lgUp ? 'bd-r' : 'col-6 mb-3'}>
             <TwoLineFormatV2
               large
               title="Yield APR"
@@ -140,7 +146,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
               tooltip="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
             />
           </Box>
-          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'bd-r' : 'col-6'}>
+          <Box px={{ lg: 4 }} className={lgUp ? 'bd-r' : 'col-6'}>
             <TwoLineFormatV2
               large
               title="Share Price (Since inception)"
@@ -157,7 +163,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
               })()}
             />
           </Box>
-          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? '' : 'col-6'}>
+          <Box px={{ lg: 4 }} className={lgUp ? '' : 'col-6'}>
             <TwoLineFormatV2 large title="Risk-O-Meter" value="Medium" />
           </Box>
         </Box>

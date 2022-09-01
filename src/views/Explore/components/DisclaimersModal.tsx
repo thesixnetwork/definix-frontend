@@ -55,7 +55,7 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
     )
   }
   return (
-    <ModalV2 title="Disclaimers" hideCloseButton maxWidth="486px" maxHeight="600px" onDismiss={onDismiss}>
+    <ModalV2 title="Disclaimers" hideCloseButton maxWidth="490px" maxHeight="600px" onDismiss={onDismiss}>
       <Box display="flex" flexDirection="column" height="100%">
         <BoxStyle>
           <Typography variant="caption" color="textSecondary" className="d-block mb-4">

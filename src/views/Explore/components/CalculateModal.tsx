@@ -98,7 +98,7 @@ const CalculateModal = ({
   }
 
   return (
-    <ModalV2 title="Confirm Invest" onDismiss={onDismiss} sx={{ width: '490px' }}>
+    <ModalV2 title="Confirm Invest" onDismiss={onDismiss} sx={{ width: '100%', maxWidth: { md: '490px' } }}>
       {isInvested ? (
         <ResponseCard tx={tx} rebalance={rebalance} poolUSDBalances={poolUSDBalances} />
       ) : (

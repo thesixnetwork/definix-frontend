@@ -21,7 +21,12 @@ const Item = ({ coin, onApprove }) => {
   const thisName = coin.symbol === 'WKLAY' ? 'KLAY' : coin.symbol === 'WBNB' ? 'BNB' : coin.symbol
 
   return (
-    <Box display="flex" justifyContent="space-between" mb={1}>
+    <Box
+      display="flex"
+      flexDirection={{ xs: 'column', sm: 'row' }}
+      justifyContent="space-between"
+      mb={{ xs: 3, sm: 1 }}
+    >
       <Coin>
         <img src={`/images/coins/${coin.symbol || ''}.png`} alt="" />
         <Typography fontWeight="bold">
@@ -32,29 +37,32 @@ const Item = ({ coin, onApprove }) => {
           </Typography>
         </Typography>
       </Coin>
-
-      {!coin.needsApproval || !coin.currentValue ? (
-        <Button
-          variant="outlined"
-          color="secondary"
-          sx={{ width: '200px', display: 'flex' }}
-          startIcon={<CheckRounded />}
-          disabled
-        >
-          {`${thisName} Approved`}
-        </Button>
-      ) : (
-        <Button
-          variant="outlined"
-          color="secondary"
-          sx={{ width: '140px' }}
-          onClick={() => {
-            onApprove(coin)
-          }}
-        >
-          Approve {thisName}
-        </Button>
-      )}
+      <Box mt={{ xs: 1, sm: 0 }}>
+        {!coin.needsApproval || !coin.currentValue ? (
+          <Button
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ maxWidth: { sm: '200px' }, display: 'flex' }}
+            startIcon={<CheckRounded />}
+            disabled
+          >
+            {`${thisName} Approved`}
+          </Button>
+        ) : (
+          <Button
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ maxWidth: { sm: '140px' } }}
+            onClick={() => {
+              onApprove(coin)
+            }}
+          >
+            Approve {thisName}
+          </Button>
+        )}
+      </Box>
     </Box>
   )
 }

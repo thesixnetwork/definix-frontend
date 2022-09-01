@@ -29,6 +29,18 @@ const InputBox = styled(Box)`
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.palette.divider};
   min-height: 44px;
+
+  input {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    input {
+      width: initial;
+      margin-bottom: 0;
+    }
+  }
 `
 
 const CurrencyInputV2 = ({

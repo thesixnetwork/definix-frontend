@@ -75,7 +75,7 @@ let muiTheme = createTheme({
           minHeight: '40px',
         },
         sizeLarge: {
-          fontSize: '0.875rem',
+          fontSize: '1rem',
           minHeight: '48px',
         },
         containedInfo: {
