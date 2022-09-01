@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal } from 'uikit-dev'
+import ModalV2 from 'uikitV2/components/ModalV2'
 import SlippageToleranceSetting from './SlippageToleranceSettings'
 import TransactionDeadlineSetting from './TransactionDeadlineSetting'
 
@@ -9,10 +9,10 @@ type SettingsModalProps = {
 
 const SettingsModal = ({ onDismiss }: SettingsModalProps) => {
   return (
-    <Modal title="Settings" onDismiss={onDismiss} isRainbow={false}>
+    <ModalV2 title="Settings" onDismiss={onDismiss}>
       <SlippageToleranceSetting />
       <TransactionDeadlineSetting />
-    </Modal>
+    </ModalV2>
   )
 }
 

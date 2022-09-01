@@ -18,9 +18,10 @@ const TwoLineFormatV2 = ({
   diffAmountsColor = '',
   large = false,
   extraLarge = false,
+  sx = undefined,
 }) => {
   return (
-    <Box className={className}>
+    <Box className={className} sx={sx}>
       <Typography
         variant={extraLarge ? 'body1' : large ? 'body2' : 'caption'}
         sx={{

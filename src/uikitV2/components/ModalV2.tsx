@@ -60,7 +60,7 @@ const ModalV2: React.FC<Props> = ({
       )}
     </Box>
 
-    <Box p={3} pt={0} flexGrow={1} height="calc(100% - 68px)">
+    <Box p={3} pt={0} flexGrow={1} height={`calc(100% - ${onBack || onDismiss ? '74px' : '68px'})`}>
       {children}
     </Box>
   </CardStyle>

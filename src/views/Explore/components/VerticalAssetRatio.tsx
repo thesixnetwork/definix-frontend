@@ -1,50 +1,53 @@
-import React from 'react'
-import _ from 'lodash'
-import numeral from 'numeral'
+/* eslint-disable no-nested-ternary */
+import { Box, Typography } from '@mui/material'
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
+import React from 'react'
 import styled from 'styled-components'
-import { Text } from 'uikit-dev'
+import { getTokenName } from 'utils/getTokenSymbol'
+import _ from 'lodash'
 
 const Coin = styled.div`
   display: flex;
   align-items: center;
-  margin: 4px 16px 4px 0;
 
   img {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 6px;
+    margin-right: 12px;
   }
 `
 
 const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {
   return (
-    <div className={className}>
-      {_.compact([...((rebalance || ({} as any)).tokens || [])]).map((c, index) => {
-        const thisName = (() => {
-          if (c.symbol === 'WKLAY') return 'KLAY'
-          if (c.symbol === 'WBNB') return 'BNB'
-          return c.symbol
-        })()
+    <Box className={className}>
+      {_.compact([
+        ...((rebalance || ({} as any)).tokens || []),
+        ...(((rebalance || ({} as any)).usdTokenRatioPoint || 0).toString() === '0'
+          ? []
+          : (rebalance || ({} as any)).usdToken || []),
+      ]).map((c, index) => {
+        const thisName = getTokenName(c?.symbol)
         return (
-          <div className="flex justify-space-between align-center">
+          <Box key={c.symbol} display="flex" justifyContent="space-between" py="0.75rem">
             <Coin>
               <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
-              <Text bold>
-                {numeral(
-                  (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(c.decimals)).toNumber(),
-                ).format('0,0.[0000000000]')}
-              </Text>
+              <Typography variant="body2" fontWeight="bold">
+                {thisName}
+              </Typography>
             </Coin>
-            <Text bold className="pl-3" style={{ width: '56px' }} textAlign="left">
-              {thisName}
-            </Text>
-          </div>
+
+            <Typography variant="body2" pl={1}>
+              {numeral(
+                (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(c.decimals)).toNumber(),
+              ).format('0,0.[0000000000]')}
+            </Typography>
+          </Box>
         )
       })}
-    </div>
+    </Box>
   )
 }
 
