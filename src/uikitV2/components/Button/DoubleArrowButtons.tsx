@@ -62,7 +62,9 @@ const DoubleArrowButtons: React.FC<DoubleArrowButtonsProps> = ({
 DoubleArrowButtons.defaultProps = {
   disableLeftArrow: false,
   disableRightArrow: false,
+  // eslint-disable-next-line
   onClickLeftArrow: () => {},
+  // eslint-disable-next-line
   onClickRightArrow: () => {},
 }
 

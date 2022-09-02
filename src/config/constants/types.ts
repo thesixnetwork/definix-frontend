@@ -97,6 +97,7 @@ export interface FarmConfig {
     earnLabel: string
     endBlock: number
   }
+  tag?: string
   firstToken?: any
   secondToken?: any
 }
