@@ -1,4 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Button } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import ConnectButton from 'components/ConnectButton'
 import { useSousApprove } from 'hooks/useApprove'
@@ -6,13 +7,14 @@ import { useERC20 } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
+import { AddIcon, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { StakeActionProps } from './types'
 
 const IconButtonWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: stretch;
   svg {
     width: 20px;
   }
@@ -62,12 +64,12 @@ const StakeAction: React.FC<StakeActionProps> = ({
     if (!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished) {
       return (
         <Button
-          color="rgb(94, 81, 95)"
+          variant="contained"
+          color="secondary"
           onClick={() => {
             setReadyToStake(true)
           }}
-          fullWidth
-          radii="small"
+          style={{ width: '100%' }}
         >
           {TranslateString(999, 'Stake LP')}
         </Button>
@@ -77,8 +79,9 @@ const StakeAction: React.FC<StakeActionProps> = ({
     return (
       <IconButtonWrapper>
         <Button
-          variant="secondary"
-          color="rgb(94, 81, 95)"
+          variant="outlined"
+          color="secondary"
+          style={{ width: '100%' }}
           disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
           onClick={
             isOldSyrup
@@ -89,20 +92,21 @@ const StakeAction: React.FC<StakeActionProps> = ({
                 }
               : onPresentWithdraw
           }
-          className="btn-secondary-disable col-6 mr-1"
+          className="btn-secondary-disable mr-1"
         >
-          <MinusIcon color="primary" />
+          <MinusIcon style={{ color: '#413343' }} />
         </Button>
 
         {!isOldSyrup && !isFinished && (
           <Button
-            variant="secondary"
-            color="rgb(94, 81, 95)"
+            variant="outlined"
+            color="secondary"
+            style={{ width: '100%' }}
             disabled={isFinished && sousId !== 0 && sousId !== 25}
             onClick={onPresentDeposit}
-            className="btn-secondary-disable col-6 ml-1"
+            className="btn-secondary-disable  ml-1"
           >
-            <AddIcon color="primary" />
+            <AddIcon style={{ color: '#413343' }} />
           </Button>
         )}
       </IconButtonWrapper>
@@ -113,9 +117,9 @@ const StakeAction: React.FC<StakeActionProps> = ({
     if (needsApproval && !isOldSyrup) {
       return (
         <Button
-          color="rgb(94, 81, 95)"
-          fullWidth
-          radii="small"
+          variant="contained"
+          color="secondary"
+          style={{ width: '100%' }}
           disabled={isFinished || requestedApproval}
           onClick={handleApprove}
         >
@@ -124,20 +128,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
       )
     }
 
-    return (
-      <div className="flex align-center">
-        <Heading
-          fontSize="20px !important"
-          textAlign="left"
-          color={getBalanceNumber(stakedBalance) === 0 ? 'textDisabled' : 'text'}
-          className="col-6 pr-3"
-        >
-          {displayBalance}
-        </Heading>
-
-        <div className="col-6">{renderStakingButtons()}</div>
-      </div>
-    )
+    return <div className="flex align-center">{renderStakingButtons()}</div>
   }
 
   return (

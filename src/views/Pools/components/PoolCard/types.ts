@@ -8,8 +8,10 @@ export interface PoolWithApy extends Pool {
 }
 
 export interface PoolCardProps {
+  componentType?: string
   pool: PoolWithApy
   isHorizontal?: boolean
+  myBalanceInWallet?: BigNumber
 }
 
 export interface CardHeadingProps {

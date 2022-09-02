@@ -16,9 +16,11 @@ import poolImg from 'uikitV2/images/pool.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
+import Deposit from './components/Deposit'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
+import Withdraw from './components/Withdraw'
 import PoolContext from './PoolContext'
 
 const ModalWrapper = styled.div`
@@ -260,62 +262,113 @@ const Farm: React.FC = () => {
     }
   }, [])
 
+  const [pageState, setPageState] = useState('list')
+  const [pageData, setPageData] = useState(null)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pageState])
+
+  useEffect(() => {
+    if (typeof account !== 'string') {
+      setPageState('list')
+      setPageData(null)
+    }
+  }, [account])
+
   return (
     <PoolContext.Provider
       value={{
         onPresent: handlePresent,
         onDismiss: handleDismiss,
+        pageState,
+        pageData,
+        goDeposit: (data) => {
+          setPageState('deposit')
+          setPageData(data)
+        },
+        goWithdraw: (data) => {
+          setPageState('withdraw')
+          setPageData(data)
+        },
       }}
     >
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
       </Helmet>
+      {pageState === 'list' && (
+        <>
+          <PageTitle
+            title="Pool"
+            caption="Deposit a single token to get stable returns with low risk."
+            linkLabel="Learn how to stake in Pool"
+            link="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
+            img={poolImg}
+          >
+            <PoolTabButtons
+              stackedOnly={stackedOnly}
+              setStackedOnly={setStackedOnly}
+              liveOnly={liveOnly}
+              setLiveOnly={setLiveOnly}
+              listView={listView}
+              setListView={setListView}
+              selectDisplay={selectDisplay}
+              allDisplayChiose={allDisplayChiose}
+              setSelectDisplay={setSelectDisplay}
+            />
+          </PageTitle>
 
-      <PageTitle
-        title="Pool"
-        caption="Deposit a single token to get stable returns with low risk."
-        linkLabel="Learn how to stake in Pool"
-        link="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
-        img={poolImg}
-      >
-        <PoolTabButtons
-          stackedOnly={stackedOnly}
-          setStackedOnly={setStackedOnly}
-          liveOnly={liveOnly}
-          setLiveOnly={setLiveOnly}
-          listView={listView}
-          setListView={setListView}
-          selectDisplay={selectDisplay}
-          allDisplayChiose={allDisplayChiose}
-          setSelectDisplay={setSelectDisplay}
-        />
-      </PageTitle>
-
-      <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
-        <FlexLayout cols={listView ? 1 : 3}>
-          <Route exact path={`${path}`}>
-            {liveOnly
-              ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
+          <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
+            <FlexLayout cols={listView ? 1 : 3}>
+              <Route exact path={`${path}`}>
+                {liveOnly
+                  ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
+                      <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                    ))
+                  : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
+                      (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                    )}
+              </Route>
+              <Route path={`${path}/history`}>
+                {orderBy(finishedPools, ['sortOrder']).map((pool) => (
                   <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-                ))
-              : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                  (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
-                )}
-          </Route>
-          <Route path={`${path}/history`}>
-            {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-              <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-            ))}
-          </Route>
-        </FlexLayout>
-      </TimerWrapper>
+                ))}
+              </Route>
+            </FlexLayout>
+          </TimerWrapper>
 
-      {isOpenModal && React.isValidElement(modalNode) && (
-        <ModalWrapper>
-          {React.cloneElement(modalNode, {
-            onDismiss: handleDismiss,
-          })}
-        </ModalWrapper>
+          {isOpenModal && React.isValidElement(modalNode) && (
+            <ModalWrapper>
+              {React.cloneElement(modalNode, {
+                // onDismiss: handleDismiss,
+              })}
+            </ModalWrapper>
+          )}
+        </>
+      )}
+
+      {pageState === 'deposit' && (
+        <>
+          <Deposit
+            {...pageData}
+            onBack={() => {
+              setPageState('list')
+              setPageData(null)
+            }}
+          />
+        </>
+      )}
+
+      {pageState === 'withdraw' && (
+        <>
+          <Withdraw
+            {...pageData}
+            onBack={() => {
+              setPageState('list')
+              setPageData(null)
+            }}
+          />
+        </>
       )}
     </PoolContext.Provider>
   )

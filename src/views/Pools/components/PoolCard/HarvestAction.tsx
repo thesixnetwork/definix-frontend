@@ -97,10 +97,9 @@ export default HarvestAction
 const HarvestButtonSectionInMyInvestment = styled(Flex)`
   flex-direction: column;
   justify-content: center;
-  margin-top: 24px;
   width: 100%;
-  @media screen and (min-width: 1280px) {
+  @media screen and (max-width: 1280px) {
+    margin-top: 24px;
     flex-direction: row;
-    width: 150px;
   }
 `

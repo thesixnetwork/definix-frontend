@@ -137,7 +137,14 @@ const MyStake: React.FC<StakeActionProps> = ({
         1074,
         'My Staked',
       )}`}</Text>
-      <Text>-</Text>
+      <Heading
+        fontSize={needsApproval && !isOldSyrup ? '0.75rem' : '20px !important'}
+        textAlign="left"
+        color={getBalanceNumber(stakedBalance) === 0 ? 'textDisabled' : 'text'}
+        className="pr-3"
+      >
+        {needsApproval && !isOldSyrup ? '-' : displayBalance}
+      </Heading>
     </div>
   )
 }
