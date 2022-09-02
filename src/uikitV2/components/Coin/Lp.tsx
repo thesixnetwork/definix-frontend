@@ -1,18 +1,18 @@
-import React, { useMemo } from "react";
-import styled from "styled-components";
-import { space, SpaceProps } from "styled-system";
-import { COIN_SYMBOL, COIN_SRCSET, LpProps } from "./types";
+import React, { useMemo } from 'react'
+import styled from 'styled-components'
+import { space, SpaceProps } from 'styled-system'
+import { COIN_SYMBOL, COIN_SRCSET, LpProps } from './types'
 
 export const getTokenImageUrl = (tokenName: COIN_SYMBOL | string) => {
   if (!tokenName) {
-    return "";
+    return ''
   }
   try {
-    return COIN_SRCSET[tokenName.toUpperCase() as COIN_SYMBOL];
+    return COIN_SRCSET[tokenName.toUpperCase() as COIN_SYMBOL]
   } catch {
-    return null;
+    return null
   }
-};
+}
 
 const StyledCoinImage = styled.img<SpaceProps>`
   position: relative;
@@ -25,19 +25,19 @@ const StyledCoinImage = styled.img<SpaceProps>`
     z-index: 0;
   }
   ${space}
-`;
+`
 
 const StyledEmpty = styled.div<{ width: string; height: string }>`
-  width: ${({ width }) => (width ? width : "auto")};
-  height: ${({ height }) => (height ? height : "auto")};
-`;
+  width: ${({ width }) => (width ? width : 'auto')};
+  height: ${({ height }) => (height ? height : 'auto')};
+`
 
-const StyledWrap = styled.div``;
+const StyledWrap = styled.div``
 
 const Lp: React.FC<LpProps> = ({ lpSymbols, size, ...props }) => {
-  const [symbol1, symbol2] = lpSymbols;
-  const symbol1Url = getTokenImageUrl(symbol1);
-  const symbol2Url = getTokenImageUrl(symbol2);
+  const [symbol1, symbol2] = lpSymbols
+  const symbol1Url = getTokenImageUrl(symbol1)
+  const symbol2Url = getTokenImageUrl(symbol2)
   return symbol1Url && symbol2Url ? (
     <StyledWrap>
       <StyledCoinImage
@@ -59,11 +59,11 @@ const Lp: React.FC<LpProps> = ({ lpSymbols, size, ...props }) => {
     </StyledWrap>
   ) : (
     <StyledEmpty width={size as string} height={size as string} />
-  );
-};
+  )
+}
 
 Lp.defaultProps = {
-  size: "20px",
-};
+  size: '20px',
+}
 
-export default Lp;
+export default Lp

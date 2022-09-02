@@ -1,18 +1,18 @@
-import React from "react";
-import { TransitionGroup } from "react-transition-group";
-import styled from "styled-components";
-import Toast from "./Toast";
-import { ToastContainerProps } from "./types";
-import { pxToRem } from "../mixin";
+import React from 'react'
+import { TransitionGroup } from 'react-transition-group'
+import styled from 'styled-components'
+import Toast from './Toast'
+import { ToastContainerProps } from './types'
+import { pxToRem } from '../mixin'
 import { mediaQueries } from '../base'
-const NAV_HEIGHT_PC = 80;
-const NAV_HEIGHT_MOBILE = 56;
+const NAV_HEIGHT_PC = 80
+const NAV_HEIGHT_MOBILE = 56
 
-const INNER_MARGIN_PC = 60;
-const INNER_MARGIN_MOBILE = 20;
+const INNER_MARGIN_PC = 60
+const INNER_MARGIN_MOBILE = 20
 
-const ZINDEX = 1000;
-const TOP_POSITION = 80; // Initial position from the top
+const ZINDEX = 1000
+const TOP_POSITION = 80 // Initial position from the top
 
 // display: flex;
 // flex-direction: row-reverse;
@@ -117,19 +117,19 @@ const StyledToastContainer = styled.div`
       }
     }
   }
-`;
+`
 
 const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove, ttl = 3000, stackSpacing = 24 }) => {
   return (
     <StyledToastContainer>
       <TransitionGroup className="toast-group">
         {toasts.map((toast, index) => {
-          const zIndex = (ZINDEX - index).toString();
-          return <Toast key={toast.id} toast={toast} onRemove={onRemove} ttl={ttl} style={{ zIndex }} />;
+          const zIndex = (ZINDEX - index).toString()
+          return <Toast key={toast.id} toast={toast} onRemove={onRemove} ttl={ttl} style={{ zIndex }} />
         })}
       </TransitionGroup>
     </StyledToastContainer>
-  );
-};
+  )
+}
 
-export default ToastContainer;
+export default ToastContainer

@@ -1,14 +1,14 @@
-import React from "react";
-import { InjectedModalProps, Modal, ModalBody, ModalFooter } from "../../Modal";
-import { Button } from "../Button";
-import { AlertIcon } from "../Icon";
-import { Text } from "../Text";
+import React from 'react'
+import { InjectedModalProps, Modal, ModalBody, ModalFooter } from '../../Modal'
+import { Button } from '../Button'
+import { AlertIcon } from '../Icon'
+import { Text } from '../Text'
 
 interface Props extends InjectedModalProps {
-  title: string;
-  content: string;
-  callback: () => void;
-  buttonLabel: string;
+  title: string
+  content: string
+  callback: () => void
+  buttonLabel: string
 }
 
 const AlertModal: React.FC<Props> = ({ title, content, callback, buttonLabel, onDismiss }) => {
@@ -23,15 +23,15 @@ const AlertModal: React.FC<Props> = ({ title, content, callback, buttonLabel, on
       <ModalFooter isFooter>
         <Button
           onClick={() => {
-            callback();
-            onDismiss && onDismiss();
+            callback()
+            onDismiss && onDismiss()
           }}
         >
           {buttonLabel}
         </Button>
       </ModalFooter>
     </Modal>
-  );
-};
+  )
+}
 
-export default AlertModal;
+export default AlertModal

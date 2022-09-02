@@ -1,4 +1,4 @@
-export { default as Modal, ModalFooter, ModalBody } from "./Modal";
-export { default as ModalProvider } from "./ModalContext";
-export { default as useModal } from "./useModal";
-export type { InjectedProps as InjectedModalProps, ModalProps } from "./types";
+export { default as Modal, ModalFooter, ModalBody } from './Modal'
+export { default as ModalProvider } from './ModalContext'
+export { default as useModal } from './useModal'
+export type { InjectedProps as InjectedModalProps, ModalProps } from './types'

@@ -1,17 +1,17 @@
-import { Colors } from "../../types";
-import { HTMLAttributes } from "react";
-import { BackgroundProps, BorderProps, LayoutProps, PositionProps, SpaceProps } from "styled-system";
+import { Colors } from '../../types'
+import { HTMLAttributes } from 'react'
+import { BackgroundProps, BorderProps, LayoutProps, PositionProps, SpaceProps } from 'styled-system'
 
 export const scales = {
-  SM: "sm",
-  MD: "md",
-} as const;
+  SM: 'sm',
+  MD: 'md',
+} as const
 
-export type Scales = typeof scales[keyof typeof scales];
+export type Scales = typeof scales[keyof typeof scales]
 
 export interface CheckboxProps {
-  scale?: Scales;
-  variantColor?: keyof Colors;
+  scale?: Scales
+  variantColor?: keyof Colors
 }
 
 export interface CheckboxLabelProps
@@ -20,6 +20,6 @@ export interface CheckboxLabelProps
     PositionProps,
     SpaceProps,
     HTMLAttributes<HTMLLabelElement> {
-  control: React.ReactNode;
-  children: React.ReactNode;
+  control: React.ReactNode
+  children: React.ReactNode
 }

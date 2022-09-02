@@ -1,6 +1,6 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes } from 'react'
 
 export interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  onSearch: (keyword: string) => any;
-  onReset: () => any;
+  onSearch: (keyword: string) => any
+  onReset: () => any
 }

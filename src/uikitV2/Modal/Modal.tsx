@@ -1,21 +1,21 @@
-import React, { useEffect, useRef } from "react";
-import styled from "styled-components";
-import Text from "../components/Text/Text";
-import { Flex, FlexProps } from "../components/Box";
-import { ArrowBackIcon } from "../components/Svg";
-import { IconButton } from "../components/Button";
-import { ModalProps } from "./types";
-import { CloseBIcon } from "../components/Icon";
+import React, { useEffect, useRef } from 'react'
+import styled from 'styled-components'
+import Text from '../components/Text/Text'
+import { Flex, FlexProps } from '../components/Box'
+import { ArrowBackIcon } from '../components/Svg'
+import { IconButton } from '../components/Button'
+import { ModalProps } from './types'
+import { CloseBIcon } from '../components/Icon'
 import { spacing, mediaQueries } from '../base'
 
-const NAV_HEIGHT_MOBILE = 56;
+const NAV_HEIGHT_MOBILE = 56
 
 interface BodyProps extends FlexProps {
-  isBody: boolean;
+  isBody: boolean
 }
 
 interface FooterProps extends FlexProps {
-  isFooter: boolean;
+  isFooter: boolean
 }
 
 const StyledModal = styled(Flex)<{ mobileFull: boolean }>`
@@ -47,7 +47,7 @@ const StyledModal = styled(Flex)<{ mobileFull: boolean }>`
       min-height: calc(100vh - ${NAV_HEIGHT_MOBILE}px);
     }
   `}
-`;
+`
 
 const ModalHeader = styled.div`
   display: flex;
@@ -59,12 +59,12 @@ const ModalHeader = styled.div`
     padding-left: 24px;
     padding-right: 24px;
   }
-`;
+`
 
 const ModalTitle = styled(Flex)`
   align-items: center;
   flex: 1;
-`;
+`
 
 const StyledModalBody = styled(Flex)<{ noPadding: boolean; mobileFull: boolean }>`
   position: relative;
@@ -94,7 +94,7 @@ const StyledModalBody = styled(Flex)<{ noPadding: boolean; mobileFull: boolean }
       }
     }
   `}
-`;
+`
 
 const StyledModalFooter = styled(Flex)<{ noPadding: boolean; mobileFull: boolean }>`
   width: 100%;
@@ -118,7 +118,7 @@ const StyledModalFooter = styled(Flex)<{ noPadding: boolean; mobileFull: boolean
       flex: 1;
     }
   `}
-`;
+`
 
 const Modal: React.FC<ModalProps> = ({
   title,
@@ -129,16 +129,16 @@ const Modal: React.FC<ModalProps> = ({
   hideCloseButton = false,
   mobileFull = false,
   noPadding = false,
-  maxWidth = "initial",
+  maxWidth = 'initial',
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!modalRef.current) return;
+    if (!modalRef.current) return
     // modalRef.current.focus();
     // const firstFocusElement = modalRef.current.querySelectorAll("input, button, a")[0];
     // (firstFocusElement as HTMLButtonElement).focus();
-  }, []);
+  }, [])
 
   return (
     <StyledModal ref={modalRef} mobileFull={mobileFull} maxWidth={maxWidth}>
@@ -162,36 +162,36 @@ const Modal: React.FC<ModalProps> = ({
       <StyledModalBody flexDirection="column" noPadding={noPadding} mobileFull={mobileFull}>
         {React.Children.map(children, (child: React.ReactNode) => {
           if (!React.isValidElement(child)) {
-            return <></>;
+            return <></>
           }
           if (child.props.isBody) {
-            return React.cloneElement(child);
+            return React.cloneElement(child)
           }
         })}
       </StyledModalBody>
       {React.Children.map(children, (child: React.ReactNode) => {
         if (!React.isValidElement(child)) {
-          return <></>;
+          return <></>
         }
         if (child.props.isFooter) {
           return (
             <StyledModalFooter noPadding={noPadding} mobileFull={mobileFull}>
               {React.cloneElement(child)}
             </StyledModalFooter>
-          );
+          )
         }
       })}
     </StyledModal>
-  );
-};
+  )
+}
 
 export const ModalBody: React.FC<BodyProps> = ({ children, ...props }) => {
   return (
     <Flex className="modal-body" position="relative" flexDirection="column" width="100%" {...props}>
       {children}
     </Flex>
-  );
-};
+  )
+}
 
 export const ModalFooter: React.FC<FooterProps> = ({ children, ...props }) => {
   return (
@@ -205,7 +205,7 @@ export const ModalFooter: React.FC<FooterProps> = ({ children, ...props }) => {
     >
       {children}
     </Flex>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

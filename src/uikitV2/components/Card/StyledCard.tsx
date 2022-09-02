@@ -1,13 +1,13 @@
-import styled, { DefaultTheme } from "styled-components";
-import { color, space } from "styled-system";
-import { CardProps } from "./types";
-import { pxToRem } from "../../mixin";
-import { spacing } from "../../base";
-import { baseColors as colors } from "../../colors";
+import styled, { DefaultTheme } from 'styled-components'
+import { color, space } from 'styled-system'
+import { CardProps } from './types'
+import { pxToRem } from '../../mixin'
+import { spacing } from '../../base'
+import { baseColors as colors } from '../../colors'
 import { light } from './theme'
 
 interface StyledCardProps extends CardProps {
-  theme: DefaultTheme;
+  theme: DefaultTheme
 }
 
 /**
@@ -15,23 +15,23 @@ interface StyledCardProps extends CardProps {
  */
 const getBoxShadow = ({ isActive, isSuccess, isWarning, theme, cardBg }: StyledCardProps) => {
   if (isWarning) {
-    return light.boxShadowWarning;
+    return light.boxShadowWarning
   }
 
   if (isSuccess) {
-    return light.boxShadowSuccess;
+    return light.boxShadowSuccess
   }
 
   if (isActive) {
-    return light.boxShadowActive;
+    return light.boxShadowActive
   }
 
   if (cardBg) {
-    return light.onlyBoxShadow;
+    return light.onlyBoxShadow
   }
 
-  return light.boxShadow;
-};
+  return light.boxShadow
+}
 
 const StyledCard = styled.div<StyledCardProps>`
   background-color: ${({ cardBg }) => (cardBg ? colors[cardBg] : light.background)};
@@ -39,16 +39,16 @@ const StyledCard = styled.div<StyledCardProps>`
 
   box-shadow: ${getBoxShadow};
   position: relative;
-  overflow: ${({ isOverflowHidden }) => (isOverflowHidden ? "hidden" : "auto")};
+  overflow: ${({ isOverflowHidden }) => (isOverflowHidden ? 'hidden' : 'auto')};
   ${space}
   ${color}
-`;
+`
 
 StyledCard.defaultProps = {
   isActive: false,
   isSuccess: false,
   isWarning: false,
   isDisabled: false,
-};
+}
 
-export default StyledCard;
+export default StyledCard

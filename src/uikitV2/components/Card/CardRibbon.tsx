@@ -1,17 +1,17 @@
-import React from "react";
-import styled, { DefaultTheme } from "styled-components";
-import { CardRibbonProps } from "./types";
-import { spacing, mediaQueries } from "../../base";
-import { textStyle } from "../../text";
-import { pxToRem } from "../../mixin";
+import React from 'react'
+import styled, { DefaultTheme } from 'styled-components'
+import { CardRibbonProps } from './types'
+import { spacing, mediaQueries } from '../../base'
+import { textStyle } from '../../text'
+import { pxToRem } from '../../mixin'
 import { baseColors as colors } from '../../colors'
 
 interface StyledCardRibbonProps extends CardRibbonProps {
-  theme: DefaultTheme;
+  theme: DefaultTheme
 }
 
 const StyledCardRibbon = styled.div<Partial<StyledCardRibbonProps>>`
-  background-color: ${({ variantColor = "yellow" }) => colors[variantColor]};
+  background-color: ${({ variantColor = 'yellow' }) => colors[variantColor]};
   position: absolute;
   left: unset;
   top: 16px;
@@ -21,19 +21,19 @@ const StyledCardRibbon = styled.div<Partial<StyledCardRibbonProps>>`
   z-index: 2;
   ${textStyle.R_12B}
   color: white;
-  ${({ upperCase }) => upperCase && "text-transform: uppercase;"};
+  ${({ upperCase }) => upperCase && 'text-transform: uppercase;'};
   ${mediaQueries.mobileXl} {
     top: 12px;
     padding: 3px ${spacing.S_12}px;
   }
-`;
+`
 
-const CardRibbon: React.FC<CardRibbonProps> = ({ variantColor = "yellow", text, upperCase }) => {
+const CardRibbon: React.FC<CardRibbonProps> = ({ variantColor = 'yellow', text, upperCase }) => {
   return (
     <StyledCardRibbon variantColor={variantColor} upperCase={upperCase}>
       <div title={text}>{text}</div>
     </StyledCardRibbon>
-  );
-};
+  )
+}
 
-export default CardRibbon;
+export default CardRibbon

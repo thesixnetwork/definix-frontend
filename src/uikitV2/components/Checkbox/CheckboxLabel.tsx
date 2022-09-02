@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { border, layout, position, space } from "styled-system";
-import { CheckboxLabelProps } from "./types";
+import React from 'react'
+import styled from 'styled-components'
+import { border, layout, position, space } from 'styled-system'
+import { CheckboxLabelProps } from './types'
 
 const StyledCheckboxLabel = styled.label`
   ${border}
@@ -13,11 +13,11 @@ const StyledCheckboxLabel = styled.label`
   > input {
     flex-shrink: 0;
     margin-right: 12px;
-    &[scale="sm"] {
+    &[scale='sm'] {
       margin-right: 8px;
     }
   }
-`;
+`
 
 const CheckboxLabel: React.FC<CheckboxLabelProps> = ({ control, children, ...props }) => {
   return (
@@ -25,7 +25,7 @@ const CheckboxLabel: React.FC<CheckboxLabelProps> = ({ control, children, ...pro
       {control}
       {children}
     </StyledCheckboxLabel>
-  );
-};
+  )
+}
 
-export default CheckboxLabel;
+export default CheckboxLabel

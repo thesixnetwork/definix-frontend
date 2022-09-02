@@ -1,27 +1,27 @@
-import React from "react";
-import styled, { DefaultTheme } from "styled-components";
-import { CheckCompleteIcon, CheckFailedIcon, SmallCloseIcon } from "../Icon";
-import { Text } from "../Text";
-import { IconButton } from "../Button";
-import Box from "../Box/Box";
-import Flex from "../Box/Flex";
-import { AlertProps, variants } from "./types";
-import { ColorStyles } from "../../colors";
+import React from 'react'
+import styled, { DefaultTheme } from 'styled-components'
+import { CheckCompleteIcon, CheckFailedIcon, SmallCloseIcon } from '../Icon'
+import { Text } from '../Text'
+import { IconButton } from '../Button'
+import Box from '../Box/Box'
+import Flex from '../Box/Flex'
+import { AlertProps, variants } from './types'
+import { ColorStyles } from '../../colors'
 import { light as alert } from './theme'
 
-const getIcon = (variant: AlertProps["variant"] = variants.INFO) => {
+const getIcon = (variant: AlertProps['variant'] = variants.INFO) => {
   switch (variant) {
     case variants.DANGER:
-      return CheckFailedIcon;
+      return CheckFailedIcon
     case variants.WARNING:
-      return CheckFailedIcon;
+      return CheckFailedIcon
     case variants.SUCCESS:
-      return CheckCompleteIcon;
+      return CheckCompleteIcon
     case variants.INFO:
     default:
-      return CheckCompleteIcon;
+      return CheckCompleteIcon
   }
-};
+}
 
 const StyledAlert = styled(Flex)`
   position: relative;
@@ -29,10 +29,10 @@ const StyledAlert = styled(Flex)`
   border: 1px solid ${alert.border};
   border-radius: 16px;
   box-shadow: 0 8px 8px 0 rgba(254, 169, 72, 0.3);
-`;
+`
 
 const Alert: React.FC<AlertProps> = ({ title, children, variant, onClick }) => {
-  const Icon = getIcon(variant);
+  const Icon = getIcon(variant)
 
   return (
     <StyledAlert className="px-s16 py-s12" alignItems="center">
@@ -46,9 +46,9 @@ const Alert: React.FC<AlertProps> = ({ title, children, variant, onClick }) => {
             <IconButton
               onClick={onClick}
               style={{
-                alignItems: "flex-start",
+                alignItems: 'flex-start',
                 padding: 0,
-                height: "auto",
+                height: 'auto',
               }}
             >
               <SmallCloseIcon />
@@ -58,7 +58,7 @@ const Alert: React.FC<AlertProps> = ({ title, children, variant, onClick }) => {
         {children || null}
       </Box>
     </StyledAlert>
-  );
-};
+  )
+}
 
-export default Alert;
+export default Alert

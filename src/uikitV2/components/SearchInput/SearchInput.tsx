@@ -1,11 +1,11 @@
-import React, { cloneElement, ElementType, isValidElement, useState, useRef } from "react";
-import { textStyle } from "../../text";
-import styled, { css } from "styled-components";
-import { SearchInputProps } from "./types";
-import { Flex } from "../Box";
-import { layout } from "styled-system";
-import { SearchIcon, ResetIcon } from "../Icon";
-import { IconButton } from "../Button";
+import React, { cloneElement, ElementType, isValidElement, useState, useRef } from 'react'
+import { textStyle } from '../../text'
+import styled, { css } from 'styled-components'
+import { SearchInputProps } from './types'
+import { Flex } from '../Box'
+import { layout } from 'styled-system'
+import { SearchIcon, ResetIcon } from '../Icon'
+import { IconButton } from '../Button'
 
 const StyledInput = styled.input`
   border: 0;
@@ -31,7 +31,7 @@ const StyledInput = styled.input`
   /* &:focus:not(:disabled) {
     box-shadow: 0px 0px 0px 1px #0973B9, 0px 0px 0px 4px rgba(9, 115, 185, 0.2);
   } */
-`;
+`
 
 const StyledFlex = styled(Flex)`
   position: relative;
@@ -44,12 +44,12 @@ const StyledFlex = styled(Flex)`
   border-radius: 8px;
   padding-right: 16px;
   ${layout}
-`;
+`
 
-const SearchInput = <E extends ElementType = "input">(props: SearchInputProps): JSX.Element => {
-  const input = useRef<HTMLInputElement>(null);
-  const [keyword, setKeyword] = useState("");
-  const { onSearch, onReset, ...rest } = props;
+const SearchInput = <E extends ElementType = 'input'>(props: SearchInputProps): JSX.Element => {
+  const input = useRef<HTMLInputElement>(null)
+  const [keyword, setKeyword] = useState('')
+  const { onSearch, onReset, ...rest } = props
   return (
     <StyledFlex>
       <StyledInput
@@ -57,10 +57,10 @@ const SearchInput = <E extends ElementType = "input">(props: SearchInputProps): 
         {...rest}
         defaultValue={keyword}
         onChange={(e) => {
-          setKeyword(e.target.value);
+          setKeyword(e.target.value)
         }}
         onKeyDown={(e) => {
-          if (e.code.toLowerCase() === "enter") onSearch(keyword);
+          if (e.code.toLowerCase() === 'enter') onSearch(keyword)
         }}
       />
 
@@ -69,11 +69,11 @@ const SearchInput = <E extends ElementType = "input">(props: SearchInputProps): 
           mr={12}
           p={0}
           onClick={() => {
-            setKeyword("");
+            setKeyword('')
             if (input.current && input.current !== null) {
-              input.current.value = "";
+              input.current.value = ''
             }
-            onReset();
+            onReset()
           }}
         >
           <ResetIcon />
@@ -83,7 +83,7 @@ const SearchInput = <E extends ElementType = "input">(props: SearchInputProps): 
         <SearchIcon />
       </IconButton>
     </StyledFlex>
-  );
-};
+  )
+}
 
-export default SearchInput;
+export default SearchInput
