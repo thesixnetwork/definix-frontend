@@ -1,4 +1,3 @@
-/* eslint-disable import/no-mutable-exports */
 import { ExpandMoreRounded } from '@mui/icons-material'
 import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 

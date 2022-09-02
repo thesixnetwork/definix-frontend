@@ -1,0 +1,52 @@
+<svg width="101" height="100" viewBox="0 0 101 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="63.044%" y1="50%" x2="-41.155%" y2="50%" id="a">
+            <stop stop-color="#FFE9D7" offset="0%"/>
+            <stop stop-color="#FFAE86" offset="100%"/>
+        </linearGradient>
+        <linearGradient x1="50%" y1="20.658%" x2="50%" y2="100%" id="c">
+            <stop stop-color="#FFE3A4" stop-opacity=".999" offset="0%"/>
+            <stop stop-color="#FFC94F" offset="100%"/>
+        </linearGradient>
+        <linearGradient x1="50%" y1="26.687%" x2="50%" y2="108.267%" id="d">
+            <stop stop-color="#FFD475" offset="0%"/>
+            <stop stop-color="#F9B562" offset="100%"/>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="52.876%" y2="41.662%" id="f">
+            <stop stop-color="#FFB356" offset="0%"/>
+            <stop stop-color="#F9B562" stop-opacity="0" offset="100%"/>
+        </linearGradient>
+        <linearGradient x1="220.299%" y1="50%" x2="0%" y2="50%" id="i">
+            <stop stop-color="#FFE9D7" offset="0%"/>
+            <stop stop-color="#FFAE86" offset="100%"/>
+        </linearGradient>
+        <circle id="b" cx="25" cy="25" r="18.301"/>
+        <circle id="g" cx="23.5" cy="23.5" r="17.203"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#FFE9D7" d="M.42 34.5h76.984v44H.42z"/>
+        <path d="M6.407 43.929h70.5v11h-70.5a5.5 5.5 0 0 1 0-11z" fill="url(#a)" transform="translate(-.487 -14.929)"/>
+        <g transform="translate(42.846 12.09)">
+            <mask id="e" fill="#fff">
+                <use xlink:href="#b"/>
+            </mask>
+            <use fill="url(#c)" transform="rotate(30 25 25)" xlink:href="#b"/>
+            <circle fill="url(#d)" mask="url(#e)" transform="rotate(30 25 25)" cx="25" cy="25" r="15.5"/>
+            <circle stroke="url(#f)" opacity=".2" mask="url(#e)" transform="rotate(30 25 25)" cx="25" cy="25" r="15"/>
+            <path d="M47.877 26.226c-.684-12.2-6.784-18.301-18.302-18.301-11.517 0-17.618 6.1-18.301 18.301h36.603z" fill="#FFF" opacity=".1" mask="url(#e)" transform="rotate(30 29.575 17.075)"/>
+        </g>
+        <g transform="rotate(-30 15.75 5.195)">
+            <mask id="h" fill="#fff">
+                <use xlink:href="#g"/>
+            </mask>
+            <use fill="url(#c)" transform="rotate(30 23.5 23.5)" xlink:href="#g"/>
+            <circle fill="#FFD475" mask="url(#h)" transform="rotate(30 23.5 23.5)" cx="23.5" cy="23.5" r="14.57"/>
+            <path d="M45.004 24.652C44.362 13.184 38.627 7.45 27.801 7.45c-10.827 0-16.561 5.735-17.203 17.203h34.406z" fill="#FFF" opacity=".1" mask="url(#h)" transform="rotate(30 27.8 16.05)"/>
+        </g>
+        <path d="M.42 40h73c9.389 0 17 7.611 17 17v26c0 9.389-7.611 17-17 17h-56c-9.389 0-17-7.611-17-17V40z" fill="#FFE9D7"/>
+        <g transform="translate(68.5 60)">
+            <path d="M10 0h22v20H10C4.477 20 0 15.523 0 10S4.477 0 10 0z" fill="url(#i)"/>
+            <circle fill="#FFFBF5" cx="10" cy="10" r="5"/>
+        </g>
+    </g>
+</svg>

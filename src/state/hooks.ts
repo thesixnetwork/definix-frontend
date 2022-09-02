@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 import { kebabCase } from 'lodash'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Toast, toastTypes } from 'uikit-dev'
+import { Toast as ToastG2, toastTypes as toastTypesG2 } from 'uikitV2/Toast'
 import { getAddress } from 'utils/addressHelpers'
 import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
@@ -259,7 +260,33 @@ export const useToast = () => {
 
   return helpers
 }
+// Toasts
+export const useToastG2 = () => {
+  const dispatch = useDispatch()
+  const helpers = useMemo(() => {
+    const push = (toast: ToastG2) => dispatch(pushToast(toast))
 
+    return {
+      toastError: (title: string, description?: any) => {
+        return push({ id: new Date().toString(), type: toastTypesG2.DANGER, title, description })
+      },
+      toastInfo: (title: string, description?: any) => {
+        return push({ id: new Date().toString(), type: toastTypesG2.INFO, title, description })
+      },
+      toastSuccess: (title: string, description?: any) => {
+        return push({ id: new Date().toString(), type: toastTypesG2.SUCCESS, title, description })
+      },
+      toastWarning: (title: string, description?: any) => {
+        return push({ id: new Date().toString(), type: toastTypesG2.WARNING, title, description })
+      },
+      push,
+      remove: (id: string) => dispatch(removeToast(id)),
+      clear: () => dispatch(clearToast()),
+    }
+  }, [dispatch])
+
+  return helpers
+}
 // Profile
 
 export const useFetchProfile = () => {

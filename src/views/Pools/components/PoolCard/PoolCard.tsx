@@ -9,7 +9,6 @@ import { Box, IconButton, Button, useMediaQuery, useTheme } from '@mui/material'
 import Card from 'uikitV2/components/Card'
 import { usePriceFinixUsd } from 'state/hooks'
 import PoolContext from 'views/Pools/PoolContext'
-import DepositModal from '../DepositModal'
 import PoolSash from '../PoolSash'
 import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
@@ -172,55 +171,68 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     [isHorizontal, tokenApyList, tokenName],
   )
 
-  const renderDepositModal = useCallback(() => {
-    onPresent(
-      <DepositModal
-        max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
-        onConfirm={onStake}
-        tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
-        renderCardHeading={renderCardHeading}
-      />,
-    )
-  }, [convertedLimit, onPresent, onStake, renderCardHeading, stakingLimit, stakingTokenBalance, stakingTokenName])
+  // const renderDepositModal = useCallback(() => {
+  //   onPresent(
+  //     <DepositModal
+  //       max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
+  //       onConfirm={onStake}
+  //       tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
+  //       renderCardHeading={renderCardHeading}
+  //     />,
+  //   )
+  // }, [convertedLimit, onPresent, onStake, renderCardHeading, stakingLimit, stakingTokenBalance, stakingTokenName])
 
-  const renderWithdrawModal = useCallback(() => {
-    onPresent(
-      <WithdrawModal
-        max={stakedBalance}
-        onConfirm={onUnstake}
-        tokenName={stakingTokenName}
-        renderCardHeading={renderCardHeading}
-      />,
-    )
-  }, [onPresent, onUnstake, renderCardHeading, stakedBalance, stakingTokenName])
+  // const renderWithdrawModal = useCallback(() => {
+  //   onPresent(
+  //     <WithdrawModal
+  //       max={stakedBalance}
+  //       onConfirm={onUnstake}
+  //       tokenName={stakingTokenName}
+  //       renderCardHeading={renderCardHeading}
+  //     />,
+  //   )
+  // }, [onPresent, onUnstake, renderCardHeading, stakedBalance, stakingTokenName])
 
-  const renderStakeAction = useCallback(
-    (className?: string) => (
-      <StakeAction
-        sousId={sousId}
-        isOldSyrup={isOldSyrup}
-        tokenName={tokenName}
-        stakingTokenAddress={stakingTokenAddress}
-        stakedBalance={stakedBalance}
-        needsApproval={needsApproval}
-        isFinished={isFinished}
-        onUnstake={onUnstake}
-        onPresentDeposit={renderDepositModal}
-        onPresentWithdraw={renderWithdrawModal}
-        className={className}
-      />
-    ),
+  const dataForNextState = useMemo(() => {
+    return {
+      isOldSyrup,
+      isBnbPool,
+      pool,
+      renderCardHeading,
+    }
+  }, [isOldSyrup, isBnbPool, pool, renderCardHeading])
+
+  const renderStakeAction = useMemo(
+    () => (className?: string, type?: string) =>
+      (
+        <PoolContext.Consumer>
+          {({ goDeposit, goWithdraw }) => (
+            <StakeAction
+              sousId={sousId}
+              isOldSyrup={isOldSyrup}
+              tokenName={tokenName}
+              stakingTokenAddress={stakingTokenAddress}
+              stakedBalance={stakedBalance}
+              needsApproval={needsApproval}
+              isFinished={isFinished}
+              onUnstake={onUnstake}
+              onPresentDeposit={() => goDeposit(dataForNextState)}
+              onPresentWithdraw={() => goWithdraw(dataForNextState)}
+              className={className}
+            />
+          )}
+        </PoolContext.Consumer>
+      ),
     [
       isFinished,
       isOldSyrup,
       needsApproval,
       onUnstake,
-      renderDepositModal,
-      renderWithdrawModal,
       sousId,
       stakedBalance,
       stakingTokenAddress,
       tokenName,
+      dataForNextState,
     ],
   )
 
@@ -235,23 +247,10 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         needsApproval={needsApproval}
         isFinished={isFinished}
         onUnstake={onUnstake}
-        onPresentDeposit={renderDepositModal}
-        onPresentWithdraw={renderWithdrawModal}
         className={className}
       />
     ),
-    [
-      isFinished,
-      isOldSyrup,
-      needsApproval,
-      onUnstake,
-      renderDepositModal,
-      renderWithdrawModal,
-      sousId,
-      stakedBalance,
-      stakingTokenAddress,
-      tokenName,
-    ],
+    [isFinished, isOldSyrup, needsApproval, onUnstake, sousId, stakedBalance, stakingTokenAddress, tokenName],
   )
 
   const renderHarvestAction = useCallback(

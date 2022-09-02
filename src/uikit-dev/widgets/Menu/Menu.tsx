@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import axios from 'axios'
 import _ from 'lodash'
 import throttle from 'lodash/throttle'
