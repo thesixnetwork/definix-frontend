@@ -3,12 +3,14 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useStakeVelo } from 'hooks/useStake'
 import { useSousUnstakeVelo } from 'hooks/useUnstake'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import Card from 'uikitV2/components/Card'
 import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
-import { useMatchBreakpoints } from 'uikit-dev'
+import { Flex, ChevronDownIcon, ChevronUpIcon, useMatchBreakpoints } from 'uikit-dev'
+import { Box, IconButton } from '@mui/material'
 import PoolContext from 'views/PartnershipPool/PoolContext'
 import DepositModal from '../DepositModal'
-import PartnerPoolSash from '../PartnerPoolSash'
+import PartnerPoolSash, { PartnerPoolSashTitle } from '../PartnerPoolSash'
 import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
@@ -17,6 +19,7 @@ import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
 import { PoolCardVeloProps } from './types'
 import CountDown from './Countdown'
+import EarningHarvest from './EarningHarvest'
 
 const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
@@ -188,6 +191,36 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
     ],
   )
 
+  const renderEarningHarvest = useCallback(
+    (className?: string) => (
+      <EarningHarvest
+        sousId={sousId}
+        isBnbPool={isBnbPool}
+        earnings={earnings}
+        tokenDecimals={tokenDecimals}
+        needsApproval={needsApproval}
+        isOldSyrup={isOldSyrup}
+        className={className}
+        veloAmount={veloAmount}
+        contractAddrss={getAddress(contractAddress)}
+        pairPrice={pairPrice.toNumber()}
+        veloId={veloId}
+      />
+    ),
+    [
+      earnings,
+      isBnbPool,
+      isOldSyrup,
+      veloId,
+      needsApproval,
+      sousId,
+      tokenDecimals,
+      veloAmount,
+      contractAddress,
+      pairPrice,
+    ],
+  )
+
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (
       <DetailsSection
@@ -201,79 +234,186 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
     [tokenName, totalStaked],
   )
 
+  const renderToggleButton = useMemo(
+    () => (
+      <IconButton size="small" onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
+        {isOpenAccordion ? <ChevronUpIcon /> : <ChevronDownIcon />}
+      </IconButton>
+    ),
+    [isOpenAccordion],
+  )
+
   useEffect(() => {
     setIsOpenAccordion(false)
   }, [])
 
-  if (isHorizontal) {
-    if (isMobile) {
-      return (
-        <>
-          <div style={{ display: 'flex' }}>
-            <CountDown showCom={veloId === 2} margin="auto" />
-          </div>
-
-          <HorizontalMobileStyle className="mb-3">
-            {veloId === 2 && <PartnerPoolSash />}
-            <CardHeadingAccordion
-              tokenName={tokenName}
-              isOldSyrup={isOldSyrup}
-              apy={apy}
-              className=""
-              isOpenAccordion={isOpenAccordion}
-              setIsOpenAccordion={setIsOpenAccordion}
-              veloId={veloId}
-            />
-
-            <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-              {renderStakeAction('pa-5')}
-              {renderHarvestAction('pa-5')}
-              {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
-              {renderDetailsSection('px-5 py-3', false)}
-            </div>
-          </HorizontalMobileStyle>
-        </>
-      )
-    }
-    const showCountdown = veloId === 2
-    return (
-      <div>
-        <div style={{ display: 'flex' }}>
-          <CountDown showCom={showCountdown} />
-        </div>
-        <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-          {veloId === 2 && <PartnerPoolSash />}
-          {renderCardHeading('col-3 pos-static')}
-
-          <div className="col-4 bd-x flex flex-column justify-space-between px-5">
-            {renderStakeAction('pb-4')}
-            {renderDetailsSection('', true)}
-          </div>
-
-          {renderHarvestAction('col-5 pl-5 flex-grow')}
-          {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
-        </HorizontalStyle>
-      </div>
-    )
-  }
-  const showCountdown = veloId === 2
   return (
-    <div style={{ margin: 'auto' }}>
+    <>
       <div style={{ display: 'flex' }}>
-        <CountDown showCom={showCountdown} margin="auto" />
+        <CountDown showCom={veloId === 2} />
       </div>
-      <VerticalStyle className="mb-7">
-        {veloId === 2 && <PartnerPoolSash />}
-        <div className="flex flex-column flex-grow">
-          {renderCardHeading('pt-7')}
-          {renderStakeAction('pa-5')}
-          {renderHarvestAction('pa-5')}
-          {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
-        </div>
-        {renderDetailsSection('px-5 py-3', false)}
-      </VerticalStyle>
-    </div>
+      <CardWrap>
+        {veloId === 2 && <PartnerPoolSashTitle title="NEW" />}
+        {isMobile ? (
+          <>
+            <Wrap paddingLg={false}>
+              <Flex justifyContent="space-between">
+                <CardHeadingAccordion
+                  tokenName={tokenName}
+                  isOldSyrup={isOldSyrup}
+                  apy={apy}
+                  className=""
+                  isOpenAccordion={isOpenAccordion}
+                  setIsOpenAccordion={setIsOpenAccordion}
+                  veloId={veloId}
+                />
+                {renderToggleButton}
+              </Flex>
+              {renderEarningHarvest('mt-5')}
+            </Wrap>
+            {isOpenAccordion && (
+              <Box style={{ backgroundColor: 'rgba(224, 224, 224, 0.2)' }} className="px-4 py-5">
+                {renderHarvestAction('')}
+                <Box className="py-5">{renderStakeAction('accordian')}</Box>
+                <div style={{ backgroundColor: 'rgba(224, 224, 224, 0.5)', height: 1 }} />
+                <Box className="px-5 py-3">{renderDetailsSection('', false)}</Box>
+              </Box>
+            )}
+          </>
+        ) : (
+          <>
+            <Wrap paddingLg={false}>
+              <Flex justifyContent="space-between" alignItems="center">
+                <Flex className="card-heading" alignItems="center">
+                  {renderCardHeading('')}
+                </Flex>
+                <Box className="total-staked-section">{renderDetailsSection('', false)}</Box>
+                {/* <Box className="my-balance-section">{renderMyStake('')}</Box> */}
+                <Box className="earnings-section">{renderEarningHarvest('')}</Box>
+                {renderToggleButton}
+              </Flex>
+            </Wrap>
+            {isOpenAccordion && (
+              <Box style={{ backgroundColor: 'rgba(224, 224, 224, 0.2)' }} className="px-5 py-4">
+                <Flex justifyContent="space-between">
+                  <Box className="link-section" />
+                  <Box className="harvest-action-section">
+                    {renderHarvestAction('flex align-center justify-space-between')}
+                  </Box>
+                  <Box className="stake-action-section">{renderStakeAction('')}</Box>
+                </Flex>
+              </Box>
+            )}
+          </>
+        )}
+      </CardWrap>
+    </>
   )
+
+  // if (isHorizontal) {
+  //   if (isMobile) {
+  //     return (
+  //       <>
+  //         <div style={{ display: 'flex' }}>
+  //           <CountDown showCom={veloId === 2} margin="auto" />
+  //         </div>
+
+  //         <HorizontalMobileStyle className="mb-3">
+  //           {veloId === 2 && <PartnerPoolSash />}
+  //           <CardHeadingAccordion
+  //             tokenName={tokenName}
+  //             isOldSyrup={isOldSyrup}
+  //             apy={apy}
+  //             className=""
+  //             isOpenAccordion={isOpenAccordion}
+  //             setIsOpenAccordion={setIsOpenAccordion}
+  //             veloId={veloId}
+  //           />
+
+  //           <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
+  //             {renderStakeAction('pa-5')}
+  //             {renderHarvestAction('pa-5')}
+  //             {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
+  //             {renderDetailsSection('px-5 py-3', false)}
+  //           </div>
+  //         </HorizontalMobileStyle>
+  //       </>
+  //     )
+  //   }
+  //   const showCountdown = veloId === 2
+  //   return (
+  //     <div>
+  //       <div style={{ display: 'flex' }}>
+  //         <CountDown showCom={showCountdown} />
+  //       </div>
+  //       <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
+  //         {veloId === 2 && <PartnerPoolSash />}
+  //         {renderCardHeading('col-3 pos-static')}
+
+  //         <div className="col-4 bd-x flex flex-column justify-space-between px-5">
+  //           {renderStakeAction('pb-4')}
+  //           {renderDetailsSection('', true)}
+  //         </div>
+
+  //         {renderHarvestAction('col-5 pl-5 flex-grow')}
+  //         {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
+  //       </HorizontalStyle>
+  //     </div>
+  //   )
+  // }
+  // const showCountdown = veloId === 2
+  // return (
+  //   <div style={{ margin: 'auto' }}>
+  //     <div style={{ display: 'flex' }}>
+  //       <CountDown showCom={showCountdown} margin="auto" />
+  //     </div>
+  //     <VerticalStyle className="mb-7">
+  //       {veloId === 2 && <PartnerPoolSash />}
+  //       <div className="flex flex-column flex-grow">
+  //         {renderCardHeading('pt-7')}
+  //         {renderStakeAction('pa-5')}
+  //         {renderHarvestAction('pa-5')}
+  //         {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
+  //       </div>
+  //       {renderDetailsSection('px-5 py-3', false)}
+  //     </VerticalStyle>
+  //   </div>
+  // )
 }
 
 export default PoolCard
+
+const CardWrap = styled(Card)`
+  margin-bottom: 26px;
+  @media screen and (min-width: 1280px) {
+    .card-heading {
+      width: 204px;
+    }
+    .total-staked-section {
+      width: 144px;
+    }
+    .my-balance-section {
+      margin: 0 24px;
+      width: 232px;
+    }
+    .earnings-section {
+      width: 300px;
+    }
+    .link-section {
+      width: 166px;
+    }
+    .harvest-action-section {
+      margin: 0 24px;
+      width: 358px;
+    }
+    .stake-action-section {
+      width: 276px;
+    }
+  }
+`
+const Wrap = styled(Box)<{ paddingLg: boolean }>`
+  padding: ${({ paddingLg }) => (paddingLg ? '40' : '32')}px;
+  @media screen and (min-width: 1280px) {
+    padding: 32px;
+  }
+`

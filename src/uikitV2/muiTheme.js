@@ -64,11 +64,6 @@ let muiTheme = createTheme({
           textTransform: 'initial',
           borderRadius: '8px',
           fontWeight: 'bold',
-          ':disabled': {
-            background: 'rgb(224, 224, 224)',
-            color: 'rgba(255, 255, 255, 0.8)',
-            cursor: 'not-allowed',
-          },
         },
         sizeSmall: {
           height: '32px',
@@ -79,11 +74,24 @@ let muiTheme = createTheme({
           minHeight: '40px',
         },
         sizeLarge: {
-          fontSize: '0.875rem',
+          fontSize: '1rem',
           minHeight: '48px',
         },
         containedInfo: {
           color: 'white',
+        },
+        outlined: {
+          ':disabled': {
+            background: 'rgba(224,224,224,0.2)',
+            color: 'rgba(153,153,153,0.4)',
+            borderColor: '#e0e0e0',
+          },
+        },
+        contained: {
+          ':disabled': {
+            background: 'rgb(224, 224, 224)',
+            color: 'rgba(255, 255, 255, 0.8)',
+          },
         },
       },
     },

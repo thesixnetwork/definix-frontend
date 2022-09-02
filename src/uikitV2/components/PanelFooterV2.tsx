@@ -2,12 +2,10 @@ import { Box, MenuItem, Select, styled, Typography } from '@mui/material'
 import { allLanguages } from 'config/localisation/languageCodes'
 import React from 'react'
 import { PanelProps } from 'uikit-dev/widgets/Menu/types'
-
-// import { SettingsRounded } from '@mui/icons-material'
-// import { IconButton } from '@mui/material'
+import SettingButton from 'views/Explore/components/SettingButton'
 
 const Container = styled(Box)`
-  padding: 20px 8px 20px 16px;
+  padding: 20px 12px 20px 16px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -44,9 +42,7 @@ const PanelFooterV2: React.FC<PanelProps> = ({ currentLang, setLang }) => {
         ))}
       </Select>
 
-      {/* <IconButton onClick={()=>{}}>
-        <SettingsRounded />
-      </IconButton> */}
+      <SettingButton />
     </Container>
   )
 }

@@ -1,4 +1,4 @@
-import { Box, BoxProps, Divider, styled, Typography } from '@mui/material'
+import { Box, BoxProps, Divider, styled, Typography, Breakpoint, BreakpointsOptions } from '@mui/material'
 import React from 'react'
 import { Rebalance } from '../../../state/types'
 
@@ -12,57 +12,62 @@ interface CardHeadingType {
   rebalance: Rebalance | any
   hideDescription?: boolean
   large?: boolean
+  breakpoint?: number | Breakpoint
 }
 
 interface CustomBoxProps {
   hideDescription?: boolean
+  breakpoint?: number | Breakpoint
 }
 
-const CardHeadingStyle = styled(Box)<CustomBoxProps & BoxProps>(({ theme, hideDescription = false }) => ({
-  padding: '20px 20px 0 20px',
-  display: 'flex',
-  position: 'relative',
-  flexWrap: 'wrap',
-  flexDirection: 'column',
-
-  '.MuiDivider-root': {
-    display: 'none',
-  },
-
-  img: {
-    borderRadius: '6px',
-    width: '100%',
-    height: 'auto',
-    background: 'rgba(186, 191, 199, 0.12)',
-    margin: '0 0 24px 0',
-    flexShrink: '0',
-    maxWidth: '400px',
-  },
-
-  [theme.breakpoints.up('lg')]: {
-    padding: '32px 32px 0 32px',
-    flexDirection: 'row',
-    alignItems: hideDescription ? 'center' : 'initial',
+const CardHeadingStyle = styled(Box)<CustomBoxProps & BoxProps>(
+  ({ theme, hideDescription = false, breakpoint = 'lg' }) => ({
+    padding: '20px 20px 0 20px',
+    display: 'flex',
+    position: 'relative',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
 
     '.MuiDivider-root': {
-      display: 'block',
+      display: 'none',
     },
 
     img: {
-      width: '160px',
-      margin: '0 32px 0 0',
+      borderRadius: '6px',
+      width: '100%',
+      height: 'auto',
+      background: 'rgba(186, 191, 199, 0.12)',
+      margin: '0 0 24px 0',
+      flexShrink: '0',
+      maxWidth: '400px',
     },
-  },
-}))
+
+    [theme.breakpoints.up(breakpoint)]: {
+      padding: '32px 32px 0 32px',
+      flexDirection: 'row',
+      alignItems: hideDescription ? 'center' : 'initial',
+
+      '.MuiDivider-root': {
+        display: 'block',
+      },
+
+      img: {
+        width: '160px',
+        margin: '0 32px 0 0',
+      },
+    },
+  }),
+)
 
 const CardHeading: React.FC<CardHeadingType> = ({
   className = '',
   rebalance = {},
   hideDescription = false,
   large = false,
+  breakpoint,
 }) => {
   return (
-    <CardHeadingStyle hideDescription={hideDescription} className={className}>
+    <CardHeadingStyle hideDescription={hideDescription} className={className} breakpoint={breakpoint}>
       <img src={rebalance.icon[0]} alt="" />
 
       <Box>

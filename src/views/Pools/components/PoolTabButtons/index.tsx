@@ -3,7 +3,7 @@ import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
-import { Box, FormControlLabel, Typography } from '@mui/material'
+import { Box, Select, MenuItem, FormControlLabel, Typography } from '@mui/material'
 import CustomSwitch from 'uikitV2/components/CustomSwitch'
 
 const Wrapper = styled.div`
@@ -36,7 +36,17 @@ const ToggleWrapper = styled.div`
   }
 `
 
-const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, listView, setListView }) => {
+const PoolTabButtons = ({
+  stackedOnly,
+  setStackedOnly,
+  liveOnly,
+  setLiveOnly,
+  listView,
+  setListView,
+  selectDisplay,
+  setSelectDisplay,
+  allDisplayChiose = [],
+}) => {
   const TranslateString = useI18n()
   // const { isDark } = useTheme()
   const { isXl } = useMatchBreakpoints()
@@ -44,6 +54,31 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
 
   return (
     <div className="flex mt-3">
+      <Box className="mr-3" display="flex" alignItems="center" mt="30px">
+        <Select
+          value={selectDisplay}
+          size="small"
+          sx={{ width: '130px' }}
+          MenuProps={{
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+          }}
+          onChange={(e) => {
+            setSelectDisplay(e.target.value)
+          }}
+        >
+          {allDisplayChiose.map((data) => (
+            <MenuItem {...data}>
+              <Text color="rgb(102, 102, 102)" fontWeight={data.value === selectDisplay ? 700 : 100}>
+                {data.key}
+              </Text>
+            </MenuItem>
+          ))}
+        </Select>
+      </Box>
+
       <Box className="mr-3" display="flex" alignItems="center" mt="30px">
         <FormControlLabel
           labelPlacement="start"

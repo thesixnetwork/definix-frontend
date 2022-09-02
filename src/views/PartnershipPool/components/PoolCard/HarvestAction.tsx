@@ -1,11 +1,12 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Button } from '@mui/material'
 import { useVeloHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
 import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Heading, Text } from 'uikit-dev'
+import { Flex, Heading, Text } from 'uikit-dev'
 
 import { getBalanceNumber } from 'utils/formatBalance'
 import { HarvestActionProps } from './types'
@@ -15,6 +16,19 @@ const MiniLogo = styled.img`
   height: auto;
   margin-right: 8px;
   display: inline-block;
+`
+
+const LabelText = styled.p`
+  margin-right: 6px;
+  width: 58px;
+  height: 20px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 20px;
+  text-align: center;
+  background-color: rgb(180, 169, 168);
+  color: rgb(255, 255, 255);
 `
 
 const HarvestAction: React.FC<HarvestActionProps> = ({
@@ -38,6 +52,48 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
 
   return (
     <div className={className}>
+      <div>
+        <Text textAlign="left" fontSize="0.75rem" className="mb-2 flex align-center" color="textSubtle">
+          {`${TranslateString(1072, 'Earned Token')}`}
+        </Text>
+        <div className="flex align-center justify-space-between">
+          <div className="flex">
+            <LabelText>VELO</LabelText>
+            <div>
+              <Heading fontSize="1.125rem !important" color="text" className="col-6 pr-3" textAlign="left">
+                {/* {getBalanceNumber(earnings, tokenDecimals).toFixed(2)} */}
+                {displayBalance}
+              </Heading>
+
+              <Text fontSize="0.875rem" color="textSubtle" textAlign="left" className="mt-1">
+                = ${numeral(rawEarningsBalance * finixPrice.toNumber()).format('0,0.0000')}
+                {/* {numeral(earnings.toNumber() * finixPrice.toNumber()).format('0,0.0000')} */}
+              </Text>
+            </div>
+          </div>
+        </div>
+      </div>
+      <HarvestButtonSectionInMyInvestment>
+        <Button
+          fullWidth
+          color="secondary"
+          disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
+          onClick={async () => {
+            setPendingTx(true)
+
+            await onRewardVelo()
+
+            setPendingTx(false)
+          }}
+        >
+          {TranslateString(562, 'Harvest')}
+        </Button>
+      </HarvestButtonSectionInMyInvestment>
+    </div>
+  )
+
+  return (
+    <div className={className}>
       <Text textAlign="left" className="mb-2 flex align-center" color="textSubtle">
         <MiniLogo src="/images/coins/velo.png" alt="" />
         {`VELO ${TranslateString(1072, 'Earned')}`}
@@ -56,9 +112,8 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
 
         <Button
           fullWidth
+          color="secondary"
           disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
-          className="col-6"
-          radii="small"
           onClick={async () => {
             setPendingTx(true)
 
@@ -90,3 +145,14 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
 }
 
 export default HarvestAction
+
+const HarvestButtonSectionInMyInvestment = styled(Flex)`
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 24px;
+  width: 100%;
+  @media screen and (min-width: 1280px) {
+    flex-direction: row;
+    width: 150px;
+  }
+`

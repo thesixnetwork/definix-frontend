@@ -1,5 +1,4 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Button as ButtonMUI } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import ConnectButton from 'components/ConnectButton'
 import { useSousApprove } from 'hooks/useApprove'
@@ -63,6 +62,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     if (!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished) {
       return (
         <Button
+          color="rgb(94, 81, 95)"
           onClick={() => {
             setReadyToStake(true)
           }}
@@ -78,6 +78,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
       <IconButtonWrapper>
         <Button
           variant="secondary"
+          color="rgb(94, 81, 95)"
           disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
           onClick={
             isOldSyrup
@@ -96,6 +97,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
         {!isOldSyrup && !isFinished && (
           <Button
             variant="secondary"
+            color="rgb(94, 81, 95)"
             disabled={isFinished && sousId !== 0 && sousId !== 25}
             onClick={onPresentDeposit}
             className="btn-secondary-disable col-6 ml-1"
@@ -110,7 +112,13 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const renderApprovalOrStakeButton = () => {
     if (needsApproval && !isOldSyrup) {
       return (
-        <Button fullWidth radii="small" disabled={isFinished || requestedApproval} onClick={handleApprove}>
+        <Button
+          color="rgb(94, 81, 95)"
+          fullWidth
+          radii="small"
+          disabled={isFinished || requestedApproval}
+          onClick={handleApprove}
+        >
           {TranslateString(758, 'Approve Contract')}
         </Button>
       )
@@ -139,13 +147,13 @@ const StakeAction: React.FC<StakeActionProps> = ({
         'My Staked',
       )}`}</Text>
       {!account ? (
-        <ButtonMUI
+        <ConnectButton
           variant="contained"
           color="secondary"
           style={{ padding: '10px 20px', fontSize: '0.875rem', width: '100%', fontWeight: 'bold' }}
         >
           Connect Wallet
-        </ButtonMUI>
+        </ConnectButton>
       ) : (
         renderApprovalOrStakeButton()
       )}

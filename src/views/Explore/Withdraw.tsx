@@ -396,7 +396,7 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
               textAlign={isMobile ? 'center' : 'left'}
             />
           </div>
-          <VerticalAssetRatio className={isMobile ? 'col-12' : 'col-5'} />
+          {/* <VerticalAssetRatio className={isMobile ? 'col-12' : 'col-5'} /> */}
         </div>
 
         <SpaceBetweenFormat
