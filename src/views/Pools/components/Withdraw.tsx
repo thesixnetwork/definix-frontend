@@ -13,6 +13,7 @@ import { textStyle } from 'uikitV2/text'
 import ModalInput from 'uikitV2/components/ModalInput'
 import { ArrowBackIcon } from 'uikit-dev'
 import PageTitle from 'uikitV2/components/PageTitle'
+import SmallestLayout from 'uikitV2/components/SmallestLayout'
 
 const CardWrap = styled(Card)`
   margin-top: ${spacing.S_40}px;
@@ -139,7 +140,7 @@ const Withdraw: React.FC<{
   )
 
   return (
-    <>
+    <SmallestLayout>
       <Box className="mb-s20" style={{ cursor: 'pointer' }} display="inline-flex" onClick={onBack}>
         <Flex>
           <ArrowBackIcon color="#999" />
@@ -182,7 +183,7 @@ const Withdraw: React.FC<{
           />
         </CardWrap>
       </PageTitle>
-    </>
+    </SmallestLayout>
   )
 }
 

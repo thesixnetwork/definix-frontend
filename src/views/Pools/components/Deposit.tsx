@@ -20,6 +20,7 @@ import { ArrowBackIcon } from 'uikit-dev'
 import PageTitle from 'uikitV2/components/PageTitle'
 import { ColorStyles } from 'uikitV2/colors'
 import { Button } from '@mui/material'
+import SmallestLayout from 'uikitV2/components/SmallestLayout'
 
 const CardWrap = styled(Card)`
   margin-top: ${spacing.S_40}px;
@@ -149,7 +150,7 @@ const Deposit: React.FC<{
   )
 
   return (
-    <>
+    <SmallestLayout>
       <Box style={{ cursor: 'pointer', marginBottom: 20, display: 'inline-flex' }} onClick={onBack}>
         <Flex>
           <ArrowBackIcon color="#999" />
@@ -162,56 +163,55 @@ const Deposit: React.FC<{
         // linkLabel="Learn how to stake in Pool"
         // link="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
         // img={poolImg}
-      >
-        <CardWrap>
-          {renderCardHeading()}
-          <CardBody>
-            <LiquidityInfo hasMb>
-              <LiquidityTitle>Total staked</LiquidityTitle>
-              <LiquidityValue>
-                <BalanceText>{totalStakedValue}</BalanceText>
-              </LiquidityValue>
-            </LiquidityInfo>
+      />
+      <CardWrap>
+        {renderCardHeading()}
+        <CardBody>
+          <LiquidityInfo hasMb>
+            <LiquidityTitle>Total staked</LiquidityTitle>
+            <LiquidityValue>
+              <BalanceText>{totalStakedValue}</BalanceText>
+            </LiquidityValue>
+          </LiquidityInfo>
 
-            <LiquidityInfo hasMb={false}>
-              <LiquidityTitle>My Staked</LiquidityTitle>
-              <LiquidityValue>
-                <BalanceText>{myStakedDisplayValue}</BalanceText>
-                <PriceText value={myStakedPrice} prefix="=" />
-              </LiquidityValue>
-            </LiquidityInfo>
-          </CardBody>
+          <LiquidityInfo hasMb={false}>
+            <LiquidityTitle>My Staked</LiquidityTitle>
+            <LiquidityValue>
+              <BalanceText>{myStakedDisplayValue}</BalanceText>
+              <PriceText value={myStakedPrice} prefix="=" />
+            </LiquidityValue>
+          </LiquidityInfo>
+        </CardBody>
 
-          <StyledDivider />
+        <StyledDivider />
 
-          <ModalInput
-            type="deposit"
-            value={val}
-            max={maxValue}
-            // symbol={tokenName}
-            buttonName="Deposit"
-            onChange={handleChange}
-            onSelectBalanceRateButton={handleSelectBalanceRate}
-            onClickButton={() => onPresentConfirmModal()}
-          />
+        <ModalInput
+          type="deposit"
+          value={val}
+          max={maxValue}
+          // symbol={tokenName}
+          buttonName="Deposit"
+          onChange={handleChange}
+          onSelectBalanceRateButton={handleSelectBalanceRate}
+          onClickButton={() => onPresentConfirmModal()}
+        />
 
-          <Flex justifyContent="space-between" alignItems="center" style={{ marginTop: 20 }}>
-            <Text style={{ ...textStyle.R_14R, color: '#999' }}>Don't have a token?</Text>
-            <Button
-              // type="button"
-              variant="outlined"
-              color="secondary"
-              onClick={() => {
-                history.push(addSwapUrl)
-                // window.location.href = `${addSwapUrl}`
-              }}
-            >
-              Swap
-            </Button>
-          </Flex>
-        </CardWrap>
-      </PageTitle>
-    </>
+        <Flex justifyContent="space-between" alignItems="center" style={{ marginTop: 20 }}>
+          <Text style={{ ...textStyle.R_14R, color: '#999' }}>Don't have a token?</Text>
+          <Button
+            // type="button"
+            variant="outlined"
+            color="secondary"
+            onClick={() => {
+              history.push(addSwapUrl)
+              // window.location.href = `${addSwapUrl}`
+            }}
+          >
+            Swap
+          </Button>
+        </Flex>
+      </CardWrap>
+    </SmallestLayout>
   )
 }
 

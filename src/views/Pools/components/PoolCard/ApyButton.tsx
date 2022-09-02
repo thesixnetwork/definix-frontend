@@ -1,23 +1,32 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { CalculateIcon, IconButton, useModal } from 'uikit-dev'
 import ApyCalculatorModal from './ApyCalculatorModal'
+import { IconButton } from 'uikit-dev'
+import { useModal } from 'uikitV2/Modal'
+import { CalculateIcon } from 'uikitV2/components/Svg'
 
 export interface ApyButtonProps {
   lpLabel?: string
-  finixPrice?: BigNumber
   apy?: BigNumber
   addLiquidityUrl?: string
+  coin: string
 }
 
-const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, finixPrice, apy, addLiquidityUrl }) => {
-  const [onPresentApyModal] = useModal(
-    <ApyCalculatorModal lpLabel={lpLabel} finixPrice={finixPrice} apy={apy} addLiquidityUrl={addLiquidityUrl} />,
+const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, apy, addLiquidityUrl, coin }) => {
+  const [onPresentApyModal, onDismiss] = useModal(
+    <ApyCalculatorModal
+      lpLabel={lpLabel}
+      apy={apy}
+      addLiquidityUrl={addLiquidityUrl}
+      coin={coin}
+      // onDismiss={onDismiss}
+    />,
+    true,
   )
 
   return (
-    <IconButton style={{ height: '24px', width: '24px' }} onClick={onPresentApyModal} variant="text" color="#5e515f">
-      <CalculateIcon color="#5e515f" style={{ padding: 0, height: '24px' }} />
+    <IconButton size="xs" onClick={onPresentApyModal} variant="text" color="#5e515f">
+      <CalculateIcon width={16} />
     </IconButton>
   )
 }

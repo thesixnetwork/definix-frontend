@@ -109,7 +109,6 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
             {apy ? `${numeral(apy?.toNumber()).format('0,0.00')}%` : <Skeleton height={24} width={80} />}
           </div>
         </Apr>
-        <ApyButton lpLabel={tokenName} finixPrice={finixPrice} apy={apy} />
       </div>
     </CardHeadingStyle>
   )

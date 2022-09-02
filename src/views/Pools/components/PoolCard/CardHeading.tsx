@@ -52,7 +52,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         >
           {apy ? `${numeral(apy?.toNumber()).format('0,0.00')}%` : <Skeleton height={24} width={80} />}
         </Text>
-        <ApyButton lpLabel={tokenNames} finixPrice={finixPrice} apy={apy} />
+        <ApyButton lpLabel={tokenNames} addLiquidityUrl={addLiquidityUrl} apy={apy} coin={coin} />
       </Flex>
     )
   }
