@@ -30,7 +30,7 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
   // }
 
   return (
-    <Box px={{ xs: '20px', lg: 4 }} sx={{ width: '100%', overflow: 'auto' }}>
+    <Box px={{ xs: 2.5, lg: 4 }} sx={{ width: '100%', overflow: 'auto' }}>
       <Table>
         <TR>
           {cols.map((c, idx) => (

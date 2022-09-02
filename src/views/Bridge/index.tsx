@@ -48,7 +48,7 @@ const Bridge = () => {
       <PageTitle title="Bridge" caption="Transfer tokens to other chains quick and easy." img={bridgeImg} />
 
       <Card>
-        <Box p={{ xs: '20px', md: '40px' }} display="flex" flexDirection="column">
+        <Box p={{ xs: 2.5, md: 5 }} display="flex" flexDirection="column">
           <img src={sixBridge} alt="" className="mx-auto" style={{ marginTop: '10px' }} />
 
           <Box py={{ xs: '1.5rem', md: '2.5rem' }}>

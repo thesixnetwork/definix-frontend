@@ -1,40 +1,33 @@
+import { HelpOutlineRounded } from '@mui/icons-material'
+import { Box, Tooltip, Typography } from '@mui/material'
 import React from 'react'
-import { Text } from 'uikit-dev'
-import Helper from 'uikit-dev/components/Helper'
 
-interface SpaceBetweenFormatType {
-  title?: string
-  titleElm?: any
-  value?: string
-  valueElm?: any
-  className?: string
-  valueColor?: string
-  hint?: string
-}
-
-const SpaceBetweenFormat: React.FC<SpaceBetweenFormatType> = ({
-  className = '',
-  title,
-  titleElm,
-  value,
-  valueElm,
-  valueColor = 'text',
-  hint = '',
+const SpaceBetweenFormat = ({
+  title = '',
+  value = '',
+  titleElm = undefined,
+  valueElm = undefined,
+  tooltip = '',
+  ...props
 }) => {
   return (
-    <div className={`flex justify-space-between align-center ${className}`}>
+    <Box display="flex" alignItems="center" justifyContent="space-between" {...props}>
       {titleElm || (
-        <div className="flex pr-3">
-          <Text fontSize="14px">{title}</Text>
-          {hint && <Helper text={hint} className="ml-2" position="top" />}
-        </div>
+        <Typography variant="body2" color="text.disabled" className="flex align-center">
+          {title}
+          {tooltip && (
+            <Tooltip title={tooltip}>
+              <HelpOutlineRounded className="ml-1" sx={{ width: '16px', height: '16px' }} />
+            </Tooltip>
+          )}
+        </Typography>
       )}
       {valueElm || (
-        <Text color={valueColor} bold>
+        <Typography variant="body2" color="text.disabled" fontWeight="bold">
           {value}
-        </Text>
+        </Typography>
       )}
-    </div>
+    </Box>
   )
 }
 

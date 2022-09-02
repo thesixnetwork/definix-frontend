@@ -1,24 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import { Box, Typography } from '@mui/material'
 import BigNumber from 'bignumber.js'
+import _ from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
-import styled from 'styled-components'
+import Coin from 'uikitV2/components/Coin'
 import { getTokenName } from 'utils/getTokenSymbol'
-import _ from 'lodash'
-
-const Coin = styled.div`
-  display: flex;
-  align-items: center;
-
-  img {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 12px;
-  }
-`
 
 const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {
   return (
@@ -32,12 +19,7 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
         const thisName = getTokenName(c?.symbol)
         return (
           <Box key={c.symbol} display="flex" justifyContent="space-between" py="0.75rem">
-            <Coin>
-              <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
-              <Typography variant="body2" fontWeight="bold">
-                {thisName}
-              </Typography>
-            </Coin>
+            <Coin name={thisName} symbol={c.symbol} />
 
             <Typography variant="body2" pl={1}>
               {numeral(

@@ -42,7 +42,7 @@ const Harvest: React.FC<HarvestType> = ({ value, isVertical = false, large = fal
           await onReward()
           setPendingTx(false)
         }}
-        sx={{ width: '120px' }}
+        sx={{ width: '120px', fontSize: '0.875rem' }}
       >
         Harvest
       </Button>

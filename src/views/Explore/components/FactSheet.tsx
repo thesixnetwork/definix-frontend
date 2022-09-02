@@ -38,8 +38,8 @@ const FactRow = ({ name, value, isCopy, bold = false, percent = undefined, toolt
 
 const FactSheet = ({ rebalance }) => {
   return (
-    <Box p={{ xs: '20px', lg: 4 }}>
-      <Typography color="textSecondary" fontWeight={500} sx={{ mb: '20px' }}>
+    <Box p={{ xs: 2.5, lg: 4 }}>
+      <Typography color="textSecondary" fontWeight={500} sx={{ mb: 2.5 }}>
         Key Facts
       </Typography>
 

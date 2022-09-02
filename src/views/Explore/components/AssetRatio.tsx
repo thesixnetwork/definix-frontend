@@ -1,9 +1,8 @@
 /* eslint-disable no-nested-ternary */
-import { Typography, Tooltip } from '@mui/material'
+import { Tooltip, Typography } from '@mui/material'
 import { Ratio } from 'config/constants/types'
 import React from 'react'
 import styled from 'styled-components'
-import { Text } from 'uikit-dev'
 import TwoLineFormatV2 from 'uikitV2/components/TwoLineFormatV2'
 
 interface AssetRatioType {

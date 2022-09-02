@@ -292,6 +292,8 @@ let muiTheme = createTheme({
         sizeSmall: {
           height: '32px',
           padding: '0 16px',
+          fontSize: '0.75rem',
+          fontWeight: 'bold',
         },
       },
     },

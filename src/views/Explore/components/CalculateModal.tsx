@@ -16,6 +16,7 @@ import { fetchRebalances } from '../../../state/rebalance'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../../state/wallet'
 import CardHeading from './CardHeading'
 import ResponseCard from './ResponseCard'
+import SpaceBetweenFormat from './SpaceBetweenFormat'
 import VerticalAssetRatio from './VerticalAssetRatio'
 
 const CalculateModal = ({
@@ -106,7 +107,7 @@ const CalculateModal = ({
           <Box overflow="auto" height="calc(100% - 64px)" mb={3}>
             <CardHeading rebalance={rebalance} hideDescription large className="pa-0" />
 
-            <Typography fontWeight={500} color="text.secondary" sx={{ mb: '12px', mt: '40px' }}>
+            <Typography fontWeight={500} color="text.secondary" sx={{ mb: '12px', mt: 5 }}>
               Invest Asset Ratio
             </Typography>
 
@@ -130,23 +131,17 @@ const CalculateModal = ({
                 </Typography>
               </Box>
 
-              <Box display="flex" justifyContent="space-between" mb={1}>
-                <Typography variant="body2" color="text.disabled">
-                  Estimated Value
-                </Typography>
-                <Typography variant="body2" color="text.disabled">
-                  {`$${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
-                </Typography>
-              </Box>
+              <SpaceBetweenFormat
+                mb={1}
+                title="Estimated Value"
+                value={`$${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
+              />
 
-              <Box display="flex" justifyContent="space-between" mb={2}>
-                <Typography variant="body2" color="text.disabled">
-                  Price Impact
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {`${priceImpactDisplay <= 0.1 ? '< 0.1' : priceImpactDisplay}%`}
-                </Typography>
-              </Box>
+              <SpaceBetweenFormat
+                mb={2}
+                title="Price Impact"
+                value={`${priceImpactDisplay <= 0.1 ? '< 0.1' : priceImpactDisplay}%`}
+              />
 
               <Typography variant="caption" color="text.secondary">
                 Output is estimated. You will receive at least{' '}

@@ -35,7 +35,7 @@ const PageTitle = ({
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
 
   return (
-    <BoxStyle sx={sx}>
+    <BoxStyle sx={sx} pr={img ? '224px !important' : '0 !important'}>
       <Typography variant="h2">
         {title}
         {link && (

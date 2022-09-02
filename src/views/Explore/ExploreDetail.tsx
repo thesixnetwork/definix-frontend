@@ -501,15 +501,15 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
       <Card className="mb-3">
         <CardHeading rebalance={rebalance} />
-        <Box display="flex" flexWrap="wrap" py={{ xs: '20px', lg: 4 }}>
-          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'col-3 bd-r' : 'col-6 mb-3'}>
+        <Box display="flex" flexWrap="wrap" py={{ xs: 2.5, lg: 4 }}>
+          <Box px={{ xs: 2.5, lg: 4 }} className={lgUp ? 'col-3 bd-r' : 'col-6 mb-3'}>
             <TwoLineFormatV2
               large
               title="Total Asset Value"
               value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
             />
           </Box>
-          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'col-3 bd-r' : 'col-6 mb-3'}>
+          <Box px={{ xs: 2.5, lg: 4 }} className={lgUp ? 'col-3 bd-r' : 'col-6 mb-3'}>
             <TwoLineFormatV2
               large
               title="Yield APR"
@@ -523,7 +523,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               tooltip="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
             />
           </Box>
-          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'col-3 bd-r' : 'col-6'}>
+          <Box px={{ xs: 2.5, lg: 4 }} className={lgUp ? 'col-3 bd-r' : 'col-6'}>
             <TwoLineFormatV2
               large
               title="Share Price (Since inception)"
@@ -540,7 +540,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               })()}
             />
           </Box>
-          <Box px={{ xs: '20px', lg: 4 }} className={lgUp ? 'col-3' : 'col-6'}>
+          <Box px={{ xs: 2.5, lg: 4 }} className={lgUp ? 'col-3' : 'col-6'}>
             <TwoLineFormatV2 large title="Risk-O-Meter" value="Medium" />
           </Box>
         </Box>
@@ -567,7 +567,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           <FactSheet rebalance={rebalance} />
         </TabPanel>
 
-        <TabPanel value={currentTab} index={1} p={{ xs: '20px', lg: 4 }}>
+        <TabPanel value={currentTab} index={1} p={{ xs: 2.5, lg: 4 }}>
           <Box display="flex" flexWrap="wrap" mb="16px">
             <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} className="mr-3 mb-2" />
             <SelectChart chartName={chartName} setChartName={setChartName} className="mb-2" />
@@ -582,7 +582,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
           <Divider className="mt-4" />
 
-          <Box display="flex" flexWrap="wrap" pt={{ xs: '20px', lg: 3 }}>
+          <Box display="flex" flexWrap="wrap" pt={{ xs: 2.5, lg: 3 }}>
             <Box px={{ lg: 3 }} className={lgUp ? 'col-4 bd-r' : 'col-6 mb-3'}>
               <TwoLineFormatV2
                 large

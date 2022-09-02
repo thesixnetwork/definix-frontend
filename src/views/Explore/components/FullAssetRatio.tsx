@@ -40,8 +40,8 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
   const isMobile = !isXl
 
   return (
-    <Box p={{ xs: '20px', lg: 4 }}>
-      <Typography color="textSecondary" fontWeight={500} sx={{ mb: '20px' }}>
+    <Box p={{ xs: 2.5, lg: 4 }}>
+      <Typography color="textSecondary" fontWeight={500} sx={{ mb: 2.5 }}>
         Asset Ratio
       </Typography>
 

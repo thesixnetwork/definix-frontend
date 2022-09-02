@@ -4,7 +4,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Box, Chip, styled, Typography } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import React from 'react'
-import NumericalInputV2 from 'uikitV2/components/NumericalInputV2'
+import { Input as NumericalInput } from 'views/Explore/components/NumericalInput'
 
 interface CurrencyInputV2Props {
   value: string
@@ -85,7 +85,7 @@ const CurrencyInputV2 = ({
       </Box>
 
       <InputBox>
-        <NumericalInputV2
+        <NumericalInput
           className="token-amount-input"
           value={value}
           onUserInput={(val) => {

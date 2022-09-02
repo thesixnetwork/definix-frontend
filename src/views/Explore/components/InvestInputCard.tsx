@@ -87,7 +87,7 @@ const InvestInputCard = ({
   )
 
   return (
-    <Card className="mb-3" sx={{ p: { xs: '20px', sm: '40px' } }}>
+    <Card className="mb-3" sx={{ p: { xs: 2.5, sm: 5 } }}>
       <Box>
         {rebalance.ratio.map((c) => (
           <CurrencyInputV2

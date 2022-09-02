@@ -48,7 +48,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const prevBalances = usePrevious(balances, {})
   const prevCurrentInput = usePrevious(currentInput, {})
   const theme = useTheme()
-  const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
+  const smUp = useMediaQuery(theme.breakpoints.up('sm'))
   const finixPrice = usePriceFinixUsd()
 
   useEffect(() => {
@@ -121,9 +121,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   return (
     <SmallestLayout>
       <BackV2 to="/rebalancing/detail" />
-      <PageTitle title="Invest" caption="Invest in auto rebalancing products." sx={{ mb: '20px' }} />
+      <PageTitle title="Invest" caption="Invest in auto rebalancing products." sx={{ mb: 2.5 }} />
 
-      <Card className="mb-3" sx={{ p: { xs: '20px', sm: '40px' } }}>
+      <Card className="mb-3" sx={{ p: { xs: 2.5, sm: 5 } }}>
         <CardHeading
           rebalance={rebalance}
           hideDescription
@@ -131,8 +131,8 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
           className="pa-0"
           breakpoint={theme.breakpoints.values.sm}
         />
-        <Box display="flex" flexWrap="wrap" pt={{ xs: '20px', sm: 3 }}>
-          <Box pr={{ lg: 4 }} className={lgUp ? 'bd-r' : 'col-6 mb-3'}>
+        <Box display="flex" flexWrap="wrap" pt={{ xs: 2.5, sm: 3 }}>
+          <Box pr={{ sm: 3 }} className={smUp ? 'bd-r' : 'col-6 mb-3'}>
             <TwoLineFormatV2
               large
               title="Yield APR"
@@ -146,7 +146,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
               tooltip="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
             />
           </Box>
-          <Box px={{ lg: 4 }} className={lgUp ? 'bd-r' : 'col-6'}>
+          <Box px={{ sm: 3 }} className={smUp ? 'bd-r' : 'col-6'}>
             <TwoLineFormatV2
               large
               title="Share Price (Since inception)"
@@ -163,7 +163,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
               })()}
             />
           </Box>
-          <Box px={{ lg: 4 }} className={lgUp ? '' : 'col-6'}>
+          <Box px={{ sm: 3 }} className={smUp ? '' : 'col-6'}>
             <TwoLineFormatV2 large title="Risk-O-Meter" value="Medium" />
           </Box>
         </Box>

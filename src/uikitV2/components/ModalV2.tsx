@@ -42,7 +42,7 @@ const ModalV2: React.FC<Props> = ({
   ...props
 }) => (
   <CardStyle sx={{ maxWidth: { md: maxWidth }, maxHeight: { md: maxHeight } }} className={className} {...props}>
-    <Box px={3} py="20px" display="flex" alignItems="center" justifyContent="space-between">
+    <Box px={3} py={2.5} display="flex" alignItems="center" justifyContent="space-between">
       <Box display="flex" alignItems="center">
         {onBack && (
           <IconButton size="small" onClick={onBack} className="mr-2">

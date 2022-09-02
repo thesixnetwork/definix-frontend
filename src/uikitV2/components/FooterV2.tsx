@@ -154,8 +154,6 @@ function FooterV2() {
           <img src={six} alt="" />
         </Link>
 
-        {/* <Divider orientation="vertical" sx={{ alignSelf: 'stretch', height: 'auto', ml: 2, mr: 3 }} /> */}
-
         <Box className="flex flex-wrap">
           <Typography variant="body2" color="#999999">
             Copyright © 2022 SIX Network. All Right Reserved&nbsp;

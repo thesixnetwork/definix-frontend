@@ -2,20 +2,7 @@
 import { CheckRounded } from '@mui/icons-material'
 import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
-import styled from 'styled-components'
-
-const Coin = styled.div`
-  display: flex;
-  align-items: center;
-
-  img {
-    flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 12px;
-  }
-`
+import Coin from 'uikitV2/components/Coin'
 
 const Item = ({ coin, onApprove }) => {
   const thisName = coin.symbol === 'WKLAY' ? 'KLAY' : coin.symbol === 'WBNB' ? 'BNB' : coin.symbol
@@ -27,8 +14,8 @@ const Item = ({ coin, onApprove }) => {
       justifyContent="space-between"
       mb={{ xs: 3, sm: 1 }}
     >
-      <Coin>
-        <img src={`/images/coins/${coin.symbol || ''}.png`} alt="" />
+      <Box display="flex" alignItems="center">
+        <Coin symbol={coin.symbol} large />
         <Typography fontWeight="bold">
           {coin.currentValue}
 
@@ -36,7 +23,7 @@ const Item = ({ coin, onApprove }) => {
             {thisName}
           </Typography>
         </Typography>
-      </Coin>
+      </Box>
       <Box mt={{ xs: 1, sm: 0 }}>
         {!coin.needsApproval || !coin.currentValue ? (
           <Button

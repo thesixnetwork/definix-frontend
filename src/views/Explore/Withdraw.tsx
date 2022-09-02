@@ -1,41 +1,30 @@
 /* eslint-disable no-nested-ternary */
-import Checkbox from '@mui/material/Checkbox'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Box, useMediaQuery, useTheme } from '@mui/material'
+import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import moment from 'moment'
-import BigNumber from 'bignumber.js'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormGroup from '@mui/material/FormGroup'
-import Radio from '@mui/material/Radio'
-import { getAddress } from 'utils/addressHelpers'
-import { useDispatch } from 'react-redux'
-import { AbiItem } from 'web3-utils'
-import { provider } from 'web3-core'
-import rebalanceAbi from 'config/abi/rebalance.json'
-import { getCustomContract } from 'utils/erc20'
 import numeral from 'numeral'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
-import useTheme from 'hooks/useTheme'
-import RadioGroup from '@mui/material/RadioGroup'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
+import { useDispatch } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
-import styled from 'styled-components'
-import { isExternalModule } from 'typescript'
-import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Button, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
-import { useRebalanceBalances, useBalances } from '../../state/hooks'
-import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
+import BackV2 from 'uikitV2/components/BackV2'
+import Card from 'uikitV2/components/Card'
+import PageTitle from 'uikitV2/components/PageTitle'
+import SmallestLayout from 'uikitV2/components/SmallestLayout'
+import TwoLineFormatV2 from 'uikitV2/components/TwoLineFormatV2'
+import { getAddress } from 'utils/addressHelpers'
+import { simulateWithdraw } from '../../offline-pool'
+import { useBalances, useRebalanceBalances } from '../../state/hooks'
 import { Rebalance } from '../../state/types'
+import { fetchBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
-import CurrencyInputPanel from './components/CurrencyInputPanel'
-import SettingButton from './components/SettingButton'
 import Share from './components/Share'
 import SpaceBetweenFormat from './components/SpaceBetweenFormat'
-import TwoLineFormat from './components/TwoLineFormat'
-import VerticalAssetRatio from './components/VerticalAssetRatio'
-import { simulateWithdraw } from '../../offline-pool'
+import WithdrawInputCard from './components/WithdrawInputCard'
 
 interface WithdrawType {
   rebalance: Rebalance | any
@@ -45,321 +34,6 @@ const SuccessOptions = {
   loop: true,
   autoplay: true,
   animationData: success,
-}
-
-const MaxWidth = styled.div`
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-`
-
-const LeftPanelAbsolute = styled(LeftPanel)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  padding-bottom: 24px;
-`
-
-const Coin = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 4px 16px 4px 0;
-
-  img {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 6px;
-  }
-`
-
-const FormControlLabelCustom = styled(FormControlLabel)`
-  height: 40px;
-  margin: 0 0 0 -10px !important;
-
-  .MuiFormControlLabel-label {
-    flex-grow: 1;
-  }
-`
-
-const InlineAssetRatioLabel = ({ coin, className = '' }) => {
-  const thisName = (() => {
-    if (coin.symbol === 'WKLAY') return 'KLAY'
-    if (coin.symbol === 'WBNB') return 'BNB'
-    return coin.symbol
-  })()
-  return (
-    <div className={`flex justify-space-between align-center ${className}`}>
-      <Coin className="col-8">
-        <img src={`/images/coins/${coin.symbol}.png`} alt="" />
-        <Text className="col-3 mr-4" bold>
-          {coin.amount ? numeral(coin.amount.toNumber()).format('0,0.[0000]') : '-'}
-        </Text>
-        <Text>{thisName}</Text>
-      </Coin>
-
-      <Text fontSize="12px" color="textSubtle" className="col-4" textAlign="right" style={{ letterSpacing: '0' }}>
-        Ratio : {coin.valueRatioCal.toFixed(2)} %
-      </Text>
-    </div>
-  )
-}
-
-const CardInput = ({
-  setTx,
-  isWithdrawing,
-  setIsWithdrawing,
-  rebalance,
-  poolAmounts,
-  isSimulating,
-  currentInput,
-  setCurrentInput,
-  onNext,
-  ratioType,
-  setRatioType,
-  currentBalance,
-  currentBalanceNumber,
-  selectedToken,
-  setSelectedToken,
-}) => {
-  // const { isXl } = useMatchBreakpoints()
-  const isMobile = !isExternalModule
-  const { account, ethereum } = useWallet()
-  const dispatch = useDispatch()
-  const { isDark } = useTheme()
-
-  const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
-  const onWithdraw = async () => {
-    const rebalanceContract = getCustomContract(
-      ethereum as provider,
-      rebalanceAbi as unknown as AbiItem,
-      getAddress(rebalance.address),
-    )
-    setIsWithdrawing(true)
-    try {
-      const thisInput = currentBalance.isLessThan(new BigNumber(currentInput))
-        ? currentBalance
-        : new BigNumber(currentInput)
-
-      const tx = await rebalanceContract.methods
-        .removeFund(
-          thisInput.times(new BigNumber(10).pow(18)).toJSON(),
-          ratioType === 'all',
-          ((rebalance || {}).tokens || []).map((token, index) => {
-            const tokenAddress =
-              typeof token.address === 'string' ? token.address.toLowerCase() : getAddress(token.address)
-            return selectedToken[tokenAddress]
-              ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
-              : 0
-          }),
-        )
-        .send({ from: account, gas: 5000000 })
-      setTx(tx)
-
-      const assets = rebalance.ratio
-      const assetAddresses = assets.map((a) => getAddress(a.address))
-      dispatch(fetchBalances(account, assetAddresses))
-      dispatch(fetchRebalanceBalances(account, [rebalance]))
-      dispatch(fetchRebalanceRewards(account, [rebalance]))
-      onNext()
-      setIsWithdrawing(false)
-    } catch {
-      setIsWithdrawing(false)
-    }
-  }
-  return (
-    <Card className="mb-4">
-      <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-4 py-4'} `}>
-        <div className="flex justify-space-between mb-2">
-          <Button
-            variant="text"
-            as={Link}
-            to="/rebalancing/detail"
-            ml="-12px"
-            padding="0 12px"
-            size="sm"
-            startIcon={<ArrowBackIcon color="textSubtle" />}
-          >
-            <Text fontSize="14px" color="textSubtle">
-              Back
-            </Text>
-          </Button>
-          <SettingButton />
-        </div>
-
-        <TwoLineFormat
-          title="Current investment"
-          titleColor={isDark ? '#ADB4C2' : ''}
-          value={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
-          subTitle={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-          large
-          className="mb-4"
-        />
-
-        <div className="flex flex-wrap justify-space-between align-center">
-          <Text>Withdraw</Text>
-
-          <RadioGroup
-            className="flex flex-row flex-wrap"
-            name="tokenType"
-            value={ratioType}
-            onChange={(e) => {
-              setRatioType(e.target.value)
-            }}
-          >
-            <FormControlLabel
-              value="all"
-              control={<Radio color="primary" size="small" />}
-              label={<Text>All token</Text>}
-            />
-            <FormControlLabel
-              className="mr-0"
-              value="multi"
-              control={<Radio color="primary" size="small" />}
-              label={<Text>Selected token</Text>}
-            />
-          </RadioGroup>
-        </div>
-
-        <CurrencyInputPanel
-          currency={{ symbol: 'Shares', hide: true }}
-          id="withdraw-fund"
-          showMaxButton
-          hideBalance
-          value={currentInput}
-          label=""
-          onUserInput={setCurrentInput}
-          onMax={() => {
-            setCurrentInput(new BigNumber(currentBalance).toJSON())
-          }}
-          onQuarter={() => {
-            setCurrentInput(new BigNumber(currentBalance).times(0.25).toJSON())
-          }}
-          onHalf={() => {
-            setCurrentInput(new BigNumber(currentBalance).times(0.5).toJSON())
-          }}
-        />
-        <Text fontSize="12px" color="textSubtle" className="mt-1" textAlign="right">
-          ~ ${numeral(usdToBeRecieve).format('0,0.[00]')}
-        </Text>
-      </div>
-
-      <div className={`bd-b ${isMobile ? 'pa-4' : 'px-6 py-4'} `}>
-        {ratioType === 'all' ? (
-          _.compact([...((rebalance || {}).tokens || [])])
-            .map((token, index) => {
-              const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-              const ratios = _.get(rebalance, `ratioCal`)
-              // eslint-disable-next-line
-              const ratioMerge = Object.assign({ valueRatioCal: ratios ? ratios[index] : 0 }, ratioObject)
-              return {
-                ...token,
-                ...ratioMerge,
-                amount: ((poolAmounts || [])[index] || new BigNumber(0)).div(new BigNumber(10).pow(token.decimals)),
-              }
-            })
-            .map((c) => <InlineAssetRatioLabel coin={c} className="py-1" />)
-        ) : (
-          <FormGroup>
-            {_.compact([...((rebalance || {}).tokens || [])])
-              .map((token, index) => {
-                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-
-                let countSelect = 0
-
-                const keys = Object.keys(selectedToken)
-                for (let i = 0; i < keys.length; i++) {
-                  if (selectedToken[keys[i]] === true) ++countSelect
-                }
-
-                let valueCalRatio = 0
-                for (let i = 0; i < keys.length; i++) {
-                  if (selectedToken[keys[i]] === true && keys[i] === getAddress(ratioObject.address))
-                    valueCalRatio = 100 / countSelect
-                }
-                // eslint-disable-next-line
-                const ratioMerge = Object.assign({ valueRatioCal: valueCalRatio }, ratioObject)
-
-                return {
-                  ...token,
-                  ...ratioMerge,
-                  amount: (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(token.decimals)),
-                }
-              })
-              .map((c) => (
-                <FormControlLabelCustom
-                  control={
-                    <Checkbox
-                      size="small"
-                      color="primary"
-                      checked={!!selectedToken[getAddress(c.address)]}
-                      onChange={(event) => {
-                        setSelectedToken({ ...selectedToken, [getAddress(c.address)]: event.target.checked })
-                      }}
-                    />
-                  }
-                  label={<InlineAssetRatioLabel coin={c} />}
-                />
-              ))}
-          </FormGroup>
-        )}
-      </div>
-
-      <div className={`bd-b ${isMobile ? 'pa-4' : 'px-6 py-4'} `}>
-        {/* <SpaceBetweenFormat
-          className="mb-2"
-          title="Price Impact"
-          value="< 0.1%"
-          valueColor="success"
-        /> */}
-        <SpaceBetweenFormat
-          className="mb-2"
-          title={`Management fee ${_.get(rebalance, 'fee.management', 0.5)}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.management', 0.5))).format('0,0.[0000]')}`}
-          hint="Fee collected for vault management."
-        />
-        <SpaceBetweenFormat
-          className="mb-2"
-          title={`FINIX buy back fee ${_.get(rebalance, 'fee.buyback', 1.0)}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.buyback', 1.0))).format('0,0.[0000]')}`}
-          hint="Fee collected for buyback and burn of FINIX as deflationary purpose."
-        />
-        {/* <SpaceBetweenFormat
-          title={`Ecosystem fee ${_.get(rebalance, 'fee.bounty', 0.3)}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.bounty', 0.3))).format('0,0.[0000]')}`}
-          hint="Reservation fee for further development of the ecosystem."
-        /> */}
-      </div>
-
-      <div className={isMobile ? 'pa-4' : 'pa-6 pt-4'}>
-        {/* <SpaceBetweenFormat
-          className="mb-2"
-          titleElm={
-            <div className="flex pr-3">
-              <Text fontSize="12px" color="textSubtle">
-                Early withdrawal fee
-              </Text>
-              <Helper text="" className="mx-2" position="top" />
-              <Text fontSize="12px" color="textSubtle">
-                00:00
-              </Text>
-            </div>
-          }
-          title="Early withdrawal fee 0.5%"
-          value="$00 "
-          hint="xx"
-        /> */}
-        <Button fullWidth radii="small" disabled={isWithdrawing || isSimulating} onClick={onWithdraw} className="mt-2">
-          Withdraw
-        </Button>
-      </div>
-    </Card>
-  )
 }
 
 const CardResponse = ({ tx, currentInput, rebalance }) => {
@@ -445,6 +119,8 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const [poolAmounts, setPoolAmounts] = useState([])
   const [isWithdrawn, setIsWithdrawn] = useState(false)
   const [ratioType, setRatioType] = useState('all')
+  const theme = useTheme()
+  const smUp = useMediaQuery(theme.breakpoints.up('sm'))
 
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -513,40 +189,60 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const currentBalanceNumber = currentBalance.toNumber()
 
   return (
-    <>
-      <Helmet>
-        <title>Explore - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
-      <TwoPanelLayout>
-        <LeftPanelAbsolute isShowRightPanel={false}>
-          <MaxWidth>
-            {isInputting && (
-              <CardInput
-                setTx={setTx}
-                isWithdrawing={isWithdrawing}
-                setIsWithdrawing={setIsWithdrawing}
-                selectedToken={selectedToken}
-                setSelectedToken={setSelectedToken}
-                rebalance={rebalance}
-                poolAmounts={poolAmounts}
-                isSimulating={isSimulating}
-                currentInput={currentInput}
-                setCurrentInput={setCurrentInput}
-                currentBalance={currentBalance}
-                currentBalanceNumber={currentBalanceNumber}
-                ratioType={ratioType}
-                setRatioType={setRatioType}
-                onNext={() => {
-                  setIsInputting(false)
-                  setIsWithdrawn(true)
-                }}
-              />
-            )}{' '}
-            {isWithdrawn && <CardResponse currentInput={currentInput} tx={tx} rebalance={rebalance} />}
-          </MaxWidth>
-        </LeftPanelAbsolute>
-      </TwoPanelLayout>
-    </>
+    <SmallestLayout>
+      <BackV2 to="/rebalancing/detail" />
+      <PageTitle title="Withdraw" caption="Withdraw your investment and get your tokens back." sx={{ mb: 2.5 }} />
+
+      <Card className="mb-3" sx={{ p: { xs: 2.5, sm: 5 } }}>
+        <CardHeading
+          rebalance={rebalance}
+          hideDescription
+          large
+          className="pa-0"
+          breakpoint={theme.breakpoints.values.sm}
+        />
+        <Box flexWrap="wrap" pt={{ xs: 2.5, sm: 3 }} className="flex">
+          <Box pr={{ sm: 3 }} className={smUp ? 'col-4 bd-r' : 'col-6 mb-3'}>
+            <TwoLineFormatV2 large title="Shares" value={numeral(currentBalanceNumber).format('0,0.[00]')} />
+          </Box>
+          <Box px={{ sm: 3 }} className={smUp ? 'col-4 bd-r flex-grow' : 'col-6'}>
+            <TwoLineFormatV2 large title="Share Price" value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`} />
+          </Box>
+          <Box px={{ sm: 3 }} className={smUp ? '' : 'col-6'}>
+            <TwoLineFormatV2
+              large
+              title="Total Value"
+              value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
+            />
+          </Box>
+        </Box>
+      </Card>
+
+      {isInputting && (
+        <WithdrawInputCard
+          setTx={setTx}
+          isWithdrawing={isWithdrawing}
+          setIsWithdrawing={setIsWithdrawing}
+          selectedToken={selectedToken}
+          setSelectedToken={setSelectedToken}
+          rebalance={rebalance}
+          poolAmounts={poolAmounts}
+          isSimulating={isSimulating}
+          currentInput={currentInput}
+          setCurrentInput={setCurrentInput}
+          currentBalance={currentBalance}
+          currentBalanceNumber={currentBalanceNumber}
+          ratioType={ratioType}
+          setRatioType={setRatioType}
+          onNext={() => {
+            setIsInputting(false)
+            setIsWithdrawn(true)
+          }}
+        />
+      )}
+
+      {isWithdrawn && <CardResponse currentInput={currentInput} tx={tx} rebalance={rebalance} />}
+    </SmallestLayout>
   )
 }
 

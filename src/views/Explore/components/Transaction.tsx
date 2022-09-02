@@ -45,7 +45,7 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
   const [cols] = useState(['Investors', 'Action', 'Shares', 'Total Amount', 'Date', 'BscScan'])
 
   return (
-    <Box px={{ xs: '20px', lg: 4 }} overflow="auto">
+    <Box px={{ xs: 2.5, lg: 4 }} overflow="auto">
       <Table>
         <TR>
           {cols.map((c) => (
@@ -163,7 +163,7 @@ const Transaction: React.FC<TransactionType> = ({ rbAddress }) => {
 
   return (
     <>
-      <Box display="flex" justifyContent="flex-end" py={{ xs: '20px', lg: '24px' }} px={{ xs: '20px', lg: 4 }}>
+      <Box display="flex" justifyContent="flex-end" py={{ xs: 2.5, lg: '24px' }} px={{ xs: 2.5, lg: 4 }}>
         <FormControlLabel
           labelPlacement="start"
           className="ml-auto"

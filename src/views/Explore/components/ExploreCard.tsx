@@ -169,12 +169,12 @@ const ExploreCard: React.FC<ExploreCardType> = ({ balance, rebalance = {}, onCli
 
       <CardHeading rebalance={rebalance} />
 
-      <Box display="flex" flexWrap="wrap" py={{ xs: '20px', lg: 4 }}>
+      <Box display="flex" flexWrap="wrap" py={{ xs: 2.5, lg: 4 }}>
         <Box
           sx={{ width: { xs: '100%', lg: '45%' } }}
-          px={{ xs: '20px', lg: 4 }}
-          pb={{ xs: '20px', lg: 0 }}
-          mb={{ xs: '20px', lg: 0 }}
+          px={{ xs: 2.5, lg: 4 }}
+          pb={{ xs: 2.5, lg: 0 }}
+          mb={{ xs: 2.5, lg: 0 }}
           className={lgUp ? 'bd-r' : 'bd-b'}
         >
           <Box display="flex">
@@ -201,7 +201,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ balance, rebalance = {}, onCli
           </Box>
         )}
 
-        <Box sx={{ width: { xs: '100%', lg: '27.5%' } }} px={{ xs: '20px', lg: 4 }}>
+        <Box sx={{ width: { xs: '100%', lg: '27.5%' } }} px={{ xs: 2.5, lg: 4 }}>
           <Harvest value={pendingReward} rebalance={rebalance} large />
           <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mt: '12px' }}>
             <CurrentInvestment
@@ -217,7 +217,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ balance, rebalance = {}, onCli
               component={Link}
               to="/rebalancing/detail"
               onClick={onClickViewDetail}
-              sx={{ width: '120px', px: 1 }}
+              sx={{ width: '120px', px: 1, fontSize: '0.875rem' }}
             >
               View Details
             </Button>

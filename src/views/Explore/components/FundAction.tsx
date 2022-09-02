@@ -158,7 +158,7 @@ const FundAction: React.FC<FundActionType> = ({ rebalance }) => {
   const currentReward = (rebalanceRewards || {})[getAddress(rebalance.address)] || new BigNumber(0)
 
   return (
-    <Box p={{ xs: '20px', lg: '24px 32px' }}>
+    <Box p={{ xs: 2.5, lg: '24px 32px' }}>
       {!account && <OverlayAction account={account} login={connect} logout={reset} />}
       <Harvest value={currentReward} rebalance={rebalance} />
       <Divider sx={{ my: { xs: 2, sm: 0.5 }, opacity: { xs: 1, sm: 0 } }} />
