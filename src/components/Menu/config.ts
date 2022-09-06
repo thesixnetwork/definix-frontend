@@ -32,14 +32,20 @@ const config: MenuEntry[] = [
     href: 'https://exchange.definix.com/#/swap',
     notHighlight: false,
     newTab: false,
-  },
-  {
-    label: 'Liquidity',
-    icon: liquidityBlack,
-    iconActive: liquidityWhite,
-    href: 'https://exchange.definix.com/#/liquidity',
-    notHighlight: false,
-    newTab: false,
+    items: [
+      {
+        label: 'Swap',
+        href: 'https://exchange.definix.com/#/swap',
+        notHighlight: false,
+        newTab: false,
+      },
+      {
+        label: 'Liquidity',
+        href: 'https://exchange.definix.com/#/liquidity',
+        notHighlight: false,
+        newTab: false,
+      },
+    ],
   },
   {
     label: 'Yield Farming',

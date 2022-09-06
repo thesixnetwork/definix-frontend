@@ -1,7 +1,7 @@
 import React from 'react'
 import ModalV2 from 'uikitV2/components/ModalV2'
-import SlippageToleranceSetting from './SlippageToleranceSettings'
-import TransactionDeadlineSetting from './TransactionDeadlineSetting'
+import SlippageToleranceSetting from '../../views/Explore/components/SlippageToleranceSettings'
+import TransactionDeadlineSetting from '../../views/Explore/components/TransactionDeadlineSetting'
 
 type SettingsModalProps = {
   onDismiss?: () => void
