@@ -55,7 +55,7 @@ const Farm: React.FC = () => {
   const [listView, setListView] = useState(true)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [allDisplayChiose, setAllDisplayChiose] = useState([
-    { key: 'Recommend', value: 'sortOrder' },
+    { key: 'Recommend', value: 'recommend' },
     { key: 'APR', value: 'apr' },
     { key: 'Total staked', value: 'total' },
   ])

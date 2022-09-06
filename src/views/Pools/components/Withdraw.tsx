@@ -4,14 +4,15 @@ import styled from 'styled-components'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import { Text, Box, Card, Flex, useModal } from '@fingerlabs/definixswap-uikit-v2'
+import { Text, Box, Flex } from '@fingerlabs/definixswap-uikit-v2'
+import Card from 'uikitV2/components/Card'
 import CurrencyText from 'components/Text/CurrencyText'
 import ConfirmModal from './ConfirmModal'
 import { PoolWithApy } from './PoolCard/types'
 import { spacing, mediaQueries } from 'uikitV2/base'
 import { textStyle } from 'uikitV2/text'
 import ModalInput from 'uikitV2/components/ModalInput'
-import { ArrowBackIcon } from 'uikit-dev'
+import { ArrowBackIcon, useModal } from 'uikit-dev'
 import PageTitle from 'uikitV2/components/PageTitle'
 import SmallestLayout from 'uikitV2/components/SmallestLayout'
 
@@ -160,7 +161,7 @@ const Withdraw: React.FC<{
             </LiquidityInfo>
 
             <LiquidityInfo hasMb={false}>
-              <LiquidityTitle>My Staked</LiquidityTitle>
+              <LiquidityTitle>My staked</LiquidityTitle>
               <LiquidityValue>
                 <BalanceText>{myStakedDisplayValue}</BalanceText>
                 <PriceText value={myStakedPrice} prefix="=" />
