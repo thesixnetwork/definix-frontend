@@ -6,7 +6,7 @@ import _ from 'lodash'
 import numeral from 'numeral'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import { useModal } from 'uikit-dev'
 import BackV2 from 'uikitV2/components/BackV2'
 import Card from 'uikitV2/components/Card'
@@ -18,8 +18,8 @@ import { simulateInvest } from '../../offline-pool'
 import { useAllowances, useBalances, usePriceFinixUsd } from '../../state/hooks'
 import { Rebalance } from '../../state/types'
 import { fetchAllowances, fetchBalances } from '../../state/wallet'
-import CalculateModal from './components/CalculateModal'
 import CardHeading from './components/CardHeading'
+import InvestConfirmModal from './components/InvestConfirmModal'
 import InvestInputCard from './components/InvestInputCard'
 
 interface InvestType {
@@ -50,6 +50,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const theme = useTheme()
   const smUp = useMediaQuery(theme.breakpoints.up('sm'))
   const finixPrice = usePriceFinixUsd()
+  const history = useHistory()
 
   useEffect(() => {
     if (account && rebalance) {
@@ -94,8 +95,8 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
     }
   }, [balances, currentInput, rebalance, prevRebalance, prevBalances, prevCurrentInput])
 
-  const [onPresentCalcModal] = useModal(
-    <CalculateModal
+  const [onPresentConfirmModal] = useModal(
+    <InvestConfirmModal
       currentInput={currentInput}
       isInvesting={isInvesting}
       setIsInvesting={setIsInvesting}
@@ -104,6 +105,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       poolUSDBalances={poolUSDBalances}
       poolAmounts={poolAmounts}
       rebalance={rebalance}
+      onNext={() => {
+        history.goBack()
+      }}
     />,
     false,
   )
@@ -175,7 +179,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
         setCurrentInput={setCurrentInput}
         balances={balances}
         allowances={allowances}
-        onNext={onPresentCalcModal}
+        onNext={onPresentConfirmModal}
         totalUSDAmount={totalUSDAmount}
         isSimulating={isSimulating}
       />

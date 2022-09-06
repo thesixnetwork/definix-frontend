@@ -16,7 +16,7 @@ const SuccessOptions = {
   animationData: success,
 }
 
-const ResponseCard = ({ tx, rebalance, poolUSDBalances }) => {
+const InvestResponseCard = ({ tx, rebalance, poolUSDBalances }) => {
   const { transactionHash } = tx
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
@@ -95,4 +95,4 @@ const ResponseCard = ({ tx, rebalance, poolUSDBalances }) => {
   )
 }
 
-export default ResponseCard
+export default InvestResponseCard

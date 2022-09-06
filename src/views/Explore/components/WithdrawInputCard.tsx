@@ -1,4 +1,3 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
 import {
   Box,
   Button,
@@ -13,20 +12,13 @@ import {
   Typography,
 } from '@mui/material'
 import BigNumber from 'bignumber.js'
-import rebalanceAbi from 'config/abi/rebalance.json'
 import _ from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { isExternalModule } from 'typescript'
 import Card from 'uikitV2/components/Card'
-import Coin from 'uikitV2/components/Coin'
 import { getAddress } from 'utils/addressHelpers'
-import { getCustomContract } from 'utils/erc20'
 import { Input as NumericalInput } from 'views/Explore/components/NumericalInput'
-import { provider } from 'web3-core'
-import { AbiItem } from 'web3-utils'
-import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../../state/wallet'
+import InlineAssetRatio from './InlineAssetRatio'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 
 const ratioTypes = [
@@ -42,29 +34,8 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
-const InlineAssetRatioLabel = ({ coin }) => {
-  const thisName = (() => {
-    if (coin.symbol === 'WKLAY') return 'KLAY'
-    if (coin.symbol === 'WBNB') return 'BNB'
-    return coin.symbol
-  })()
-  return (
-    <Box display="flex" alignItems="center" flexWrap="wrap" py={1}>
-      <Coin name={thisName} symbol={coin.symbol} large flexGrow={1} />
-      <Typography color="text.disabled">{coin.valueRatioCal.toFixed(2)}%</Typography>
-      <Divider orientation="vertical" flexItem sx={{ m: '4px 20px', display: { xs: 'none', sm: 'block' } }} />
-
-      <Typography sx={{ minWidth: { xs: '100%', sm: '140px' } }} align="right" color="text.secondary">
-        {coin.amount ? numeral(coin.amount.toNumber()).format('0,0.[0000]') : '-'}
-      </Typography>
-    </Box>
-  )
-}
-
 const WithdrawInputCard = ({
-  setTx,
   isWithdrawing,
-  setIsWithdrawing,
   rebalance,
   poolAmounts,
   isSimulating,
@@ -74,52 +45,11 @@ const WithdrawInputCard = ({
   ratioType,
   setRatioType,
   currentBalance,
-  currentBalanceNumber,
   selectedToken,
   setSelectedToken,
 }) => {
-  const { account, ethereum } = useWallet()
-  const dispatch = useDispatch()
-
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
-  const onWithdraw = async () => {
-    const rebalanceContract = getCustomContract(
-      ethereum as provider,
-      rebalanceAbi as unknown as AbiItem,
-      getAddress(rebalance.address),
-    )
-    setIsWithdrawing(true)
-    try {
-      const thisInput = currentBalance.isLessThan(new BigNumber(currentInput))
-        ? currentBalance
-        : new BigNumber(currentInput)
 
-      const tx = await rebalanceContract.methods
-        .removeFund(
-          thisInput.times(new BigNumber(10).pow(18)).toJSON(),
-          ratioType === 'all',
-          ((rebalance || {}).tokens || []).map((token, index) => {
-            const tokenAddress =
-              typeof token.address === 'string' ? token.address.toLowerCase() : getAddress(token.address)
-            return selectedToken[tokenAddress]
-              ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
-              : 0
-          }),
-        )
-        .send({ from: account, gas: 5000000 })
-      setTx(tx)
-
-      const assets = rebalance.ratio
-      const assetAddresses = assets.map((a) => getAddress(a.address))
-      dispatch(fetchBalances(account, assetAddresses))
-      dispatch(fetchRebalanceBalances(account, [rebalance]))
-      dispatch(fetchRebalanceRewards(account, [rebalance]))
-      onNext()
-      setIsWithdrawing(false)
-    } catch {
-      setIsWithdrawing(false)
-    }
-  }
   return (
     <Card sx={{ p: { xs: 2.5, sm: 5 } }}>
       <Box mb={4}>
@@ -234,7 +164,7 @@ const WithdrawInputCard = ({
                 amount: ((poolAmounts || [])[index] || new BigNumber(0)).div(new BigNumber(10).pow(token.decimals)),
               }
             })
-            .map((c) => <InlineAssetRatioLabel coin={c} />)
+            .map((c) => <InlineAssetRatio coin={c} />)
         ) : (
           <FormGroup>
             {_.compact([...((rebalance || {}).tokens || [])])
@@ -274,14 +204,14 @@ const WithdrawInputCard = ({
                       }}
                     />
                   }
-                  label={<InlineAssetRatioLabel coin={c} />}
+                  label={<InlineAssetRatio coin={c} />}
                 />
               ))}
           </FormGroup>
         )}
       </Box>
 
-      <Button fullWidth variant="contained" size="large" disabled={isWithdrawing || isSimulating} onClick={onWithdraw}>
+      <Button fullWidth variant="contained" size="large" disabled={isWithdrawing || isSimulating} onClick={onNext}>
         Withdraw
       </Button>
     </Card>
