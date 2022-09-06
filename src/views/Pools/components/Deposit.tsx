@@ -14,12 +14,9 @@ import { PoolWithApy } from './PoolCard/types'
 import { mediaQueries, spacing } from 'uikitV2/base'
 import { textStyle } from 'uikitV2/text'
 import ModalInput from 'uikitV2/components/ModalInput'
-import { useModal } from 'uikitV2/Modal'
 import Card from 'uikitV2/components/Card'
-import { ArrowBackIcon } from 'uikit-dev'
+import { ArrowBackIcon, useModal } from 'uikit-dev'
 import PageTitle from 'uikitV2/components/PageTitle'
-import { ColorStyles } from 'uikitV2/colors'
-import { Button } from '@mui/material'
 import SmallestLayout from 'uikitV2/components/SmallestLayout'
 
 const CardWrap = styled(Card)`
@@ -146,7 +143,6 @@ const Deposit: React.FC<{
    */
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal type="deposit" tokenName={tokenName} stakedBalance={val} onOK={handleStake} goList={onBack} />,
-    false,
   )
 
   return (
@@ -175,7 +171,7 @@ const Deposit: React.FC<{
           </LiquidityInfo>
 
           <LiquidityInfo hasMb={false}>
-            <LiquidityTitle>My Staked</LiquidityTitle>
+            <LiquidityTitle>My staked</LiquidityTitle>
             <LiquidityValue>
               <BalanceText>{myStakedDisplayValue}</BalanceText>
               <PriceText value={myStakedPrice} prefix="=" />
@@ -193,10 +189,10 @@ const Deposit: React.FC<{
           buttonName="Deposit"
           onChange={handleChange}
           onSelectBalanceRateButton={handleSelectBalanceRate}
-          onClickButton={() => onPresentConfirmModal()}
+          onClickButton={onPresentConfirmModal}
         />
 
-        <Flex justifyContent="space-between" alignItems="center" style={{ marginTop: 20 }}>
+        {/* <Flex justifyContent="space-between" alignItems="center" style={{ marginTop: 20 }}>
           <Text style={{ ...textStyle.R_14R, color: '#999' }}>Don't have a token?</Text>
           <Button
             // type="button"
@@ -208,8 +204,8 @@ const Deposit: React.FC<{
             }}
           >
             Swap
-          </Button>
-        </Flex>
+          </Button> 
+        </Flex> */}
       </CardWrap>
     </SmallestLayout>
   )
