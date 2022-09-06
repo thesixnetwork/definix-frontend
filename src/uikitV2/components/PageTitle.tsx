@@ -32,10 +32,11 @@ const PageTitle = ({
   sx = undefined,
 }) => {
   const theme = useTheme()
+  const mdUp = useMediaQuery(theme.breakpoints.up('md'))
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
 
   return (
-    <BoxStyle sx={sx} pr={img ? '224px !important' : '0 !important'}>
+    <BoxStyle sx={sx} pr={img && mdUp ? '224px !important' : '0 !important'}>
       <Typography variant="h2">
         {title}
         {link && (

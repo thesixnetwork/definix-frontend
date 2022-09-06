@@ -11,15 +11,14 @@ import { getAddress } from 'utils/addressHelpers'
 import { getCustomContract } from 'utils/erc20'
 import { provider } from 'web3-core'
 import { AbiItem } from 'web3-utils'
-import { useSlippage } from '../../../state/hooks'
+import { useSlippage, useToastG2 } from '../../../state/hooks'
 import { fetchRebalances } from '../../../state/rebalance'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../../state/wallet'
 import CardHeading from './CardHeading'
-import ResponseCard from './ResponseCard'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import VerticalAssetRatio from './VerticalAssetRatio'
 
-const CalculateModal = ({
+const InvestConfirmModal = ({
   currentInput,
   isInvesting,
   setIsInvesting,
@@ -28,13 +27,14 @@ const CalculateModal = ({
   poolUSDBalances,
   poolAmounts,
   rebalance,
+  onNext,
   onDismiss = () => null,
 }) => {
   const slippage = useSlippage()
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const dispatch = useDispatch()
-  const [isInvested, setIsInvested] = useState(false)
   const [tx, setTx] = useState({})
+  const { toastSuccess, toastError } = useToastG2()
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
   // @ts-ignore
@@ -91,75 +91,72 @@ const CalculateModal = ({
       dispatch(fetchRebalanceRewards(account, [rebalance]))
       dispatch(fetchRebalances())
 
-      setIsInvested(true)
+      toastSuccess('Invest Complete')
+      onNext()
+      onDismiss()
       setIsInvesting(false)
     } catch {
+      toastError('Invest Failed')
       setIsInvesting(false)
     }
   }
 
   return (
     <ModalV2 title="Confirm Invest" onDismiss={onDismiss} sx={{ width: '100%', maxWidth: { md: '490px' } }}>
-      {isInvested ? (
-        <ResponseCard tx={tx} rebalance={rebalance} poolUSDBalances={poolUSDBalances} />
-      ) : (
-        <>
-          <Box overflow="auto" height="calc(100% - 64px)" mb={3}>
-            <CardHeading rebalance={rebalance} hideDescription large className="pa-0" />
+      <Box overflow="auto" height="calc(100% - 64px)" mb={3}>
+        <CardHeading rebalance={rebalance} hideDescription large className="pa-0" />
 
-            <Typography fontWeight={500} color="text.secondary" sx={{ mb: '12px', mt: 5 }}>
-              Invest Asset Ratio
+        <Typography fontWeight={500} color="text.secondary" sx={{ mb: '12px', mt: 5 }}>
+          Invest Asset Ratio
+        </Typography>
+
+        <Box sx={{ borderRadius: '8px', border: (theme) => `1px solid ${theme.palette.grey[300]}`, p: 3, pt: 2 }}>
+          <VerticalAssetRatio rebalance={rebalance} poolAmounts={poolAmounts} />
+
+          <Divider sx={{ mt: 2, mb: 2.5 }} />
+
+          <Box display="flex" justifyContent="space-between" mb={2}>
+            <Typography fontWeight={500} color="text.secondary">
+              Total Invest
             </Typography>
+            <Typography fontWeight="bold">
+              {currentShare <= 0 || Number.isNaN(currentShare)
+                ? numeral(totalUserUsdAmount).format('0,0.[00]')
+                : numeral(currentShare).format('0,0.[00]')}
 
-            <Box sx={{ borderRadius: '8px', border: (theme) => `1px solid ${theme.palette.grey[300]}`, p: 3, pt: 2 }}>
-              <VerticalAssetRatio rebalance={rebalance} poolAmounts={poolAmounts} />
-
-              <Divider sx={{ mt: 2, mb: 2.5 }} />
-
-              <Box display="flex" justifyContent="space-between" mb={2}>
-                <Typography fontWeight={500} color="text.secondary">
-                  Total Invest
-                </Typography>
-                <Typography fontWeight="bold">
-                  {currentShare <= 0 || Number.isNaN(currentShare)
-                    ? numeral(totalUserUsdAmount).format('0,0.[00]')
-                    : numeral(currentShare).format('0,0.[00]')}
-
-                  <Typography variant="body2" component="span" className="ml-1" color="text.secondary">
-                    SHR
-                  </Typography>
-                </Typography>
-              </Box>
-
-              <SpaceBetweenFormat
-                mb={1}
-                title="Estimated Value"
-                value={`$${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
-              />
-
-              <SpaceBetweenFormat
-                mb={2}
-                title="Price Impact"
-                value={`${priceImpactDisplay <= 0.1 ? '< 0.1' : priceImpactDisplay}%`}
-              />
-
-              <Typography variant="caption" color="text.secondary">
-                Output is estimated. You will receive at least{' '}
-                <strong>
-                  {numeral(totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))).format('0,0.[00]')} USD
-                </strong>{' '}
-                or the transaction will revert.
+              <Typography variant="body2" component="span" className="ml-1" color="text.secondary">
+                SHR
               </Typography>
-            </Box>
+            </Typography>
           </Box>
 
-          <Button fullWidth variant="contained" disabled={isInvesting || isSimulating} onClick={onInvest}>
-            Invest
-          </Button>
-        </>
-      )}
+          <SpaceBetweenFormat
+            mb={1}
+            title="Estimated Value"
+            value={`$${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
+          />
+
+          <SpaceBetweenFormat
+            mb={2}
+            title="Price Impact"
+            value={`${priceImpactDisplay <= 0.1 ? '< 0.1' : priceImpactDisplay}%`}
+          />
+
+          <Typography variant="caption" color="text.secondary">
+            Output is estimated. You will receive at least{' '}
+            <strong>
+              {numeral(totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))).format('0,0.[00]')} USD
+            </strong>{' '}
+            or the transaction will revert.
+          </Typography>
+        </Box>
+      </Box>
+
+      <Button fullWidth variant="contained" disabled={isInvesting || isSimulating} onClick={onInvest}>
+        Invest
+      </Button>
     </ModalV2>
   )
 }
 
-export default CalculateModal
+export default InvestConfirmModal
