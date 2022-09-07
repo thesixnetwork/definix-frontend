@@ -6,16 +6,17 @@ import { useAllHarvest } from 'hooks/useHarvest'
 // import { useHarvest, usePrivateData } from 'hooks/useLongTermStake'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useToast } from 'state/hooks'
-import { Text, Box, ColorStyles, Flex, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, ColorStyles, Flex, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/Text/CurrencyText'
 import BalanceText from 'components/Text/BalanceText'
 import Slide from './Slide'
 import { QuoteToken } from 'config/constants/types'
-import { FAVOR_FARMS } from 'config/constants/farms'
+// import { FAVOR_FARMS } from 'config/constants/farms'
 import { mediaQueries, spacing } from 'uikitV2/base'
 import { textStyle } from 'uikitV2/text'
 import { Button } from '@mui/material'
+import { Text } from 'uikit-dev'
 
 interface InnerTheme {
   totalTitleColor: ColorStyles
@@ -53,12 +54,12 @@ const THEME: { [key: string]: InnerTheme } = {
     totalCurrencyColor: ColorStyles.WHITE,
     itemTitleColor: ColorStyles.MEDIUMGREY,
     itemBalanceColor: ColorStyles.WHITE,
-    itemCurrencyColor: 'white80',
+    itemCurrencyColor: 'rgba(255,255,255,0.8)',
     borderColor: ColorStyles.BROWN,
-    bottomBg: 'black20',
+    bottomBg: 'rgba(34,34,34,0.2)',
     slideDotColor: '#5e515f',
     slideDotActiveColor: ColorStyles.WHITE,
-    harvestButtonBg: 'brown30',
+    harvestButtonBg: 'rgba(94, 81, 95,0.3)',
     harvestButtonColor: 'rgba(255, 255, 255, 0.1)',
   },
 }
@@ -177,29 +178,49 @@ const EarningBoxTemplate: React.FC<{
 
   const curTheme = useMemo(() => THEME[theme], [theme])
   const displayOnlyTotalPrice = useMemo(() => typeof get(total, 'value') !== 'number', [total])
+  const totalValue = useMemo(() => {
+    return get(total, displayOnlyTotalPrice ? 'price' : 'value') || 0
+  }, [displayOnlyTotalPrice, total])
+
+  const renderTotalValue = useCallback(() => {
+    const props = {
+      style: isMobile ? textStyle.R_23B : textStyle.R_32B,
+      color: curTheme.totalBalanceColor,
+      value: hasAccount ? totalValue : 0,
+    }
+    return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
+  }, [displayOnlyTotalPrice, isMobile, curTheme, hasAccount, totalValue])
 
   return (
     <Wrap>
       <MainSection>
         <Box>
-          <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
+          <Flex alignItems="flex-end" style={{ marginBottom: isMobile ? 20 : 8 }}>
             <FireIcon
-              style={{ marginLeft: isMobile ? '0' : '-8px' }}
+              style={{ marginLeft: isMobile ? 0 : -8 }}
               width={isMobile ? '24px' : '44px'}
               height={isMobile ? '24px' : '44px'}
               viewBox="0 0 44 44"
             />
             <Text
-              textStyle={`R_${isMobile ? '14' : '18'}M`}
-              color={curTheme.totalTitleColor}
-              style={{ opacity: '0.7', marginLeft: isMobile ? 8 : 4 }}
+              style={{
+                opacity: '0.7',
+                marginLeft: isMobile ? 8 : 4,
+                color: curTheme.totalTitleColor,
+                fontSize: isMobile ? 14 : 18,
+                fontWeight: 500,
+                fontStretch: 'normal',
+                fontStyle: 'normal',
+                lineHeight: 1.44,
+                letterSpacing: 'normal',
+              }}
             >
               {total.title}
             </Text>
           </Flex>
           <TotalValuesWrap>
             <Flex alignItems="flex-end">
-              {/* {renderTotalValue()} */}
+              {renderTotalValue()}
               <UnitText curTheme={curTheme}>{unit.length > 0 ? unit : null}</UnitText>
             </Flex>
             {!displayOnlyTotalPrice && (

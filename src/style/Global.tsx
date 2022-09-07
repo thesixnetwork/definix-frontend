@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: grayscale;
-    color: #404041;
+    color: rgb(180, 169, 168);
     font-weight: 500;
 
     img {

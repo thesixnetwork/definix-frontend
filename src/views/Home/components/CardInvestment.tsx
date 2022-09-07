@@ -1,11 +1,11 @@
 import { groupBy } from 'lodash-es'
 import React, { useMemo, useState } from 'react'
-import { Box, Card, CardBody, Tabs, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, Card, CardBody, ColorStyles, Tabs, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 // import useMyInvestments from 'hooks/useMyInvestments'
 import Earned from './Earned'
 // import FavEarnd from './FavEarned'
 import styled from 'styled-components'
-import { FAVOR_FARMS } from 'config/constants/farms'
+// import { FAVOR_FARMS } from 'config/constants/farms'
 
 const WrapTabs = styled(Box)`
   width: 100%;
@@ -41,11 +41,11 @@ const CardInvestment = () => {
   //   }, [myInvestments])
 
   return (
-    <Card style={{ backgroundColor: '#413343' }} isOverflowHidden>
+    <Card cardBg={ColorStyles.DEEPBROWN} style={{ backgroundColor: '#413343' }} isOverflowHidden>
       <WrapTabs>
         <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} small={isMobile} equal={isMobile} theme="dark" />
       </WrapTabs>
-      <CardBody>
+      <CardBody style={{ padding: 0 }}>
         {curTab === tabs[0].id && (
           <Earned isMain isMobile={isMobile} products={groupBy(myInvestments, 'type')} theme="dark" />
         )}
