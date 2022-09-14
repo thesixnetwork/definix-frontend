@@ -2,12 +2,12 @@ import { groupBy } from 'lodash-es'
 import React, { useMemo, useState } from 'react'
 import { Box, Card, CardBody, ColorStyles, Tabs, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 // import useMyInvestments from 'hooks/useMyInvestments'
-import Earned from './Earned'
+import Earned from '../../MyInvestments/components/Earned'
 // import FavEarnd from './FavEarned'
 import styled from 'styled-components'
 // import { FAVOR_FARMS } from 'config/constants/farms'
 
-const WrapTabs = styled(Box)`
+export const WrapTabs = styled(Box)`
   width: 100%;
   .tab {
   }
@@ -23,10 +23,10 @@ const CardInvestment = () => {
         id: 'finix_earned',
         name: 'FINIX Earned',
       },
-      {
-        id: 'favor_earned',
-        name: 'FAV Earned',
-      },
+      // {
+      //   id: 'favor_earned',
+      //   name: 'FAV Earned',
+      // },
     ]
   }, [])
 

@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { QuoteToken } from 'config/constants/types'
 import React, { useMemo, useCallback } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
-import EarningBoxTemplate from './EarningBoxTemplate/index'
+import EarningBoxTemplate from '../../MyInvestments/components/EarningBoxTemplate/index'
 
 const FavEarnd: React.FC<{
   isMobile: boolean
