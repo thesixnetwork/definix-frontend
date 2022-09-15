@@ -1,10 +1,11 @@
 import { groupBy } from 'lodash-es'
 import React, { useMemo, useState } from 'react'
-import { Box, CardBody, Tabs, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, CardBody, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import Card from 'uikitV2/components/Card'
 // import ListPageHeader from 'components/ListPageHeader'
 import VFinixSummary from './VFinixSummary'
 import Earned from './Earned'
+import { Tab, Tabs } from '@mui/material'
 // import NetWorth from './NetWorth'
 // import FavEarnd from './FavEarned'
 // import { FAVOR_FARMS } from 'config/constants/farms'
@@ -56,17 +57,24 @@ function CardSummary({ products }) {
       )}
 
       <Card>
-        <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} small={isMobile} equal={isMobile} theme="dark" />
+        <Tabs
+          value={curTab}
+          onChange={(e, value) => {
+            setCurTab(value)
+          }}
+          textColor="secondary"
+          indicatorColor="secondary"
+          aria-label="secondary tabs example"
+        >
+          {tabs.map(({ id, name }) => (
+            <Tab label={name} value={id} style={{ padding: '20px 48px' }} color="#fff" />
+          ))}
+        </Tabs>
         <CardBody style={{ padding: 0 }}>
           {curTab === tabs[0].id && <Earned isMobile={isMobile} products={groupBy(products, 'type')} />}
+          {/* {curTab === tabs[1].id && <FavEarnd isMobile={isMobile} products={groupBy(favorProducts, 'type')} />} */}
         </CardBody>
       </Card>
-
-      {/* <Card isOverflowHidden>
-        <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} small={isMobile} equal={isMobile} />
-        {curTab === tabs[0].id && <Earned isMobile={isMobile} products={groupBy(products, 'type')} />}
-        {curTab === tabs[1].id && <FavEarnd isMobile={isMobile} products={groupBy(favorProducts, 'type')} />}
-      </Card> */}
     </>
   )
 }

@@ -1,7 +1,10 @@
 import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
-import { Flex, Box, DropdownOption, DropdownSet, SearchInput } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Box } from '@fingerlabs/definixswap-uikit-v2'
 import { mediaQueries, spacing } from 'uikitV2/base'
+import { MenuItem, Select } from '@mui/material'
+import { SearchInput } from 'uikitV2/components/SearchInput'
+import { DropdownOption, DropdownSet } from 'uikitV2/components/DropdownSet'
 
 const Wrap = styled(Flex)`
   justify-content: space-between;
@@ -99,6 +102,7 @@ const MyProductsFilter: React.FC<{
     <Wrap>
       <Row>
         <DropdownWrap>
+
           <DropdownSet
             isOpen={isOpenDisplayFilter}
             activeIndex={displayFilterIndex}

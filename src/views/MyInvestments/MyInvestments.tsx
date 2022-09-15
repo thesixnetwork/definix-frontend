@@ -3,6 +3,7 @@ import { Route, useRouteMatch, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 // import useMyInvestments from 'hooks/useMyInvestments'
 import PageTitle from 'uikitV2/components/PageTitle'
+import myInvestment from 'uikitV2/images/myInvestment.png'
 import { Box, Card, DropdownOption, ImgMyinvestmentDefault3x } from '@fingerlabs/definixswap-uikit-v2'
 // import useWallet from 'hooks/useWallet'
 import CardSummary from './components/CardSummary'
@@ -10,6 +11,7 @@ import MyProductsFilter from './components/MyProductsFilter'
 import MyProducts from './components/MyProducts'
 import { mediaQueries, spacing } from 'uikitV2/base'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+
 const Wrap = styled(Box)`
   padding-bottom: ${spacing.S_80}px;
   ${mediaQueries.mobileXl} {
@@ -30,33 +32,33 @@ const MyInvestments: React.FC = () => {
   return account ? (
     <Wrap>
       <Route exact path={`${path}`}>
-        <PageTitle
-          title="My Investment"
-          caption="Check your investment history and profit on Definix."
-          // img={ImgMyinvestmentDefault3x}
-        >
-          <>
-            <CardSummary products={stakedProducts} />
-            <Card
-              className="mt-s16"
-              style={{
-                overflow: 'visible',
-              }}
-            >
-              {/* <MyProductsFilter
-            onChangeDisplayFilter={(keyword: string) => setCurrentProductType(keyword)}
-            onChangeOrderFilter={(orderBy: DropdownOption) => setSelectedOrderBy(orderBy)}
-            onChangeSearchInput={(keyword: string) => setSearchKeyword(keyword)}
+        <>
+          <PageTitle
+            sx={{ color: '#222' }}
+            title="My Investment"
+            caption="Check your investment history and profit on Definix."
+            img={myInvestment}
           />
-          <MyProducts
-            currentProductType={currentProductType}
-            currentOrderBy={selectedOrderBy}
-            searchKeyword={searchKeyword}
-            products={stakedProducts}
-          /> */}
-            </Card>
-          </>
-        </PageTitle>
+          <CardSummary products={stakedProducts} />
+          <Card
+            style={{
+              marginTop: 16,
+              overflow: 'visible',
+            }}
+          >
+            <MyProductsFilter
+              onChangeDisplayFilter={(keyword: string) => setCurrentProductType(keyword)}
+              onChangeOrderFilter={(orderBy: DropdownOption) => setSelectedOrderBy(orderBy)}
+              onChangeSearchInput={(keyword: string) => setSearchKeyword(keyword)}
+            />
+            <MyProducts
+              currentProductType={currentProductType}
+              currentOrderBy={selectedOrderBy}
+              searchKeyword={searchKeyword}
+              products={stakedProducts}
+            />
+          </Card>
+        </>
       </Route>
     </Wrap>
   ) : (

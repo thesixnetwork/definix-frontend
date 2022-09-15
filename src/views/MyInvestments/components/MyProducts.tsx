@@ -4,9 +4,11 @@ import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { useBalances } from 'state/hooks'
-import { Divider, Box, DropdownOption } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, DropdownOption } from '@fingerlabs/definixswap-uikit-v2'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { mediaQueries, spacing } from 'uikitV2/base'
+import NoData from 'uikitV2/components/NoData'
+import { Divider } from '@mui/material'
 // import NoResultArea from 'components/NoResultArea'
 // import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 // import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
@@ -181,7 +183,12 @@ const MyProducts: React.FC<{
           )
         })
       ) : (
-        <Box mb="S_40">{/* <NoResultArea useCardLayout={false} message="There are no products deposited" /> */}</Box>
+        <Box style={{ marginBottom: 40 }}>
+          <NoData
+            // useCardLayout={false}
+            text="There are no products deposited"
+          />
+        </Box>
       )}
       {/* <List>
         <>
