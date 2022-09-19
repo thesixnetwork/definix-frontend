@@ -4,7 +4,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Box, Chip, styled, Typography } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import React from 'react'
-import { Input as NumericalInput } from 'views/Explore/components/NumericalInput'
+import { Input as NumericalInput } from './NumericalInput'
 
 interface CurrencyInputV2Props {
   value: string
