@@ -12,7 +12,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { getCustomContract } from 'utils/erc20'
 import { provider } from 'web3-core'
 import { AbiItem } from 'web3-utils'
-import { useSlippage, useToastG2 } from '../../../state/hooks'
+import { useSlippage, useToast } from '../../../state/hooks'
 import { fetchRebalances } from '../../../state/rebalance'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../../state/wallet'
 import CardHeading from './CardHeading'
@@ -34,7 +34,7 @@ const InvestConfirmModal = ({
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const dispatch = useDispatch()
   const [tx, setTx] = useState({})
-  const { toastSuccess, toastError } = useToastG2()
+  const { toastSuccess, toastError } = useToast()
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
   // @ts-ignore

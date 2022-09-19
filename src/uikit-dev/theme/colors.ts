@@ -3,12 +3,12 @@ import polygonWhite from 'uikit-dev/images/for-ui-v2/polygon-white.png'
 import { Colors } from './types'
 
 export const baseColors = {
-  failure: '#d42837',
+  failure: '#ff6828',
   primary: '#1587C9',
   primaryBright: '#59a1ec',
   primaryDark: '#004889',
   secondary: '#0973B9',
-  success: '#2A9D8F',
+  success: '#02a1a1',
   successAlpha: 'rgba(42,157,143,0.1)',
   warning: '#E5B339',
 }
