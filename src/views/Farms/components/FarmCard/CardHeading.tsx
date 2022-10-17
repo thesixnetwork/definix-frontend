@@ -1,16 +1,28 @@
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Image, Skeleton, Text, ChevronRightIcon, Link } from 'uikit-dev'
+import Flex from 'uikitV2/components/Box/Flex'
+import Box from 'uikitV2/components/Box/Box'
+import Text from 'uikitV2/components/Text/Text'
+import { ColorStyles } from 'uikitV2/colors'
+import Link from 'uikitV2/components/Link/Link'
+import Coin from 'uikitV2/components/Coin/Coin'
+import {ChevronRightIcon} from 'uikit-dev'
 import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
+import { QuoteToken } from 'config/constants/types'
 // import { communityFarms } from 'config/constants'
+
+const convertToFarmAPRFormat = (apy) => {
+  return numeral(apy.times(100).toFixed(2)).format('0,0.[00]')
+}
 
 export interface ExpandableSectionProps {
   farm: FarmWithStakedValue
+  componentType?: string,
   lpLabel?: string
   multiplier?: string
   tokenSymbol?: string
@@ -20,6 +32,7 @@ export interface ExpandableSectionProps {
   className?: string
   isHorizontal?: boolean
   inlineMultiplier?: boolean
+  size?: string
 }
 
 const MultiplierTag = styled.div`
@@ -85,9 +98,52 @@ const Apr = styled(Text)`
   align-items: center;
 `
 
+const ImageBox = styled(Box)`
+  &:first-child {
+    z-index: 1;
+  }
+  &:last-child {
+    margin-left: -10px;
+  }
+`
+
+const StyledCoin = styled(Coin)`
+  width: 40px;
+  height: 40px;
+  @media screen and (max-width: 1280px) {
+    width: 36px;
+    height: 36px;
+  }
+`
+
+const APRCoins = styled(Flex)<{ isRow: boolean }>`
+  flex-direction: column;
+  margin-left: ${({ isRow }) => isRow ? '50px' : ''};
+  margin-top: 3px;
+  @media screen and (max-width: 1280px) {
+    margin-left: 0;
+  }
+`
+
+const APRCoin = styled(Coin)`
+  margin-right: 3px;
+`
+
+const Header = styled(Flex)<{ isRow: boolean }>`
+  flex-direction: ${({ isRow }) => isRow ? 'row' : 'column'};
+  align-items: ${({ isRow }) => isRow ? 'center' : 'flex-start'};
+
+  @media screen and (max-width: 1280px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
+
 const CardHeading: React.FC<ExpandableSectionProps> = ({
+  size="medium",
   farm,
   lpLabel,
+  componentType,
   removed,
   addLiquidityUrl,
   finixPrice,
@@ -101,6 +157,8 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const firstCoin = farmImage.split('-')[0].toLocaleLowerCase()
   const secondCoin = farmImage.split('-')[1].toLocaleLowerCase()
   const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
+  const isRow = useMemo(() => componentType === 'deposit', [componentType, farm])
+  const isMediumSize = useMemo(() => size === 'medium', [size])
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
   const TranslateString = useI18n()
@@ -121,46 +179,50 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   const imgSize = isHorizontal ? 48 : 56
 
-  return (
-    <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
-      {!inlineMultiplier && (
-        <MultiplierTag>
-          <p>{farm.multiplier}</p>
-        </MultiplierTag>
-      )}
-
-      <StyledFarmImages>
-        <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
-        <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
-      </StyledFarmImages>
-
-      <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
-        {lpLabel}
-      </Heading>
-
-      {!removed && (
-        <div className="flex align-center justify-center mt-2">
-          <Apr color="success" bold>
-            {TranslateString(736, 'APR')}
-            <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
-          </Apr>
-          <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
-
-          {inlineMultiplier && (
-            <InlineMultiplierTag>
-              <p>{farm.multiplier}</p>
-            </InlineMultiplierTag>
-          )}
-        </div>
-      )}
-
-      <LinkView />
-
-      {/* <Flex justifyContent="center">
-        {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-        <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
-      </Flex> */}
+  const renderAPR = useMemo(() => (coin: string, apy: BigNumber) => {
+    return <Flex alignItems="flex-end">
+      <APRCoin symbol={coin} size="20px" />
+      <Text textStyle="R_14M" color={"#ff6828"}>
+        APR
+      </Text>
+      <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={"#ff6828"} style={{ marginLeft: '4px', marginBottom: '-2px' }}>
+        {['0', 'Infinity'].includes((apy || 0).toString()) ? '0' : convertToFarmAPRFormat(apy)}%
+      </Text>
+      <Box style={{ marginLeft: '4px' }}>
+        <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={apy} coin={coin} />
+      </Box>
     </Flex>
+  }, [isMediumSize])
+
+  return (
+
+
+
+
+    <Flex position="relative">
+      <Flex
+        mr={12}
+        alignItems="center"
+        width={'auto'}
+      >
+        <ImageBox>
+          <StyledCoin symbol={firstCoin} size="40px" />
+        </ImageBox>
+        <ImageBox>
+          <StyledCoin symbol={secondCoin} size="40px" />
+        </ImageBox>
+      </Flex>
+
+      <Header isRow={isRow}>
+        <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{lpLabel}</Text>
+        <APRCoins isRow={isRow}>
+          {renderAPR(QuoteToken.FINIX, farm.apy)}
+        </APRCoins>
+      </Header>
+    </Flex>
+
+
+
   )
 }
 

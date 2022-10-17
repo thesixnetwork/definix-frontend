@@ -1,25 +1,32 @@
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { QuoteToken } from 'config/constants/types'
+import { TAG_COLORS } from 'config/constants/farms'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { useMatchBreakpoints } from 'uikit-dev'
+import { ChevronDownIcon, ChevronUpIcon, useMatchBreakpoints } from 'uikit-dev'
+import Card from 'uikitV2/components/Card/Card'
+import CardRibbon from 'uikitV2/components/Card/CardRibbon'
+import { ColorStyles } from 'uikitV2/colors'
+import IconButton from 'uikitV2/components/Button/IconButton'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { Flex } from 'uikit-dev'
+import { Box } from '@mui/material'
 import FarmContext from '../../FarmContext'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
-import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
 import { FarmCardProps } from './types'
+import EarningHarvest from './EarningHarvest'
 
 const CardStyle = styled.div`
-  background: ${(props) => props.theme.card.background};
+  background: ${props => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
 `
@@ -46,6 +53,41 @@ const HorizontalMobileStyle = styled(CardStyle)`
     &.show {
       display: block;
     }
+  }
+`
+
+const CardWrap = styled(Card)`
+  margin-bottom: 26px;
+  @media screen and (min-width: 1280px) {
+    .card-heading {
+      width: 204px;
+    }
+    .total-staked-section {
+      width: 144px;
+    }
+    .my-balance-section {
+      margin: 0 24px;
+      width: 232px;
+    }
+    .earnings-section {
+      width: 200px;
+    }
+    .link-section {
+      width: 166px;
+    }
+    .harvest-action-section {
+      margin: 0 24px;
+      width: 358px;
+    }
+    .stake-action-section {
+      width: 276px;
+    }
+  }
+`
+const Wrap = styled(Box)<{ paddingLg: boolean }>`
+  padding: ${({ paddingLg }) => (paddingLg ? '40' : '32')}px;
+  @media screen and (min-width: 1280px) {
+    padding: 32px;
   }
 `
 
@@ -88,7 +130,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
     : '-'
 
-  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
+  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '').replace(' LP', '')
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, tokenBalance, stakedBalance } = useFarmUser(pid)
 
@@ -174,17 +216,29 @@ const FarmCard: React.FC<FarmCardProps> = ({
     )
   }, [lpLabel, onPresent, onUnstake, renderCardHeading, stakedBalance])
 
-  const renderStakeAction = useCallback(
-    (className?: string) => (
-      <StakeAction
-        farm={farm}
-        ethereum={ethereum}
-        account={account}
-        className={className}
-        onPresentDeposit={renderDepositModal}
-        onPresentWithdraw={renderWithdrawModal}
-      />
-    ),
+  const dataForNextState = useMemo(() => {
+    return {
+      farm,
+      renderCardHeading,
+    }
+  }, [farm, renderCardHeading])
+
+  const renderStakeAction = useMemo(
+    () => (className?: string, type?: string) =>
+      (
+        <FarmContext.Consumer>
+          {({ goDeposit, goWithdraw }) => (
+            <StakeAction
+              farm={farm}
+              ethereum={ethereum}
+              account={account}
+              className={className}
+              onPresentDeposit={() => goDeposit(dataForNextState)}
+              onPresentWithdraw={() => goWithdraw(dataForNextState)}
+            />
+          )}
+        </FarmContext.Consumer>
+      ),
     [account, ethereum, farm, renderDepositModal, renderWithdrawModal],
   )
 
@@ -216,59 +270,112 @@ const FarmCard: React.FC<FarmCardProps> = ({
     [addLiquidityUrl, farm.lpAddresses, lpLabel, removed, totalValueFormated, stakedBalanceValueFormated],
   )
 
+  const renderMyStake = useCallback(
+    (className?: string, isHor?: boolean) => (
+      <DetailsSection
+        removed={removed}
+        bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+        customText="My Staked"
+        totalValueFormated={stakedBalanceValueFormated}
+        stakedBalanceValueFormated={stakedBalanceValueFormated}
+        lpLabel={lpLabel}
+        addLiquidityUrl={addLiquidityUrl}
+        isHorizontal={isHor}
+        className={className}
+      />
+    ),
+    [addLiquidityUrl, farm.lpAddresses, lpLabel, removed, totalValueFormated, stakedBalanceValueFormated],
+  )
+
   useEffect(() => {
     setIsOpenAccordion(false)
   }, [])
 
-  if (isHorizontal) {
-    if (isMobile) {
-      return (
-        <HorizontalMobileStyle className="mb-3">
-          <CardHeadingAccordion
-            farm={farm}
-            lpLabel={lpLabel}
-            removed={removed}
-            addLiquidityUrl={addLiquidityUrl}
-            finixPrice={finixPrice}
-            className=""
-            isOpenAccordion={isOpenAccordion}
-            setIsOpenAccordion={setIsOpenAccordion}
-          />
-          <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-            {renderStakeAction('pa-5')}
-            {renderHarvestAction('pa-5')}
-            {/* renderHarvestActionAirDrop('pa-5 pt-0', false) */}
-            {renderDetailsSection('px-5 py-3', false)}
-          </div>
-        </HorizontalMobileStyle>
-      )
+  /**
+   * Card Ribbon
+   */
+  const ribbonProps = useMemo(() => {
+    if (typeof farm.tag === 'string') {
+      return {
+        ribbon: <CardRibbon variantColor={TAG_COLORS[farm.tag] || ColorStyles.RED} text={farm.tag} upperCase />,
+      }
     }
+    return null
+  }, [farm.tag])
 
-    return (
-      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-        {renderCardHeading('col-3 pos-static')}
+  /**
+   * IconButton
+   */
+  const renderIconButton = useMemo(
+    () => (
+      <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
+        {isOpenAccordion ? <ChevronUpIcon /> : <ChevronDownIcon />}
+      </IconButton>
+    ),
+    [isOpenAccordion],
+  )
 
-        <div className="col-4 bd-x flex flex-column justify-space-between px-5">
-          {renderStakeAction('pb-4')}
-          {renderDetailsSection('', true)}
-        </div>
+  /**
+   * Earnings Section
+   */
+  const renderEarningsSection = useMemo(
+    () => <div>None</div>, //<EarningsSection allEarnings={allEarnings} isMobile={isMobile} />,
+    [earnings, isMobile],
+  )
 
-        {renderHarvestAction('col-5 pl-5 flex-grow')}
-        {/* renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true) */}
-      </HorizontalStyle>
-    )
-  }
-
+  const renderEarningHarvest = useCallback(
+    (className?: string) => <EarningHarvest pid={pid} earnings={earnings} className={className} />,
+    [earnings, pid],
+  )
   return (
-    <VerticalStyle className="mb-7">
-      <div className="flex flex-column flex-grow">
-        {renderCardHeading('pt-7')}
-        {renderStakeAction('pa-5')}
-        {renderHarvestAction('pa-5')}
-        {/* renderHarvestActionAirDrop('pa-5 pt-0', false) */}
-      </div>
-      {renderDetailsSection('px-5 py-3', false)}
-    </VerticalStyle>
+    <>
+      <CardWrap {...ribbonProps}>
+        {isMobile ? (
+          <>
+            <Wrap paddingLg={false}>
+              <Flex justifyContent="space-between">
+                {renderCardHeading('')}
+                {renderIconButton}
+              </Flex>
+              {renderEarningHarvest('')}
+            </Wrap>
+            {isOpenAccordion && (
+              <Box style={{ backgroundColor: 'rgba(224, 224, 224, 0.2)' }} className="px-4 py-5">
+                {renderHarvestAction('')}
+                <Box className="py-5">{renderStakeAction('accordian')}</Box>
+                <div style={{ backgroundColor: 'rgba(224, 224, 224, 0.5)', height: 1 }} />
+                <Box className="pt-5" style={{}}>
+                  {renderDetailsSection('', true)}
+                </Box>
+              </Box>
+            )}
+          </>
+        ) : (
+          <>
+            <Wrap paddingLg={false}>
+              <Flex justifyContent="space-between">
+                <Flex className="card-heading" alignItems="center">
+                  {renderCardHeading('')}
+                </Flex>
+                <Box className="total-liquidity-section">{renderDetailsSection('', true)}</Box>
+                <Box className="my-balance-section">{renderMyStake('', true)}</Box>
+                <Box className="earnings-section">{renderEarningHarvest('')}</Box>
+                {renderIconButton}
+              </Flex>
+            </Wrap>
+            {isOpenAccordion && (
+              <Box style={{ backgroundColor: 'rgba(224, 224, 224, 0.2)' }} className="px-5 py-4">
+                <Flex justifyContent="space-between">
+                  <Box className="link-section" />
+                  {renderHarvestAction('flex align-center justify-space-between')}
+                  <Box className="stake-action-section">{renderStakeAction('')}</Box>
+                </Flex>
+              </Box>
+            )}
+          </>
+        )}
+      </CardWrap>
+    </>
   )
 }
 

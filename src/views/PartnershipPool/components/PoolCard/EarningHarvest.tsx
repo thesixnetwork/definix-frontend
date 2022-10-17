@@ -70,7 +70,7 @@ const EarningHarvest: React.FC<HarvestActionProps> = ({
         <Text fontSize="0.75rem" color="textSubtle" textAlign="left" className="col-6">
           Total VELO Rewards
         </Text>
-        <Text  fontSize="0.75rem" color="textSubtle" textAlign="right" className="col-6">
+        <Text fontSize="0.75rem" color="textSubtle" textAlign="right" className="col-6">
           {numeral(veloAmount).format('0,0')}/300,000 VELO
         </Text>
       </div>

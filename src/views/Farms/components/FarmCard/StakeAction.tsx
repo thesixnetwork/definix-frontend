@@ -1,11 +1,12 @@
 import BigNumber from 'bignumber.js'
-import UnlockButton from 'components/UnlockButton'
+import ConnectButton from 'components/ConnectButton'
 import { useApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useFarmFromSymbol, useFarmUnlockDate, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
+import { AddIcon, Heading, MinusIcon, Text } from 'uikit-dev'
+import { Button } from '@mui/material'
 import { getAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/erc20'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -24,7 +25,8 @@ interface FarmStakeActionProps {
 
 const IconButtonWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: stretch;
   svg {
     width: 20px;
   }
@@ -39,6 +41,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   onPresentWithdraw,
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
+  const [readyToStake, setReadyToStake] = useState(false)
 
   const TranslateString = useI18n()
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
@@ -69,13 +72,16 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   }, [onApprove])
 
   const renderStakingButtons = () => {
-    if (rawStakedBalance === 0) {
+    if (!readyToStake && rawStakedBalance === 0) {
       return (
         <Button
+          variant="contained"
+          color="secondary"
           disabled={farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()}
-          onClick={onPresentDeposit}
-          fullWidth
-          radii="small"
+          onClick={() => {
+            setReadyToStake(true)
+          }}
+          style={{ width: '100%' }}
         >
           {TranslateString(999, 'Stake LP')}
         </Button>
@@ -85,17 +91,25 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     return (
       <IconButtonWrapper>
         <Button
-          variant="secondary"
+          variant="outlined"
+          color="secondary"
           disabled={stakedBalance.eq(new BigNumber(0))}
           onClick={onPresentWithdraw}
-          className="btn-secondary-disable col-6 mr-1"
+          style={{ width: '100%' }}
+          className="btn-secondary-disable mr-1"
         >
-          <MinusIcon color="primary" />
+          <MinusIcon style={{ color: '#413343' }}  />
         </Button>
         {(typeof farmUnlockDate === 'undefined' ||
           (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && (
-          <Button variant="secondary" onClick={onPresentDeposit} className="btn-secondary-disable col-6 ml-1">
-            <AddIcon color="primary" />
+          <Button
+            variant="outlined"
+            color="secondary"
+            style={{ width: '100%' }}
+            onClick={onPresentDeposit}
+            className="btn-secondary-disable ml-1"
+          >
+            <AddIcon style={{ color: '#413343' }}  />
           </Button>
         )}
       </IconButtonWrapper>
@@ -105,32 +119,35 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const renderApprovalOrStakeButton = () => {
     if (!isApproved) {
       return (
-        <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
+        <Button
+          style={{ width: '100%' }}
+          variant="contained"
+          color="secondary"
+          disabled={requestedApproval}
+          onClick={handleApprove}
+        >
           {TranslateString(758, 'Approve Contract')}
         </Button>
       )
     }
 
-    return (
-      <div className="flex align-center">
-        <Heading
-          fontSize="20px !important"
-          textAlign="left"
-          color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}
-          className="col-6 pr-3"
-        >
-          {displayBalance}
-        </Heading>
-
-        <div className="col-6">{renderStakingButtons()}</div>
-      </div>
-    )
+    return <div className="flex align-center">{renderStakingButtons()}</div>
   }
 
   return (
     <div className={className}>
-      <Text textAlign="left" className="mb-2" color="textSubtle">{`${lpName} ${TranslateString(1074, 'Staked')}`}</Text>
-      {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
+      <Text textAlign="left" className="mb-2" color="textSubtle">{`${TranslateString(1074, 'My Staked')}`}</Text>
+      {!account ? (
+        <ConnectButton
+          variant="contained"
+          color="secondary"
+          style={{ padding: '10px 20px', fontSize: '0.875rem', width: '100%', fontWeight: 'bold' }}
+        >
+          Connect Wallet
+        </ConnectButton>
+      ) : (
+        renderApprovalOrStakeButton()
+      )}
     </div>
   )
 }

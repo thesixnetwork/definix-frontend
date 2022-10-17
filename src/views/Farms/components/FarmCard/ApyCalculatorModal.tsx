@@ -11,6 +11,7 @@ interface ApyCalculatorModalProps {
   finixPrice?: BigNumber
   apy?: BigNumber
   addLiquidityUrl?: string
+  coin?: string
 }
 
 const Grid = styled.div`
@@ -35,6 +36,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   finixPrice,
   apy,
   addLiquidityUrl,
+  coin
 }) => {
   const TranslateString = useI18n()
   const farmApy = apy.times(new BigNumber(100)).toNumber()

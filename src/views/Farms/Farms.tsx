@@ -20,6 +20,8 @@ import FarmCard from './components/FarmCard/FarmCard'
 import { FarmWithStakedValue } from './components/FarmCard/types'
 import FarmTabButtons from './components/FarmTabButtons'
 import FarmContext from './FarmContext'
+import Deposit from './components/Deposit'
+import Withdraw from './components/Withdraw'
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -53,16 +55,22 @@ const Farms: React.FC = () => {
   const [isPhrase2, setIsPhrase2] = useState(false)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
+  const [allDisplayChiose, setAllDisplayChiose] = useState([
+    { key: 'Recommend', value: 'sortOrder' },
+    { key: 'APR', value: 'apr' },
+    { key: 'Total staked', value: 'total' },
+  ])
+  const [selectDisplay, setSelectDisplay] = useState('recommend')
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
   const currentTime = new Date().getTime()
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier === '0X')
+  const activeFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier === '0X')
   const stackedOnlyFarms = farmsLP.filter(
-    (farm) =>
+    farm =>
       farm.userData && farm.pid !== 0 && farm.pid !== 25 && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
@@ -72,7 +80,7 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const finixPriceVsBNB = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
-      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map(farm => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
@@ -111,7 +119,7 @@ const Farms: React.FC = () => {
         return { ...farm, apy }
       })
 
-      return farmsToDisplayWithAPY.map((farm) => (
+      return farmsToDisplayWithAPY.map(farm => (
         <FarmCard
           key={farm.pid}
           farm={farm}
@@ -166,46 +174,100 @@ const Farms: React.FC = () => {
     }
   }, [])
 
-  const farmsLiveOnly = (live) => {
+  const farmsLiveOnly = live => {
     return live ? farmsList(activeFarms, false) : farmsList(inactiveFarms, false)
   }
+
+  const [pageState, setPageState] = useState('list')
+  const [pageData, setPageData] = useState(null)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pageState])
+
+  useEffect(() => {
+    if (typeof account !== 'string') {
+      setPageState('list')
+      setPageData(null)
+    }
+  }, [account])
 
   return (
     <FarmContext.Provider
       value={{
         onPresent: handlePresent,
         onDismiss: handleDismiss,
+        pageState,
+        pageData,
+        goDeposit: data => {
+          setPageState('deposit')
+          setPageData(data)
+        },
+        goWithdraw: data => {
+          setPageState('withdraw')
+          setPageData(data)
+        },
       }}
     >
       <Helmet>
         <title>Farm - Definix - Advance Your Crypto Assets</title>
       </Helmet>
 
-      <PageTitle
-        title="Farm"
-        caption="Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. The amount of returns will be calculated by the annual percentage rate (APR)."
-        linkLabel="How to stake."
-        link="https://sixnetwork.gitbook.io/definix/yield-farming/how-to-yield-farm-on-definix"
-        img={farmImg}
-      />
-
       <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
-        <FarmTabButtons
-          stackedOnly={stackedOnly}
-          setStackedOnly={setStackedOnly}
-          liveOnly={liveOnly}
-          setLiveOnly={setLiveOnly}
-          listView={listView}
-          setListView={setListView}
-        />
-        <FlexLayout cols={listView ? 1 : 3}>
-          <Route exact path={`${path}`}>
-            {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsLiveOnly(liveOnly)}
-          </Route>
-          <Route exact path={`${path}/history`}>
-            {farmsList(inactiveFarms, true)}
-          </Route>
-        </FlexLayout>
+        {pageState === 'list' && (
+          <>
+            <PageTitle
+              title="Farm"
+              caption="Pairing coins to create LP and depositing on the farm will give you a high rate of interest."
+              linkLabel="Learn how to stake in Farm"
+              link="https://sixnetwork.gitbook.io/definix/yield-farming/how-to-yield-farm-on-definix"
+              img={farmImg}
+            />
+            <FarmTabButtons
+              stackedOnly={stackedOnly}
+              setStackedOnly={setStackedOnly}
+              liveOnly={liveOnly}
+              setLiveOnly={setLiveOnly}
+              listView={listView}
+              setListView={setListView}
+              selectDisplay={selectDisplay}
+              allDisplayChiose={allDisplayChiose}
+              setSelectDisplay={setSelectDisplay}
+            />
+            <FlexLayout cols={listView ? 1 : 3}>
+              <Route exact path={`${path}`}>
+                {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsLiveOnly(liveOnly)}
+              </Route>
+              <Route exact path={`${path}/history`}>
+                {farmsList(inactiveFarms, true)}
+              </Route>
+            </FlexLayout>
+          </>
+        )}
+
+        {pageState === 'deposit' && (
+          <>
+            <Deposit
+              {...pageData}
+              onBack={() => {
+                setPageState('list')
+                setPageData(null)
+              }}
+            />
+          </>
+        )}
+
+        {pageState === 'withdraw' && (
+          <>
+            <Withdraw
+              {...pageData}
+              onBack={() => {
+                setPageState('list')
+                setPageData(null)
+              }}
+            />
+          </>
+        )}
       </TimerWrapper>
 
       {isOpenModal && React.isValidElement(modalNode) && (
@@ -235,10 +297,10 @@ const TimerWrapper = ({ isPhrase2, date, children }) => {
         tabIndex={0}
         role="button"
         style={{ opacity: 0.4, pointerEvents: 'none' }}
-        onClick={(e) => {
+        onClick={e => {
           e.preventDefault()
         }}
-        onKeyDown={(e) => {
+        onKeyDown={e => {
           e.preventDefault()
         }}
       >

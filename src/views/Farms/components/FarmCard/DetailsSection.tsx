@@ -2,6 +2,7 @@ import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
 import { Link, ChevronRightIcon, Text } from 'uikit-dev'
+import Flex from 'uikitV2/components/Box/Flex'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -9,6 +10,7 @@ export interface ExpandableSectionProps {
   totalValueFormated?: string
   lpLabel?: string
   addLiquidityUrl?: string
+  customText?: string
   isHorizontal?: boolean
   className?: string
   stakedBalanceValueFormated?: string
@@ -28,6 +30,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   isHorizontal = false,
   className = '',
   stakedBalanceValueFormated,
+  customText,
 }) => {
   const TranslateString = useI18n()
 
@@ -47,27 +50,18 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
 
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
-      {!removed && (
+      {(!removed || customText) && (
         <>
-          {false && (
-            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-              <Text bold className="flex-shrink">
-                {stakedBalanceValueFormated}
-              </Text>
-            </div>
-          )}
-
-          <div className="flex align-baseline flex-wrap justify-space-between">
-            <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
-
-            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-              <Text bold className="flex-shrink">
+          <Flex flexDirection="column" justifyContent="flex-start" alignItems="flex-start">
+            <Text fontSize="0.75rem" color="textSubtle">
+              {customText ? customText : 'Total Liquidity'}
+            </Text>
+            <div className="flex" style={{ alignItems: 'baseline', paddingTop: 6 }}>
+              <Text bold className="flex-shrink" fontSize="1rem">
                 {totalValueFormated}
               </Text>
-
-              <LinkView />
             </div>
-          </div>
+          </Flex>
         </>
       )}
     </Wrapper>
