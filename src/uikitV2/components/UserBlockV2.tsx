@@ -1,10 +1,12 @@
 import { CheckRounded } from '@mui/icons-material'
 import { Box, Button, Menu, MenuItem, Typography } from '@mui/material'
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import { Position } from 'uikit-dev/components/Dropdown/types'
 import { useWalletModal } from 'uikit-dev/widgets/WalletModal'
 import { localStorageKey } from 'uikit-dev/widgets/WalletModal/config'
 import { Login } from 'uikit-dev/widgets/WalletModal/types'
+import { UserInvestmentIcon } from 'uikitV2/components/Svg'
 
 interface Props {
   account?: string
@@ -17,11 +19,15 @@ interface Props {
 
 const UserBlockV2: React.FC<Props> = ({ account, login, logout, className = '', size = 'small' }) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
+  const history = useHistory()
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [isCopied, setIsCopied] = React.useState(false)
   const open = Boolean(anchorEl)
 
+  const handleClickMyInvestment = (event) => {
+    history.push('/my')
+  }
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
@@ -92,6 +98,17 @@ const UserBlockV2: React.FC<Props> = ({ account, login, logout, className = '', 
               <Typography variant="caption">Disconnect</Typography>
             </MenuItem>
           </Menu>
+
+          <Button
+            size="small"
+            // fullWidth
+            variant="contained"
+            sx={{ marginLeft: '8px', width: '110px', backgroundColor: '#413343' }}
+            onClick={handleClickMyInvestment}
+            startIcon={<UserInvestmentIcon />}
+          >
+            MY
+          </Button>
         </>
       ) : (
         <Button

@@ -16,10 +16,10 @@ import _ from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
 import Card from 'uikitV2/components/Card'
+import { Input as NumericalInput } from 'uikitV2/components/NumericalInput'
+import SpaceBetweenFormat from 'uikitV2/components/SpaceBetweenFormat'
 import { getAddress } from 'utils/addressHelpers'
-import { Input as NumericalInput } from 'views/Explore/components/NumericalInput'
 import InlineAssetRatio from './InlineAssetRatio'
-import SpaceBetweenFormat from './SpaceBetweenFormat'
 
 const ratioTypes = [
   { value: 'all', label: 'Original' },

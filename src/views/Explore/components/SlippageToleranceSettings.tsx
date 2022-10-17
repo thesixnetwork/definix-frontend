@@ -1,52 +1,12 @@
+import { HelpOutlineRounded } from '@mui/icons-material'
+import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded'
+import { Box, Button, InputAdornment, OutlinedInput, Tooltip, Typography } from '@mui/material'
 import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { Button, Flex, Input, Text } from 'uikit-dev'
-import Helper from 'uikit-dev/components/Helper'
 
 const MAX_SLIPPAGE = 5000
 const RISKY_SLIPPAGE_LOW = 50
 const RISKY_SLIPPAGE_HIGH = 500
-
-const StyledSlippageToleranceSettings = styled.div`
-  margin-bottom: 24px;
-`
-
-const Option = styled.div`
-  padding: 0 4px;
-`
-
-const Options = styled.div`
-  align-items: strech;
-  display: flex;
-  flex-direction: column;
-
-  ${Option}:first-child {
-    padding-left: 0;
-  }
-
-  ${Option}:last-child {
-    padding-right: 0;
-  }
-
-  > :last-child {
-    padding-top: 1rem;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-
-    > :last-child {
-      padding-top: 0;
-    }
-  }
-`
-
-const Label = styled.div`
-  align-items: center;
-  display: flex;
-  margin-bottom: 8px;
-`
 
 const predefinedValues = [
   { label: '0.1%', value: 0.1 },
@@ -89,59 +49,58 @@ const SlippageToleranceSettings = () => {
   }, [userSlippageTolerance, setError])
 
   return (
-    <StyledSlippageToleranceSettings>
-      <Label>
-        <Text small style={{ fontWeight: 600 }}>
-          Slippage tolerance
-        </Text>
-        <Helper
-          text="Your transaction will revert if the price changes unfavorably by more than this percentage."
-          className="ml-2"
-          position="right"
-        />
-      </Label>
-      <Options>
-        <Flex mb={['8px', 0]} mr={[0, '8px']}>
+    <Box mb={5}>
+      <Typography color="text.secondary" fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }} mb={2}>
+        Slippage Tolerance
+        <Tooltip title="Your transaction will revert if the price changes unfavorably by more than this percentage.">
+          <HelpOutlineRounded className="ml-1" sx={{ width: '16px', height: '16px' }} />
+        </Tooltip>
+      </Typography>
+
+      <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }}>
+        <Box display="flex" alignItems="center" mb={{ xs: 2, sm: 0 }}>
           {predefinedValues.map(({ label, value: predefinedValue }) => {
             const handleClick = () => setValue(predefinedValue)
 
             return (
-              <Option key={predefinedValue}>
-                <Button
-                  variant={value === predefinedValue ? 'primary' : 'secondary'}
-                  onClick={handleClick}
-                  radii="card"
-                >
-                  {label}
-                </Button>
-              </Option>
+              <Button
+                key={predefinedValue}
+                variant="contained"
+                color={value === predefinedValue ? 'primary' : 'info'}
+                onClick={handleClick}
+                sx={{ mr: 1, width: '88px', flexShrink: 0 }}
+              >
+                {label}
+              </Button>
             )
           })}
-        </Flex>
-        <Flex alignItems="center">
-          <Option>
-            <Input
-              type="number"
-              scale="lg"
-              step={0.1}
-              min={0.1}
-              placeholder="5%"
-              value={value}
-              onChange={handleChange}
-              isWarning={error !== null}
-            />
-          </Option>
-          <Option>
-            <Text fontSize="16px">%</Text>
-          </Option>
-        </Flex>
-      </Options>
+        </Box>
+
+        <OutlinedInput
+          type="number"
+          inputProps={{ step: 0.1, min: 0.1 }}
+          size="small"
+          placeholder="5%"
+          value={value}
+          onChange={handleChange}
+          endAdornment={
+            <InputAdornment position="end">
+              <Typography color="text.primary" fontWeight={500}>
+                %
+              </Typography>
+            </InputAdornment>
+          }
+          sx={{ width: '184px' }}
+        />
+      </Box>
+
       {error && (
-        <Text small mt="8px" color="failure">
+        <Typography variant="body2" color="error" mt="8px" sx={{ display: 'flex', alignItems: 'center', mt: '12px' }}>
+          <ErrorRoundedIcon sx={{ fontSize: '1rem', mr: 0.5 }} />
           {error}
-        </Text>
+        </Typography>
       )}
-    </StyledSlippageToleranceSettings>
+    </Box>
   )
 }
 

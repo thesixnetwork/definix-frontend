@@ -2,7 +2,7 @@ import { Box, MenuItem, Select, styled, Typography } from '@mui/material'
 import { allLanguages } from 'config/localisation/languageCodes'
 import React from 'react'
 import { PanelProps } from 'uikit-dev/widgets/Menu/types'
-import SettingButton from 'views/Explore/components/SettingButton'
+import SettingButton from './SettingButton'
 
 const Container = styled(Box)`
   padding: 20px 12px 20px 16px;

@@ -38,6 +38,7 @@ TagManager.initialize(tagManagerArgs)
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
+const MyInvestments = lazy(() => import('./views/MyInvestments'))
 const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
 const Explore = lazy(() => import('./views/Explore'))
@@ -100,6 +101,9 @@ const App: React.FC = () => {
           <Switch>
             <Route path="/" exact>
               <Home />
+            </Route>
+            <Route path="/my">
+              <MyInvestments />
             </Route>
             <Route path="/trading-challenge">
               <TradingChallenge />

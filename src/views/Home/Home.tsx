@@ -29,6 +29,7 @@ import HomeNotice from './components/Notice'
 import CardFinix from './components/CardFinix'
 import CardHighAPR from './components/CardHighAPR'
 import CardRelease from './components/CardRelease'
+import CardInvestment from './components/CardInvestment'
 
 const Caption = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
@@ -124,8 +125,8 @@ const Home: React.FC = () => {
         <HomeNotice />
       </FullColumnGrid>
       {account && (
-        <FullColumnGrid mb="S_40" area="investment">
-          {/* <CardInvestment /> */}
+        <FullColumnGrid style={{ marginBottom: 40 }} area="investment">
+          <CardInvestment />
         </FullColumnGrid>
       )}
       <LeftColumnGrid area="tvl">

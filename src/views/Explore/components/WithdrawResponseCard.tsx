@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom'
 import { Button, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
 import Card from 'uikitV2/components/Card'
+import SpaceBetweenFormat from 'uikitV2/components/SpaceBetweenFormat'
 import CardHeading from './CardHeading'
 import Share from './Share'
-import SpaceBetweenFormat from './SpaceBetweenFormat'
 
 const SuccessOptions = {
   loop: true,

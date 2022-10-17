@@ -2,8 +2,6 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Box, Button, Divider, Typography } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import rebalanceAbi from 'config/abi/rebalance.json'
-import _ from 'lodash'
-import numeral from 'numeral'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import ModalV2 from 'uikitV2/components/ModalV2'
@@ -11,12 +9,9 @@ import { getAddress } from 'utils/addressHelpers'
 import { getCustomContract } from 'utils/erc20'
 import { provider } from 'web3-core'
 import { AbiItem } from 'web3-utils'
-import { useSlippage, useToastG2 } from '../../../state/hooks'
-import { fetchRebalances } from '../../../state/rebalance'
-import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../../state/wallet'
+import { useSlippage, useToast } from '../../../state/hooks'
+import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../../state/wallet'
 import CardHeading from './CardHeading'
-import SpaceBetweenFormat from './SpaceBetweenFormat'
-import VerticalAssetRatio from './VerticalAssetRatio'
 
 const WithdrawConfirmModal = ({
   currentInput,
@@ -37,7 +32,7 @@ const WithdrawConfirmModal = ({
   const { account, ethereum } = useWallet()
   const dispatch = useDispatch()
   const [tx, setTx] = useState({})
-  const { toastSuccess, toastError } = useToastG2()
+  const { toastSuccess, toastError } = useToast()
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
   // @ts-ignore
