@@ -17,12 +17,18 @@ import {
   ImgTokenUnselect,
   ImgTokenVfinix,
   ImgTokenXrp,
+  ImgTokenBnb,
+  ImgTokenEth,
+  ImgTokenVelo,
+  ImgTokenUsdt,
 } from './Symbol'
 
 export enum COIN_SYMBOL {
   ADA = 'ADA',
+  BNB = 'BNB',
   BTCB = 'BTCB',
   BUSD = 'BUSD',
+  ETH = 'ETH',
   FINIX = 'FINIX',
   OBNB = 'OBNB',
   KDAI = 'KDAI',
@@ -34,8 +40,11 @@ export enum COIN_SYMBOL {
   OWBTC = 'OWBTC',
   SIX = 'SIX',
   UNSELECT = 'UNSELECT',
+  USDT = 'USDT',
+  VELO = 'VELO',
   VFINIX = 'VFINIX',
   OXRP = 'OXRP',
+  XRP = 'XRP',
   /**
    * @favor
    */
@@ -44,8 +53,10 @@ export enum COIN_SYMBOL {
 
 export const COIN_SRCSET: Record<COIN_SYMBOL, string[]> = {
   [COIN_SYMBOL.ADA]: ImgTokenAda,
+  [COIN_SYMBOL.BNB]: ImgTokenBnb,
   [COIN_SYMBOL.BTCB]: ImgTokenBtcb,
   [COIN_SYMBOL.BUSD]: ImgTokenBusd,
+  [COIN_SYMBOL.ETH]: ImgTokenEth,
   [COIN_SYMBOL.FINIX]: ImgTokenFinix,
   [COIN_SYMBOL.OBNB]: ImgTokenKbnb,
   [COIN_SYMBOL.KDAI]: ImgTokenKdai,
@@ -57,8 +68,11 @@ export const COIN_SRCSET: Record<COIN_SYMBOL, string[]> = {
   [COIN_SYMBOL.OWBTC]: ImgTokenKwbtc,
   [COIN_SYMBOL.SIX]: ImgTokenSix,
   [COIN_SYMBOL.UNSELECT]: ImgTokenUnselect,
+  [COIN_SYMBOL.USDT]: ImgTokenUsdt,
+  [COIN_SYMBOL.VELO]: ImgTokenVelo,
   [COIN_SYMBOL.VFINIX]: ImgTokenVfinix,
   [COIN_SYMBOL.OXRP]: ImgTokenXrp,
+  [COIN_SYMBOL.XRP]: ImgTokenXrp,
   [COIN_SYMBOL.FAVOR]: ImgTokenFavor,
 }
 

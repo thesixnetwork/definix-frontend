@@ -93,3 +93,33 @@ import ImgTokenFavor2x from './coins/img-token-favor@2x.png'
 import ImgTokenFavor3x from './coins/img-token-favor@3x.png'
 
 export const ImgTokenFavor = [ImgTokenFavor1x, ImgTokenFavor2x, ImgTokenFavor3x]
+
+import ImgTokenBnb1x from './coins/bnb.png'
+import ImgTokenBnb2x from './coins/bnb.png'
+import ImgTokenBnb3x from './coins/bnb.png'
+
+export const ImgTokenBnb = [ImgTokenBnb1x, ImgTokenBnb2x, ImgTokenBnb3x]
+
+import ImgTokenEth1x from './coins/eth.png'
+import ImgTokenEth2x from './coins/eth.png'
+import ImgTokenEth3x from './coins/eth.png'
+
+export const ImgTokenEth = [ImgTokenEth1x, ImgTokenEth2x, ImgTokenEth3x]
+
+import ImgTokenVelo1x from './coins/velo.png'
+import ImgTokenVelo2x from './coins/velo.png'
+import ImgTokenVelo3x from './coins/velo.png'
+
+export const ImgTokenVelo = [ImgTokenVelo1x, ImgTokenVelo2x, ImgTokenVelo3x]
+
+import ImgTokenUsdt1x from './coins/usdt.png'
+import ImgTokenUsdt2x from './coins/usdt.png'
+import ImgTokenUsdt3x from './coins/usdt.png'
+
+export const ImgTokenUsdt = [ImgTokenUsdt1x, ImgTokenUsdt2x, ImgTokenUsdt3x]
+
+// import ImgTokenXrp1x from './coins/xrp.png'
+// import ImgTokenXrp2x from './coins/xrp.png'
+// import ImgTokenXrp3x from './coins/xrp.png'
+//
+// export const ImgTokenXrp = [ImgTokenXrp1x, ImgTokenXrp2x, ImgTokenXrp3x]
