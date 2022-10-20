@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { useToast } from 'state/hooks'
-import Button from 'uikitV2/components/Button/Button';
-import Lp from 'uikitV2/components/Coin/Lp';
+import Button from 'uikitV2/components/Button/Button'
+import Lp from 'uikitV2/components/Coin/Lp'
 import {
   Modal,
   ButtonVariants,

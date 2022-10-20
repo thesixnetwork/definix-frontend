@@ -102,7 +102,6 @@ const MyProductsFilter: React.FC<{
     <Wrap>
       <Row>
         <DropdownWrap>
-
           <DropdownSet
             isOpen={isOpenDisplayFilter}
             activeIndex={displayFilterIndex}

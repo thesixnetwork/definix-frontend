@@ -36,7 +36,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   finixPrice,
   apy,
   addLiquidityUrl,
-  coin
+  coin,
 }) => {
   const TranslateString = useI18n()
   const farmApy = apy.times(new BigNumber(100)).toNumber()

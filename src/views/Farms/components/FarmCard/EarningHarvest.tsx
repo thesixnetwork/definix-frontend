@@ -22,10 +22,7 @@ interface FarmCardActionsProps {
   className?: string
 }
 
-const EarningHarvest: React.FC<FarmCardActionsProps> = ({
-  pid,
-  className = '',
-}) => {
+const EarningHarvest: React.FC<FarmCardActionsProps> = ({ pid, className = '' }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
   const finixUsd = usePriceFinixUsd()

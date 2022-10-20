@@ -1,8 +1,8 @@
 import { useModal } from 'uikitV2/Modal'
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { CalculatorIcon } from 'uikitV2/components/Icon/index';
-import IconButton from 'uikitV2/components/Button/IconButton';
+import { CalculatorIcon } from 'uikitV2/components/Icon/index'
+import IconButton from 'uikitV2/components/Button/IconButton'
 import ApyCalculatorModal from './ApyCalculatorModal'
 
 export interface ApyButtonProps {

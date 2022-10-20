@@ -98,7 +98,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
           style={{ width: '100%' }}
           className="btn-secondary-disable mr-1"
         >
-          <MinusIcon style={{ color: '#413343' }}  />
+          <MinusIcon style={{ color: '#413343' }} />
         </Button>
         {(typeof farmUnlockDate === 'undefined' ||
           (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && (
@@ -109,7 +109,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
             onClick={onPresentDeposit}
             className="btn-secondary-disable ml-1"
           >
-            <AddIcon style={{ color: '#413343' }}  />
+            <AddIcon style={{ color: '#413343' }} />
           </Button>
         )}
       </IconButtonWrapper>

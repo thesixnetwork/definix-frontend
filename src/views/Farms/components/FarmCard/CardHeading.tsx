@@ -9,7 +9,7 @@ import Text from 'uikitV2/components/Text/Text'
 import { ColorStyles } from 'uikitV2/colors'
 import Link from 'uikitV2/components/Link/Link'
 import Coin from 'uikitV2/components/Coin/Coin'
-import {ChevronRightIcon} from 'uikit-dev'
+import { ChevronRightIcon } from 'uikit-dev'
 import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
@@ -22,7 +22,7 @@ const convertToFarmAPRFormat = (apy) => {
 
 export interface ExpandableSectionProps {
   farm: FarmWithStakedValue
-  componentType?: string,
+  componentType?: string
   lpLabel?: string
   multiplier?: string
   tokenSymbol?: string
@@ -118,7 +118,7 @@ const StyledCoin = styled(Coin)`
 
 const APRCoins = styled(Flex)<{ isRow: boolean }>`
   flex-direction: column;
-  margin-left: ${({ isRow }) => isRow ? '50px' : ''};
+  margin-left: ${({ isRow }) => (isRow ? '50px' : '')};
   margin-top: 3px;
   @media screen and (max-width: 1280px) {
     margin-left: 0;
@@ -130,8 +130,8 @@ const APRCoin = styled(Coin)`
 `
 
 const Header = styled(Flex)<{ isRow: boolean }>`
-  flex-direction: ${({ isRow }) => isRow ? 'row' : 'column'};
-  align-items: ${({ isRow }) => isRow ? 'center' : 'flex-start'};
+  flex-direction: ${({ isRow }) => (isRow ? 'row' : 'column')};
+  align-items: ${({ isRow }) => (isRow ? 'center' : 'flex-start')};
 
   @media screen and (max-width: 1280px) {
     flex-direction: column;
@@ -140,7 +140,7 @@ const Header = styled(Flex)<{ isRow: boolean }>`
 `
 
 const CardHeading: React.FC<ExpandableSectionProps> = ({
-  size="medium",
+  size = 'medium',
   farm,
   lpLabel,
   componentType,
@@ -179,32 +179,33 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   const imgSize = isHorizontal ? 48 : 56
 
-  const renderAPR = useMemo(() => (coin: string, apy: BigNumber) => {
-    return <Flex alignItems="flex-end">
-      <APRCoin symbol={coin} size="20px" />
-      <Text textStyle="R_14M" color={"#ff6828"}>
-        APR
-      </Text>
-      <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={"#ff6828"} style={{ marginLeft: '4px', marginBottom: '-2px' }}>
-        {['0', 'Infinity'].includes((apy || 0).toString()) ? '0' : convertToFarmAPRFormat(apy)}%
-      </Text>
-      <Box style={{ marginLeft: '4px' }}>
-        <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={apy} coin={coin} />
-      </Box>
-    </Flex>
-  }, [isMediumSize])
+  const renderAPR = useMemo(
+    () => (coin: string, apy: BigNumber) => {
+      return (
+        <Flex alignItems="flex-end">
+          <APRCoin symbol={coin} size="20px" />
+          <Text textStyle="R_14M" color={'#ff6828'}>
+            APR
+          </Text>
+          <Text
+            textStyle={isMediumSize ? 'R_20B' : 'R_18B'}
+            color={'#ff6828'}
+            style={{ marginLeft: '4px', marginBottom: '-2px' }}
+          >
+            {['0', 'Infinity'].includes((apy || 0).toString()) ? '0' : convertToFarmAPRFormat(apy)}%
+          </Text>
+          <Box style={{ marginLeft: '4px' }}>
+            <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={apy} coin={coin} />
+          </Box>
+        </Flex>
+      )
+    },
+    [isMediumSize],
+  )
 
   return (
-
-
-
-
     <Flex position="relative">
-      <Flex
-        mr={12}
-        alignItems="center"
-        width={'auto'}
-      >
+      <Flex mr={12} alignItems="center" width={'auto'}>
         <ImageBox>
           <StyledCoin symbol={firstCoin} size="40px" />
         </ImageBox>
@@ -215,14 +216,9 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
       <Header isRow={isRow}>
         <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{lpLabel}</Text>
-        <APRCoins isRow={isRow}>
-          {renderAPR(QuoteToken.FINIX, farm.apy)}
-        </APRCoins>
+        <APRCoins isRow={isRow}>{renderAPR(QuoteToken.FINIX, farm.apy)}</APRCoins>
       </Header>
     </Flex>
-
-
-
   )
 }
 

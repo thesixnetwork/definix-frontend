@@ -29,19 +29,19 @@ const config: MenuEntry[] = [
     label: 'Exchange',
     icon: swapBlack,
     iconActive: swapWhite,
-    href: 'https://exchange.definix.com/#/swap',
+    href: `${process.env.REACT_APP_SWAP_URL}/#/swap`,
     notHighlight: false,
     newTab: false,
     items: [
       {
         label: 'Swap',
-        href: 'https://exchange.definix.com/#/swap',
+        href: `${process.env.REACT_APP_SWAP_URL}/#/swap`,
         notHighlight: false,
         newTab: false,
       },
       {
         label: 'Liquidity',
-        href: 'https://exchange.definix.com/#/liquidity',
+        href: `${process.env.REACT_APP_SWAP_URL}/#/liquidity`,
         notHighlight: false,
         newTab: false,
       },

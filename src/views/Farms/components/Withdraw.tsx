@@ -3,7 +3,15 @@ import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { QuoteToken } from 'config/constants/types'
-import { useFarmFromSymbol, useFarmUser, useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
+import {
+  useFarmFromSymbol,
+  useFarmUser,
+  useFarms,
+  usePriceBnbBusd,
+  usePriceEthBusd,
+  usePriceFinixUsd,
+  usePriceSixUsd,
+} from 'state/hooks'
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
@@ -258,9 +266,15 @@ const Deposit: React.FC<{
           max={new BigNumber(100)}
           // symbol={tokenName}
           buttonName="Deposit"
-          onChange={() => { console.log(1) }}
-          onSelectBalanceRateButton={() => { console.log(1)}}
-          onClickButton={() => { console.log(1) }}
+          onChange={() => {
+            console.log(1)
+          }}
+          onSelectBalanceRateButton={() => {
+            console.log(1)
+          }}
+          onClickButton={() => {
+            console.log(1)
+          }}
         />
 
         <Flex justifyContent="space-between" alignItems="center" style={{ marginTop: 20 }}>

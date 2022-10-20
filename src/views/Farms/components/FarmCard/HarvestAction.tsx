@@ -95,7 +95,6 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '' }) 
         </Button>
       </HarvestButtonSectionInMyInvestment>
     </div>
-
   )
 }
 

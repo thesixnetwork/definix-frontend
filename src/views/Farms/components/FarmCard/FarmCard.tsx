@@ -26,7 +26,7 @@ import { FarmCardProps } from './types'
 import EarningHarvest from './EarningHarvest'
 
 const CardStyle = styled.div`
-  background: ${props => props.theme.card.background};
+  background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
 `
