@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
+import _ from 'lodash'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
@@ -54,23 +55,24 @@ const Farms: React.FC = () => {
   const [listView, setListView] = useState(true)
   const [isPhrase2, setIsPhrase2] = useState(false)
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [search, setSearch] = useState('')
   const [modalNode, setModalNode] = useState<React.ReactNode>()
   const [allDisplayChiose, setAllDisplayChiose] = useState([
     { key: 'Recommend', value: 'sortOrder' },
     { key: 'APR', value: 'apr' },
     { key: 'Total staked', value: 'total' },
   ])
-  const [selectDisplay, setSelectDisplay] = useState('recommend')
+  const [selectDisplay, setSelectDisplay] = useState('sortOrder')
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
   const currentTime = new Date().getTime()
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier === '0X')
+  const activeFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier === '0X')
   const stackedOnlyFarms = farmsLP.filter(
-    (farm) =>
+    farm =>
       farm.userData && farm.pid !== 0 && farm.pid !== 25 && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
@@ -80,7 +82,91 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const finixPriceVsBNB = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
-      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+      let array = farmsToDisplay
+      if (selectDisplay === 'apr') {
+        array = _.sortBy(array, farm => {
+          if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
+            return farm
+          }
+          const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
+            .times(farm.BONUS_MULTIPLIER)
+            .div(new BigNumber(10).pow(18))
+          const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
+          const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+
+          // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
+          let apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+
+          if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
+            apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
+          } else if (farm.quoteTokenSymbol === QuoteToken.ETH) {
+            apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+          } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+            apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
+          } else if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+            apy = finixPrice.div(bnbPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+          } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+            apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+          } else if (farm.dual) {
+            const finixApy =
+              farm && finixPriceVsBNB.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
+            const dualApy =
+              farm.tokenPriceVsQuote &&
+              new BigNumber(farm.tokenPriceVsQuote)
+                .times(farm.dual.rewardPerBlock)
+                .times(BLOCKS_PER_YEAR)
+                .div(farm.lpTotalInQuoteToken)
+
+            apy = finixApy && dualApy && finixApy.plus(dualApy)
+          }
+          return apy.times(-1).toFixed()
+        })
+      }
+      if (selectDisplay === 'total') {
+        array = _.sortBy(array, farm => {
+          if (!farm.lpTotalInQuoteToken) {
+            return null
+          }
+          if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+            // console.log('farm.lpSymbol', farm.lpSymbol)
+            // console.log(
+            //   'return bnbPrice.times(farm.lpTotalInQuoteToken).toFixed()',
+            //   bnbPrice.times(farm.lpTotalInQuoteToken).toFixed(),
+            // )
+            return bnbPrice.times(farm.lpTotalInQuoteToken).times(-1).toFixed()
+          }
+          if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+            // console.log('farm.lpSymbol', farm.lpSymbol)
+            // console.log(
+            //   'finixPrice.times(farm.lpTotalInQuoteToken).toFixed()',
+            //   finixPrice.times(farm.lpTotalInQuoteToken).toFixed(),
+            // )
+            return finixPrice.times(farm.lpTotalInQuoteToken).times(-1).toFixed()
+          }
+          if (farm.quoteTokenSymbol === QuoteToken.ETH) {
+            // console.log('farm.lpSymbol', farm.lpSymbol)
+            // console.log(
+            //   'ethPriceUsd.times(farm.lpTotalInQuoteToken).toFixed()',
+            //   ethPriceUsd.times(farm.lpTotalInQuoteToken).toFixed(),
+            // )
+            return ethPriceUsd.times(farm.lpTotalInQuoteToken).times(-1).toFixed()
+          }
+          if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+            // console.log('farm.lpSymbol', farm.lpSymbol)
+            // console.log(
+            //   'sixPrice.times(farm.lpTotalInQuoteToken).toFixed()',
+            //   sixPrice.times(farm.lpTotalInQuoteToken).toFixed(),
+            // )
+            return sixPrice.times(farm.lpTotalInQuoteToken).times(-1).toFixed()
+          }
+        })
+      }
+      if (search.length > 0) {
+        array = array.filter(farm => {
+          return String(farm.lpSymbol).toLowerCase().includes(search)
+        })
+      }
+      const farmsToDisplayWithAPY: FarmWithStakedValue[] = array.map(farm => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
@@ -119,7 +205,7 @@ const Farms: React.FC = () => {
         return { ...farm, apy }
       })
 
-      return farmsToDisplayWithAPY.map((farm) => (
+      return farmsToDisplayWithAPY.map(farm => (
         <FarmCard
           key={farm.pid}
           farm={farm}
@@ -134,7 +220,7 @@ const Farms: React.FC = () => {
         />
       ))
     },
-    [sixPrice, bnbPrice, ethPriceUsd, finixPrice, ethereum, account, listView],
+    [sixPrice, bnbPrice, ethPriceUsd, finixPrice, ethereum, account, listView, selectDisplay, search],
   )
 
   const handlePresent = useCallback((node: React.ReactNode) => {
@@ -174,7 +260,7 @@ const Farms: React.FC = () => {
     }
   }, [])
 
-  const farmsLiveOnly = (live) => {
+  const farmsLiveOnly = live => {
     return live ? farmsList(activeFarms, false) : farmsList(inactiveFarms, false)
   }
 
@@ -199,11 +285,11 @@ const Farms: React.FC = () => {
         onDismiss: handleDismiss,
         pageState,
         pageData,
-        goDeposit: (data) => {
+        goDeposit: data => {
           setPageState('deposit')
           setPageData(data)
         },
-        goWithdraw: (data) => {
+        goWithdraw: data => {
           setPageState('withdraw')
           setPageData(data)
         },
@@ -233,6 +319,7 @@ const Farms: React.FC = () => {
               selectDisplay={selectDisplay}
               allDisplayChiose={allDisplayChiose}
               setSelectDisplay={setSelectDisplay}
+              search={setSearch}
             />
             <FlexLayout cols={listView ? 1 : 3}>
               <Route exact path={`${path}`}>
@@ -297,10 +384,10 @@ const TimerWrapper = ({ isPhrase2, date, children }) => {
         tabIndex={0}
         role="button"
         style={{ opacity: 0.4, pointerEvents: 'none' }}
-        onClick={(e) => {
+        onClick={e => {
           e.preventDefault()
         }}
-        onKeyDown={(e) => {
+        onKeyDown={e => {
           e.preventDefault()
         }}
       >
