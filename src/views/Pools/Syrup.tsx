@@ -1,5 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import _ from 'lodash';
+import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
@@ -83,29 +83,29 @@ const Farm: React.FC = () => {
   if (selectDisplay === 'total') {
     array = _.sortBy(array, (pool, index) => {
       const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
-      let rewardTokenFarm = farms.find(f => f.tokenSymbol === pool.tokenName)
-      let stakingTokenFarm = farms.find(s => s.tokenSymbol === pool.stakingTokenName)
+      let rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+      let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
       switch (pool.sousId) {
         case 0:
-          stakingTokenFarm = farms.find(s => s.pid === 0)
+          stakingTokenFarm = farms.find((s) => s.pid === 0)
           break
         case 2:
-          stakingTokenFarm = farms.find(s => s.pid === 1)
+          stakingTokenFarm = farms.find((s) => s.pid === 1)
           break
         case 3:
-          stakingTokenFarm = farms.find(s => s.pid === 2)
+          stakingTokenFarm = farms.find((s) => s.pid === 2)
           break
         case 4:
-          stakingTokenFarm = farms.find(s => s.pid === 3)
+          stakingTokenFarm = farms.find((s) => s.pid === 3)
           break
         case 5:
-          stakingTokenFarm = farms.find(s => s.pid === 4)
+          stakingTokenFarm = farms.find((s) => s.pid === 4)
           break
         case 6:
-          stakingTokenFarm = farms.find(s => s.pid === 5)
+          stakingTokenFarm = farms.find((s) => s.pid === 5)
           break
         case 25:
-          stakingTokenFarm = farms.find(s => s.pid === 25)
+          stakingTokenFarm = farms.find((s) => s.pid === 25)
           break
         default:
           break
@@ -117,7 +117,7 @@ const Farm: React.FC = () => {
         case 4:
         case 5:
         case 6:
-          rewardTokenFarm = farms.find(f => f.tokenSymbol === 'SIX')
+          rewardTokenFarm = farms.find((f) => f.tokenSymbol === 'SIX')
           break
         default:
           break
@@ -143,31 +143,31 @@ const Farm: React.FC = () => {
     })
   }
   if (selectDisplay === 'apr') {
-    array = _.sortBy(array, pool => {
+    array = _.sortBy(array, (pool) => {
       const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
-      let rewardTokenFarm = farms.find(f => f.tokenSymbol === pool.tokenName)
-      let stakingTokenFarm = farms.find(s => s.tokenSymbol === pool.stakingTokenName)
+      let rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+      let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
       switch (pool.sousId) {
         case 0:
-          stakingTokenFarm = farms.find(s => s.pid === 0)
+          stakingTokenFarm = farms.find((s) => s.pid === 0)
           break
         case 2:
-          stakingTokenFarm = farms.find(s => s.pid === 1)
+          stakingTokenFarm = farms.find((s) => s.pid === 1)
           break
         case 3:
-          stakingTokenFarm = farms.find(s => s.pid === 2)
+          stakingTokenFarm = farms.find((s) => s.pid === 2)
           break
         case 4:
-          stakingTokenFarm = farms.find(s => s.pid === 3)
+          stakingTokenFarm = farms.find((s) => s.pid === 3)
           break
         case 5:
-          stakingTokenFarm = farms.find(s => s.pid === 4)
+          stakingTokenFarm = farms.find((s) => s.pid === 4)
           break
         case 6:
-          stakingTokenFarm = farms.find(s => s.pid === 5)
+          stakingTokenFarm = farms.find((s) => s.pid === 5)
           break
         case 25:
-          stakingTokenFarm = farms.find(s => s.pid === 25)
+          stakingTokenFarm = farms.find((s) => s.pid === 25)
           break
         default:
           break
@@ -179,7 +179,7 @@ const Farm: React.FC = () => {
         case 4:
         case 5:
         case 6:
-          rewardTokenFarm = farms.find(f => f.tokenSymbol === 'SIX')
+          rewardTokenFarm = farms.find((f) => f.tokenSymbol === 'SIX')
           break
         default:
           break
@@ -205,31 +205,31 @@ const Farm: React.FC = () => {
       return apy.times(-1).toFixed()
     })
   }
-  const poolsWithApy = array.map(pool => {
+  const poolsWithApy = array.map((pool) => {
     const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
-    let rewardTokenFarm = farms.find(f => f.tokenSymbol === pool.tokenName)
-    let stakingTokenFarm = farms.find(s => s.tokenSymbol === pool.stakingTokenName)
+    let rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+    let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
     switch (pool.sousId) {
       case 0:
-        stakingTokenFarm = farms.find(s => s.pid === 0)
+        stakingTokenFarm = farms.find((s) => s.pid === 0)
         break
       case 2:
-        stakingTokenFarm = farms.find(s => s.pid === 1)
+        stakingTokenFarm = farms.find((s) => s.pid === 1)
         break
       case 3:
-        stakingTokenFarm = farms.find(s => s.pid === 2)
+        stakingTokenFarm = farms.find((s) => s.pid === 2)
         break
       case 4:
-        stakingTokenFarm = farms.find(s => s.pid === 3)
+        stakingTokenFarm = farms.find((s) => s.pid === 3)
         break
       case 5:
-        stakingTokenFarm = farms.find(s => s.pid === 4)
+        stakingTokenFarm = farms.find((s) => s.pid === 4)
         break
       case 6:
-        stakingTokenFarm = farms.find(s => s.pid === 5)
+        stakingTokenFarm = farms.find((s) => s.pid === 5)
         break
       case 25:
-        stakingTokenFarm = farms.find(s => s.pid === 25)
+        stakingTokenFarm = farms.find((s) => s.pid === 25)
         break
       default:
         break
@@ -241,7 +241,7 @@ const Farm: React.FC = () => {
       case 4:
       case 5:
       case 6:
-        rewardTokenFarm = farms.find(f => f.tokenSymbol === 'SIX')
+        rewardTokenFarm = farms.find((f) => f.tokenSymbol === 'SIX')
         break
       default:
         break
@@ -355,10 +355,10 @@ const Farm: React.FC = () => {
     }
   })
 
-  const [finishedPools, openPools] = partition(poolsWithApy, pool => pool.isFinished)
+  const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
 
-  const filterStackedOnlyPools = poolsForFilter =>
-    poolsForFilter.filter(pool => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
+  const filterStackedOnlyPools = (poolsForFilter) =>
+    poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
   const handlePresent = useCallback((node: React.ReactNode) => {
     setModalNode(node)
@@ -410,11 +410,11 @@ const Farm: React.FC = () => {
         onDismiss: handleDismiss,
         pageState,
         pageData,
-        goDeposit: data => {
+        goDeposit: (data) => {
           setPageState('deposit')
           setPageData(data)
         },
-        goWithdraw: data => {
+        goWithdraw: (data) => {
           setPageState('withdraw')
           setPageData(data)
         },
@@ -449,15 +449,15 @@ const Farm: React.FC = () => {
             <FlexLayout cols={listView ? 1 : 3}>
               <Route exact path={`${path}`}>
                 {liveOnly
-                  ? (stackedOnly ? filterStackedOnlyPools(openPools) : openPools).map(pool => (
+                  ? (stackedOnly ? filterStackedOnlyPools(openPools) : openPools).map((pool) => (
                       <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                     ))
-                  : (stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools).map(
-                      pool => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
-                    )}
+                  : (stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools).map((pool) => (
+                      <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                    ))}
               </Route>
               <Route path={`${path}/history`}>
-                {orderBy(finishedPools, ['sortOrder']).map(pool => (
+                {orderBy(finishedPools, ['sortOrder']).map((pool) => (
                   <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                 ))}
               </Route>

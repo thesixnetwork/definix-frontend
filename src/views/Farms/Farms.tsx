@@ -69,10 +69,10 @@ const Farms: React.FC = () => {
     : new Date().getTime()
   const currentTime = new Date().getTime()
 
-  const activeFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier === '0X')
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier === '0X')
   const stackedOnlyFarms = farmsLP.filter(
-    farm =>
+    (farm) =>
       farm.userData && farm.pid !== 0 && farm.pid !== 25 && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
@@ -84,7 +84,7 @@ const Farms: React.FC = () => {
       const finixPriceVsBNB = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
       let array = farmsToDisplay
       if (selectDisplay === 'apr') {
-        array = _.sortBy(array, farm => {
+        array = _.sortBy(array, (farm) => {
           if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
             return farm
           }
@@ -123,7 +123,7 @@ const Farms: React.FC = () => {
         })
       }
       if (selectDisplay === 'total') {
-        array = _.sortBy(array, farm => {
+        array = _.sortBy(array, (farm) => {
           if (!farm.lpTotalInQuoteToken) {
             return null
           }
@@ -162,11 +162,11 @@ const Farms: React.FC = () => {
         })
       }
       if (search.length > 0) {
-        array = array.filter(farm => {
+        array = array.filter((farm) => {
           return String(farm.lpSymbol).toLowerCase().includes(search)
         })
       }
-      const farmsToDisplayWithAPY: FarmWithStakedValue[] = array.map(farm => {
+      const farmsToDisplayWithAPY: FarmWithStakedValue[] = array.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
@@ -205,7 +205,7 @@ const Farms: React.FC = () => {
         return { ...farm, apy }
       })
 
-      return farmsToDisplayWithAPY.map(farm => (
+      return farmsToDisplayWithAPY.map((farm) => (
         <FarmCard
           key={farm.pid}
           farm={farm}
@@ -260,7 +260,7 @@ const Farms: React.FC = () => {
     }
   }, [])
 
-  const farmsLiveOnly = live => {
+  const farmsLiveOnly = (live) => {
     return live ? farmsList(activeFarms, false) : farmsList(inactiveFarms, false)
   }
 
@@ -285,11 +285,11 @@ const Farms: React.FC = () => {
         onDismiss: handleDismiss,
         pageState,
         pageData,
-        goDeposit: data => {
+        goDeposit: (data) => {
           setPageState('deposit')
           setPageData(data)
         },
-        goWithdraw: data => {
+        goWithdraw: (data) => {
           setPageState('withdraw')
           setPageData(data)
         },
@@ -384,10 +384,10 @@ const TimerWrapper = ({ isPhrase2, date, children }) => {
         tabIndex={0}
         role="button"
         style={{ opacity: 0.4, pointerEvents: 'none' }}
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault()
         }}
-        onKeyDown={e => {
+        onKeyDown={(e) => {
           e.preventDefault()
         }}
       >
