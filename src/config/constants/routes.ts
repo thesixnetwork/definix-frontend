@@ -20,6 +20,7 @@ export enum ROUTES {
   SUPER_STAKE = '/long-term-stake/super',
   BRIDGE = '/bridge',
   VOTING = '/voting',
+  MY_PRIVILEGES = '/my-privileges',
 }
 
 export default null

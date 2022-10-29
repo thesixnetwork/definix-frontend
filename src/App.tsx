@@ -36,6 +36,7 @@ const Swap = lazy(() => import('./views/Swap'))
 const Liquidity = lazy(() => import('./views/Liquidity'))
 const LiquidityList = lazy(() => import('./views/LiquidityList'))
 const PoolFinder = lazy(() => import('./views/PoolFinder'))
+const MyPrivileges = lazy(() => import('./views/MyPrivileges'))
 
 // This config is required for number formating
 BigNumber.config({
@@ -118,6 +119,9 @@ const App: React.FC = () => {
             </Route> */}
             <Route exact strict path={ROUTES.LIQUIDITY_POOL_FINDER}>
               <PoolFinder />
+            </Route>
+            <Route exact strict path={ROUTES.MY_PRIVILEGES}>
+              <MyPrivileges />
             </Route>
             {/* <Route path="/voting">
             {/* 404 */}
