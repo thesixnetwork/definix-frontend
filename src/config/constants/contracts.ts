@@ -87,4 +87,8 @@ export default {
     8217: process.env.REACT_APP_VFINIX_VOTING_ADDRESS_MAINNET,
     1001: process.env.REACT_APP_VFINIX_VOTING_ADDRESS_TESTNET,
   },
+  myPrivilege: {
+    8217: process.env.REACT_APP_MY_PRIVILEGE_ADDRESS_MAINNET,
+    1001: process.env.REACT_APP_MY_PRIVILEGE_ADDRESS_TESTNET,
+  },
 }

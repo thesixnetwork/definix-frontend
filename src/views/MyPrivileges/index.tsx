@@ -9,9 +9,14 @@ import {
   useMatchBreakpoints,
   VDivider,
 } from '@fingerlabs/definixswap-uikit-v2'
+import BigNumber from 'bignumber.js'
 import { Backdrop } from '@material-ui/core'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import useWallet from 'hooks/useWallet'
+import MyPrivilegesABI from 'config/abi/myPrivileges.json'
+import { getMyPrivilegeAddress } from 'utils/addressHelpers'
+import { getContract } from 'utils/caver'
 import mpActive from '../../assets/images/mp-claim.png'
 import mpInactive from '../../assets/images/mp-disable.png'
 import mpSuccess from '../../assets/images/mp-success.png'
@@ -200,6 +205,36 @@ const SuccessModal = ({ open, onClose }) => {
 const MyPrivileges = () => {
   const { isMobile } = useMatchBreakpoints()
   const [isShowSuccessModal, setIsShowSuccessModal] = useState(false)
+  const [data, setData] = useState({})
+  const { account } = useWallet()
+
+  useEffect(() => {
+    // if (account) {
+    const run = async () => {
+      const myPrivilegeContract = getContract(MyPrivilegesABI, getMyPrivilegeAddress())
+      const response = await myPrivilegeContract.methods.getRoyalty('0x7ebc89d82e1e06b8c90f86531fe220fb32dd992a').call()
+      const fixedReward = new BigNumber(response.fixedReward).div(new BigNumber(10).pow(18)).toNumber()
+      const variableReward = new BigNumber(response.variableReward).div(new BigNumber(10).pow(18)).toNumber()
+      const roundRewards = (response.roundReward || []).map(v =>
+        new BigNumber(v).div(new BigNumber(10).pow(18)).toNumber(),
+      )
+      const totalRound = (response.roundReward || []).length
+      const roundStatus = await Promise.all(
+        (response.roundReward || []).map((v, i) => myPrivilegeContract.methods.roundStatus(i).call()),
+      )
+      setData({
+        fixedReward,
+        variableReward,
+        roundRewards,
+        roundStatus,
+      })
+      // const claimRoyalty = await Promise.all((response.roundReward || []).map((v,i) => myPrivilegeContract.methods.claimRoyalty(i).call()))
+    }
+    run()
+
+    // }
+    console.log('account effect', account)
+  }, [account])
 
   const onClaim = () => {
     setIsShowSuccessModal(true)
