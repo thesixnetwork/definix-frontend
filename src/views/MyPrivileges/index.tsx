@@ -5,6 +5,7 @@ import {
   Divider,
   Flex,
   Heading,
+  Skeleton,
   Text,
   useMatchBreakpoints,
   VDivider,
@@ -122,6 +123,7 @@ const ClaimBox = ({
   date = '',
   isSucceeded = false,
   isInactive = false,
+  isLoading,
   onClaim = () => null,
 }) => {
   const { isMobile } = useMatchBreakpoints()
@@ -142,12 +144,17 @@ const ClaimBox = ({
       />
 
       <Box background="white">
-        <Text
-          style={{ color: '#FF6828', fontWeight: 'bold', fontSize: '1.375rem', marginBottom: '8px' }}
-          textAlign="center"
-        >
-          {amount}
-        </Text>
+        {isLoading ? (
+          <Skeleton width="100px" height="24px" animation="waves" marginBottom="8px" />
+        ) : (
+          <Text
+            style={{ color: '#FF6828', fontWeight: 'bold', fontSize: '1.375rem', marginBottom: '8px' }}
+            textAlign="center"
+          >
+            {amount}
+          </Text>
+        )}
+
         <Text textAlign="center" style={{ opacity: 0.5 }}>
           FINIX
         </Text>
@@ -155,7 +162,11 @@ const ClaimBox = ({
 
       <Box className="content">
         <Text style={{ fontWeight: 'bold', fontSize: '1.25rem', marginBottom: '4px' }}>{ordinal} Claim</Text>
-        <Text style={{ color: '#FF6828', fontSize: '0.875rem' }}>{date}</Text>
+        {isLoading ? (
+          <Skeleton width="80px" height="14px" minHeight="initial" animation="waves" />
+        ) : (
+          <Text style={{ color: '#FF6828', fontSize: '0.875rem' }}>{date}</Text>
+        )}
 
         {isSucceeded && (
           <Text textAlign="center" className="succeeded">
@@ -173,7 +184,7 @@ const ClaimBox = ({
   )
 }
 
-const InLineText = ({ title, value, ...props }) => {
+const InLineText = ({ title, value, isLoading, ...props }) => {
   const { isMobile } = useMatchBreakpoints()
 
   return (
@@ -181,7 +192,11 @@ const InLineText = ({ title, value, ...props }) => {
       <Text style={{ flexGrow: 1, width: isMobile ? '100%' : 'initial', marginBottom: isMobile ? '8px' : '' }}>
         {title}
       </Text>
-      <Text style={{ color: '#FF6828', fontWeight: 'bold', fontSize: '1.375rem' }}>{value}</Text>
+      {isLoading ? (
+        <Skeleton width="100px" height="100%" animation="waves" />
+      ) : (
+        <Text style={{ color: '#FF6828', fontWeight: 'bold', fontSize: '1.375rem' }}>{value}</Text>
+      )}
       <Text style={{ paddingLeft: '1rem' }} width="15%" textAlign="right">
         FINIX
       </Text>
@@ -200,6 +215,7 @@ const SuccessModal = ({ open, onClose }) => {
 const MyPrivileges = () => {
   const { isMobile } = useMatchBreakpoints()
   const [isShowSuccessModal, setIsShowSuccessModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const onClaim = () => {
     setIsShowSuccessModal(true)
@@ -230,8 +246,8 @@ const MyPrivileges = () => {
             flexDirection={isMobile ? 'column' : 'row'}
           >
             <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
-              <InLineText title="Fixed Reward" value="00,000" mb={isMobile ? '24px' : '12px'} />
-              <InLineText title="Variable Reward" value="00,000" />
+              <InLineText title="Fixed Reward" value="00,000" mb={isMobile ? '24px' : '12px'} isLoading={isLoading} />
+              <InLineText title="Variable Reward" value="00,000" isLoading={isLoading} />
             </Flex>
 
             {isMobile ? (
@@ -241,16 +257,37 @@ const MyPrivileges = () => {
             )}
 
             <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
-              <InLineText title="Total claimed" value="00,000" mb={isMobile ? '24px' : '12px'} />
-              <InLineText title="Reward remaining" value="00,000" />
+              <InLineText title="Total claimed" value="00,000" mb={isMobile ? '24px' : '12px'} isLoading={isLoading} />
+              <InLineText title="Reward remaining" value="00,000" isLoading={isLoading} />
             </Flex>
           </Flex>
 
           <ClaimListStyle flexDirection={isMobile ? 'column' : 'row'} pt={isMobile ? '24px' : '40px'}>
-            <ClaimBox ordinal="1st" amount="1,000" date="mm/ dd/ yy" isSucceeded onClaim={onClaim} />
-            <ClaimBox ordinal="2nd" amount="1,000" date="mm/ dd/ yy" onClaim={onClaim} />
-            <ClaimBox ordinal="3st" amount="1,000" date="mm/ dd/ yy" isInactive onClaim={onClaim} />
-            <ClaimBox ordinal="4th" amount="1,000" date="mm/ dd/ yy" isInactive onClaim={onClaim} />
+            <ClaimBox
+              ordinal="1st"
+              amount="1,000"
+              date="mm/ dd/ yy"
+              isSucceeded
+              onClaim={onClaim}
+              isLoading={isLoading}
+            />
+            <ClaimBox ordinal="2nd" amount="1,000" date="mm/ dd/ yy" onClaim={onClaim} isLoading={isLoading} />
+            <ClaimBox
+              ordinal="3st"
+              amount="1,000"
+              date="mm/ dd/ yy"
+              isInactive
+              onClaim={onClaim}
+              isLoading={isLoading}
+            />
+            <ClaimBox
+              ordinal="4th"
+              amount="1,000"
+              date="mm/ dd/ yy"
+              isInactive
+              onClaim={onClaim}
+              isLoading={isLoading}
+            />
           </ClaimListStyle>
         </MyPrivilegesCardStyle>
       </Box>
