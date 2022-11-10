@@ -11,14 +11,16 @@ import {
   VDivider,
 } from '@fingerlabs/definixswap-uikit-v2'
 import { Backdrop } from '@material-ui/core'
-import { useState } from 'react'
+import UnlockButton from 'components/UnlockButton'
+import useWallet from 'hooks/useWallet'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import mpActive from '../../assets/images/mp-claim.png'
 import mpInactive from '../../assets/images/mp-disable.png'
 import mpSuccess from '../../assets/images/mp-success.png'
 
 const MyPrivilegesCardStyle = styled(Card)`
-  * {
+  *:not(button) {
     // font: ...
     color: #5e515f;
   }
@@ -117,6 +119,17 @@ const ClaimBoxStyle = styled(Flex)`
   }
 `
 
+const Overlay = styled(Flex)`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(180 169 168 / 50%);
+  pointer-events: initial;
+  z-index: 1;
+`
+
 const ClaimBox = ({
   ordinal = '',
   amount = '',
@@ -127,6 +140,7 @@ const ClaimBox = ({
   onClaim = () => null,
 }) => {
   const { isMobile } = useMatchBreakpoints()
+  const { account } = useWallet()
 
   return (
     <ClaimBoxStyle
@@ -175,7 +189,7 @@ const ClaimBox = ({
         )}
       </Box>
 
-      {!isSucceeded && (
+      {account && !isSucceeded && (
         <Button disabled={isInactive || isLoading} size="" onClick={onClaim}>
           Claim
         </Button>
@@ -216,6 +230,7 @@ const MyPrivileges = () => {
   const { isMobile } = useMatchBreakpoints()
   const [isShowSuccessModal, setIsShowSuccessModal] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const { account } = useWallet()
 
   const onClaim = () => {
     setIsShowSuccessModal(true)
@@ -289,6 +304,13 @@ const MyPrivileges = () => {
               isLoading={isLoading}
             />
           </ClaimListStyle>
+
+          {!account && (
+            <UnlockButton
+              scale="md"
+              style={{ margin: '24px auto 0 auto', display: 'block', maxWidth: 'calc(100% - 48px)' }}
+            />
+          )}
         </MyPrivilegesCardStyle>
       </Box>
 
