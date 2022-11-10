@@ -139,8 +139,8 @@ const ClaimBox = ({
       ml={isMobile && '-24px'}
     >
       <img
-        src={isInactive ? mpInactive : mpActive}
-        style={{ marginLeft: isInactive ? '12px' : '-24px', marginBottom: '24px' }}
+        src={isInactive || isLoading ? mpInactive : mpActive}
+        style={{ marginLeft: isInactive || isLoading ? '12px' : '-24px', marginBottom: '24px' }}
       />
 
       <Box background="white">
@@ -176,7 +176,7 @@ const ClaimBox = ({
       </Box>
 
       {!isSucceeded && (
-        <Button disabled={isInactive} size="" onClick={onClaim}>
+        <Button disabled={isInactive || isLoading} size="" onClick={onClaim}>
           Claim
         </Button>
       )}
