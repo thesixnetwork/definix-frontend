@@ -58,6 +58,10 @@ export const links = (t: (key: string) => string, currentLang: string) => {
           label: t('Voting'),
           href: ROUTES.VOTING,
         },
+        {
+          label: t('My privileges'),
+          href: ROUTES.MY_PRIVILEGES,
+        },
       ],
     },
     {
