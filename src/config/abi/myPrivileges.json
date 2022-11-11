@@ -5,6 +5,11 @@
         "internalType": "address",
         "name": "_royaltyToken",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_admin",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -55,6 +60,19 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "ADMIN",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -85,6 +103,11 @@
             "type": "uint256[4]"
           },
           {
+            "internalType": "uint256[4]",
+            "name": "roundRewardData",
+            "type": "uint256[4]"
+          },
+          {
             "internalType": "uint256",
             "name": "fixedReward",
             "type": "uint256"
@@ -92,6 +115,11 @@
           {
             "internalType": "uint256",
             "name": "variableReward",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalReward",
             "type": "uint256"
           }
         ],
@@ -180,6 +208,11 @@
         "internalType": "uint256",
         "name": "variableReward",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalReward",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -201,6 +234,19 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_admin",
+        "type": "address"
+      }
+    ],
+    "name": "setAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address[]",
         "name": "_addresses",
         "type": "address[]"
@@ -213,6 +259,11 @@
             "type": "uint256[4]"
           },
           {
+            "internalType": "uint256[4]",
+            "name": "roundRewardData",
+            "type": "uint256[4]"
+          },
+          {
             "internalType": "uint256",
             "name": "fixedReward",
             "type": "uint256"
@@ -220,6 +271,11 @@
           {
             "internalType": "uint256",
             "name": "variableReward",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalReward",
             "type": "uint256"
           }
         ],
@@ -266,6 +322,11 @@
             "type": "uint256[4]"
           },
           {
+            "internalType": "uint256[4]",
+            "name": "roundRewardData",
+            "type": "uint256[4]"
+          },
+          {
             "internalType": "uint256",
             "name": "fixedReward",
             "type": "uint256"
@@ -273,6 +334,11 @@
           {
             "internalType": "uint256",
             "name": "variableReward",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalReward",
             "type": "uint256"
           }
         ],

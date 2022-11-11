@@ -5,24 +5,34 @@ import {
   Divider,
   Flex,
   Heading,
+  Skeleton,
   Text,
   useMatchBreakpoints,
   VDivider,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { AbiItem } from 'web3-utils'
 import BigNumber from 'bignumber.js'
 import { Backdrop } from '@material-ui/core'
-import { useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
+import UnlockButton from 'components/UnlockButton'
 import styled from 'styled-components'
 import useWallet from 'hooks/useWallet'
 import MyPrivilegesABI from 'config/abi/myPrivileges.json'
 import { getMyPrivilegeAddress } from 'utils/addressHelpers'
+import useKlipContract from 'hooks/useKlipContract'
+import useContract from 'hooks/useContract'
 import { getContract } from 'utils/caver'
+import { getEstimateGas } from 'utils/callHelpers'
 import mpActive from '../../assets/images/mp-claim.png'
 import mpInactive from '../../assets/images/mp-disable.png'
 import mpSuccess from '../../assets/images/mp-success.png'
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+}
+
 const MyPrivilegesCardStyle = styled(Card)`
-  * {
+  *:not(button) {
     // font: ...
     color: #5e515f;
   }
@@ -121,15 +131,28 @@ const ClaimBoxStyle = styled(Flex)`
   }
 `
 
+// const Overlay = styled(Flex)`
+//   position: absolute;
+//   top: 0px;
+//   left: 0px;
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgb(180 169 168 / 50%);
+//   pointer-events: initial;
+//   z-index: 1;
+// `
+
 const ClaimBox = ({
   ordinal = '',
   amount = '',
   date = '',
   isSucceeded = false,
   isInactive = false,
+  isLoading,
   onClaim = () => null,
 }) => {
   const { isMobile } = useMatchBreakpoints()
+  const { account } = useWallet()
 
   return (
     <ClaimBoxStyle
@@ -142,17 +165,22 @@ const ClaimBox = ({
       ml={isMobile && '-24px'}
     >
       <img
-        src={isInactive ? mpInactive : mpActive}
-        style={{ marginLeft: isInactive ? '12px' : '-24px', marginBottom: '24px' }}
+        src={isInactive || isLoading ? mpInactive : mpActive}
+        style={{ marginLeft: isInactive || isLoading ? '12px' : '-24px', marginBottom: '24px' }}
       />
 
       <Box background="white">
-        <Text
-          style={{ color: '#FF6828', fontWeight: 'bold', fontSize: '1.375rem', marginBottom: '8px' }}
-          textAlign="center"
-        >
-          {amount}
-        </Text>
+        {isLoading ? (
+          <Skeleton width="100px" height="24px" animation="waves" marginBottom="8px" />
+        ) : (
+          <Text
+            style={{ color: '#FF6828', fontWeight: 'bold', fontSize: '1.375rem', marginBottom: '8px' }}
+            textAlign="center"
+          >
+            {numberWithCommas(amount)}
+          </Text>
+        )}
+
         <Text textAlign="center" style={{ opacity: 0.5 }}>
           FINIX
         </Text>
@@ -160,7 +188,11 @@ const ClaimBox = ({
 
       <Box className="content">
         <Text style={{ fontWeight: 'bold', fontSize: '1.25rem', marginBottom: '4px' }}>{ordinal} Claim</Text>
-        <Text style={{ color: '#FF6828', fontSize: '0.875rem' }}>{date}</Text>
+        {isLoading ? (
+          <Skeleton width="80px" height="14px" minHeight="initial" animation="waves" />
+        ) : (
+          <Text style={{ color: '#FF6828', fontSize: '0.875rem' }}>{date}</Text>
+        )}
 
         {isSucceeded && (
           <Text textAlign="center" className="succeeded">
@@ -169,8 +201,8 @@ const ClaimBox = ({
         )}
       </Box>
 
-      {!isSucceeded && (
-        <Button disabled={isInactive} size="" onClick={onClaim}>
+      {account && !isSucceeded && (
+        <Button disabled={isInactive || isLoading} size="" onClick={onClaim}>
           Claim
         </Button>
       )}
@@ -178,7 +210,7 @@ const ClaimBox = ({
   )
 }
 
-const InLineText = ({ title, value, ...props }) => {
+const InLineText = ({ title, value, isLoading, ...props }) => {
   const { isMobile } = useMatchBreakpoints()
 
   return (
@@ -186,7 +218,11 @@ const InLineText = ({ title, value, ...props }) => {
       <Text style={{ flexGrow: 1, width: isMobile ? '100%' : 'initial', marginBottom: isMobile ? '8px' : '' }}>
         {title}
       </Text>
-      <Text style={{ color: '#FF6828', fontWeight: 'bold', fontSize: '1.375rem' }}>{value}</Text>
+      {isLoading ? (
+        <Skeleton width="100px" height="100%" animation="waves" />
+      ) : (
+        <Text style={{ color: '#FF6828', fontWeight: 'bold', fontSize: '1.375rem' }}>{numberWithCommas(value)}</Text>
+      )}
       <Text style={{ paddingLeft: '1rem' }} width="15%" textAlign="right">
         FINIX
       </Text>
@@ -202,44 +238,89 @@ const SuccessModal = ({ open, onClose }) => {
   )
 }
 
+const isSuccess = (reward, fix, variable) => {
+  return new BigNumber(reward).isEqualTo(0) && new BigNumber(fix).plus(new BigNumber(variable)).isGreaterThan(0)
+}
+
 const MyPrivileges = () => {
   const { isMobile } = useMatchBreakpoints()
   const [isShowSuccessModal, setIsShowSuccessModal] = useState(false)
-  const [data, setData] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
+  const [data, setData] = useState({
+    fixedReward: '0',
+    variableReward: '0',
+    roundRewards: ['0', '0', '0', '0'],
+    roundRewardData: ['0', '0', '0', '0'],
+    roundStatus: [false, false, false, false],
+    roundOpen: [false, false, false, false],
+  })
   const { account } = useWallet()
+  const { isKlip, request } = useKlipContract()
 
   useEffect(() => {
-    // if (account) {
-    const run = async () => {
-      const myPrivilegeContract = getContract(MyPrivilegesABI, getMyPrivilegeAddress())
-      const response = await myPrivilegeContract.methods.getRoyalty('0x7ebc89d82e1e06b8c90f86531fe220fb32dd992a').call()
-      const fixedReward = new BigNumber(response.fixedReward).div(new BigNumber(10).pow(18)).toNumber()
-      const variableReward = new BigNumber(response.variableReward).div(new BigNumber(10).pow(18)).toNumber()
-      const roundRewards = (response.roundReward || []).map(v =>
-        new BigNumber(v).div(new BigNumber(10).pow(18)).toNumber(),
-      )
-      const totalRound = (response.roundReward || []).length
-      const roundStatus = await Promise.all(
-        (response.roundReward || []).map((v, i) => myPrivilegeContract.methods.roundStatus(i).call()),
-      )
-      setData({
-        fixedReward,
-        variableReward,
-        roundRewards,
-        roundStatus,
-      })
-      // const claimRoyalty = await Promise.all((response.roundReward || []).map((v,i) => myPrivilegeContract.methods.claimRoyalty(i).call()))
+    if (account) {
+      const run = async () => {
+        setIsLoading(true)
+        const myPrivilegeContract = getContract(MyPrivilegesABI, getMyPrivilegeAddress())
+        const response = await myPrivilegeContract.methods.getRoyalty(account).call()
+        const fixedReward = new BigNumber(response.fixedReward).div(new BigNumber(10).pow(18)).toString()
+        const variableReward = new BigNumber(response.variableReward).div(new BigNumber(10).pow(18)).toString()
+        const roundRewards = (response.roundReward || []).map(v =>
+          new BigNumber(v).div(new BigNumber(10).pow(18)).toString(),
+        )
+        const roundRewardData = (response.roundRewardData || []).map(v =>
+          new BigNumber(v).div(new BigNumber(10).pow(18)).toString(),
+        )
+        const roundStatus = await Promise.all(
+          (response.roundReward || []).map((v, i) => myPrivilegeContract.methods.roundStatus(i).call()),
+        )
+        const roundOpen = await Promise.all(
+          (response.roundReward || []).map((v, i) => myPrivilegeContract.methods.isRoundOpen(i).call()),
+        )
+        setIsLoading(false)
+        setData({
+          fixedReward,
+          variableReward,
+          roundRewards,
+          roundRewardData,
+          roundStatus,
+          roundOpen,
+        })
+        // const claimRoyalty = await Promise.all((response.roundReward || []).map((v,i) => myPrivilegeContract.methods.claimRoyalty(i).call()))
+      }
+      run()
     }
-    run()
-
-    // }
-    console.log('account effect', account)
   }, [account])
 
-  const onClaim = () => {
+  const myPrivilegeHookContract = useContract(MyPrivilegesABI as unknown as AbiItem, getMyPrivilegeAddress())
+  const onClaim = index => async () => {
+    if (isKlip()) {
+      await request({
+        contractAddress: getMyPrivilegeAddress(),
+        abi: MyPrivilegesABI,
+        input: [index],
+      })
+    } else {
+      const estimateGas = await getEstimateGas(myPrivilegeHookContract.methods.claimRoyalty, account, 0)
+      await myPrivilegeHookContract.methods.claimRoyalty(index).send({ from: account, gas: estimateGas })
+    }
+    const newData = data
+    newData.roundRewards[index] = '0'
+    setData({ ...newData })
     setIsShowSuccessModal(true)
   }
 
+  const totalClaimed = useMemo(() => {
+    return data.roundRewards
+      .map((x, i) => (parseInt(x, 10) === 0 ? parseInt(data.roundRewardData[i], 10) : 0))
+      .reduce((a, b) => a + b, 0)
+  }, [data])
+
+  const remaining = useMemo(() => {
+    return data.roundRewards
+      .map((x, i) => (parseInt(x, 10) !== 0 ? parseInt(data.roundRewardData[i], 10) : 0))
+      .reduce((a, b) => a + b, 0)
+  }, [data])
   return (
     <>
       <Box maxWidth="100%" mx="auto" mb={`${isMobile ? '40px' : '80px'}`}>
@@ -254,39 +335,92 @@ const MyPrivileges = () => {
             My privileges
           </Heading>
 
-          <Flex
-            justifyContent="center"
-            alignItems={isMobile ? 'initial' : 'center'}
-            py="24px"
-            style={{
-              borderTop: isMobile ? undefined : '1px solid #B4A9A8',
-              borderBottom: isMobile ? undefined : '1px solid #B4A9A8',
-            }}
-            flexDirection={isMobile ? 'column' : 'row'}
-          >
-            <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
-              <InLineText title="Fixed Reward" value="00,000" mb={isMobile ? '24px' : '12px'} />
-              <InLineText title="Variable Reward" value="00,000" />
-            </Flex>
+          {account ? (
+            <>
+              <Flex
+                justifyContent="center"
+                alignItems={isMobile ? 'initial' : 'center'}
+                py="24px"
+                style={{
+                  borderTop: isMobile ? undefined : '1px solid #B4A9A8',
+                  borderBottom: isMobile ? undefined : '1px solid #B4A9A8',
+                }}
+                flexDirection={isMobile ? 'column' : 'row'}
+              >
+                <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
+                  <InLineText
+                    title="Fixed Reward"
+                    value={data.fixedReward}
+                    mb={isMobile ? '24px' : '12px'}
+                    isLoading={isLoading}
+                  />
+                  <InLineText title="Variable Reward" value={data.variableReward} isLoading={isLoading} />
+                </Flex>
 
-            {isMobile ? (
-              <Divider my="24px" width="100%" style={{ backgroundColor: '#B4A9A8' }} />
-            ) : (
-              <VDivider mx="24px" style={{ borderColor: '#B4A9A8' }} />
-            )}
+                {isMobile ? (
+                  <Divider my="24px" width="100%" style={{ backgroundColor: '#B4A9A8' }} />
+                ) : (
+                  <VDivider mx="24px" style={{ borderColor: '#B4A9A8' }} />
+                )}
 
-            <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
-              <InLineText title="Total claimed" value="00,000" mb={isMobile ? '24px' : '12px'} />
-              <InLineText title="Reward remaining" value="00,000" />
-            </Flex>
-          </Flex>
+                <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
+                  <InLineText
+                    title="Total claimed"
+                    value={totalClaimed}
+                    mb={isMobile ? '24px' : '12px'}
+                    isLoading={isLoading}
+                  />
+                  <InLineText title="Reward remaining" value={remaining} isLoading={isLoading} />
+                </Flex>
+              </Flex>
 
-          <ClaimListStyle flexDirection={isMobile ? 'column' : 'row'} pt={isMobile ? '24px' : '40px'}>
-            <ClaimBox ordinal="1st" amount="1,000" date="mm/ dd/ yy" isSucceeded onClaim={onClaim} />
-            <ClaimBox ordinal="2nd" amount="1,000" date="mm/ dd/ yy" onClaim={onClaim} />
-            <ClaimBox ordinal="3st" amount="1,000" date="mm/ dd/ yy" isInactive onClaim={onClaim} />
-            <ClaimBox ordinal="4th" amount="1,000" date="mm/ dd/ yy" isInactive onClaim={onClaim} />
-          </ClaimListStyle>
+              <ClaimListStyle flexDirection={isMobile ? 'column' : 'row'} pt={isMobile ? '24px' : '40px'}>
+                <ClaimBox
+                  ordinal="1st"
+                  amount={data.roundRewardData[0]}
+                  date="16/11/22"
+                  isInactive={!data.roundStatus[0]}
+                  isSucceeded={isSuccess(data.roundRewards[0], data.fixedReward, data.variableReward)}
+                  onClaim={onClaim(0)}
+                  isLoading={isLoading}
+                />
+                <ClaimBox
+                  ordinal="2nd"
+                  amount={data.roundRewardData[1]}
+                  date="14/12/22"
+                  isInactive={!data.roundStatus[1]}
+                  isSucceeded={isSuccess(data.roundRewards[1], data.fixedReward, data.variableReward)}
+                  onClaim={onClaim(1)}
+                  isLoading={isLoading}
+                />
+                <ClaimBox
+                  ordinal="3st"
+                  amount={data.roundRewardData[2]}
+                  date="11/01/23"
+                  isInactive={!data.roundStatus[2]}
+                  isSucceeded={isSuccess(data.roundRewards[2], data.fixedReward, data.variableReward)}
+                  onClaim={onClaim(2)}
+                  isLoading={isLoading}
+                />
+                <ClaimBox
+                  ordinal="4th"
+                  amount={data.roundRewardData[3]}
+                  date="15/02/23"
+                  isInactive={!data.roundStatus[3]}
+                  isSucceeded={isSuccess(data.roundRewards[3], data.fixedReward, data.variableReward)}
+                  onClaim={onClaim(3)}
+                  isLoading={isLoading}
+                />
+              </ClaimListStyle>
+            </>
+          ) : (
+            <>
+              <UnlockButton
+                scale="md"
+                style={{ margin: '24px auto 0 auto', display: 'block', maxWidth: 'calc(100% - 48px)' }}
+              />
+            </>
+          )}
         </MyPrivilegesCardStyle>
       </Box>
 
