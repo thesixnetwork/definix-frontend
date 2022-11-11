@@ -412,12 +412,14 @@ const MyPrivileges = () => {
               isLoading={isLoading}
             />
           </ClaimListStyle>
-          <>
-            <UnlockButton
-              scale="md"
-              style={{ margin: '24px auto 0 auto', display: 'block', maxWidth: 'calc(100% - 48px)' }}
-            />
-          </>
+          {!account && (
+            <>
+              <UnlockButton
+                scale="md"
+                style={{ margin: '24px auto 0 auto', display: 'block', maxWidth: 'calc(100% - 48px)' }}
+              />
+            </>
+          )}
         </MyPrivilegesCardStyle>
       </Box>
 
