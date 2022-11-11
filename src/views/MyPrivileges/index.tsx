@@ -245,12 +245,12 @@ const isSuccess = (reward, fix, variable) => {
 const MyPrivileges = () => {
   const { isMobile } = useMatchBreakpoints()
   const [isShowSuccessModal, setIsShowSuccessModal] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState({
-    fixedReward: '0',
-    variableReward: '0',
-    roundRewards: ['0', '0', '0', '0'],
-    roundRewardData: ['0', '0', '0', '0'],
+    fixedReward: '-',
+    variableReward: '-',
+    roundRewards: ['-', '-', '-', '-'],
+    roundRewardData: ['-', '-', '-', '-'],
     roundStatus: [false, false, false, false],
     roundOpen: [false, false, false, false],
   })
@@ -311,12 +311,14 @@ const MyPrivileges = () => {
   }
 
   const totalClaimed = useMemo(() => {
+    if (data.roundRewards.filter(x => x === '-').length !== 0) return '-'
     return data.roundRewards
       .map((x, i) => (parseInt(x, 10) === 0 ? parseInt(data.roundRewardData[i], 10) : 0))
       .reduce((a, b) => a + b, 0)
   }, [data])
 
   const remaining = useMemo(() => {
+    if (data.roundRewards.filter(x => x === '-').length !== 0) return '-'
     return data.roundRewards
       .map((x, i) => (parseInt(x, 10) !== 0 ? parseInt(data.roundRewardData[i], 10) : 0))
       .reduce((a, b) => a + b, 0)
@@ -335,92 +337,87 @@ const MyPrivileges = () => {
             My privileges
           </Heading>
 
-          {account ? (
-            <>
-              <Flex
-                justifyContent="center"
-                alignItems={isMobile ? 'initial' : 'center'}
-                py="24px"
-                style={{
-                  borderTop: isMobile ? undefined : '1px solid #B4A9A8',
-                  borderBottom: isMobile ? undefined : '1px solid #B4A9A8',
-                }}
-                flexDirection={isMobile ? 'column' : 'row'}
-              >
-                <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
-                  <InLineText
-                    title="Fixed Reward"
-                    value={data.fixedReward}
-                    mb={isMobile ? '24px' : '12px'}
-                    isLoading={isLoading}
-                  />
-                  <InLineText title="Variable Reward" value={data.variableReward} isLoading={isLoading} />
-                </Flex>
-
-                {isMobile ? (
-                  <Divider my="24px" width="100%" style={{ backgroundColor: '#B4A9A8' }} />
-                ) : (
-                  <VDivider mx="24px" style={{ borderColor: '#B4A9A8' }} />
-                )}
-
-                <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
-                  <InLineText
-                    title="Total claimed"
-                    value={totalClaimed}
-                    mb={isMobile ? '24px' : '12px'}
-                    isLoading={isLoading}
-                  />
-                  <InLineText title="Reward remaining" value={remaining} isLoading={isLoading} />
-                </Flex>
-              </Flex>
-
-              <ClaimListStyle flexDirection={isMobile ? 'column' : 'row'} pt={isMobile ? '24px' : '40px'}>
-                <ClaimBox
-                  ordinal="1st"
-                  amount={data.roundRewardData[0]}
-                  date="16/11/22"
-                  isInactive={!data.roundStatus[0]}
-                  isSucceeded={isSuccess(data.roundRewards[0], data.fixedReward, data.variableReward)}
-                  onClaim={onClaim(0)}
-                  isLoading={isLoading}
-                />
-                <ClaimBox
-                  ordinal="2nd"
-                  amount={data.roundRewardData[1]}
-                  date="14/12/22"
-                  isInactive={!data.roundStatus[1]}
-                  isSucceeded={isSuccess(data.roundRewards[1], data.fixedReward, data.variableReward)}
-                  onClaim={onClaim(1)}
-                  isLoading={isLoading}
-                />
-                <ClaimBox
-                  ordinal="3st"
-                  amount={data.roundRewardData[2]}
-                  date="11/01/23"
-                  isInactive={!data.roundStatus[2]}
-                  isSucceeded={isSuccess(data.roundRewards[2], data.fixedReward, data.variableReward)}
-                  onClaim={onClaim(2)}
-                  isLoading={isLoading}
-                />
-                <ClaimBox
-                  ordinal="4th"
-                  amount={data.roundRewardData[3]}
-                  date="15/02/23"
-                  isInactive={!data.roundStatus[3]}
-                  isSucceeded={isSuccess(data.roundRewards[3], data.fixedReward, data.variableReward)}
-                  onClaim={onClaim(3)}
-                  isLoading={isLoading}
-                />
-              </ClaimListStyle>
-            </>
-          ) : (
-            <>
-              <UnlockButton
-                scale="md"
-                style={{ margin: '24px auto 0 auto', display: 'block', maxWidth: 'calc(100% - 48px)' }}
+          <Flex
+            justifyContent="center"
+            alignItems={isMobile ? 'initial' : 'center'}
+            py="24px"
+            style={{
+              borderTop: isMobile ? undefined : '1px solid #B4A9A8',
+              borderBottom: isMobile ? undefined : '1px solid #B4A9A8',
+            }}
+            flexDirection={isMobile ? 'column' : 'row'}
+          >
+            <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
+              <InLineText
+                title="Fixed Reward"
+                value={data.fixedReward}
+                mb={isMobile ? '24px' : '12px'}
+                isLoading={isLoading}
               />
-            </>
-          )}
+              <InLineText title="Variable Reward" value={data.variableReward} isLoading={isLoading} />
+            </Flex>
+
+            {isMobile ? (
+              <Divider my="24px" width="100%" style={{ backgroundColor: '#B4A9A8' }} />
+            ) : (
+              <VDivider mx="24px" style={{ borderColor: '#B4A9A8' }} />
+            )}
+
+            <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
+              <InLineText
+                title="Total claimed"
+                value={totalClaimed}
+                mb={isMobile ? '24px' : '12px'}
+                isLoading={isLoading}
+              />
+              <InLineText title="Reward remaining" value={remaining} isLoading={isLoading} />
+            </Flex>
+          </Flex>
+
+          <ClaimListStyle flexDirection={isMobile ? 'column' : 'row'} pt={isMobile ? '24px' : '40px'}>
+            <ClaimBox
+              ordinal="1st"
+              amount={data.roundRewardData[0]}
+              date="16/11/22"
+              isInactive={!data.roundStatus[0]}
+              isSucceeded={isSuccess(data.roundRewards[0], data.fixedReward, data.variableReward)}
+              onClaim={onClaim(0)}
+              isLoading={isLoading}
+            />
+            <ClaimBox
+              ordinal="2nd"
+              amount={data.roundRewardData[1]}
+              date="14/12/22"
+              isInactive={!data.roundStatus[1]}
+              isSucceeded={isSuccess(data.roundRewards[1], data.fixedReward, data.variableReward)}
+              onClaim={onClaim(1)}
+              isLoading={isLoading}
+            />
+            <ClaimBox
+              ordinal="3st"
+              amount={data.roundRewardData[2]}
+              date="11/01/23"
+              isInactive={!data.roundStatus[2]}
+              isSucceeded={isSuccess(data.roundRewards[2], data.fixedReward, data.variableReward)}
+              onClaim={onClaim(2)}
+              isLoading={isLoading}
+            />
+            <ClaimBox
+              ordinal="4th"
+              amount={data.roundRewardData[3]}
+              date="15/02/23"
+              isInactive={!data.roundStatus[3]}
+              isSucceeded={isSuccess(data.roundRewards[3], data.fixedReward, data.variableReward)}
+              onClaim={onClaim(3)}
+              isLoading={isLoading}
+            />
+          </ClaimListStyle>
+          <>
+            <UnlockButton
+              scale="md"
+              style={{ margin: '24px auto 0 auto', display: 'block', maxWidth: 'calc(100% - 48px)' }}
+            />
+          </>
         </MyPrivilegesCardStyle>
       </Box>
 
