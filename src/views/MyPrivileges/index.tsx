@@ -301,7 +301,7 @@ const MyPrivileges = () => {
         input: [index],
       })
     } else {
-      const estimateGas = await getEstimateGas(myPrivilegeHookContract.methods.claimRoyalty, account, 0)
+      const estimateGas = await getEstimateGas(myPrivilegeHookContract.methods.claimRoyalty, account, index)
       await myPrivilegeHookContract.methods.claimRoyalty(index).send({ from: account, gas: estimateGas })
     }
     const newData = data
