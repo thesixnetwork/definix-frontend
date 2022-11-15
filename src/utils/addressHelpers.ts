@@ -108,3 +108,6 @@ export const getVFinix = () => {
 export const getVFinixVoting = () => {
   return getAddress(addresses.vFinixVoting)
 }
+export const getMyPrivilegeAddress = () => {
+  return getAddress(addresses.myPrivilege)
+}
