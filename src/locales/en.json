@@ -627,5 +627,15 @@
   "FAVOR per $1000": "Favor per $1000",
   "Add Token": "Add Token",
   "Stake End Date": "Stake End Date",
-  "Lock-up period on": "Lock-up period on early unstaking"
+  "Lock-up period on": "Lock-up period on early unstaking",
+  "My privileges": "My privileges",
+  "Fixed Reward": "Fixed Reward",
+  "Variable Reward": "Variable Reward",
+  "Total claimed": "Total claimed",
+  "Reward remaining": "Reward remaining",
+  "1st Claim": "1st Claim",
+  "2nd Claim": "2nd Claim",
+  "3rd Claim": "3rd Claim",
+  "4th Claim": "4th Claim",
+  "Succeeded": "Succeeded!"
 }
