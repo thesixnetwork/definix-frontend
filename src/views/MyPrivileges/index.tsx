@@ -394,7 +394,7 @@ const MyPrivileges = () => {
               isLoading={isLoading}
             />
             <ClaimBox
-              ordinal="3st"
+              ordinal="3rd"
               amount={data.roundRewardData[2]}
               date="11/01/23"
               isInactive={!data.roundStatus[2]}
