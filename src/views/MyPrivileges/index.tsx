@@ -23,6 +23,7 @@ import useKlipContract from 'hooks/useKlipContract'
 import useContract from 'hooks/useContract'
 import { getContract } from 'utils/caver'
 import { getEstimateGas } from 'utils/callHelpers'
+import { useTranslation } from 'react-i18next'
 import mpActive from '../../assets/images/mp-claim.png'
 import mpInactive from '../../assets/images/mp-disable.png'
 import mpSuccess from '../../assets/images/mp-success.png'
@@ -151,6 +152,7 @@ const ClaimBox = ({
   isLoading,
   onClaim = () => null,
 }) => {
+  const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { account } = useWallet()
 
@@ -187,7 +189,7 @@ const ClaimBox = ({
       </Box>
 
       <Box className="content">
-        <Text style={{ fontWeight: 'bold', fontSize: '1.25rem', marginBottom: '4px' }}>{ordinal} Claim</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: '1.25rem', marginBottom: '4px' }}>{t(`${ordinal} Claim`)}</Text>
         {isLoading ? (
           <Skeleton width="80px" height="14px" minHeight="initial" animation="waves" />
         ) : (
@@ -196,14 +198,14 @@ const ClaimBox = ({
 
         {isSucceeded && (
           <Text textAlign="center" className="succeeded">
-            Succeeded!
+            {t('Succeeded')}
           </Text>
         )}
       </Box>
 
       {account && !isSucceeded && (
         <Button disabled={isInactive || isLoading} size="" onClick={onClaim}>
-          Claim
+          {t('Claim')}
         </Button>
       )}
     </ClaimBoxStyle>
@@ -254,6 +256,7 @@ const MyPrivileges = () => {
     roundStatus: [false, false, false, false],
     roundOpen: [false, false, false, false],
   })
+  const { t } = useTranslation()
   const { account } = useWallet()
   const { isKlip, request } = useKlipContract()
 
@@ -334,7 +337,7 @@ const MyPrivileges = () => {
             px={isMobile ? '' : '24px'}
             mb={isMobile ? '' : '24px'}
           >
-            My privileges
+            {t('My privileges')}
           </Heading>
 
           <Flex
@@ -349,12 +352,12 @@ const MyPrivileges = () => {
           >
             <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
               <InLineText
-                title="Fixed Reward"
+                title={t('Fixed Reward')}
                 value={data.fixedReward}
                 mb={isMobile ? '24px' : '12px'}
                 isLoading={isLoading}
               />
-              <InLineText title="Variable Reward" value={data.variableReward} isLoading={isLoading} />
+              <InLineText title={t('Variable Reward')} value={data.variableReward} isLoading={isLoading} />
             </Flex>
 
             {isMobile ? (
@@ -365,12 +368,12 @@ const MyPrivileges = () => {
 
             <Flex flexGrow={1} flexDirection="column" px={isMobile ? '' : '24px'}>
               <InLineText
-                title="Total claimed"
+                title={t('Total claimed')}
                 value={totalClaimed}
                 mb={isMobile ? '24px' : '12px'}
                 isLoading={isLoading}
               />
-              <InLineText title="Reward remaining" value={remaining} isLoading={isLoading} />
+              <InLineText title={t('Reward remaining')} value={remaining} isLoading={isLoading} />
             </Flex>
           </Flex>
 
