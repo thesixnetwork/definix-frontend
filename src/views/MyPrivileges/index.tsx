@@ -29,7 +29,9 @@ import mpInactive from '../../assets/images/mp-disable.png'
 import mpSuccess from '../../assets/images/mp-success.png'
 
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+  const data = parseInt(x, 10).toLocaleString()
+  if (data === 'NaN') return '-'
+  return data
 }
 
 const MyPrivilegesCardStyle = styled(Card)`
@@ -314,15 +316,15 @@ const MyPrivileges = () => {
   }
 
   const totalClaimed = useMemo(() => {
-    if (data.roundRewards.filter(x => x === '-').length !== 0) return '-'
-    return data.roundRewards
+    if ((data.roundRewards || []).filter(x => x === '-').length !== 0) return '-'
+    return (data.roundRewards || [])
       .map((x, i) => (parseInt(x, 10) === 0 ? parseInt(data.roundRewardData[i], 10) : 0))
       .reduce((a, b) => a + b, 0)
   }, [data])
 
   const remaining = useMemo(() => {
-    if (data.roundRewards.filter(x => x === '-').length !== 0) return '-'
-    return data.roundRewards
+    if ((data.roundRewards || []).filter(x => x === '-').length !== 0) return '-'
+    return (data.roundRewards || [])
       .map((x, i) => (parseInt(x, 10) !== 0 ? parseInt(data.roundRewardData[i], 10) : 0))
       .reduce((a, b) => a + b, 0)
   }, [data])
