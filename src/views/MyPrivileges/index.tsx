@@ -29,7 +29,9 @@ import mpInactive from '../../assets/images/mp-disable.png'
 import mpSuccess from '../../assets/images/mp-success.png'
 
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+  const data = parseInt(x, 10).toLocaleString()
+  if (data === 'NaN') return '-'
+  return data
 }
 
 const MyPrivilegesCardStyle = styled(Card)`
