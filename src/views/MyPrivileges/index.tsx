@@ -314,15 +314,15 @@ const MyPrivileges = () => {
   }
 
   const totalClaimed = useMemo(() => {
-    if (data.roundRewards.filter(x => x === '-').length !== 0) return '-'
-    return data.roundRewards
+    if ((data.roundRewards || []).filter(x => x === '-').length !== 0) return '-'
+    return (data.roundRewards || [])
       .map((x, i) => (parseInt(x, 10) === 0 ? parseInt(data.roundRewardData[i], 10) : 0))
       .reduce((a, b) => a + b, 0)
   }, [data])
 
   const remaining = useMemo(() => {
-    if (data.roundRewards.filter(x => x === '-').length !== 0) return '-'
-    return data.roundRewards
+    if ((data.roundRewards || []).filter(x => x === '-').length !== 0) return '-'
+    return (data.roundRewards || [])
       .map((x, i) => (parseInt(x, 10) !== 0 ? parseInt(data.roundRewardData[i], 10) : 0))
       .reduce((a, b) => a + b, 0)
   }, [data])
@@ -382,7 +382,7 @@ const MyPrivileges = () => {
               ordinal="1st"
               amount={data.roundRewardData[0]}
               date="16 Nov 2022"
-              isInactive={!data.roundStatus[0]}
+              isInactive={parseInt(data.roundRewardData[0], 10) === 0 || !data.roundStatus[0]}
               isSucceeded={isSuccess(data.roundRewards[0], data.fixedReward, data.variableReward)}
               onClaim={onClaim(0)}
               isLoading={isLoading}
@@ -391,7 +391,7 @@ const MyPrivileges = () => {
               ordinal="2nd"
               amount={data.roundRewardData[1]}
               date="14 Dec 2022"
-              isInactive={!data.roundStatus[1]}
+              isInactive={parseInt(data.roundRewardData[1], 10) === 0 || !data.roundStatus[1]}
               isSucceeded={isSuccess(data.roundRewards[1], data.fixedReward, data.variableReward)}
               onClaim={onClaim(1)}
               isLoading={isLoading}
@@ -400,7 +400,7 @@ const MyPrivileges = () => {
               ordinal="3rd"
               amount={data.roundRewardData[2]}
               date="11 Jan 2023"
-              isInactive={!data.roundStatus[2]}
+              isInactive={parseInt(data.roundRewardData[2], 10) === 0 || !data.roundStatus[2]}
               isSucceeded={isSuccess(data.roundRewards[2], data.fixedReward, data.variableReward)}
               onClaim={onClaim(2)}
               isLoading={isLoading}
@@ -409,7 +409,7 @@ const MyPrivileges = () => {
               ordinal="4th"
               amount={data.roundRewardData[3]}
               date="15 Feb 2023"
-              isInactive={!data.roundStatus[3]}
+              isInactive={parseInt(data.roundRewardData[3], 10) === 0 || !data.roundStatus[3]}
               isSucceeded={isSuccess(data.roundRewards[3], data.fixedReward, data.variableReward)}
               onClaim={onClaim(3)}
               isLoading={isLoading}
