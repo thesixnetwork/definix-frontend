@@ -19,6 +19,7 @@ import styled from 'styled-components'
 import useWallet from 'hooks/useWallet'
 import MyPrivilegesABI from 'config/abi/myPrivileges.json'
 import { getMyPrivilegeAddress } from 'utils/addressHelpers'
+import { getAbiMyPriviledgeByName } from 'hooks/hookHelper'
 import useKlipContract from 'hooks/useKlipContract'
 import useContract from 'hooks/useContract'
 import { getContract } from 'utils/caver'
@@ -302,7 +303,7 @@ const MyPrivileges = () => {
     if (isKlip()) {
       await request({
         contractAddress: getMyPrivilegeAddress(),
-        abi: MyPrivilegesABI,
+        abi: getAbiMyPriviledgeByName('claimRoyalty'),
         input: [index],
       })
     } else {
