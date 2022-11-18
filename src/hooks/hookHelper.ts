@@ -1,6 +1,7 @@
 import herodotus from 'config/abi/herodotus.json'
 import erc20 from 'config/abi/erc20.json'
 import rebalance from 'config/abi/rebalance.json'
+import MyPriviledge from 'config/abi/myPrivileges.json'
 import VaultFacet from 'config/abi/VaultFacet.json'
 import RewardFacet from 'config/abi/RewardFacet.json'
 import VaultPenaltyFacet from 'config/abi/VaultPenaltyFacet.json'
@@ -42,6 +43,9 @@ export const getAbiIUsageFacetByName = (methodName: string) =>
 
 export const getAbiIVotingFacetByName = (methodName: string) =>
   IVotingFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
+
+export const getAbiMyPriviledgeByName = (methodName: string) =>
+  MyPriviledge.find((abi) => abi.type === 'function' && abi.name === methodName)
 
 export const getApproveAbi = () => erc20.find((abi) => abi.type === 'function' && abi.name === 'approve')
 export const getAbiByName = (methodName) =>
