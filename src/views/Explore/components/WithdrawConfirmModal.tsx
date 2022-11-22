@@ -5,13 +5,17 @@ import rebalanceAbi from 'config/abi/rebalance.json'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import ModalV2 from 'uikitV2/components/ModalV2'
+import SpaceBetweenFormat from 'uikitV2/components/SpaceBetweenFormat'
 import { getAddress } from 'utils/addressHelpers'
 import { getCustomContract } from 'utils/erc20'
 import { provider } from 'web3-core'
+import numeral from 'numeral'
 import { AbiItem } from 'web3-utils'
+import _ from 'lodash'
 import { useSlippage, useToast } from '../../../state/hooks'
 import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../../state/wallet'
 import CardHeading from './CardHeading'
+import InlineAssetRatio from './InlineAssetRatio'
 
 const WithdrawConfirmModal = ({
   currentInput,
@@ -80,7 +84,7 @@ const WithdrawConfirmModal = ({
       setTx(tx)
 
       const assets = rebalance.ratio
-      const assetAddresses = assets.map((a) => getAddress(a.address))
+      const assetAddresses = assets.map(a => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
       dispatch(fetchRebalanceRewards(account, [rebalance]))
@@ -104,8 +108,54 @@ const WithdrawConfirmModal = ({
           Withdrawal Amount
         </Typography>
 
-        <Box sx={{ borderRadius: '8px', border: (theme) => `1px solid ${theme.palette.grey[300]}`, p: 3, pt: 2 }}>
-          {/* <InlineAssetRatio coin={c} /> */}
+        <Box sx={{ borderRadius: '8px', border: theme => `1px solid ${theme.palette.grey[300]}`, p: 3, pt: 2 }}>
+          <Box mb={4}>
+            {ratioType === 'all'
+              ? _.compact([...((rebalance || {}).tokens || [])])
+                  .map((token, index) => {
+                    const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                    const ratios = _.get(rebalance, `ratioCal`)
+                    const ratioMerge = Object.assign({ valueRatioCal: ratios ? ratios[index] : 0 }, ratioObject)
+                    return {
+                      ...token,
+                      ...ratioMerge,
+                      amount: ((poolAmounts || [])[index] || new BigNumber(0)).div(
+                        new BigNumber(10).pow(token.decimals),
+                      ),
+                    }
+                  })
+                  .map(c => <InlineAssetRatio coin={c} />)
+              : _.compact([...((rebalance || {}).tokens || [])])
+                  .map((token, index) => {
+                    const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+
+                    let countSelect = 0
+
+                    const keys = Object.keys(selectedToken)
+                    for (let i = 0; i < keys.length; i++) {
+                      if (selectedToken[keys[i]] === true) ++countSelect
+                    }
+
+                    let valueCalRatio = 0
+                    for (let i = 0; i < keys.length; i++) {
+                      if (selectedToken[keys[i]] === true && keys[i] === getAddress(ratioObject.address))
+                        valueCalRatio = 100 / countSelect
+                    }
+                    // eslint-disable-next-line
+                    const ratioMerge = Object.assign({ valueRatioCal: valueCalRatio }, ratioObject)
+
+                    return {
+                      ...token,
+                      ...ratioMerge,
+                      amount: (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(token.decimals)),
+                    }
+                  })
+                  .filter((token, index) => {
+                    const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                    return selectedToken[getAddress(ratioObject.address)] === true
+                  })
+                  .map(c => <InlineAssetRatio coin={c} />)}
+          </Box>
 
           <Divider sx={{ mt: 2, mb: 2.5 }} />
 
@@ -113,22 +163,22 @@ const WithdrawConfirmModal = ({
             <Typography fontWeight={500} color="text.secondary">
               Total Withdraw
             </Typography>
-            {/* <Typography fontWeight="bold">
-              {currentShare <= 0 || Number.isNaN(currentShare)
-                ? numeral(totalUserUsdAmount).format('0,0.[00]')
-                : numeral(currentShare).format('0,0.[00]')}
+            <Typography fontWeight="bold">
+              {currentInput}
 
               <Typography variant="body2" component="span" className="ml-1" color="text.secondary">
                 SHR
               </Typography>
-            </Typography> */}
+            </Typography>
           </Box>
 
-          {/* <SpaceBetweenFormat
+          <SpaceBetweenFormat
             mb={1}
             title="Estimated Value"
-            value={`$${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
-          /> */}
+            value={`$${numeral(new BigNumber(currentInput).times(rebalance.sharedPrice).toNumber()).format(
+              '0,0.[00]',
+            )}`}
+          />
 
           {/* <SpaceBetweenFormat
             mb={2}

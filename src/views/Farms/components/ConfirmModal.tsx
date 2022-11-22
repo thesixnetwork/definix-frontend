@@ -1,18 +1,13 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { useToast } from 'state/hooks'
-import Button from 'uikitV2/components/Button/Button'
 import Lp from 'uikitV2/components/Coin/Lp'
-import {
-  Modal,
-  ButtonVariants,
-  Flex,
-  Text,
-  ColorStyles,
-  ModalBody,
-  ModalFooter,
-} from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, ModalBody, ModalFooter } from '@fingerlabs/definixswap-uikit-v2'
 import { mediaQueries, spacing } from 'uikitV2/base'
+import { textStyle } from 'uikitV2/text'
+import ModalV2 from 'uikitV2/components/ModalV2'
+import { Button } from '@mui/material'
+import Coin from 'uikitV2/components/Coin'
 
 const ModalBodyWrap = styled(ModalBody)`
   margin-top: ${spacing.S_16}px;
@@ -66,7 +61,7 @@ const ConfirmModal = ({
     }
   }, [isPendingTX, toastSuccess, toastError, onOK, onDismiss, goList, currentTexts])
   return (
-    <Modal title={currentTexts.title} onDismiss={onDismiss} mobileFull>
+    <ModalV2 title={currentTexts.title} onDismiss={onDismiss}>
       <ModalBodyWrap isBody>
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
@@ -74,21 +69,21 @@ const ConfirmModal = ({
             {/* <Box width={48} className="mr-s12">
               <Image src={getTokenImageUrl(tokenName)} width={48} height={48} />
             </Box> */}
-            <Text ml="12px" textStyle="R_16M" color={ColorStyles.BLACK}>
+            <Text style={{ ...textStyle.R_16M, marginLeft: 12 }} color="#222">
               {lpSymbol}
             </Text>
           </Flex>
-          <Text textStyle="R_16R" color={ColorStyles.BLACK}>
+          <Text style={textStyle.R_16R} color="#222">
             {stakedBalance}
           </Text>
         </Flex>
       </ModalBodyWrap>
       <ModalFooter isFooter>
-        <Button lg variant={ButtonVariants.RED} isLoading={isPendingTX} onClick={handleComplete}>
+        <Button variant="contained" color="error" disabled={isPendingTX} onClick={handleComplete}>
           {currentTexts.buttonName}
         </Button>
       </ModalFooter>
-    </Modal>
+    </ModalV2>
   )
 }
 

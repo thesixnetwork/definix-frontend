@@ -23,9 +23,8 @@ import { FarmWithStakedValue } from './FarmCard/types'
 import { mediaQueries, spacing } from 'uikitV2/base'
 import { textStyle } from 'uikitV2/text'
 import ModalInput from 'uikitV2/components/ModalInput'
-import { useModal } from 'uikitV2/Modal'
 import Card from 'uikitV2/components/Card'
-import { ArrowBackIcon } from 'uikit-dev'
+import { ArrowBackIcon, useModal } from 'uikit-dev'
 import PageTitle from 'uikitV2/components/PageTitle'
 import { ColorStyles } from 'uikitV2/colors'
 import { Button } from '@mui/material'
@@ -223,7 +222,6 @@ const Deposit: React.FC<{
    */
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal type="deposit" lpSymbol={lpTokenName} stakedBalance={val} onOK={handleStake} goList={onBack} />,
-    false,
   )
   return (
     <SmallestLayout>
@@ -269,7 +267,7 @@ const Deposit: React.FC<{
           buttonName="Deposit"
           onChange={handleChange}
           onSelectBalanceRateButton={handleSelectBalanceRate}
-          onClickButton={() => onPresentConfirmModal()}
+          onClickButton={onPresentConfirmModal}
         />
 
         <Flex justifyContent="space-between" alignItems="center" style={{ marginTop: 20 }}>

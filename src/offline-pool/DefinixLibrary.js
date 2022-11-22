@@ -20,6 +20,7 @@ class DefinixLibrary extends Address {
     const amounts = []
     amounts.push(amountIn)
     for (let i = 0; i < path.length - 1; i++) {
+      if (path[i] === path[i + 1]) return false
       const reserves = this.getReserves(path[i], path[i + 1])
       const amountOut = this.getAmountOut(amounts[i], reserves.reserve0, reserves.reserve1, fee, feeRateDenominator)
       amounts.push(amountOut)
