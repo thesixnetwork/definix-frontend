@@ -84,7 +84,7 @@ const WithdrawConfirmModal = ({
       setTx(tx)
 
       const assets = rebalance.ratio
-      const assetAddresses = assets.map(a => getAddress(a.address))
+      const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
       dispatch(fetchRebalanceRewards(account, [rebalance]))
@@ -108,12 +108,12 @@ const WithdrawConfirmModal = ({
           Withdrawal Amount
         </Typography>
 
-        <Box sx={{ borderRadius: '8px', border: theme => `1px solid ${theme.palette.grey[300]}`, p: 3, pt: 2 }}>
+        <Box sx={{ borderRadius: '8px', border: (theme) => `1px solid ${theme.palette.grey[300]}`, p: 3, pt: 2 }}>
           <Box mb={4}>
             {ratioType === 'all'
               ? _.compact([...((rebalance || {}).tokens || [])])
                   .map((token, index) => {
-                    const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                    const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
                     const ratios = _.get(rebalance, `ratioCal`)
                     const ratioMerge = Object.assign({ valueRatioCal: ratios ? ratios[index] : 0 }, ratioObject)
                     return {
@@ -124,10 +124,10 @@ const WithdrawConfirmModal = ({
                       ),
                     }
                   })
-                  .map(c => <InlineAssetRatio coin={c} />)
+                  .map((c) => <InlineAssetRatio coin={c} />)
               : _.compact([...((rebalance || {}).tokens || [])])
                   .map((token, index) => {
-                    const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                    const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
 
                     let countSelect = 0
 
@@ -151,10 +151,10 @@ const WithdrawConfirmModal = ({
                     }
                   })
                   .filter((token, index) => {
-                    const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                    const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
                     return selectedToken[getAddress(ratioObject.address)] === true
                   })
-                  .map(c => <InlineAssetRatio coin={c} />)}
+                  .map((c) => <InlineAssetRatio coin={c} />)}
           </Box>
 
           <Divider sx={{ mt: 2, mb: 2.5 }} />
