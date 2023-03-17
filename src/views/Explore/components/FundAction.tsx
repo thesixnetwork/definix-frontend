@@ -140,10 +140,10 @@ const CurrentInvestment = ({ rebalance }) => {
         pt={{ xs: '0.75rem', sm: 0 }}
         sx={{ width: { xs: '100%', sm: '252px' } }}
       >
-        <Button component={Link} to="/rebalancing/invest" fullWidth variant="contained" sx={{ mr: '0.75rem' }}>
+        <Button component={Link} to="/rebalancing/invest" fullWidth variant="contained" sx={{ mr: '0.75rem' }} disabled>
           Invest
         </Button>
-        <Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info">
+        <Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info" disabled>
           Withdraw
         </Button>
       </Box>

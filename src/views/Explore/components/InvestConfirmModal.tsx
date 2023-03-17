@@ -152,7 +152,11 @@ const InvestConfirmModal = ({
         </Box>
       </Box>
 
-      <Button fullWidth variant="contained" disabled={isInvesting || isSimulating} onClick={onInvest}>
+      {/* <Button fullWidth variant="contained" disabled={isInvesting || isSimulating} onClick={onInvest}>
+        Invest
+      </Button> */}
+
+      <Button fullWidth variant="contained" disabled onClick={onInvest}>
         Invest
       </Button>
     </ModalV2>

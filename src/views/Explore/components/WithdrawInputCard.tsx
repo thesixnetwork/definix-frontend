@@ -211,7 +211,10 @@ const WithdrawInputCard = ({
         )}
       </Box>
 
-      <Button fullWidth variant="contained" size="large" disabled={isWithdrawing || isSimulating} onClick={onNext}>
+      {/* <Button fullWidth variant="contained" size="large" disabled={isWithdrawing || isSimulating} onClick={onNext}>
+        Withdraw
+      </Button> */}
+      <Button fullWidth variant="contained" size="large" disabled onClick={onNext}>
         Withdraw
       </Button>
     </Card>

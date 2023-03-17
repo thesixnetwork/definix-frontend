@@ -196,7 +196,10 @@ const WithdrawConfirmModal = ({
         </Box>
       </Box>
 
-      <Button fullWidth variant="contained" disabled={isWithdrawing || isSimulating} onClick={onWithdraw}>
+      {/* <Button fullWidth variant="contained" disabled={isWithdrawing || isSimulating} onClick={onWithdraw} >
+        Withdraw
+      </Button> */}
+      <Button fullWidth variant="contained" disabled onClick={onWithdraw}>
         Withdraw
       </Button>
     </ModalV2>
