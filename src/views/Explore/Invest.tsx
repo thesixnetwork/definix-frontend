@@ -368,9 +368,12 @@ const CardCalculate = ({
         />
         {/* <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" /> */}
 
-        <Button fullWidth radii="small" className="mt-2" disabled={isInvesting || isSimulating} onClick={onInvest}>
+        <Button fullWidth radii="small" className="mt-2" disabled onClick={onInvest}>
           Invest
         </Button>
+        {/* <Button fullWidth radii="small" className="mt-2" disabled={isInvesting || isSimulating} onClick={onInvest}>
+          Invest
+        </Button> */}
       </div>
     </Card>
   )

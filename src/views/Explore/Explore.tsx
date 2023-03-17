@@ -59,8 +59,8 @@ const Explore: React.FC = () => {
   }, [dispatch, account, rebalances])
 
   useEffect(() => {
-    if (new Date(localStorage.getItem('disclaimerSkipped') || 0).getTime() < new Date().getTime() - 1209600000)
-      onPresentDisclaimersModal()
+    // if (new Date(localStorage.getItem('disclaimerSkipped') || 0).getTime() < new Date().getTime() - 1209600000)
+    onPresentDisclaimersModal()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -130,13 +130,13 @@ const Explore: React.FC = () => {
         <ExploreDetail rebalance={selectedRebalance && targetRebalance} />
       </Route>
 
-      <Route exact path={`${path}/invest`}>
+      {/* <Route exact path={`${path}/invest`}>
         <Invest rebalance={selectedRebalance && targetRebalance} />
       </Route>
 
       <Route exact path={`${path}/withdraw`}>
         <Withdraw rebalance={selectedRebalance && targetRebalance} />
-      </Route>
+      </Route> */}
     </>
   )
 }

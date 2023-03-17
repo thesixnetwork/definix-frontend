@@ -7,7 +7,7 @@ import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { AddIcon, Button, Card, MinusIcon } from 'uikit-dev'
+import { AddIcon, Button, Card, MinusIcon, Text } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
 import { useBalances, useRebalanceBalances, useRebalanceRewards } from '../../../state/hooks'
 import { Rebalance } from '../../../state/types'
@@ -118,36 +118,54 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
         <>
           {isVertical ? (
             <div className="bd-t pa-3">
-              <Button as={Link} to="/rebalancing/invest" fullWidth radii="small" className="mb-3" variant="primary">
+              <Button
+                // as={Link}
+                // to="/rebalancing/invest"
+                fullWidth
+                radii="small"
+                className="mb-3"
+                variant="primary"
+                disabled
+              >
                 INVEST
               </Button>
-              <Button as={Link} to="/rebalancing/withdraw" variant="secondary" fullWidth radii="small">
+              <Button
+                // as={Link}
+                // to="/rebalancing/withdraw"
+                variant="secondary"
+                color="tertiary"
+                fullWidth
+                radii="small"
+                disabled
+              >
                 WITHDRAW
               </Button>
             </div>
           ) : (
             <div className="flex col-5 pl-2 justify-end">
               <Button
-                as={Link}
-                to="/rebalancing/invest"
+                // as={Link}
+                // to="/rebalancing/invest"
                 size="md"
                 radii="small"
                 className="mr-2 px-3"
                 variant="primary"
                 fullWidth
+                disabled
               >
-                <AddIcon color="white" />
+                <AddIcon color="lightgray" />
               </Button>
               <Button
-                as={Link}
-                to="/rebalancing/withdraw"
+                // as={Link}
+                // to="/rebalancing/withdraw"
                 variant="secondary"
                 size="md"
                 radii="small"
                 className="px-3"
                 fullWidth
+                disabled
               >
-                <MinusIcon color="primary" />
+                <MinusIcon color="lightgray" />
               </Button>
             </div>
           )}
