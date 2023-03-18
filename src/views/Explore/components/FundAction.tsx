@@ -177,16 +177,24 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
           }`}
         >
           <Button
-            as={Link}
-            to="/rebalancing/invest"
+            // as={Link}
+            // to="/rebalancing/invest"
             fullWidth
             radii="small"
             className={isVertical ? 'mb-2' : 'mr-2'}
             variant="success"
+            disabled
           >
             INVEST
           </Button>
-          <Button as={Link} to="/rebalancing/withdraw" fullWidth radii="small" className="flex flex-column">
+          <Button
+            // as={Link}
+            // to="/rebalancing/withdraw"
+            fullWidth
+            radii="small"
+            className="flex flex-column"
+            disabled
+          >
             WITHDRAW
           </Button>
         </div>
