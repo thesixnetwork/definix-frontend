@@ -47,7 +47,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
             {numeral(getBalanceNumber(totalStaked)).format('0,0')}
           </Text>
           <Text style={{ marginLeft: 4 }} fontSize="0.75rem" fontWeight="500" color="rgb(102, 102, 102)">
-            FINIX
+            {tokenName}
           </Text>
         </div>
         <Text fontSize="0.875rem" color="textSubtle" textAlign="left">
