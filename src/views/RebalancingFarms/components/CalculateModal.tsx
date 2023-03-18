@@ -180,7 +180,7 @@ const CalculateModal = ({
         </Box>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button mt="S_16" width="100%" isLoading={isInvesting} onClick={onInvest}>
+        <Button mt="S_16" width="100%" isLoading={isInvesting} onClick={onInvest} disabled={true}>
           {t('Invest')}
         </Button>
         {calNewImpact >= 5 && (

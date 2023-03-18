@@ -250,12 +250,15 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
           : tokenList.map((c) => <InlineAssetRatioLabel key={c.symbol} coin={c} column={isMobile} />)}
       </Box>
 
-      <Button
+      {/* <Button
         scale="lg"
         width="100%"
         disabled={isSimulating || inputHasError || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
         onClick={onPresentCalcModal}
       >
+        {t('Withdraw')}
+      </Button> */}
+      <Button scale="lg" width="100%" disabled={true} onClick={onPresentCalcModal}>
         {t('Withdraw')}
       </Button>
     </Card>

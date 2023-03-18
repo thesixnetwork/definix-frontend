@@ -14,8 +14,8 @@ import useWallet from 'hooks/useWallet'
 import DisclaimersModal from './components/DisclaimersModal'
 import ExploreCard from './components/ExploreCard'
 import ExploreDetail from './ExploreDetail'
-import Invest from './Invest'
-import Withdraw from './Withdraw'
+// import Invest from './Invest'
+// import Withdraw from './Withdraw'
 
 import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
@@ -75,8 +75,8 @@ const Explore: React.FC = () => {
   }, [dispatch, account, rebalances])
 
   useEffect(() => {
-    if (new Date(localStorage.getItem('disclaimerSkipped') || 0).getTime() < new Date().getTime() - 1209600000)
-      onPresentDisclaimersModal()
+    // if (new Date(localStorage.getItem('disclaimerSkipped') || 0).getTime() < new Date().getTime() - 1209600000)
+    onPresentDisclaimersModal()
   }, [])
 
   return (
@@ -119,13 +119,13 @@ const Explore: React.FC = () => {
         <ExploreDetail rebalance={selectedRebalance && targetRebalance} />
       </Route>
 
-      <Route exact path={`${path}/invest`}>
+      {/* <Route exact path={`${path}/invest`}>
         <Invest rebalance={selectedRebalance && targetRebalance} />
       </Route>
 
       <Route exact path={`${path}/withdraw`}>
         <Withdraw rebalance={selectedRebalance && targetRebalance} />
-      </Route>
+      </Route> */}
     </>
   )
 }

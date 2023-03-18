@@ -160,7 +160,10 @@ const WithdrawCalculateModal = ({
         </Box>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button mt="S_16" width="100%" isLoading={isSimulating || isWithdrawing} onClick={onWithdraw}>
+        {/* <Button mt="S_16" width="100%" isLoading={isSimulating || isWithdrawing} onClick={onWithdraw}>
+          {t('Withdraw')}
+        </Button> */}
+        <Button mt="S_16" width="100%" isLoading={isSimulating || isWithdrawing} onClick={onWithdraw} disabled={true}>
           {t('Withdraw')}
         </Button>
       </ModalFooter>

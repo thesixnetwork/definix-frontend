@@ -3,7 +3,7 @@ import UnlockButton from 'components/UnlockButton'
 import { get } from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Button, Card, Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
@@ -81,15 +81,24 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
           variant="red"
           /** @Todo Rebalancing 
           disabled={true}*/
+          disabled={true}
         >
           {t('Invest')}
         </Button>
         {shares === '0' ? (
-          <Button scale="md" width="100%" minWidth="auto" variant="lightbrown" disabled>
+          <Button scale="md" width="100%" minWidth="auto" variant="lightbrown" disabled={true}>
             {t('Withdraw')}
           </Button>
         ) : (
-          <Button scale="md" width="100%" minWidth="auto" variant="lightbrown" as={Link} to="/rebalancing/withdraw">
+          <Button
+            scale="md"
+            width="100%"
+            minWidth="auto"
+            variant="lightbrown"
+            // as={Link}
+            // to="/rebalancing/withdraw"
+            disabled={true}
+          >
             {t('Withdraw')}
           </Button>
         )}
