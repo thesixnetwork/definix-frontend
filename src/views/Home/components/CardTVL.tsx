@@ -182,7 +182,7 @@ const CardTVL = ({ className = '' }) => {
               </Text>
             </Flex>
             <TvlValue>
-              <CurrencyText value={totalCaverTVL} toFixed={0} />
+              <CurrencyText value={totalTVL} toFixed={0} />
             </TvlValue>
           </TvlItem>
           <TvlItem>
@@ -204,7 +204,7 @@ const CardTVL = ({ className = '' }) => {
               </Text>
             </Flex>
             <TvlValue>
-              <CurrencyText value={totalTVL} toFixed={0} />
+              <CurrencyText value={totalCaverTVL} toFixed={0} />
             </TvlValue>
           </TvlItem>
         </WrapTvl>
