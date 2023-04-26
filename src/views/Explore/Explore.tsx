@@ -146,13 +146,13 @@ const Explore: React.FC = () => {
         <ExploreDetail rebalance={selectedRebalance && targetRebalance} />
       </Route>
 
-      {/* <Route exact path={`${path}/invest`}>
+      <Route exact path={`${path}/invest`}>
         <Invest rebalance={selectedRebalance && targetRebalance} />
       </Route>
 
       <Route exact path={`${path}/withdraw`}>
         <Withdraw rebalance={selectedRebalance && targetRebalance} />
-      </Route> */}
+      </Route>
     </>
   )
 }

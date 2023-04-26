@@ -416,11 +416,7 @@ const CardInput = ({
           value="$00 "
           hint="xx"
         /> */}
-        {/* <Button fullWidth radii="small" disabled={isWithdrawing || isSimulating} onClick={onWithdraw} className="mt-2">
-          Withdraw
-        </Button> */}
-
-        <Button fullWidth radii="small" disabled onClick={onWithdraw} className="mt-2">
+        <Button fullWidth radii="small" disabled={isWithdrawing || isSimulating} onClick={onWithdraw} className="mt-2">
           Withdraw
         </Button>
       </div>
