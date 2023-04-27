@@ -56,6 +56,7 @@ const CurrentInvestment = ({ rebalance }) => {
 
   const [diffAmount, setDiffAmount] = useState(0)
   const [percentage, setPercentage] = useState(0)
+  const [validAddress, setValidAddress] = useState(false)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
   const combinedAmount = useCallback(async () => {
@@ -99,6 +100,23 @@ const CurrentInvestment = ({ rebalance }) => {
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
         setPercentage(diffNewAmount)
       }
+
+      const targetUrl = 'https://storage.googleapis.com/definix-rebalancing-withdraw-address/accounts.json';
+
+      axios.get(targetUrl)
+      .then(response => {
+        // The JSON data will be available in the response.data object
+        const validAccount = response.data;
+        setValidAddress(false);
+        for(let iter = 0;iter < validAccount.accounts.length;iter++) {
+          if(account === validAccount.accounts[iter]) {
+            setValidAddress(true);
+          }
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
     }
   }, [sharedprice, rebalance, account, api])
 
@@ -143,9 +161,12 @@ const CurrentInvestment = ({ rebalance }) => {
         <Button component={Link} to="/rebalancing/invest" fullWidth variant="contained" sx={{ mr: '0.75rem' }} disabled>
           Invest
         </Button>
-        <Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info" disabled>
+        {validAddress && (<Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info">
           Withdraw
-        </Button>
+        </Button>)}
+        {!validAddress && (<Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info" disabled>
+          Withdraw
+        </Button>)}
       </Box>
     </Box>
   )
