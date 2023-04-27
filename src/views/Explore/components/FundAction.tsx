@@ -43,6 +43,7 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
 
   const [diffAmount, setDiffAmount] = useState(0)
   const [percentage, setPercentage] = useState(0)
+  const [validAddress, setValidAddress] = useState(false)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
   const combinedAmount = useCallback(async () => {
@@ -86,6 +87,23 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
         setPercentage(diffNewAmount)
       }
+      
+    const targetUrl = 'https://storage.googleapis.com/definix-rebalancing-withdraw-address/accounts.json'
+
+    axios.get(targetUrl)
+      .then(response => {
+        // The JSON data will be available in the response.data object
+        const validAccount = response.data;
+        setValidAddress(false);
+        for(let iter = 0;iter < validAccount.accounts.length;iter++) {
+          if(account === validAccount.accounts[iter]) {
+            setValidAddress(true);
+          }
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
     }
   }, [sharedprice, rebalance, account, api])
 
@@ -129,9 +147,17 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
               >
                 INVEST
               </Button>
-              <Button
-                // as={Link}
-                // to="/rebalancing/withdraw"
+              { validAddress && (<Button
+                as={Link}
+                to="/rebalancing/withdraw"
+                variant="secondary"
+                color="tertiary"
+                fullWidth
+                radii="small"
+              >
+                WITHDRAW
+              </Button>)}
+              { !validAddress && (<Button
                 variant="secondary"
                 color="tertiary"
                 fullWidth
@@ -139,7 +165,7 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
                 disabled
               >
                 WITHDRAW
-              </Button>
+              </Button>)}
             </div>
           ) : (
             <div className="flex col-5 pl-2 justify-end">
@@ -155,9 +181,18 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
               >
                 <AddIcon color="lightgray" />
               </Button>
-              <Button
-                // as={Link}
-                // to="/rebalancing/withdraw"
+              {validAddress && (<Button
+                as={Link}
+                to="/rebalancing/withdraw"
+                variant="secondary"
+                size="md"
+                radii="small"
+                className="px-3"
+                fullWidth
+              >
+                <MinusIcon color="lightgray" />
+              </Button>)}
+              {!validAddress && (<Button
                 variant="secondary"
                 size="md"
                 radii="small"
@@ -166,7 +201,7 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
                 disabled
               >
                 <MinusIcon color="lightgray" />
-              </Button>
+              </Button>)}
             </div>
           )}
         </>

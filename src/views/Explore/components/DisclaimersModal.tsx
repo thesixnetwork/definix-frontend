@@ -49,9 +49,9 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
   }, [])
 
   const onExit = () => {
-    setShowAlert(true)
+    // setShowAlert(true)
     if (isSkip) localStorage.setItem('disclaimerSkipped', 'true')
-    // onDismiss()
+    onDismiss()
   }
   const onCheckBoxChange = (event) => {
     setIsSkip(event.target.checked)
