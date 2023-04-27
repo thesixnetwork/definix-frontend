@@ -87,23 +87,24 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
         setPercentage(diffNewAmount)
       }
-      
-    const targetUrl = 'https://storage.googleapis.com/definix-rebalancing-withdraw-address/accounts.json'
 
-    axios.get(targetUrl)
-      .then(response => {
-        // The JSON data will be available in the response.data object
-        const validAccount = response.data;
-        setValidAddress(false);
-        for(let iter = 0;iter < validAccount.accounts.length;iter++) {
-          if(account.toLowerCase() === validAccount.accounts[iter].toLowerCase()) {
-            setValidAddress(true);
+      const targetUrl = 'https://storage.googleapis.com/definix-rebalancing-withdraw-address/accounts.json'
+
+      axios
+        .get(targetUrl)
+        .then((response) => {
+          // The JSON data will be available in the response.data object
+          const validAccount = response.data
+          setValidAddress(false)
+          for (let iter = 0; iter < validAccount.accounts.length; iter++) {
+            if (account.toLowerCase() === validAccount.accounts[iter].toLowerCase()) {
+              setValidAddress(true)
+            }
           }
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   }, [sharedprice, rebalance, account, api])
 
@@ -147,25 +148,23 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
               >
                 INVEST
               </Button>
-              { validAddress && (<Button
-                as={Link}
-                to="/rebalancing/withdraw"
-                variant="secondary"
-                color="tertiary"
-                fullWidth
-                radii="small"
-              >
-                WITHDRAW
-              </Button>)}
-              { !validAddress && (<Button
-                variant="secondary"
-                color="tertiary"
-                fullWidth
-                radii="small"
-                disabled
-              >
-                WITHDRAW
-              </Button>)}
+              {validAddress && (
+                <Button
+                  as={Link}
+                  to="/rebalancing/withdraw"
+                  variant="secondary"
+                  color="tertiary"
+                  fullWidth
+                  radii="small"
+                >
+                  WITHDRAW
+                </Button>
+              )}
+              {!validAddress && (
+                <Button variant="secondary" color="tertiary" fullWidth radii="small" disabled>
+                  WITHDRAW
+                </Button>
+              )}
             </div>
           ) : (
             <div className="flex col-5 pl-2 justify-end">
@@ -181,27 +180,24 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
               >
                 <AddIcon color="lightgray" />
               </Button>
-              {validAddress && (<Button
-                as={Link}
-                to="/rebalancing/withdraw"
-                variant="secondary"
-                size="md"
-                radii="small"
-                className="px-3"
-                fullWidth
-              >
-                <MinusIcon color="lightgray" />
-              </Button>)}
-              {!validAddress && (<Button
-                variant="secondary"
-                size="md"
-                radii="small"
-                className="px-3"
-                fullWidth
-                disabled
-              >
-                <MinusIcon color="lightgray" />
-              </Button>)}
+              {validAddress && (
+                <Button
+                  as={Link}
+                  to="/rebalancing/withdraw"
+                  variant="secondary"
+                  size="md"
+                  radii="small"
+                  className="px-3"
+                  fullWidth
+                >
+                  <MinusIcon color="lightgray" />
+                </Button>
+              )}
+              {!validAddress && (
+                <Button variant="secondary" size="md" radii="small" className="px-3" fullWidth disabled>
+                  <MinusIcon color="lightgray" />
+                </Button>
+              )}
             </div>
           )}
         </>

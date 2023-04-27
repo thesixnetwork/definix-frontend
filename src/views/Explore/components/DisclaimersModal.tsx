@@ -49,9 +49,9 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
   }, [])
 
   const onExit = () => {
-    // setShowAlert(true)
+    setShowAlert(true)
     if (isSkip) localStorage.setItem('disclaimerSkipped', 'true')
-    onDismiss()
+    // onDismiss()
   }
   const onCheckBoxChange = (event) => {
     setIsSkip(event.target.checked)
@@ -76,9 +76,6 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
           maxHeight="300px"
           onDismiss={showAlert && onDismiss}
         >
-          {/* <Heading as="h1" fontSize="28px !important" className="mb-4">
-            Announcement
-          </Heading> */}
           <Box>
             <Text>
               Sorry for your inconvenience. We are currently investigating the case and tracing all the transactions and
