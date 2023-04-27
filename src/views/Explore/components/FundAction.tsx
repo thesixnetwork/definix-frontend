@@ -96,7 +96,7 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
         const validAccount = response.data;
         setValidAddress(false);
         for(let iter = 0;iter < validAccount.accounts.length;iter++) {
-          if(account === validAccount.accounts[iter]) {
+          if(account.toLowerCase() === validAccount.accounts[iter].toLowerCase()) {
             setValidAddress(true);
           }
         }
