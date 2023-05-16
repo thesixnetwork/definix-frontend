@@ -101,22 +101,23 @@ const CurrentInvestment = ({ rebalance }) => {
         setPercentage(diffNewAmount)
       }
 
-      const targetUrl = 'https://storage.googleapis.com/definix-rebalancing-withdraw-address/accounts.json';
+      const targetUrl = 'https://storage.googleapis.com/definix-rebalancing-withdraw-address/accounts.json'
 
-      axios.get(targetUrl)
-      .then(response => {
-        // The JSON data will be available in the response.data object
-        const validAccount = response.data;
-        setValidAddress(false);
-        for(let iter = 0;iter < validAccount.accounts.length;iter++) {
-          if(account.toLowerCase() === validAccount.accounts[iter].toLowerCase()) {
-            setValidAddress(true);
+      axios
+        .get(targetUrl)
+        .then((response) => {
+          // The JSON data will be available in the response.data object
+          const validAccount = response.data
+          setValidAddress(false)
+          for (let iter = 0; iter < validAccount.accounts.length; iter++) {
+            if (account.toLowerCase() === validAccount.accounts[iter].toLowerCase()) {
+              setValidAddress(true)
+            }
           }
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   }, [sharedprice, rebalance, account, api])
 
@@ -161,12 +162,16 @@ const CurrentInvestment = ({ rebalance }) => {
         <Button component={Link} to="/rebalancing/invest" fullWidth variant="contained" sx={{ mr: '0.75rem' }} disabled>
           Invest
         </Button>
-        {validAddress && (<Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info">
-          Withdraw
-        </Button>)}
-        {!validAddress && (<Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info" disabled>
-          Withdraw
-        </Button>)}
+        {validAddress && (
+          <Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info">
+            Withdraw
+          </Button>
+        )}
+        {!validAddress && (
+          <Button component={Link} to="/rebalancing/withdraw" fullWidth variant="contained" color="info" disabled>
+            Withdraw
+          </Button>
+        )}
       </Box>
     </Box>
   )
