@@ -161,7 +161,7 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
                 </Button>
               )}
               {!validAddress && (
-                <Button variant="secondary" color="tertiary" fullWidth radii="small" disabled>
+                <Button variant="secondary" color="tertiary" fullWidth radii="small">
                   WITHDRAW
                 </Button>
               )}
