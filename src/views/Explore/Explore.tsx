@@ -99,11 +99,11 @@ const Explore: React.FC = () => {
 
       {/* <Route exact path={`${path}/invest`}>
         <Invest rebalance={selectedRebalance && targetRebalance} />
-      </Route>
+      </Route> */}
 
       <Route exact path={`${path}/withdraw`}>
         <Withdraw rebalance={selectedRebalance && targetRebalance} />
-      </Route> */}
+      </Route>
     </>
   )
 }
