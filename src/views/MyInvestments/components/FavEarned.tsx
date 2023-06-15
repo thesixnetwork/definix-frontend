@@ -36,7 +36,6 @@ const FavEarnd: React.FC<{
       .toNumber()
   }, [products.farm, calculateEarning])
 
-
   /**
    * total
    */

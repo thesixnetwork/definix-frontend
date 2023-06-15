@@ -1,7 +1,7 @@
-import { Text } from "@fingerlabs/definixswap-uikit-v2";
-import BalanceText from "components/Text/BalanceText";
-import CurrencyText from "components/Text/CurrencyText";
-import styled from "styled-components";
+import { Text } from '@fingerlabs/definixswap-uikit-v2'
+import BalanceText from 'components/Text/BalanceText'
+import CurrencyText from 'components/Text/CurrencyText'
+import styled from 'styled-components'
 
 export const TitleSection = styled(Text)`
   margin-bottom: ${({ theme }) => theme.spacing.S_8}px;

@@ -34,7 +34,6 @@ import { QuoteToken } from 'config/constants/types'
 import { useApprove } from 'hooks/useApprove'
 import { useHarvest } from 'hooks/useHarvest'
 
-
 const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klaytn, account }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
@@ -98,14 +97,14 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
       symbol: QuoteToken
       earnings: number
       apy: BigNumber
-    }[] = [];
+    }[] = []
     if (farm.bundleRewards) {
       farm.bundleRewards.forEach((bundle, bundleId) => {
         const pendingReward = pendingRewards.find((pr) => pr.bundleId === bundleId) || {}
         result.push({
           symbol: bundle.rewardTokenInfo.name,
-          earnings: (getBalanceNumber(pendingReward.reward) || 0),
-          apy: apyList[bundle.rewardTokenInfo.name]
+          earnings: getBalanceNumber(pendingReward.reward) || 0,
+          apy: apyList[bundle.rewardTokenInfo.name],
         })
       })
     }
@@ -116,7 +115,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
     })
     return result
   }, [earnings, farm, pendingRewards, apyList])
-
 
   /**
    * Card Ribbon
@@ -186,39 +184,55 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
     }
   }, [farm, lpTokenName, myLiquidity, addLiquidityUrl])
 
-  
   const renderStakeAction = useMemo(
-    () => (
-      (type?: string) => 
-      <FarmContext.Consumer>
-        {({ goDeposit, goWithdraw }) => (
-          <StakeAction
-            componentType={type || componentType}
-            hasAccount={hasAccount}
-            hasUserData={hasUserData}
-            hasAllowance={hasAllowance}
-
-            isEnableRemoveStake={stakedBalance.eq(new BigNumber(0))}
-            isEnableAddStake={isEnableAddStake}
-            isFinished={farm.isFinished}
-            onApprove={onApprove}
-            stakedBalance={stakedBalance}
-            stakedBalancePrice={myLiquidity.toNumber()}
-            stakedBalanceUnit="LP"
-
-            onPresentDeposit={() => goDeposit(dataForNextState)}
-            onPresentWithdraw={() => goWithdraw(dataForNextState)}
-          />
-        )}
-      </FarmContext.Consumer>
-    ),
-    [componentType, stakedBalance, hasAccount, hasUserData, hasAllowance, stakedBalance, myLiquidity, lpContract, dataForNextState, onApprove],
+    () => (type?: string) =>
+      (
+        <FarmContext.Consumer>
+          {({ goDeposit, goWithdraw }) => (
+            <StakeAction
+              componentType={type || componentType}
+              hasAccount={hasAccount}
+              hasUserData={hasUserData}
+              hasAllowance={hasAllowance}
+              isEnableRemoveStake={stakedBalance.eq(new BigNumber(0))}
+              isEnableAddStake={isEnableAddStake}
+              isFinished={farm.isFinished}
+              onApprove={onApprove}
+              stakedBalance={stakedBalance}
+              stakedBalancePrice={myLiquidity.toNumber()}
+              stakedBalanceUnit="LP"
+              onPresentDeposit={() => goDeposit(dataForNextState)}
+              onPresentWithdraw={() => goWithdraw(dataForNextState)}
+            />
+          )}
+        </FarmContext.Consumer>
+      ),
+    [
+      componentType,
+      stakedBalance,
+      hasAccount,
+      hasUserData,
+      hasAllowance,
+      stakedBalance,
+      myLiquidity,
+      lpContract,
+      dataForNextState,
+      onApprove,
+    ],
   )
   /**
    * HarvestAction Section
    */
   const renderHarvestAction = useMemo(
-    () => <HarvestActionAirDrop allEarnings={allEarnings} isEnableHarvest={allEarnings.reduce((sum, { earnings }) => sum + earnings, 0) === 0} onReward={onReward} componentType={componentType} tokenName={lpTokenName} />,
+    () => (
+      <HarvestActionAirDrop
+        allEarnings={allEarnings}
+        isEnableHarvest={allEarnings.reduce((sum, { earnings }) => sum + earnings, 0) === 0}
+        onReward={onReward}
+        componentType={componentType}
+        tokenName={lpTokenName}
+      />
+    ),
     [earnings, componentType, lpTokenName, allEarnings, onReward],
   )
   /**

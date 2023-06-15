@@ -101,7 +101,7 @@ export const allTokenAddresses = {
   OXRP: OXRP_ADDRESS,
   OBNB: OBNB_ADDRESS,
   KSP: KSP_ADDRESS,
-  FAVOR: FAVOR_ADDRESS
+  FAVOR: FAVOR_ADDRESS,
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
@@ -154,7 +154,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intTestnetId, OWBTC_ADDRESS[intTestnetId], 18, 'oWBTC', 'oWBTC Token'),
     new Token(intTestnetId, OXRP_ADDRESS[intTestnetId], 18, 'oXRP', 'oXRP Token'),
     new Token(intTestnetId, OBNB_ADDRESS[intTestnetId], 18, 'oBNB', 'oBNB Token'),
-    new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token')
+    new Token(intTestnetId, FAVOR_ADDRESS[intTestnetId], 18, 'FAVOR', 'FAVOR Token'),
   ],
   [intMainnetId]: [
     ...WETH_ONLY[intMainnetId],
@@ -171,7 +171,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intMainnetId, OETH_ADDRESS[intMainnetId], 18, 'oETH', 'oETH Token'),
     new Token(intMainnetId, OXRP_ADDRESS[intMainnetId], 18, 'oXRP', 'oXRP Token'),
     new Token(intMainnetId, OBNB_ADDRESS[intMainnetId], 18, 'oBNB', 'oBNB Token'),
-    new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token')
+    new Token(intMainnetId, FAVOR_ADDRESS[intMainnetId], 18, 'FAVOR', 'FAVOR Token'),
   ],
 }
 

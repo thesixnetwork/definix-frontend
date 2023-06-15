@@ -76,10 +76,10 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
   const { sousId, tokenName, totalStaked } = pool
   const stakingTokenContract = useERC20(pool.stakingTokenAddress)
   const { onApprove } = useSousApprove(stakingTokenContract, pool.sousId)
-  
+
   const isBnbPool = useMemo(() => pool.poolCategory === PoolCategory.KLAYTN, [pool.poolCategory])
   const isOldSyrup = useMemo(() => pool.stakingTokenName === QuoteToken.SYRUP, [pool.stakingTokenName])
-  
+
   const { onReward } = useSousHarvest(sousId, isBnbPool)
   const allowance = useMemo(() => new BigNumber(pool.userData?.allowance || 0), [pool.userData])
   const earnings = useMemo(() => new BigNumber(pool.userData?.pendingReward || 0), [pool.userData])
@@ -91,10 +91,12 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
   }, [pool.stakingTokenAddress])
 
   const tokenApyList = useMemo(() => {
-    return [{
-      symbol: QuoteToken.FINIX,
-      apy: pool.apy
-    }]
+    return [
+      {
+        symbol: QuoteToken.FINIX,
+        apy: pool.apy,
+      },
+    ]
   }, [pool])
 
   /**
@@ -135,10 +137,17 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
    * Earnings Section
    */
   const renderEarningsSection = useMemo(
-    () => <EarningsSection allEarnings={[{
-      symbol: QuoteToken.FINIX,
-      earnings: getBalanceNumber(earnings)
-    }]} isMobile={isMobile} />,
+    () => (
+      <EarningsSection
+        allEarnings={[
+          {
+            symbol: QuoteToken.FINIX,
+            earnings: getBalanceNumber(earnings),
+          },
+        ]}
+        isMobile={isMobile}
+      />
+    ),
     [t, earnings, isMobile],
   )
   /**
@@ -165,30 +174,29 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
   }, [isOldSyrup, pool.isFinished, isBnbPool])
 
   const renderStakeAction = useMemo(
-    () => (type?: string) => (
-      <PoolConText.Consumer>
-        {({ goDeposit, goWithdraw }) => (
-          <StakeAction
-            componentType={type || componentType}
-            // isOldSyrup={isOldSyrup}
-            // isBnbPool={isBnbPool}
-            hasAccount={hasAccount}
-            hasUserData={hasUserData}
-            hasAllowance={hasAllowance}
-
-            isEnableRemoveStake={stakedBalance.eq(new BigNumber(0))}
-            isEnableAddStake={isEnableAddStake}
-            stakedBalance={stakedBalance}
-            stakedBalancePrice={stakedBalancePrice}
-            stakedBalanceUnit={pool.tokenName}
-            onApprove={onApprove}
-
-            onPresentDeposit={() => goDeposit(dataForNextState)}
-            onPresentWithdraw={() => goWithdraw(dataForNextState)}
-          />
-        )}
-      </PoolConText.Consumer>
-    ),
+    () => (type?: string) =>
+      (
+        <PoolConText.Consumer>
+          {({ goDeposit, goWithdraw }) => (
+            <StakeAction
+              componentType={type || componentType}
+              // isOldSyrup={isOldSyrup}
+              // isBnbPool={isBnbPool}
+              hasAccount={hasAccount}
+              hasUserData={hasUserData}
+              hasAllowance={hasAllowance}
+              isEnableRemoveStake={stakedBalance.eq(new BigNumber(0))}
+              isEnableAddStake={isEnableAddStake}
+              stakedBalance={stakedBalance}
+              stakedBalancePrice={stakedBalancePrice}
+              stakedBalanceUnit={pool.tokenName}
+              onApprove={onApprove}
+              onPresentDeposit={() => goDeposit(dataForNextState)}
+              onPresentWithdraw={() => goWithdraw(dataForNextState)}
+            />
+          )}
+        </PoolConText.Consumer>
+      ),
     [
       pool,
       isOldSyrup,
@@ -208,11 +216,15 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool }) => 
     () => (
       <HarvestActionAirDrop
         componentType={componentType}
-        allEarnings={[{
-          symbol: QuoteToken.FINIX,
-          earnings: getBalanceNumber(earnings)
-        }]}
-        isEnableHarvest={!account || ((!hasUserData || !hasAllowance || isBnbPool) && !isOldSyrup) || !earnings.toNumber()}
+        allEarnings={[
+          {
+            symbol: QuoteToken.FINIX,
+            earnings: getBalanceNumber(earnings),
+          },
+        ]}
+        isEnableHarvest={
+          !account || ((!hasUserData || !hasAllowance || isBnbPool) && !isOldSyrup) || !earnings.toNumber()
+        }
         // farm={pool.farm}
         tokenName={tokenName}
         onReward={onReward}

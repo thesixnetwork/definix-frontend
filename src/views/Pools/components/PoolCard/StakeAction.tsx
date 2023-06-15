@@ -90,61 +90,96 @@ const StakeAction: React.FC<StakeActionProps> = ({
     return !isOldSyrup && !pool.isFinished && !isBnbPool
   }, [isOldSyrup, pool.isFinished, isBnbPool])
 
-  const renderBalance = useMemo(() => <Box>
-    <BalanceText>{displayBalance}</BalanceText>
-    <PriceText value={stakedBalancePrice} prefix="=" />
-  </Box>
-  , [displayBalance, stakedBalancePrice, componentType])
+  const renderBalance = useMemo(
+    () => (
+      <Box>
+        <BalanceText>{displayBalance}</BalanceText>
+        <PriceText value={stakedBalancePrice} prefix="=" />
+      </Box>
+    ),
+    [displayBalance, stakedBalancePrice, componentType],
+  )
 
-  const renderPoolAccordian = useMemo(() => hasAccount ? (hasUserData && hasAllowance ? <Flex justifyContent="space-between">
-    {renderBalance}
-    {componentType == 'accordian' && <Box>
-        <Button
-          minWidth="40px"
-          md
-          variant={ButtonVariants.LINE}
-          disabled={stakedBalance.eq(new BigNumber(0)) || isLoadingApproveContract}
-          onClick={onPresentWithdraw}
-        >
-          <MinusIcon />
-        </Button>
-        {isEnableAddStake && (
+  const renderPoolAccordian = useMemo(
+    () =>
+      hasAccount ? (
+        hasUserData && hasAllowance ? (
+          <Flex justifyContent="space-between">
+            {renderBalance}
+            {componentType == 'accordian' && (
+              <Box>
+                <Button
+                  minWidth="40px"
+                  md
+                  variant={ButtonVariants.LINE}
+                  disabled={stakedBalance.eq(new BigNumber(0)) || isLoadingApproveContract}
+                  onClick={onPresentWithdraw}
+                >
+                  <MinusIcon />
+                </Button>
+                {isEnableAddStake && (
+                  <Button
+                    minWidth="40px"
+                    md
+                    variant={ButtonVariants.LINE}
+                    disabled={pool.isFinished && pool.sousId !== 0}
+                    onClick={onPresentDeposit}
+                    style={{ marginLeft: '4px' }}
+                  >
+                    <PlusIcon />
+                  </Button>
+                )}
+              </Box>
+            )}
+          </Flex>
+        ) : (
           <Button
-            minWidth="40px"
+            width="100%"
             md
-            variant={ButtonVariants.LINE}
-            disabled={pool.isFinished && pool.sousId !== 0}
-            onClick={onPresentDeposit}
-            style={{ marginLeft: '4px' }}
+            variant={ButtonVariants.BROWN}
+            isLoading={!hasUserData || isLoadingApproveContract}
+            onClick={handleApprove}
           >
-            <PlusIcon />
+            {t('Approve Contract')}
           </Button>
-        )}
-      </Box>}
-    </Flex> : <Button
-      width="100%"
-      md
-      variant={ButtonVariants.BROWN}
-      isLoading={!hasUserData || isLoadingApproveContract}
-      onClick={handleApprove}
-    >
-      {t('Approve Contract')}
-    </Button>) : <UnlockButton fullWidth radii="small" />
-  , [hasAccount, hasUserData, hasAllowance, renderBalance, componentType, stakedBalance, isEnableAddStake, onPresentDeposit, isLoadingApproveContract, handleApprove, onPresentWithdraw])
+        )
+      ) : (
+        <UnlockButton fullWidth radii="small" />
+      ),
+    [
+      hasAccount,
+      hasUserData,
+      hasAllowance,
+      renderBalance,
+      componentType,
+      stakedBalance,
+      isEnableAddStake,
+      onPresentDeposit,
+      isLoadingApproveContract,
+      handleApprove,
+      onPresentWithdraw,
+    ],
+  )
 
-  const renderPool = useMemo(() => <Flex justifyContent="space-between">
-    {hasAccount ? renderBalance : <Box>
-        <BalanceText>-</BalanceText>
-        </Box>}
+  const renderPool = useMemo(
+    () => (
+      <Flex justifyContent="space-between">
+        {hasAccount ? (
+          renderBalance
+        ) : (
+          <Box>
+            <BalanceText>-</BalanceText>
+          </Box>
+        )}
       </Flex>
-  , [hasAccount, renderBalance])
+    ),
+    [hasAccount, renderBalance],
+  )
 
   return (
     <>
       <TitleSection>{t('My Staked')}</TitleSection>
-      {
-        componentType !== 'accordian' ? renderPool : renderPoolAccordian
-      }
+      {componentType !== 'accordian' ? renderPool : renderPoolAccordian}
     </>
   )
 }

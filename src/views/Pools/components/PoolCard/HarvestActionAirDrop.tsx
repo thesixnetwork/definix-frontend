@@ -202,9 +202,7 @@ const HarvestActionAirdrop: React.FC<{
           <Box>
             <TitleSection>{t('Earned Token')}</TitleSection>
             <HarvestInfo>
-              <Box>
-                {renderAirDrop({ name: 'FINIX', value: finixEarningsValue })}
-              </Box>
+              <Box>{renderAirDrop({ name: 'FINIX', value: finixEarningsValue })}</Box>
               {isInPool && <HarvestButtonSectionInPool>{renderHarvestButton()}</HarvestButtonSectionInPool>}
             </HarvestInfo>
           </Box>

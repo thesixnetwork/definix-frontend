@@ -20,7 +20,7 @@ export enum QuoteToken {
   /**
    * @favor
    */
-  'FAVOR' = 'Favor'
+  'FAVOR' = 'Favor',
 }
 
 export enum PoolCategory {
@@ -80,7 +80,7 @@ export interface FarmConfig {
   tag?: string
   firstSymbol?: string
   secondSymbol?: string
-  isFinished?: boolean;
+  isFinished?: boolean
 }
 
 export interface LongTermStakeConfig {

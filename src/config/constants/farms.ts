@@ -326,11 +326,19 @@ const farms: FarmConfig[] = [
   },
 ]
 
-export const FAVOR_FARMS = farms.filter(({ tokenSymbol, firstSymbol, secondSymbol }) => tokenSymbol === 'Favor' || tokenSymbol === 'FAVOR' || firstSymbol === 'FAVOR' || firstSymbol === 'Favor' || secondSymbol === 'FAVOR' || secondSymbol === 'Favor')
+export const FAVOR_FARMS = farms.filter(
+  ({ tokenSymbol, firstSymbol, secondSymbol }) =>
+    tokenSymbol === 'Favor' ||
+    tokenSymbol === 'FAVOR' ||
+    firstSymbol === 'FAVOR' ||
+    firstSymbol === 'Favor' ||
+    secondSymbol === 'FAVOR' ||
+    secondSymbol === 'Favor',
+)
 
 export const TAG_COLORS = {
-  'hot': ColorStyles.RED,
-  'special': ColorStyles.YELLOW
+  hot: ColorStyles.RED,
+  special: ColorStyles.YELLOW,
 }
 
 export default farms

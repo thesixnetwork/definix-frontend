@@ -68,7 +68,12 @@ const Farms: React.FC = () => {
               search={(keyword: string) => setSearchKeyword(keyword)}
             />
             <Route exact path={`${path}`}>
-              <FarmList stakedOnly={stackedOnly} isFinished={isFinished} searchKeyword={searchKeyword} orderBy={selectedOrderBy} />
+              <FarmList
+                stakedOnly={stackedOnly}
+                isFinished={isFinished}
+                searchKeyword={searchKeyword}
+                orderBy={selectedOrderBy}
+              />
             </Route>
             {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
               Help

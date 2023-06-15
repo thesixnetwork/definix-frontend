@@ -19,7 +19,6 @@ const HarvestAction: React.FC<{
 
   isEnableHarvest: boolean
   onReward: () => Promise<any>
-
 }> = ({ allEarnings, componentType = 'farm', tokenName, isEnableHarvest, onReward }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
@@ -88,13 +87,15 @@ const HarvestAction: React.FC<{
   )
 
   const renderEarnedPrice = useCallback((tokenName, balance, price) => {
-    return <Flex key={tokenName} mb="8px">
-      <TokenLabel type="token">{tokenName}</TokenLabel>
-      <TokenValueWrap>
-        <StyledBalanceText value={balance} />
-        <PriceText value={price} prefix="=" />
-      </TokenValueWrap>
-    </Flex>
+    return (
+      <Flex key={tokenName} mb="8px">
+        <TokenLabel type="token">{tokenName}</TokenLabel>
+        <TokenValueWrap>
+          <StyledBalanceText value={balance} />
+          <PriceText value={price} prefix="=" />
+        </TokenValueWrap>
+      </Flex>
+    )
   }, [])
 
   return (
@@ -105,9 +106,14 @@ const HarvestAction: React.FC<{
             <TitleSection>{t('Earned Token')}</TitleSection>
             <HarvestInfo>
               <Flex flexDirection="column">
-                {
-                  allEarnings.length > 0 && allEarnings.map((item) => renderEarnedPrice(item.symbol, item.earnings, getPrice(item.earnings, convertToPriceFromSymbol(item.symbol))))
-                }
+                {allEarnings.length > 0 &&
+                  allEarnings.map((item) =>
+                    renderEarnedPrice(
+                      item.symbol,
+                      item.earnings,
+                      getPrice(item.earnings, convertToPriceFromSymbol(item.symbol)),
+                    ),
+                  )}
               </Flex>
               {isInFarmAndPool && <HarvestButtonSectionInFarm>{renderHarvestButton}</HarvestButtonSectionInFarm>}
             </HarvestInfo>
