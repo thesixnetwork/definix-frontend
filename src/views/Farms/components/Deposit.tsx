@@ -181,6 +181,7 @@ const Deposit: React.FC<{
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onChange={handleChange}
           onClickButton={() => onPresentConfirmModal()}
+          disabled={lpTokenName.includes('Favor')}
         />
 
         <Flex justifyContent="space-between" alignItems="center" mt="S_20">
