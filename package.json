@@ -1,11 +1,11 @@
 {
   "name": "definix-frontend",
-  "version": "2.5.20",
+  "version": "2.5.21",
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "NODE_ENV=development react-scripts start",
-    "start:stage": "NODE_ENV=production CI=false dotenv -e .env.staging react-scripts start",
+    "start:stage": "NODE_ENV=production CI=false dotenv -e .env.stage react-scripts start",
     "start:production": "NODE_ENV=production CI=false dotenv -e .env.production react-scripts start",
     "build": "CI=false react-scripts build",
     "build:development": "NODE_ENV=development CI=false dotenv -e .env.development react-scripts build",

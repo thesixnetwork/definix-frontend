@@ -60,6 +60,7 @@ const AddLiquidity: React.FC = () => {
     liquidityMinted,
     error,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
   const history = useHistory()
   const { chainId, account } = useWallet()
@@ -149,6 +150,7 @@ const AddLiquidity: React.FC = () => {
 
   const handleCurrencyASelect = useCallback(
     (currA: Currency) => {
+      if (!currA) return
       const newCurrencyIdA = currencyId(currA)
       if (newCurrencyIdA === currencyIdB) {
         history.push(`/liquidity/add/${currencyIdB}/${currencyIdA}`)
@@ -183,6 +185,11 @@ const AddLiquidity: React.FC = () => {
       ),
     [chainId, currencyA, currencyB],
   )
+
+  const isFavor = useMemo(() => {
+    const favor = ['Favor']
+    return favor.includes(currencyA?.symbol) || favor.includes(currencyB?.symbol)
+  }, [currencyA, currencyB])
 
   useEffect(() => {
     return () => handleDismissConfirmation()
@@ -364,7 +371,9 @@ const AddLiquidity: React.FC = () => {
                   )}
                 <Button
                   onClick={() => onPresentConfirmAddModal()}
-                  disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
+                  disabled={
+                    !isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED || isFavor
+                  }
                   width="100%"
                   scale={ButtonScales.LG}
                 >

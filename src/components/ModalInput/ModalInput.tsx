@@ -34,6 +34,7 @@ const ModalInput: React.FC<{
   onSelectBalanceRateButton: (rate: number) => void
   buttonName?: string
   onClickButton?: () => void
+  disabled?: boolean
 }> = ({
   balanceLabel = 'Balance',
   type,
@@ -43,6 +44,7 @@ const ModalInput: React.FC<{
   onSelectBalanceRateButton,
   onClickButton,
   buttonName,
+  disabled,
 }) => {
   const { t } = useTranslation()
 
@@ -104,7 +106,7 @@ const ModalInput: React.FC<{
           lg
           onClick={handleButtonClick}
           width="100%"
-          disabled={hasError || value === ''}
+          disabled={hasError || value === '' || disabled}
         >
           {buttonName}
         </Button>
