@@ -32,8 +32,8 @@ const FarmList: React.FC<{
   const farmsWithApy: FarmWithStakedValue[] = useFarmsList(farmsLP)
 
   const filteredFarms = useMemo(() => {
-    let result = farmsWithApy;
-    
+    let result = farmsWithApy
+
     if (stakedOnly) {
       result = result.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0))
     }

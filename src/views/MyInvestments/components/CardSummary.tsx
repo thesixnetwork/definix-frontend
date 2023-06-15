@@ -42,7 +42,7 @@ function CardSummary({ products }) {
   const favorProducts = useMemo(() => {
     const favorPids = FAVOR_FARMS.map(({ pid }) => pid)
     return products.filter(({ type, data }) => {
-      if (type !== 'farm') return false;
+      if (type !== 'farm') return false
       return !!favorPids.includes(data.pid)
     })
   }, [products])

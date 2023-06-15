@@ -101,13 +101,13 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
         </Text>
       </ModalBody>
       <ModalFooter isFooter>
-        {
-          addLiquidityUrl && <Flex justifyContent="center">
+        {addLiquidityUrl && (
+          <Flex justifyContent="center">
             <LinkExternal href={addLiquidityUrl} textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
               {t('Get {{FINIX-KLAY}} LP', { 'FINIX-KLAY': lpLabel })}
             </LinkExternal>
           </Flex>
-        }
+        )}
       </ModalFooter>
     </Modal>
   )

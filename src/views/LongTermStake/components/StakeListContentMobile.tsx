@@ -18,7 +18,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock,
 
   const getDays = useCallback((multiplier: number) => {
     const obj = longTermDays.find((item) => item.multiplier === multiplier)
-    return obj ? obj.days : '';
+    return obj ? obj.days : ''
   }, [])
 
   const getEndDay = (endDay: string) => {
@@ -70,9 +70,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock,
               </Text>
               <Flex alignItems="center">
                 <Text textStyle="R_14R" color="black">
-                  {item.isPenalty
-                    ? getEndDay(item.penaltyUnlockTimestamp)
-                    : getEndDay(item.lockTimestamp)}
+                  {item.isPenalty ? getEndDay(item.penaltyUnlockTimestamp) : getEndDay(item.lockTimestamp)}
                 </Text>
                 <Text ml="S_8" textStyle="R_12R" color="mediumgrey">
                   *GMT +9 {t('Asia/Seoul')}

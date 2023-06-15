@@ -13,7 +13,6 @@ const WrapTabs = styled(Box)`
   // background-color: ${({ theme }) => theme.colors.black20};
 
   .tab {
-
   }
 `
 
@@ -39,7 +38,7 @@ const CardInvestment = () => {
   const favorProducts = useMemo(() => {
     const favorPids = FAVOR_FARMS.map(({ pid }) => pid)
     return myInvestments.filter(({ type, data }) => {
-      if (type !== 'farm') return false;
+      if (type !== 'farm') return false
       return !!favorPids.includes(data.pid)
     })
   }, [myInvestments])
@@ -50,8 +49,12 @@ const CardInvestment = () => {
         <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} small={isMobile} equal={isMobile} theme="dark" />
       </WrapTabs>
       <CardBody p="0">
-        {curTab === tabs[0].id && <Earned isMain isMobile={isMobile} products={groupBy(myInvestments, 'type')} theme="dark" />}
-        {curTab === tabs[1].id && <FavEarnd isMain isMobile={isMobile} products={groupBy(favorProducts, 'type')} theme="dark" />}
+        {curTab === tabs[0].id && (
+          <Earned isMain isMobile={isMobile} products={groupBy(myInvestments, 'type')} theme="dark" />
+        )}
+        {curTab === tabs[1].id && (
+          <FavEarnd isMain isMobile={isMobile} products={groupBy(favorProducts, 'type')} theme="dark" />
+        )}
       </CardBody>
     </Card>
   )
