@@ -43,7 +43,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
             color={ColorStyles.ORANGE}
             style={{ marginLeft: '4px', marginBottom: '-2px' }}
           >
-            {apy && (isFarm ? convertToFarmAPRFormat(apy) : convertToPoolAPRFormat(apy))}%
+            {coin === 'Favor' ? 0 : apy && (isFarm ? convertToFarmAPRFormat(apy) : convertToPoolAPRFormat(apy))}%
           </Text>
           <Box style={{ marginLeft: '4px' }}>
             <ApyButton
