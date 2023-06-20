@@ -10,9 +10,9 @@ import velo from 'uikit-dev/images/for-ui-v2/banner/velo-banner.png'
 import dingoxSix from 'uikit-dev/images/for-ui-v2/banner/dingoxsix.png'
 import logoDingoxSixBlack from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-black.png'
 import logoDingoxSixWhite from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-white.png'
-import logoRebalance from 'uikit-dev/images/for-ui-v2/banner/logo-rebalance.png'
+import logoRecoveryFund from 'uikit-dev/images/for-ui-v2/banner/logo-recovery-fund.png'
+import logoDefinixSixProtocol from 'uikit-dev/images/for-ui-v2/banner/logo-definix.png'
 import logoFinixHavingBanner from 'uikit-dev/images/for-ui-v2/banner/logo-banner-finix.png'
-import logoDefinixSixProtocol from 'uikit-dev/images/for-ui-v2/banner/logo-definix-six-protocol.png'
 
 const StyledBannerFinixToken = styled(Card)`
   width: 100%;
@@ -79,7 +79,7 @@ const StyledBannerFinixToken = styled(Card)`
   }
 `
 
-const StyledBannerRebalance = styled(Card)`
+const StyledBannerRocoveryFund = styled(Card)`
   width: 100%;
   background: ${({ theme }) => theme.colors.card};
   padding: 48px 24px;
@@ -91,7 +91,7 @@ const StyledBannerRebalance = styled(Card)`
     content: '';
     width: 100%;
     height: 100%;
-    background: url(${logoRebalance});
+    background: url(${logoRecoveryFund});
     background-size: contain;
     background-position: right bottom;
     background-repeat: no-repeat;
@@ -112,7 +112,7 @@ const StyledBannerRebalance = styled(Card)`
   }
 
   ${({ theme }) => theme.mediaQueries.xs} {
-    padding: 30px 24px;
+    padding: 60px 24px;
     height: 300px;
   }
 
@@ -122,7 +122,7 @@ const StyledBannerRebalance = styled(Card)`
     height: 304px;
 
     &:before {
-      margin-right: 2.5em;
+      margin-right: 0;
       opacity: 1;
     }
 
@@ -219,12 +219,12 @@ const StyledBannerLongTerm = styled(Card)`
   }
 
   ${({ theme }) => theme.mediaQueries.xs} {
-    padding: 30px 24px;
+    padding: 100px 24px;
     height: 300px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 68px 40% 48px 24px;
+    padding: 106px 40% 48px 24px;
     border-radius: unset;
     height: 304px;
 
@@ -300,7 +300,7 @@ const StyledBannerSixProtocol = styled(Card)`
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 90px 40% 48px 40px !important;
     &:before {
-      margin-right: 40px !important;
+      margin-right: 0px !important;
     }
   }
 `
@@ -448,78 +448,44 @@ const CardAutoRebalancing = ({ className = '' }) => {
     <div>
       <StyledSlider {...settings}>
         <div>
-          <a
-            href="https://sixnetwork.medium.com/official-announcement-2nd-finix-token-halving-en-c8cadbafadf4"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <StyledBannerFinixToken className={className}>
-              <div className="pos-relative" style={{ zIndex: 1 }}>
-                <Heading className="mb-2" color="primary">
-                  FINIX Token’s
-                </Heading>
-                <Text color="text" fontSize="22px !important" bold lineHeight="1" className="mb-2">
-                  2nd Halving
-                </Text>
-                <Text color="textSubtle" fontSize="12px !important">
-                  21 June 2022 at 05.00 P.M. (GMT +7)
-                </Text>
-              </div>
-            </StyledBannerFinixToken>
-          </a>
+          <StyledBannerFinixToken className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                FINIX Token’s
+              </Heading>
+              <Text color="text" fontSize="32px !important" bold lineHeight="1" className="mb-2">
+                3rd Halving
+              </Text>
+              <Text color="textSubtle" fontSize="12px !important">
+                21 June 2023 at 02.00 PM (GMT +7)
+              </Text>
+            </div>
+          </StyledBannerFinixToken>
         </div>
         <div>
-          <StyledBannerRebalance className={className}>
+          <StyledBannerRocoveryFund className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Text bold fontSize="22px">
-                THE NEW
-              </Text>
               <Heading className="mb-2" color="primary">
-                REBALANCING FARMS ON BSC-BASED DEFINIX
+                Definix Recovery Fund Application
               </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                The revolution of a sustainable investment system. Invovling the principle of Rebalancing Strategy to
-                make the most of every opportunity.
+              <Text bold fontSize="12px">
+                Definix users who have staked their assets in rebalance farms and have been affected by this incident
+                are requested to fill out this form for asset compensation.
               </Text>
               <div className="mt-6">
-                <SpecialButton as="a" href="https://bsc.definix.com/rebalancing">
+                <SpecialButton as="a" href="https://forms.gle/rR6PivNYtDCsPhzs7" target="_blank">
                   <span>Let&apos;s get into it!</span>
                 </SpecialButton>
               </div>
             </div>
-          </StyledBannerRebalance>
-        </div>
-        <div>
-          <StyledBannerVoting className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Heading className="mb-2" color="primary">
-                DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING
-              </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                Community Proposal is a great way to say your words and to reflects the community feeling about your
-                ideas.{' '}
-              </Text>
-              <div className="mt-6">
-                <SpecialOutline as={Link} to="/">
-                  <span>Coming soon!</span>
-                </SpecialOutline>
-              </div>
-            </div>
-          </StyledBannerVoting>
+          </StyledBannerRocoveryFund>
         </div>
         <div>
           <StyledBannerLongTerm className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
               <Heading className="mb-2" color="primary">
-                FINIX LONG-TERM STAKE WITH VOTING SYSTEM
+                FINIX LONG-TERM STAKE
               </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                New financial product from DEFINIX. It is the single-sided pool stake FINIX earn vFINIX.{' '}
-              </Text>
-              <Text bold fontSize="12px">
-                vFINIX can vote for rewarding fee return from a liquidity pool and discount fee conditioning for
-                Rebalancing Farm.
-              </Text>
               <div className="mt-6">
                 <SpecialButton as="a" href="https://g2.klaytn.definix.com/long-term-stake">
                   <span>Go to stake</span>
@@ -529,11 +495,11 @@ const CardAutoRebalancing = ({ className = '' }) => {
           </StyledBannerLongTerm>
         </div>
         <div>
-          <a href="https://sixprotocol.com/" target="_blank" rel="noreferrer">
+          <a href="https://six.network/roadmap/?" target="_blank" rel="noreferrer">
             <StyledBannerSixProtocol className={className}>
               <div className="pos-relative" style={{ zIndex: 1 }}>
                 <Heading className="mb-2" color="primary">
-                  BE PREPARE FOR THE USE OF DEFINIX
+                  UNLOCK THE SYNERGY OF DEFINIX
                 </Heading>
                 <Text
                   color="text"
@@ -542,10 +508,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
                   lineHeight="1"
                   className="mb-2"
                 >
-                  On SIX Protocol
-                </Text>
-                <Text color="textSubtle" fontSize="14px">
-                  (Update for Definix community is coming soon)
+                  on SIX Protocol
                 </Text>
               </div>
             </StyledBannerSixProtocol>

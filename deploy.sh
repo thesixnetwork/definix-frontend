@@ -27,7 +27,7 @@ aws s3 sync ./build s3://${WEBS3} --acl public-read --profile ${2}
 _exit_if_fail $?
 
 echo "Clear cache...."
-aws cloudfront create-invalidation --distribution-id ${DISTRIBUTION_ID} --paths '/*'  --profile ${2}
+aws cloudfront create-invalidation --distribution-id ${DISTRIBUTION_ID} --paths '/*' --profile ${2}
 _exit_if_fail $?
 
 echo "https://${WEBS3}.s3-ap-southeast-1.amazonaws.com/index.html"
