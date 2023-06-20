@@ -19,6 +19,7 @@ import ExploreTabButtons from './components/ExploreTabButtons'
 import ExploreDetail from './ExploreDetail'
 import Invest from './Invest'
 import Withdraw from './Withdraw'
+import bannerRecoveryFund from '../../uikit-dev/images/for-ui-v2/banner/banner-recovery-fund.png'
 
 const MaxWidth = styled.div`
   max-width: 1280px;
@@ -74,7 +75,7 @@ const Explore: React.FC = () => {
           <LeftPanel isShowRightPanel={false}>
             <MaxWidth>
               <div className="mb-5">
-                <div className="flex align-center mb-2">
+                <div className="flex align-center mb-4">
                   <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
                     Rebalancing Farm
                   </Heading>
@@ -88,10 +89,9 @@ const Explore: React.FC = () => {
                     Help
                   </HelpButton> */}
                 </div>
-                {/* <Text>
-                  You can invest your tokens in our farms on this list. Every farms is administered by a
-                  DEFINIX-certified farm manager.
-                </Text> */}
+                <a href="https://forms.gle/rR6PivNYtDCsPhzs7" target="_blank" rel="noreferrer">
+                  <img src={bannerRecoveryFund} alt="bannerRecoveryFund" />
+                </a>
               </div>
 
               <ExploreTabButtons

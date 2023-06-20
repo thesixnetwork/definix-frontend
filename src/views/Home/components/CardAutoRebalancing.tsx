@@ -4,14 +4,14 @@ import styled from 'styled-components'
 import { Button, Card, Heading, Text, useMatchBreakpoints } from 'uikit-dev'
 import Slider from 'react-slick'
 import useTheme from 'hooks/useTheme'
-import definixLongTerm from 'uikit-dev/images/for-ui-v2/banner/definix-long-term-stake-with-voting-system.png'
 import definixVoting from 'uikit-dev/images/for-ui-v2/banner/voting-banner.png'
 import velo from 'uikit-dev/images/for-ui-v2/banner/velo-banner.png'
 import dingoxSix from 'uikit-dev/images/for-ui-v2/banner/dingoxsix.png'
+import logoLongTerm from 'uikit-dev/images/for-ui-v2/banner/logo-long-term.png'
 import logoDingoxSixBlack from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-black.png'
 import logoDingoxSixWhite from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-white.png'
 import logoRecoveryFund from 'uikit-dev/images/for-ui-v2/banner/logo-recovery-fund.png'
-import logoDefinixSixProtocol from 'uikit-dev/images/for-ui-v2/banner/logo-definix.png'
+import logoDefinixSixProtocol from 'uikit-dev/images/for-ui-v2/banner/logo-definix-protocol.png'
 import logoFinixHavingBanner from 'uikit-dev/images/for-ui-v2/banner/logo-banner-finix.png'
 
 const StyledBannerFinixToken = styled(Card)`
@@ -200,7 +200,7 @@ const StyledBannerLongTerm = styled(Card)`
     content: '';
     width: 70%;
     height: 100%;
-    background: url(${definixLongTerm});
+    background: url(${logoLongTerm});
     background-size: contain;
     background-position: right bottom;
     background-repeat: no-repeat;
@@ -463,31 +463,22 @@ const CardAutoRebalancing = ({ className = '' }) => {
           </StyledBannerFinixToken>
         </div>
         <div>
-          <StyledBannerRocoveryFund className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Heading className="mb-2" color="primary">
-                Definix Recovery Fund Application
-              </Heading>
-              <Text bold fontSize="12px">
-                Definix users who have staked their assets in rebalance farms and have been affected by this incident
-                are requested to fill out this form for asset compensation.
-              </Text>
-              <div className="mt-6">
-                <SpecialButton as="a" href="https://forms.gle/rR6PivNYtDCsPhzs7" target="_blank">
-                  <span>Let&apos;s get into it!</span>
-                </SpecialButton>
-              </div>
-            </div>
-          </StyledBannerRocoveryFund>
-        </div>
-        <div>
           <StyledBannerLongTerm className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
               <Heading className="mb-2" color="primary">
                 FINIX LONG-TERM STAKE
               </Heading>
+              <Text
+                color="text"
+                fontSize={isMobile ? '16px !important' : '22px !important'}
+                bold
+                lineHeight="1"
+                className="mb-2"
+              >
+                Stake your FINIX here!
+              </Text>
               <div className="mt-6">
-                <SpecialButton as="a" href="https://g2.klaytn.definix.com/long-term-stake">
+                <SpecialButton as="a" href="https://g2.klaytn.definix.com/long-term-stake" target="_blank">
                   <span>Go to stake</span>
                 </SpecialButton>
               </div>
