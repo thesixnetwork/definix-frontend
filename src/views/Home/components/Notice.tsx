@@ -183,7 +183,7 @@ const HomeNotice: React.FC = () => {
     setNotices([
       {
         id: 1,
-        title: 'Definix - Official DeFi protocol of Klaytn chain',
+        title: 'Definix - Defi protocol',
         content:
           'Welcome to the decentralized multi-chain Defi protocol Definix.\nManage your crypto assets safely and enjoy exclusive benefits for Long-term staking!',
         link: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
@@ -191,10 +191,10 @@ const HomeNotice: React.FC = () => {
       },
       {
         id: 2,
-        title: 'Definix - Official DeFi protocol of Klaytn chain',
+        title: 'Definix Recovery Fund Application',
         content:
-          'Welcome to the decentralized multi-chain Defi protocol Definix.\nManage your crypto assets safely and enjoy exclusive benefits for Long-term staking!',
-        link: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
+          'Definix users who have staked their assets in rebalance farms and have been affected by this incident are requested to fill out this form for asset compensation via this link: https://forms.gle/rR6PivNYtDCsPhzs7',
+        link: 'https://forms.gle/rR6PivNYtDCsPhzs7',
         linkLabel: 'Learn more',
       },
     ])
