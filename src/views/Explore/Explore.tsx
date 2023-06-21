@@ -8,6 +8,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { useRebalanceAddress, useRebalances, useRebalanceBalances, useRebalanceRewards } from 'state/hooks'
 import styled from 'styled-components'
 import Heading from 'uikit-dev/components/Heading/Heading'
+import bannerRecovery from 'uikit-dev/images/for-ui-v2/banner/banner-recovery-fund.png'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import { getAddress } from 'utils/addressHelpers'
@@ -73,13 +74,12 @@ const Explore: React.FC = () => {
         <TwoPanelLayout>
           <LeftPanel isShowRightPanel={false}>
             <MaxWidth>
-              <div className="mb-5">
-                <div className="flex align-center mb-2">
-                  <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                    Rebalancing Farm
-                  </Heading>
+              <div className="flex align-center">
+                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+                  Rebalancing Farm
+                </Heading>
 
-                  {/* <HelpButton
+                {/* <HelpButton
                     size="sm"
                     variant="secondary"
                     className="px-2"
@@ -87,11 +87,11 @@ const Explore: React.FC = () => {
                   >
                     Help
                   </HelpButton> */}
-                </div>
-                {/* <Text>
-                  You can invest your tokens in our farms on this list. Every farms is administered by a
-                  DEFINIX-certified farm manager.
-                </Text> */}
+              </div>
+              <div className="my-3">
+                <a href="https://six.network/roadmap/?" target="_blank" rel="noreferrer">
+                  <img src={bannerRecovery} alt="bannerRecovery" />
+                </a>
               </div>
 
               <ExploreTabButtons
