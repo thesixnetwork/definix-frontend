@@ -2188,10 +2188,10 @@
     "@ethersproject/properties" "^5.5.0"
     "@ethersproject/strings" "^5.5.0"
 
-"@fingerlabs/definixswap-uikit-v2@^1.4.12":
-  version "1.4.12"
-  resolved "https://npm.pkg.github.com/download/@fingerlabs/definixswap-uikit-v2/1.4.12/ddafafa91154513c6fd1d77d19d8a9c3020a9b9d#ddafafa91154513c6fd1d77d19d8a9c3020a9b9d"
-  integrity sha512-NKJpkVkdfccWW4qL16ivptYmHdjZ/PW8h6/7lRtYYdYLlbwPG9oBdEvtVbFUGcr7EVmtiUsIDxOCnagbx7rcmg==
+"@fingerlabs/definixswap-uikit-v2@1.4.15":
+  version "1.4.15"
+  resolved "https://npm.pkg.github.com/download/@fingerlabs/definixswap-uikit-v2/1.4.15/72ac11a339b26623be98797765bc33bd7a5d2e6e#72ac11a339b26623be98797765bc33bd7a5d2e6e"
+  integrity sha512-5o+m2UCsQ2bq9/OFlmlWmwVKHR1KkTN1DVNX/ruwOh1pfJKO3+7yhxnPxWiEaYm2hcE7P0meULaMOpUpNoZWHw==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
