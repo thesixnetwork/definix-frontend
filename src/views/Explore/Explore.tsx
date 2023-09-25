@@ -20,6 +20,7 @@ import ExploreTabButtons from './components/ExploreTabButtons'
 import ExploreDetail from './ExploreDetail'
 import Invest from './Invest'
 import Withdraw from './Withdraw'
+import bannerRecoveryFund from '../../uikit-dev/images/for-ui-v2/banner/banner-recovery-fund.png'
 
 const MaxWidth = styled.div`
   max-width: 1280px;
