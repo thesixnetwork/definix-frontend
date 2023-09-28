@@ -12,7 +12,7 @@ import {
   usePriceFinixUsd,
   usePriceSixUsd,
 } from 'state/hooks'
-import { useSousStake } from 'hooks/useStake'
+import useUnstake from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { Text, Box, Flex } from '@fingerlabs/definixswap-uikit-v2'
@@ -23,9 +23,8 @@ import { FarmWithStakedValue } from './FarmCard/types'
 import { mediaQueries, spacing } from 'uikitV2/base'
 import { textStyle } from 'uikitV2/text'
 import ModalInput from 'uikitV2/components/ModalInput'
-import { useModal } from 'uikitV2/Modal'
 import Card from 'uikitV2/components/Card'
-import { ArrowBackIcon } from 'uikit-dev'
+import { ArrowBackIcon, useModal } from 'uikit-dev'
 import PageTitle from 'uikitV2/components/PageTitle'
 import { ColorStyles } from 'uikitV2/colors'
 import { Button } from '@mui/material'
@@ -99,6 +98,7 @@ const Deposit: React.FC<{
   renderCardHeading: () => void
 }> = ({ farm, onBack, renderCardHeading, addSwapUrl }) => {
   const history = useHistory()
+  const [val, setVal] = useState('')
 
   const bnbPrice = usePriceBnbBusd()
   const sixPrice = usePriceSixUsd()
@@ -106,6 +106,7 @@ const Deposit: React.FC<{
   const ethPrice = usePriceEthBusd()
 
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
+  const { onUnstake } = useUnstake(pid)
   const { stakedBalance } = useFarmUser(pid)
   const rawStakedBalance = getBalanceNumber(stakedBalance)
   const displayBalance = rawStakedBalance.toLocaleString()
@@ -224,6 +225,32 @@ const Deposit: React.FC<{
   //   false,
   // )
 
+  const handleChange = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      setVal(e.currentTarget.value)
+    },
+    [setVal],
+  )
+
+  const handleSelectBalanceRate = useCallback(
+    (rate: number) => {
+      const balance = rate === 100 ? stakedBalance : stakedBalance.times(rate / 100)
+      setVal(getFullDisplayBalance(balance))
+    },
+    [stakedBalance, setVal],
+  )
+
+  const handleUnstake = useCallback(() => onUnstake(val), [onUnstake, val])
+  const lpTokenName = useMemo(() => farm.lpSymbol.replace(' LP', ''), [farm.lpSymbol])
+
+  /**
+   * confirm modal
+   */
+  const [onPresentConfirmModal] = useModal(
+    <ConfirmModal type="withdraw" lpSymbol={lpTokenName} stakedBalance={val} onOK={handleUnstake} goList={onBack} />,
+    false,
+  )
+
   return (
     <SmallestLayout>
       <Box style={{ cursor: 'pointer', marginBottom: 20, display: 'inline-flex' }} onClick={onBack}>
@@ -233,8 +260,8 @@ const Deposit: React.FC<{
         </Flex>
       </Box>
       <PageTitle
-        title="Deposit"
-        caption="Deposit LP on the farm and get high interest income."
+        title="Remove LP"
+        caption="Remove LPs from the farm."
         // linkLabel="Learn how to stake in Pool"
         // link="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
         // img={poolImg}
@@ -261,20 +288,14 @@ const Deposit: React.FC<{
         <StyledDivider />
 
         <ModalInput
-          type="deposit"
-          value={''}
-          max={new BigNumber(100)}
+          type="withdraw"
+          value={val}
+          max={stakedBalance}
           // symbol={tokenName}
-          buttonName="Deposit"
-          onChange={() => {
-            console.log(1)
-          }}
-          onSelectBalanceRateButton={() => {
-            console.log(1)
-          }}
-          onClickButton={() => {
-            console.log(1)
-          }}
+          buttonName="Withdraw"
+          onChange={handleChange}
+          onSelectBalanceRateButton={handleSelectBalanceRate}
+          onClickButton={onPresentConfirmModal}
         />
 
         <Flex justifyContent="space-between" alignItems="center" style={{ marginTop: 20 }}>
