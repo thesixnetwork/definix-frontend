@@ -26,6 +26,7 @@ export enum QuoteToken {
   'BNB' = 'BNB',
   'SYRUP' = 'SYRUP',
   'BUSD' = 'BUSD',
+  'USDT' = 'USDT',
   'TWT' = 'TWT',
   'UST' = 'UST',
   'ETH' = 'ETH',
@@ -36,8 +37,10 @@ export enum QuoteToken {
   'FINIX' = 'FINIX',
   'SIXFINIX' = 'FINIX-SIX',
   'FINIXBUSD' = 'FINIX-BUSD',
+  'FINIXUSDT' = 'FINIX-USDT',
   'FINIXBNB' = 'FINIX-BNB',
   'SIXBUSD' = 'SIX-BUSD',
+  'SIXUSDT' = 'SIX-USDT',
   'USDTBUSD' = 'USDT-BUSD',
 }
 

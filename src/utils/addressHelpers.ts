@@ -71,11 +71,17 @@ export const getFinixSixLPAddress = () => {
 export const getFinixBusdLPAddress = () => {
   return getAddress(addresses.finixBusdLP)
 }
+export const getFinixUsdtLPAddress = () => {
+  return getAddress(addresses.finixUsdtLP)
+}
 export const getFinixBnbLPAddress = () => {
   return getAddress(addresses.finixBnbLP)
 }
 export const getSixBusdLPAddress = () => {
   return getAddress(addresses.sixBusdLP)
+}
+export const getSixUsdtLPAddress = () => {
+  return getAddress(addresses.sixUsdtLP)
 }
 export const getDefinixBnbBusdLPAddress = () => {
   return getAddress(addresses.pancakeBnbBusdLP)
