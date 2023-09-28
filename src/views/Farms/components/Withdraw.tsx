@@ -12,8 +12,7 @@ import {
   usePriceFinixUsd,
   usePriceSixUsd,
 } from 'state/hooks'
-import { useSousStake } from 'hooks/useStake'
-import useConverter from 'hooks/useConverter'
+import useUnstake from 'hooks/useUnstake'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { Text, Box, Flex } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/Text/CurrencyText'
@@ -104,11 +103,15 @@ const Deposit: React.FC<{
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const ethPrice = usePriceEthBusd()
+  const [val, setVal] = useState('')
 
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
+  const { onUnstake } = useUnstake(pid)
   const { stakedBalance } = useFarmUser(pid)
   const rawStakedBalance = getBalanceNumber(stakedBalance)
   const displayBalance = rawStakedBalance.toLocaleString()
+
+  const myStakedBalance = useMemo(() => new BigNumber(rawStakedBalance || 0), [rawStakedBalance])
 
   const ratio = new BigNumber(stakedBalance).div(new BigNumber(farm.lpTotalSupply))
 
@@ -168,7 +171,6 @@ const Deposit: React.FC<{
   ])
 
   // const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
-  // const { onStake } = useSousStake(pool.sousId, isBnbPool)
   // const [val, setVal] = useState('')
 
   // const tokenName = useMemo(() => {
@@ -199,30 +201,36 @@ const Deposit: React.FC<{
   //   return convertToPriceFormat(new BigNumber(myStakedValue).multipliedBy(price).toNumber())
   // }, [convertToPriceFromSymbol, tokenName, myStakedValue, convertToPriceFormat])
 
-  // const handleChange = useCallback(
-  //   (e: React.FormEvent<HTMLInputElement>) => {
-  //     setVal(e.currentTarget.value)
-  //   },
-  //   [setVal],
-  // )
+  const handleChange = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      setVal(e.currentTarget.value)
+    },
+    [setVal],
+  )
 
-  // const handleSelectBalanceRate = useCallback(
-  //   (rate: number) => {
-  //     const balance = rate === 100 ? maxValue : maxValue.times(rate / 100)
-  //     setVal(getFullDisplayBalance(balance))
-  //   },
-  //   [maxValue, setVal],
-  // )
+  const handleSelectBalanceRate = useCallback(
+    (rate: number) => {
+      const balance = rate === 100 ? stakedBalance : stakedBalance.times(rate / 100)
+      setVal(getFullDisplayBalance(balance))
+    },
+    [stakedBalance, setVal],
+  )
 
-  // const handleStake = useCallback(() => onStake(val), [onStake, val])
+  const handleUnstake = useCallback(() => onUnstake(val), [onUnstake, val])
+  const lpTokenName = useMemo(() => farm.lpSymbol.replace(' LP', ''), [farm.lpSymbol])
 
-  // /**
-  //  * confirm modal
-  //  */
-  // const [onPresentConfirmModal] = useModal(
-  //   <ConfirmModal type="deposit" tokenName={tokenName} stakedBalance={val} onOK={handleStake} goList={onBack} />,
-  //   false,
-  // )
+  /**
+   * confirm modal
+   */
+  const [onPresentConfirmModal] = useModal(
+    <ConfirmModal 
+      type="withdraw" 
+      lpSymbol={lpTokenName} 
+      stakedBalance={val} 
+      onOK={handleUnstake} 
+      goList={onBack} 
+    />,
+  )
 
   return (
     <SmallestLayout>
@@ -233,11 +241,7 @@ const Deposit: React.FC<{
         </Flex>
       </Box>
       <PageTitle
-        title="Deposit"
-        caption="Deposit LP on the farm and get high interest income."
-        // linkLabel="Learn how to stake in Pool"
-        // link="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
-        // img={poolImg}
+        title="Remove LP from the farm" caption="Remove LP from the farm"
       />
       <CardWrap>
         {renderCardHeading()}
@@ -261,20 +265,15 @@ const Deposit: React.FC<{
         <StyledDivider />
 
         <ModalInput
-          type="deposit"
-          value={''}
-          max={new BigNumber(100)}
+          type="withdraw"
+          value={val}
+          max={stakedBalance}
+          balanceLabel={'Removable'}
           // symbol={tokenName}
-          buttonName="Deposit"
-          onChange={() => {
-            console.log(1)
-          }}
-          onSelectBalanceRateButton={() => {
-            console.log(1)
-          }}
-          onClickButton={() => {
-            console.log(1)
-          }}
+          buttonName="Remove"
+          onChange={handleChange}
+          onSelectBalanceRateButton={handleSelectBalanceRate}
+          onClickButton={onPresentConfirmModal}
         />
 
         <Flex justifyContent="space-between" alignItems="center" style={{ marginTop: 20 }}>

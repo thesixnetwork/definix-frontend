@@ -17,8 +17,10 @@ import {
   getEthAddress,
   getFinixSixLPAddress,
   getFinixBusdLPAddress,
+  getFinixUsdtLPAddress,
   getFinixBnbLPAddress,
   getSixBusdLPAddress,
+  getSixUsdtLPAddress,
   getDefinixBnbBusdLPAddress,
 } from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
@@ -264,6 +266,14 @@ export const fetchFinixPrice = () => async (dispatch) => {
   )
   fetchPromise.push(
     getTotalBalanceLp({
+      lpAddress: getFinixUsdtLPAddress(),
+      pair1: getFinixAddress(),
+      pair2: getUsdtAddress(),
+      herodotusAddress: getHerodotusAddress(),
+    }),
+  )
+  fetchPromise.push(
+    getTotalBalanceLp({
       lpAddress: getFinixBnbLPAddress(),
       pair1: getFinixAddress(),
       pair2: getWbnbAddress(),
@@ -280,6 +290,14 @@ export const fetchFinixPrice = () => async (dispatch) => {
   )
   fetchPromise.push(
     getTotalBalanceLp({
+      lpAddress: getSixUsdtLPAddress(),
+      pair1: getSixAddress(),
+      pair2: getUsdtAddress(),
+      herodotusAddress: getHerodotusAddress(),
+    }),
+  )
+  fetchPromise.push(
+    getTotalBalanceLp({
       lpAddress: getDefinixBnbBusdLPAddress(),
       pair1: getWbnbAddress(),
       pair2: getBusdAddress(),
@@ -290,8 +308,10 @@ export const fetchFinixPrice = () => async (dispatch) => {
   const [
     [totalFinixDefinixFinixSixPair, totalSixDefinixFinixSixPair],
     [totalFinixDefinixFinixBusdPair, totalBusdDefinixFinixBusdPair],
+    [totalFinixDefinixFinixUsdtPair, totalUsdtDefinixFinixUsdtPair],
     [totalFinixDefinixFinixBnbPair, totalBnbDefinixFinixBnbPair],
     [totalSixDefinixSixBusdPair, totalBnbDefinixSixBusdPair],
+    [totalSixDefinixSixUsdtPair, totalBnbDefinixSixUsdtPair],
     [totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair],
   ] = await Promise.all(fetchPromise)
   // const totalFinixDefinixFinixSixPair = 10000000.0
@@ -301,6 +321,10 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // const totalFinixDefinixFinixBusdPair = 10000000.0
   // const totalBusdDefinixFinixBusdPair = 500000.0
   const finixBusdRatio = totalBusdDefinixFinixBusdPair / totalFinixDefinixFinixBusdPair || 0
+  // FINIX-USDT
+  // const totalFinixDefinixFinixUsdtPair = 10000000.0
+  // const totalUsdtDefinixFinixUsdtPair = 500000.0
+  const finixUsdtRatio = totalUsdtDefinixFinixUsdtPair / totalFinixDefinixFinixUsdtPair || 0
   // FINIX-BNB
   // const totalFinixDefinixFinixBnbPair = 10000000.0
   // const totalBnbDefinixFinixBnbPair = 1824.82
@@ -309,18 +333,24 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // const totalSixDefinixSixBusdPair = 12820512.82
   // const totalBnbDefinixSixBusdPair = 500000.0
   const sixBusdRatio = totalBnbDefinixSixBusdPair / totalSixDefinixSixBusdPair || 0
+  // SIX-USDT
+  // const totalSixDefinixSixUsdtPair = 12820512.82
+  // const totalBnbDefinixSixUsdtPair = 500000.0
+  const sixUsdtRatio = totalBnbDefinixSixUsdtPair / totalSixDefinixSixUsdtPair || 0
   // PANCAKE BNB-BUSD
   // const totalBnbInDefinixBnbBusdPair = 557985
   // const totalBusdInDefinixBnbBusdPair = 152220163
   const definixBnbBusdRatio = totalBusdInDefinixBnbBusdPair / totalBnbInDefinixBnbBusdPair || 0
   // Price cal
   const finixSixPrice = finixSixRatio * sixBusdRatio
+  // const averagefinixSixPrice = finixSixRatio * sixBusdRatio
   const finixBnbPrice = finixBnbRatio * definixBnbBusdRatio
   const averageFinixPrice =
     (finixBusdRatio * totalFinixDefinixFinixBusdPair +
+      finixUsdtRatio * totalFinixDefinixFinixUsdtPair +
       finixBnbPrice * totalFinixDefinixFinixBnbPair +
       finixSixPrice * totalFinixDefinixFinixSixPair) /
-    (totalFinixDefinixFinixBusdPair + totalFinixDefinixFinixBnbPair + totalFinixDefinixFinixSixPair)
+    (totalFinixDefinixFinixBusdPair + totalFinixDefinixFinixUsdtPair + totalFinixDefinixFinixBnbPair + totalFinixDefinixFinixSixPair)
 
   // console.log('FINIX-SIX LP Address : ', getFinixSixLPAddress())
   // console.log('FINIX Address : ', getFinixAddress())

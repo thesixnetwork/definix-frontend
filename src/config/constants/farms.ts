@@ -32,6 +32,15 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
   },
+  // {
+  //   pid: 31,
+  //   lpSymbol: 'FINIX-USDT LP',
+  //   lpAddresses: getLpNetwork(FINIX, USDT),
+  //   tokenSymbol: 'USDT',
+  //   tokenAddresses: USDT,
+  //   quoteTokenSymbol: QuoteToken.FINIX,
+  //   quoteTokenAdresses: contracts.finix,
+  // },
   {
     pid: 3,
     lpSymbol: 'FINIX-BNB LP',
@@ -50,6 +59,15 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.BUSD,
     quoteTokenAdresses: contracts.busd,
   },
+  // {
+  //   pid: 32,
+  //   lpSymbol: 'SIX-USDT LP',
+  //   lpAddresses: getLpNetwork(SIX, USDT),
+  //   tokenSymbol: 'SIX',
+  //   tokenAddresses: SIX,
+  //   quoteTokenSymbol: QuoteToken.USDT,
+  //   quoteTokenAdresses: contracts.busd,
+  // },
   {
     pid: 5,
     lpSymbol: 'USDT-BUSD LP',
