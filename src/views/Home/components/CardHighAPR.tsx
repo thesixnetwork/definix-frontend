@@ -88,12 +88,12 @@ const CardHighAPR = () => {
         <InnerBox to="/farm">
           <FarmHighAPR />
         </InnerBox>
-        <StyledRebalanceTitle>
+        {/* <StyledRebalanceTitle>
           <Title>Meet Rebalancing with Definix unique differentiation.</Title>
         </StyledRebalanceTitle>
         <InnerBox to="/rebalancing">
           <ExploreHighAPR />
-        </InnerBox>
+        </InnerBox>*/}
       </WrapCardBody>
     </Card>
   )

@@ -20,6 +20,7 @@ const useUnstake = (pid: number) => {
       const txHash = await unstake(herodotusContract, pid, amount, account)
       dispatch(fetchFarmUserDataAsync(account))
       console.info(txHash)
+      return txHash
     },
     [account, dispatch, herodotusContract, pid],
   )

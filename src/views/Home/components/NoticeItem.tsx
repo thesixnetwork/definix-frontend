@@ -86,6 +86,37 @@ const WrapMobileFooter = styled(Flex)`
   }
 `
 
+interface LinkifyProps {
+  text: string
+}
+
+const Linkify: React.FC<LinkifyProps> = ({ text }) => {
+  const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi
+
+  const replacedText = text.replace(urlRegex, (match) => {
+    return `{{link}}${match}{{/link}}`
+  })
+
+  const jsxElements = []
+  const splitText = replacedText.split(/{{\/?link}}/)
+
+  for (let i = 0; i < splitText.length; i++) {
+    if (i % 2 === 0) {
+      // This is a regular text chunk
+      jsxElements.push(splitText[i])
+    } else {
+      // This is a URL
+      jsxElements.push(
+        <a style={{ color: '#ff5532' }} key={i} href={splitText[i]} target="_blank" rel="noopener noreferrer">
+          {splitText[i]}
+        </a>,
+      )
+    }
+  }
+
+  return <div>{jsxElements}</div>
+}
+
 const NoticeItem: React.FC<NoticeProps> = ({ title, content, link, linkLabel }) => {
   return (
     <Wrap>
@@ -97,7 +128,9 @@ const NoticeItem: React.FC<NoticeProps> = ({ title, content, link, linkLabel }) 
           </Link>
         )}
       </WrapTitle>
-      <Content>{content}</Content>
+      <Content>
+        <Linkify text={content} />
+      </Content>
       <WrapMobileFooter>
         {link && (
           <Link href={link} target="_blank">

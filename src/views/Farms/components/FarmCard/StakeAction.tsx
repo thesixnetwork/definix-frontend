@@ -105,6 +105,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
           <Button
             variant="outlined"
             color="secondary"
+            disabled={pid === 2 || pid === 4}
             style={{ width: '100%' }}
             onClick={onPresentDeposit}
             className="btn-secondary-disable ml-1"
