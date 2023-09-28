@@ -223,13 +223,7 @@ const Deposit: React.FC<{
    * confirm modal
    */
   const [onPresentConfirmModal] = useModal(
-    <ConfirmModal 
-      type="withdraw" 
-      lpSymbol={lpTokenName} 
-      stakedBalance={val} 
-      onOK={handleUnstake} 
-      goList={onBack} 
-    />,
+    <ConfirmModal type="withdraw" lpSymbol={lpTokenName} stakedBalance={val} onOK={handleUnstake} goList={onBack} />,
   )
 
   return (
@@ -240,9 +234,7 @@ const Deposit: React.FC<{
           <Text style={{ ...textStyle.R_16M, marginLeft: 6, color: '#999' }}>Back</Text>
         </Flex>
       </Box>
-      <PageTitle
-        title="Remove LP from the farm" caption="Remove LP from the farm"
-      />
+      <PageTitle title="Remove LP from the farm" caption="Remove LP from the farm" />
       <CardWrap>
         {renderCardHeading()}
         <CardBody>

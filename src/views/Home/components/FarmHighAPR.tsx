@@ -27,8 +27,8 @@ const ImageBox = styled(Box)`
   }
   &:last-child {
     margin-left: -10px;
-  }   
-` 
+  }
+`
 
 const WrapImage = styled(Flex)`
   width: 96px;
@@ -55,10 +55,10 @@ const FarmHighAPR = () => {
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const ethPriceUsd = usePriceEthBusd()
-  const activeFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
   const finixPriceVsBNB = finixPrice
   const sortedData = useMemo(() => {
-    const farmTranslate = activeFarms.map(farm => {
+    const farmTranslate = activeFarms.map((farm) => {
       const totalValue: BigNumber = (() => {
         if (!farm.lpTotalInQuoteToken) {
           return null
@@ -161,14 +161,14 @@ const FarmHighAPR = () => {
       totalAssetValue={get(sortedData, 'totalLiquidityValue', 0)}
       apr={numeral(sortedData.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}
       Images={
-      <Flex mr={12} alignItems="center" width={'auto'}>
-        <ImageBox>
-          <StyledCoin symbol={(sortedData.lpSymbol || "").replace(" LP", "").split('-')[0]} size="40px" />
-        </ImageBox>
-        <ImageBox>
-          <StyledCoin symbol={(sortedData.lpSymbol || "").replace(" LP", "").split('-')[1]} size="40px" />
-        </ImageBox>
-      </Flex>
+        <Flex mr={12} alignItems="center" width={'auto'}>
+          <ImageBox>
+            <StyledCoin symbol={(sortedData.lpSymbol || '').replace(' LP', '').split('-')[0]} size="40px" />
+          </ImageBox>
+          <ImageBox>
+            <StyledCoin symbol={(sortedData.lpSymbol || '').replace(' LP', '').split('-')[1]} size="40px" />
+          </ImageBox>
+        </Flex>
       }
     />
   ) : (

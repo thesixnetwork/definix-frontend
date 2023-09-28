@@ -350,7 +350,10 @@ export const fetchFinixPrice = () => async (dispatch) => {
       finixUsdtRatio * totalFinixDefinixFinixUsdtPair +
       finixBnbPrice * totalFinixDefinixFinixBnbPair +
       finixSixPrice * totalFinixDefinixFinixSixPair) /
-    (totalFinixDefinixFinixBusdPair + totalFinixDefinixFinixUsdtPair + totalFinixDefinixFinixBnbPair + totalFinixDefinixFinixSixPair)
+    (totalFinixDefinixFinixBusdPair +
+      totalFinixDefinixFinixUsdtPair +
+      totalFinixDefinixFinixBnbPair +
+      totalFinixDefinixFinixSixPair)
 
   // console.log('FINIX-SIX LP Address : ', getFinixSixLPAddress())
   // console.log('FINIX Address : ', getFinixAddress())
