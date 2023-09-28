@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-bottom: 2rem;
-  } ;
+  }
 `
 
 const ToggleWrapper = styled.div`

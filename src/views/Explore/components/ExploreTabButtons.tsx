@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-bottom: 2rem;
-  } ;
+  }
 `
 
 const ExploreTabButtons = ({ listView, setListView, isInvested, setIsInvested }) => {

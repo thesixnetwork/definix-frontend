@@ -72,7 +72,11 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     if (rawStakedBalance === 0) {
       return (
         <Button
-          disabled={(farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()) || (pid === 2 || pid === 4)}
+          disabled={
+            (farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()) ||
+            pid === 2 ||
+            pid === 4
+          }
           onClick={onPresentDeposit}
           fullWidth
           radii="small"
