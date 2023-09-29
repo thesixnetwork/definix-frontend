@@ -11,7 +11,7 @@ export const variants = {
   FAILURE: 'failure',
 } as const
 
-export type Variants = typeof variants[keyof typeof variants]
+export type Variants = (typeof variants)[keyof typeof variants]
 
 export interface TagProps extends SpaceProps {
   variant?: Variants

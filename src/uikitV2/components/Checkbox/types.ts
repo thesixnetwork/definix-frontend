@@ -7,7 +7,7 @@ export const scales = {
   MD: 'md',
 } as const
 
-export type Scales = typeof scales[keyof typeof scales]
+export type Scales = (typeof scales)[keyof typeof scales]
 
 export interface CheckboxProps {
   scale?: Scales

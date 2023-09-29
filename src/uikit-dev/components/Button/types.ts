@@ -18,8 +18,8 @@ export const variants = {
   SUCCESS: 'success',
 } as const
 
-export type Sizes = typeof sizes[keyof typeof sizes]
-export type Variants = typeof variants[keyof typeof variants]
+export type Sizes = (typeof sizes)[keyof typeof sizes]
+export type Variants = (typeof variants)[keyof typeof variants]
 
 type ButtonTypes = ButtonHTMLAttributes<HTMLButtonElement> | AnchorHTMLAttributes<HTMLAnchorElement> | LinkProps
 

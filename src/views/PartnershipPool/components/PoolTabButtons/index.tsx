@@ -22,7 +22,7 @@ const Wrapper = styled.div`
     .flex {
       margin: 0 !important;
     }
-  } ;
+  }
 `
 
 const ToggleWrapper = styled.div`

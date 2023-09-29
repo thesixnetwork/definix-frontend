@@ -456,7 +456,7 @@ const NextStep = styled.div`
     a {
       margin-left: 2rem;
     }
-  } ;
+  }
 `
 
 const CustomTitle = styled.div`

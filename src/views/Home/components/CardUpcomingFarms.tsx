@@ -66,7 +66,7 @@ const CardStyled = styled(Card)`
     .el {
       width: auto;
     }
-  } ;
+  }
 `
 
 const CardUpcomingFarms: React.FC = () => {

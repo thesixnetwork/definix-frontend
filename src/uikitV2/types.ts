@@ -49,17 +49,13 @@ export type Gradients = {
 
 export type Colors = {
   [key in ColorStyles]: string
-} &
-  {
-    [key in keyof typeof baseColors]: string
-  } &
-  {
-    [key in keyof typeof brandColors]: string
-  } &
-  {
-    [key in keyof typeof customColors]: string
-  } &
-  Record<string, string>
+} & {
+  [key in keyof typeof baseColors]: string
+} & {
+  [key in keyof typeof brandColors]: string
+} & {
+  [key in keyof typeof customColors]: string
+} & Record<string, string>
 
 export type ZIndices = {
   dropdown: number
