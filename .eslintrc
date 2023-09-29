@@ -17,11 +17,11 @@
   ],
   "rules": {
     "@typescript-eslint/no-unused-vars": "off",
-    "unused-imports/no-unused-imports-ts": "warn",
-    "unused-imports/no-unused-vars-ts": "warn",
-    "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
+    "unused-imports/no-unused-imports-ts": "off",
+    "unused-imports/no-unused-vars-ts": "off",
+    "no-console": ["off", { "allow": ["info", "warn", "error"] }],
     "no-plusplus": 0,
-    "prefer-destructuring": ["warn", { "object": true, "array": false }],
+    "prefer-destructuring": ["off", { "object": true, "array": false }],
     "no-underscore-dangle": 0,
     // Start temporary rules
     // These rules are here just to keep the lint error to 0 during the migration to the new rule set
