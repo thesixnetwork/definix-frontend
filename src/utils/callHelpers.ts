@@ -79,7 +79,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
     })
 }
 
-export const unstakeVelo = (apolloContract, amount, account) => {
+export const unstakeVelo = async (apolloContract, amount, account) => {
   const gPrice = await web3.eth.getGasPrice()
 
   return apolloContract.methods
@@ -89,6 +89,7 @@ export const unstakeVelo = (apolloContract, amount, account) => {
       return tx.transactionHash
     })
 }
+
 export const sousUnstake = async (sousChefContract, amount, account) => {
   // shit code: hard fix for old CTK and BLK
 
