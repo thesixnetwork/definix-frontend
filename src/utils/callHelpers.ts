@@ -1,5 +1,10 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+import Web3 from 'web3'
+
+window.web3 = new Web3(window.ethereum)
+const web3 = window.web3
+const gPrice = web3.eth.getGasPrice()
 
 export const approve = async (lpContract, herodotusContract, account) => {
   return lpContract.methods
@@ -8,7 +13,7 @@ export const approve = async (lpContract, herodotusContract, account) => {
 }
 
 export const approveOther = async (lpContract, spender, account) => {
-  return lpContract.methods.approve(spender, ethers.constants.MaxUint256).send({ from: account, gas: 300000 })
+  return lpContract.methods.approve(spender, ethers.constants.MaxUint256).send({ from: account, gasPrice: gPrice })
 }
 
 export const stake = async (herodotusContract, pid, amount, account) => {
@@ -17,7 +22,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
   if (pid === 0) {
     return herodotusContract.methods
       .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-      .send({ from: account, gas: 200000 })
+      .send({ from: account, gasPrice: gPrice })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
@@ -25,7 +30,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
 
   return herodotusContract.methods
     .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: 200000 })
+    .send({ from: account, gasPrice: gPrice })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -34,7 +39,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
 export const sousStake = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
     .deposit(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: 200000 })
+    .send({ from: account, gasPrice: gPrice })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -43,7 +48,7 @@ export const sousStake = async (sousChefContract, amount, account) => {
 export const sousStakeBnb = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
     .deposit()
-    .send({ from: account, gas: 200000, value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString() })
+    .send({ from: account, gasPrice: gPrice, value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString() })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -53,7 +58,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
   if (pid === 0) {
     return herodotusContract.methods
       .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-      .send({ from: account, gas: 200000 })
+      .send({ from: account, gasPrice: gPrice })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
@@ -61,7 +66,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
 
   return herodotusContract.methods
     .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: 200000 })
+    .send({ from: account, gasPrice: gPrice })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -70,7 +75,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
 export const unstakeVelo = (apolloContract, amount, account) => {
   return apolloContract.methods
     .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: 200000 })
+    .send({ from: account, gasPrice: gPrice })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -96,7 +101,7 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
 
   return sousChefContract.methods
     .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: 200000 })
+    .send({ from: account, gasPrice: gPrice })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -117,7 +122,7 @@ export const harvest = async (herodotusContract, pid, account) => {
   if (pid === 0) {
     return herodotusContract.methods
       .leaveStaking('0')
-      .send({ from: account, gas: 200000 })
+      .send({ from: account, gasPrice: gPrice })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
@@ -125,7 +130,7 @@ export const harvest = async (herodotusContract, pid, account) => {
 
   return herodotusContract.methods
     .deposit(pid, '0')
-    .send({ from: account, gas: 200000 })
+    .send({ from: account, gasPrice: gPrice })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -134,7 +139,7 @@ export const harvest = async (herodotusContract, pid, account) => {
 export const soushHarvest = async (sousChefContract, account) => {
   return sousChefContract.methods
     .deposit('0')
-    .send({ from: account, gas: 200000 })
+    .send({ from: account, gasPrice: gPrice })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -143,7 +148,7 @@ export const soushHarvest = async (sousChefContract, account) => {
 export const soushHarvestBnb = async (sousChefContract, account) => {
   return sousChefContract.methods
     .deposit()
-    .send({ from: account, gas: 200000, value: new BigNumber(0) })
+    .send({ from: account, gasPrice: gPrice, value: new BigNumber(0) })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -152,7 +157,7 @@ export const soushHarvestBnb = async (sousChefContract, account) => {
 export const rebalanceHarvest = async (apolloV2Contract, account) => {
   return apolloV2Contract.methods
     .harvest()
-    .send({ from: account, gas: 500000 })
+    .send({ from: account, gasPrice: gPrice })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
