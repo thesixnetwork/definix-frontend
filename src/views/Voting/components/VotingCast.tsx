@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo, useEffect } from 'react'
 import _ from 'lodash'
