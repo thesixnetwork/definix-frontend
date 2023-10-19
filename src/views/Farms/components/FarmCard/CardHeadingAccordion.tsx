@@ -99,6 +99,7 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
 }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
+
   const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
   const firstCoin = farmImage.split('-')[0].toLocaleLowerCase()
   const secondCoin = farmImage.split('-')[1].toLocaleLowerCase()
@@ -108,6 +109,8 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
   const TranslateString = useI18n()
 
   const imgSize = 24
+
+  console.log('first', firstCoin)
 
   return (
     <CardHeadingStyle

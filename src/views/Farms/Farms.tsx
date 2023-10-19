@@ -176,6 +176,7 @@ const Farms: React.FC = () => {
   }, [])
 
   const farmsLiveOnly = (live) => {
+    console.log('activeFarms', activeFarms)
     return live ? farmsList(activeFarms, false) : farmsList(inactiveFarms, false)
   }
 
