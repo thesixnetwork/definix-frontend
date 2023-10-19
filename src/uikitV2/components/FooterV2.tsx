@@ -1,6 +1,6 @@
 import { Box, Link, styled, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React from 'react'
-import six from '../images/six-gray.svg'
+import six from '../images/six-network.png'
 import facebook from '../images/socials/facebook.svg'
 import gitbook from '../images/socials/gitbook.svg'
 import github from '../images/socials/github.svg'
@@ -149,9 +149,15 @@ function FooterV2() {
           href="https://coinmarketcap.com/currencies/six/markets/"
           target="_blank"
           rel="noreferrer"
-          sx={{ display: 'inline-block', flexShrink: 0, mr: 3, img: { width: { xs: 48, md: 72 } } }}
+          sx={{
+            display: 'inline-block',
+            alignSelf: 'center',
+            flexShrink: 0,
+            mr: 3,
+            img: { width: { xs: 92, md: 120 } },
+          }}
         >
-          <img src={six} alt="" />
+          <img src={six} alt="six" />
         </Link>
 
         <Box className="flex flex-wrap">

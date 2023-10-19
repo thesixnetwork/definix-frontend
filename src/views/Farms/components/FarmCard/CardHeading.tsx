@@ -108,7 +108,7 @@ const ImageBox = styled(Box)`
 `
 
 const StyledCoin = styled(Coin)`
-  width: 40px;
+  width: 44px;
   height: 40px;
   @media screen and (max-width: 1280px) {
     width: 36px;
