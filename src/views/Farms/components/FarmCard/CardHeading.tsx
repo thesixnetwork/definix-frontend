@@ -93,7 +93,7 @@ const ImageBox = styled(Box)`
 `
 
 const StyledCoin = styled(Coin)`
-  width: 40px;
+  width: 44px;
   height: 40px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     width: 36px;
