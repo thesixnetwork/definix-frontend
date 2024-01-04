@@ -35,7 +35,9 @@ const useFarmsList = (farms: Farm[]): any => {
       const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
       const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
 
-      const filterBundleRewards = farm.bundleRewards.filter(({ rewardTokenInfo }) => ![QuoteToken.WKLAY, QuoteToken.KLAY].includes(rewardTokenInfo.symbol))
+      const filterBundleRewards = farm.bundleRewards.filter(
+        ({ rewardTokenInfo }) => ![QuoteToken.WKLAY, QuoteToken.KLAY].includes(rewardTokenInfo.symbol),
+      )
 
       if (filterBundleRewards.length > 0) {
         const favorBundle = filterBundleRewards.find((br) => br.rewardTokenInfo.symbol === QuoteToken.FAVOR)
@@ -144,14 +146,16 @@ const useFarmsList = (farms: Farm[]): any => {
         apyValue: finixApy.times(100).toNumber(),
         totalLiquidityValue: Number(totalLiquidityValue),
         lpSymbols: getLpImageUrlsAndSymbols(farm.lpSymbol),
-        isBundle: (farm.bundleRewards || []).length > 0
+        isBundle: (farm.bundleRewards || []).length > 0,
       }
     })
   }, [convertToPriceFromToken, farms, finixPrice, finixPriceVsKlay, kethPriceUsd, klayPrice, sixPrice])
 
   const getFilteredFarms = useCallback(() => {
     const farmsWithApy = getFarmsList()
-    const filteredFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1/* && farm.multiplier !== '0X'*/)
+    const filteredFarms = farmsWithApy.filter(
+      (farm) => farm.pid !== 0 && farm.pid !== 1 /* && farm.multiplier !== '0X'*/,
+    )
     return !compact(filteredFarms.map((farm) => farm.lpTotalInQuoteToken)).length ? [] : filteredFarms
   }, [getFarmsList])
 

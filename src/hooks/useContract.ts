@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
-import {
-  getAddress,
-  getHerodotusAddress,
-  getFinixAddress,
-  getTradingCompetRegisAddress,
-} from 'utils/addressHelpers'
+import { getAddress, getHerodotusAddress, getFinixAddress, getTradingCompetRegisAddress } from 'utils/addressHelpers'
 import { PoolCategory } from 'config/constants/types'
 import erc20 from 'config/abi/erc20.json'
 import herodotus from 'config/abi/herodotus.json'
@@ -81,7 +76,6 @@ export const useSousChef = (id) => {
   const abi = rawAbi as unknown as AbiItem
   return useContract(abi, getAddress(config.contractAddress))
 }
-
 
 export default useContract
 

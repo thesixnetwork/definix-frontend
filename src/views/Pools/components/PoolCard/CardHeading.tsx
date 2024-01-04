@@ -35,7 +35,11 @@ const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, pool, size = 'med
           <Text textStyle="R_14M" color={ColorStyles.ORANGE}>
             APR
           </Text>
-          <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px', marginBottom: '-2px' }}>
+          <Text
+            textStyle={isMediumSize ? 'R_20B' : 'R_18B'}
+            color={ColorStyles.ORANGE}
+            style={{ marginLeft: '4px', marginBottom: '-2px' }}
+          >
             {displayApy}
           </Text>
           <Box style={{ marginLeft: '4px' }}>
@@ -48,7 +52,6 @@ const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, pool, size = 'med
 }
 
 export default CardHeading
-
 
 const StyledCoin = styled(Coin)`
   width: 40px;

@@ -33,7 +33,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
   const { t } = useTranslation()
   const { convertToPriceFromSymbol } = useConverter()
   const price = convertToPriceFromSymbol(coin)
-  const farmApy = useMemo(() => apy.times(new BigNumber(100)).toNumber(), [apy])
+  const farmApy = useMemo(() => (lpLabel.includes('Favor') ? 0 : apy.times(new BigNumber(100)).toNumber()), [apy])
 
   const getEarnedPerThousand = useCallback(
     (day: number) => {
@@ -101,13 +101,13 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
         </Text>
       </ModalBody>
       <ModalFooter isFooter>
-        {
-          addLiquidityUrl && <Flex justifyContent="center">
+        {addLiquidityUrl && (
+          <Flex justifyContent="center">
             <LinkExternal href={addLiquidityUrl} textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
               {t('Get {{FINIX-KLAY}} LP', { 'FINIX-KLAY': lpLabel })}
             </LinkExternal>
           </Flex>
-        }
+        )}
       </ModalFooter>
     </Modal>
   )

@@ -12,7 +12,6 @@ import CurrencyText from 'components/Text/CurrencyText'
 import UnlockButton from 'components/UnlockButton'
 import { TitleSection } from 'components/FarmAndPool/Styled'
 
-
 interface FarmStakeActionProps {
   componentType?: string
   hasAccount: boolean
@@ -68,66 +67,100 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     }
   }, [onApprove, toastError, toastSuccess, t])
 
-  const renderBalance = useMemo(() => <Flex justifyContent="space-between">
-      <Box>
-        <BalanceText>
-          {convertToBalanceFormat(myLiquidityValue)}
-          <UnitText>LP</UnitText>
-        </BalanceText>
-        <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
+  const renderBalance = useMemo(
+    () => (
+      <Flex justifyContent="space-between">
+        <Box>
+          <BalanceText>
+            {convertToBalanceFormat(myLiquidityValue)}
+            <UnitText>LP</UnitText>
+          </BalanceText>
+          <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
         </Box>
-    </Flex>
-  , [myLiquidityValue, myLiquidityValue, componentType])
+      </Flex>
+    ),
+    [myLiquidityValue, myLiquidityValue, componentType],
+  )
 
-  const renderFarmAccordian = useMemo(() => hasAccount ? (hasUserData && hasAllowance ? <Flex justifyContent="space-between">
-    {renderBalance}
-    {componentType === 'accordian' && <Box>
-      <Button
-        minWidth="40px"
-        md
-        variant={ButtonVariants.LINE}
-        disabled={myLiquidity.eq(new BigNumber(0)) || isLoadingApproveContract}
-        onClick={onPresentWithdraw}
-      >
-        <MinusIcon />
-      </Button>
-      {isEnableAddStake && (
-        <Button
-          minWidth="40px"
-          md
-          variant={ButtonVariants.LINE}
-          onClick={onPresentDeposit}
-          style={{ marginLeft: '4px' }}
-        >
-          <PlusIcon />
-        </Button>
-      )}
-    </Box>}
-    </Flex> : <Button
-      width="100%"
-      md
-      variant={ButtonVariants.BROWN}
-      isLoading={!hasUserData || isLoadingApproveContract}
-      onClick={handleApprove}
-    >
-      {t('Approve Contract')}
-    </Button>) : <UnlockButton />
-  , [hasAccount, hasUserData, hasAllowance, renderBalance, componentType, myLiquidity, isEnableAddStake, onPresentDeposit, isLoadingApproveContract, handleApprove, onPresentWithdraw])
+  const renderFarmAccordian = useMemo(
+    () =>
+      hasAccount ? (
+        hasUserData && hasAllowance ? (
+          <Flex justifyContent="space-between">
+            {renderBalance}
+            {componentType === 'accordian' && (
+              <Box>
+                <Button
+                  minWidth="40px"
+                  md
+                  variant={ButtonVariants.LINE}
+                  disabled={myLiquidity.eq(new BigNumber(0)) || isLoadingApproveContract}
+                  onClick={onPresentWithdraw}
+                >
+                  <MinusIcon />
+                </Button>
+                {isEnableAddStake && (
+                  <Button
+                    minWidth="40px"
+                    md
+                    variant={ButtonVariants.LINE}
+                    onClick={onPresentDeposit}
+                    style={{ marginLeft: '4px' }}
+                  >
+                    <PlusIcon />
+                  </Button>
+                )}
+              </Box>
+            )}
+          </Flex>
+        ) : (
+          <Button
+            width="100%"
+            md
+            variant={ButtonVariants.BROWN}
+            isLoading={!hasUserData || isLoadingApproveContract}
+            onClick={handleApprove}
+          >
+            {t('Approve Contract')}
+          </Button>
+        )
+      ) : (
+        <UnlockButton />
+      ),
+    [
+      hasAccount,
+      hasUserData,
+      hasAllowance,
+      renderBalance,
+      componentType,
+      myLiquidity,
+      isEnableAddStake,
+      onPresentDeposit,
+      isLoadingApproveContract,
+      handleApprove,
+      onPresentWithdraw,
+    ],
+  )
 
-const renderFarm = useMemo(() => <Flex justifyContent="space-between">
-  {hasAccount ? renderBalance : <Box>
-      <BalanceText>-</BalanceText>
-      </Box>}
-    </Flex>
-  , [hasAccount, renderBalance])
-  
+  const renderFarm = useMemo(
+    () => (
+      <Flex justifyContent="space-between">
+        {hasAccount ? (
+          renderBalance
+        ) : (
+          <Box>
+            <BalanceText>-</BalanceText>
+          </Box>
+        )}
+      </Flex>
+    ),
+    [hasAccount, renderBalance],
+  )
 
   return (
     <>
       <TitleSection>{t('My Staked')}</TitleSection>
-      {
-        componentType !== 'accordian' ? renderFarm : renderFarmAccordian
-      }
+      {componentType !== 'accordian' ? renderFarm : renderFarmAccordian}
     </>
   )
 }

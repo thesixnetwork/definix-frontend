@@ -45,36 +45,29 @@ const getWeb3Contract = (abi: any, address: string, contractOptions?: ContractOp
   return new web3.eth.Contract(abi as unknown as AbiItem, address, contractOptions)
 }
 
-const addCustomToken = 
-  (
-    tokenAddress: string,
-    tokenSymbol: string,
-    tokenDecimals: number,
-    tokenImage: string
-  ) => {
-    window.klaytn.sendAsync(
-      {
-        method: "wallet_watchAsset",
-        params: {
-          type: "ERC20",
-          options: {
-            address: tokenAddress,
-            symbol: tokenSymbol,
-            decimals: tokenDecimals,
-            image: tokenImage,
-          },
+const addCustomToken = (tokenAddress: string, tokenSymbol: string, tokenDecimals: number, tokenImage: string) => {
+  window.klaytn.sendAsync(
+    {
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: tokenAddress,
+          symbol: tokenSymbol,
+          decimals: tokenDecimals,
+          image: tokenImage,
         },
-        id: Math.round(Math.random() * 100000),
       },
-      () => {
-        // if (added) {
-        //   console.log("---", added);
-        // } else {
-        //   console.log("Your loss!");
-        // }
-      }
-    );
-  }
-
+      id: Math.round(Math.random() * 100000),
+    },
+    () => {
+      // if (added) {
+      //   console.log("---", added);
+      // } else {
+      //   console.log("Your loss!");
+      // }
+    },
+  )
+}
 
 export { getWeb3Contract, getWeb3, getCaver, getContract, httpProvider, addCustomToken }

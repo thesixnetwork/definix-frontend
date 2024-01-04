@@ -33,7 +33,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
   const { t } = useTranslation()
   const { convertToPriceFromSymbol } = useConverter()
   const finixPrice = convertToPriceFromSymbol()
-  const farmApy = useMemo(() => apy.times(new BigNumber(100)).toNumber(), [apy])
+  const farmApy = useMemo(() => (lpLabel.includes('Favor') ? 0 : apy.times(new BigNumber(100)).toNumber()), [apy])
 
   const getEarnedPerThousand = useCallback(
     (day: number) => {

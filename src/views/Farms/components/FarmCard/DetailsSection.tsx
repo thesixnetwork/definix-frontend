@@ -36,7 +36,6 @@ const MyBalanceSection: React.FC<{
   )
 }
 
-
 const EarningsSection: React.FC<{
   allEarnings: {
     symbol: QuoteToken
@@ -45,28 +44,28 @@ const EarningsSection: React.FC<{
   isMobile: boolean
 }> = ({ allEarnings, isMobile }) => {
   const { t } = useTranslation()
-      
+
   return (
     <Wrap>
       <TitleWrap>
         <TitleSection hasMb={false}>{t('Earned')}</TitleSection>
         <Flex>
-          {
-            allEarnings.length > 0 && allEarnings.map(({ symbol }, index) => 
+          {allEarnings.length > 0 &&
+            allEarnings.map(({ symbol }, index) => (
               <ImageBox key={index}>
                 <Coin symbol={symbol} size={isMobile ? '16px' : '20px'} />
               </ImageBox>
-            )
-          }
+            ))}
         </Flex>
       </TitleWrap>
       <ValueWrap>
-        {
-          allEarnings.length > 0 && allEarnings.map(({ symbol, earnings }, index) => <Flex key={index} alignItems="flex-end">
-            <StyledBalanceText value={earnings} />
-            <TokenNameText>{symbol || ''}</TokenNameText>
-          </Flex>)
-        }
+        {allEarnings.length > 0 &&
+          allEarnings.map(({ symbol, earnings }, index) => (
+            <Flex key={index} alignItems="flex-end">
+              <StyledBalanceText value={earnings} />
+              <TokenNameText>{symbol || ''}</TokenNameText>
+            </Flex>
+          ))}
       </ValueWrap>
     </Wrap>
   )
@@ -82,7 +81,6 @@ const ImageBox = styled(Box)`
     margin-left: -4px;
   }
 `
-
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;

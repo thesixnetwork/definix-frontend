@@ -74,7 +74,6 @@ const EarningsSection: React.FC<{
     return getBalanceNumber(earnings)
   }, [earnings])
 
-
   return (
     <Wrap>
       <TitleWrap>
@@ -88,8 +87,8 @@ const EarningsSection: React.FC<{
           <StyledBalanceText value={earningsValue}></StyledBalanceText>
           <TokenNameText>{QuoteToken.FINIX}</TokenNameText>
         </Flex>
-    </ValueWrap>
-  </Wrap>
+      </ValueWrap>
+    </Wrap>
   )
 }
 

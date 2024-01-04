@@ -88,7 +88,7 @@ export default {
       address: process.env.REACT_APP_FAVOR_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/FAVOR.png'
+      logoURI: '/images/coins/FAVOR.png',
     },
     {
       name: 'FINIX',
@@ -168,7 +168,7 @@ export default {
       address: process.env.REACT_APP_FAVOR_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
-      logoURI: '/images/coins/FAVOR.png'
+      logoURI: '/images/coins/FAVOR.png',
     },
   ],
 }

@@ -271,10 +271,10 @@ const MyPrivileges = () => {
         const response = await myPrivilegeContract.methods.getRoyalty(account).call()
         const fixedReward = new BigNumber(response.fixedReward).div(new BigNumber(10).pow(18)).toString()
         const variableReward = new BigNumber(response.variableReward).div(new BigNumber(10).pow(18)).toString()
-        const roundRewards = (response.roundReward || []).map(v =>
+        const roundRewards = (response.roundReward || []).map((v) =>
           new BigNumber(v).div(new BigNumber(10).pow(18)).toString(),
         )
-        const roundRewardData = (response.roundRewardData || []).map(v =>
+        const roundRewardData = (response.roundRewardData || []).map((v) =>
           new BigNumber(v).div(new BigNumber(10).pow(18)).toString(),
         )
         const roundStatus = await Promise.all(
@@ -299,7 +299,7 @@ const MyPrivileges = () => {
   }, [account])
 
   const myPrivilegeHookContract = useContract(MyPrivilegesABI as unknown as AbiItem, getMyPrivilegeAddress())
-  const onClaim = index => async () => {
+  const onClaim = (index) => async () => {
     if (isKlip()) {
       await request({
         contractAddress: getMyPrivilegeAddress(),
@@ -317,14 +317,14 @@ const MyPrivileges = () => {
   }
 
   const totalClaimed = useMemo(() => {
-    if ((data.roundRewards || []).filter(x => x === '-').length !== 0) return '-'
+    if ((data.roundRewards || []).filter((x) => x === '-').length !== 0) return '-'
     return (data.roundRewards || [])
       .map((x, i) => (parseInt(x, 10) === 0 ? parseInt(data.roundRewardData[i], 10) : 0))
       .reduce((a, b) => a + b, 0)
   }, [data])
 
   const remaining = useMemo(() => {
-    if ((data.roundRewards || []).filter(x => x === '-').length !== 0) return '-'
+    if ((data.roundRewards || []).filter((x) => x === '-').length !== 0) return '-'
     return (data.roundRewards || [])
       .map((x, i) => (parseInt(x, 10) !== 0 ? parseInt(data.roundRewardData[i], 10) : 0))
       .reduce((a, b) => a + b, 0)

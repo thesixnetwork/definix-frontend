@@ -6,16 +6,15 @@ import ApyButton from './ApyButton'
 import BigNumber from 'bignumber.js'
 import { QuoteToken } from 'config/constants/types'
 
-
 export interface ExpandableSectionProps {
   size?: string
   componentType?: string
-  tokenNames: string;
+  tokenNames: string
   tokenApyList: {
     symbol: QuoteToken | string
     apy: BigNumber
   }[]
-  addLiquidityUrl?: string;
+  addLiquidityUrl?: string
   isFarm: boolean
 }
 
@@ -25,26 +24,40 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   componentType,
   tokenApyList,
   addLiquidityUrl,
-  isFarm
+  isFarm,
 }) => {
   const { convertToFarmAPRFormat, convertToPoolAPRFormat } = useConverter()
   const isMediumSize = useMemo(() => size === 'medium', [size])
   const isRow = useMemo(() => componentType === 'deposit' && tokenApyList.length > 1, [componentType, tokenApyList])
 
-  const renderAPR = useMemo(() => (coin: string, apy: BigNumber, index: number) => {
-    return <Flex alignItems="flex-end" key={index}>
-      <APRCoin symbol={coin} size="20px" />
-      <Text textStyle="R_14M" color={ColorStyles.ORANGE}>
-        APR
-      </Text>
-      <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px', marginBottom: '-2px' }}>
-        {apy && (isFarm ? convertToFarmAPRFormat(apy) : convertToPoolAPRFormat(apy))}%
-      </Text>
-      <Box style={{ marginLeft: '4px' }}>
-        <ApyButton lpLabel={tokenApyList.map(({ symbol }) => symbol).join('-')} addLiquidityUrl={addLiquidityUrl} apy={apy} coin={coin} />
-      </Box>
-    </Flex>
-  }, [isMediumSize, isFarm])
+  const renderAPR = useMemo(
+    () => (coin: string, apy: BigNumber, index: number) => {
+      return (
+        <Flex alignItems="flex-end" key={index}>
+          <APRCoin symbol={coin} size="20px" />
+          <Text textStyle="R_14M" color={ColorStyles.ORANGE}>
+            APR
+          </Text>
+          <Text
+            textStyle={isMediumSize ? 'R_20B' : 'R_18B'}
+            color={ColorStyles.ORANGE}
+            style={{ marginLeft: '4px', marginBottom: '-2px' }}
+          >
+            {coin === 'Favor' ? 0 : apy && (isFarm ? convertToFarmAPRFormat(apy) : convertToPoolAPRFormat(apy))}%
+          </Text>
+          <Box style={{ marginLeft: '4px' }}>
+            <ApyButton
+              lpLabel={tokenApyList.map(({ symbol }) => symbol).join('-')}
+              addLiquidityUrl={addLiquidityUrl}
+              apy={apy}
+              coin={coin}
+            />
+          </Box>
+        </Flex>
+      )
+    },
+    [isMediumSize, isFarm],
+  )
 
   return (
     <Flex position="relative">
@@ -53,21 +66,17 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         alignItems="center"
         width={componentType === 'myInvestment' ? '70px' : 'auto'}
       >
-        {
-          tokenNames.split('-').map((token, index) => 
-            <ImageBox key={index}>
-              <StyledCoin symbol={token} size="40px" />
-            </ImageBox>
-          )
-        }
+        {tokenNames.split('-').map((token, index) => (
+          <ImageBox key={index}>
+            <StyledCoin symbol={token} size="40px" />
+          </ImageBox>
+        ))}
       </Flex>
 
-      <Flex flexDirection={isRow ? 'row' : 'column'} alignItems={isRow ? "center" : "flex-start"}>
+      <Flex flexDirection={isRow ? 'row' : 'column'} alignItems={isRow ? 'center' : 'flex-start'}>
         <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{tokenNames}</Text>
         <Flex flexDirection="column" ml={isRow ? '50px' : ''} mt="3px">
-          {
-            tokenApyList.map(({ symbol, apy }, index) => renderAPR(symbol, apy, index))
-          }
+          {tokenApyList.map(({ symbol, apy }, index) => renderAPR(symbol, apy, index))}
         </Flex>
       </Flex>
     </Flex>

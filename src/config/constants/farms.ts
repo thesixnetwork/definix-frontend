@@ -33,7 +33,6 @@ const farms: FarmConfig[] = [
     secondToken: contracts.finix,
     firstSymbol: QuoteToken.FAVOR,
     secondSymbol: QuoteToken.FINIX,
-    tag: 'special',
     isFinished: false,
   },
   {
@@ -48,7 +47,6 @@ const farms: FarmConfig[] = [
     secondToken: contracts.six,
     firstSymbol: QuoteToken.FAVOR,
     secondSymbol: QuoteToken.SIX,
-    tag: 'special',
     isFinished: false,
   },
   {
@@ -63,7 +61,6 @@ const farms: FarmConfig[] = [
     secondToken: contracts.wklay,
     firstSymbol: QuoteToken.FAVOR,
     secondSymbol: QuoteToken.KLAY,
-    tag: 'special',
     isFinished: false,
   },
   {
@@ -78,7 +75,6 @@ const farms: FarmConfig[] = [
     secondToken: contracts.ousdt,
     firstSymbol: QuoteToken.FAVOR,
     secondSymbol: QuoteToken.OUSDT,
-    tag: 'special',
     isFinished: false,
   },
   {
@@ -326,11 +322,19 @@ const farms: FarmConfig[] = [
   },
 ]
 
-export const FAVOR_FARMS = farms.filter(({ tokenSymbol, firstSymbol, secondSymbol }) => tokenSymbol === 'Favor' || tokenSymbol === 'FAVOR' || firstSymbol === 'FAVOR' || firstSymbol === 'Favor' || secondSymbol === 'FAVOR' || secondSymbol === 'Favor')
+export const FAVOR_FARMS = farms.filter(
+  ({ tokenSymbol, firstSymbol, secondSymbol }) =>
+    tokenSymbol === 'Favor' ||
+    tokenSymbol === 'FAVOR' ||
+    firstSymbol === 'FAVOR' ||
+    firstSymbol === 'Favor' ||
+    secondSymbol === 'FAVOR' ||
+    secondSymbol === 'Favor',
+)
 
 export const TAG_COLORS = {
-  'hot': ColorStyles.RED,
-  'special': ColorStyles.YELLOW
+  hot: ColorStyles.RED,
+  special: ColorStyles.YELLOW,
 }
 
 export default farms

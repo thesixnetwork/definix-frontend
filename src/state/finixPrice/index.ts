@@ -60,7 +60,8 @@ export const finixPriceSlice = createSlice({
 })
 
 // Actions
-export const { setTVL, setSixPrice, setFinixPrice, setFavorPrice, setDefinixKlayPrice, setKlayswapKlayPrice } = finixPriceSlice.actions
+export const { setTVL, setSixPrice, setFinixPrice, setFavorPrice, setDefinixKlayPrice, setKlayswapKlayPrice } =
+  finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2 }) => {
   let pair1Amount = 0
@@ -299,7 +300,7 @@ export const fetchFavorPrice = () => async (dispatch) => {
   })
   const allPrices = allFetchedData.map((data, index) => {
     const currentPair = sortedPair[index]
-    if (data && (currentPair[0] === 'FAVOR')) {
+    if (data && currentPair[0] === 'FAVOR') {
       if (currentPair[1] === 'OUSDT') {
         return [allRatio[index], allFetchedData[index][1]]
       }

@@ -1,10 +1,5 @@
 import BigNumber from 'bignumber.js'
-import {
-  FarmConfig,
-  LongTermStakeConfig,
-  RebalanceConfig,
-  PoolConfig,
-} from 'config/constants/types'
+import { FarmConfig, LongTermStakeConfig, RebalanceConfig, PoolConfig } from 'config/constants/types'
 
 export type TranslatableText =
   | string
