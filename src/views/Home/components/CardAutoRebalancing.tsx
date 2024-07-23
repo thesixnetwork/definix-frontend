@@ -338,10 +338,10 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 FINIX Token’s
               </Heading>
               <Text color="text" fontSize="22px !important" bold lineHeight="1" className="mb-2">
-                3rd Halving
+                4th Halving
               </Text>
               <Text color="textSubtle" fontSize="12px !important">
-                21 June 2023 at 02.00 PM (GMT +7)
+                20 June 2024 at 05:00 PM (GMT +7)
               </Text>
             </div>
           </StyledBannerFinixToken>
