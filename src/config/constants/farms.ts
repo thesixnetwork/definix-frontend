@@ -51,7 +51,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: process.env.REACT_APP_CHAIN_ID === process.env.REACT_APP_MAINNET_ID ? 37 : 94,
-    lpSymbol: 'Favor-KLAY LP',
+    lpSymbol: 'Favor-KAIA LP',
     lpAddresses: getLpNetwork(FAVOR, WKLAY),
     tokenSymbol: 'Favor',
     tokenAddresses: FAVOR,
@@ -114,7 +114,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 3,
-    lpSymbol: 'FINIX-KLAY LP',
+    lpSymbol: 'FINIX-KAIA LP',
     lpAddresses: getLpNetwork(FINIX, WKLAY),
     tokenSymbol: 'KLAY',
     tokenAddresses: WKLAY,
@@ -169,7 +169,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 7,
-    lpSymbol: 'SIX-KLAY LP',
+    lpSymbol: 'SIX-KAIA LP',
     lpAddresses: getLpNetwork(SIX, WKLAY),
     tokenSymbol: 'KLAY',
     tokenAddresses: WKLAY,
@@ -183,7 +183,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 8,
-    lpSymbol: 'KLAY-oETH LP',
+    lpSymbol: 'KAIA-oETH LP',
     lpAddresses: getLpNetwork(WKLAY, OETH),
     tokenSymbol: 'oETH',
     tokenAddresses: OETH,
@@ -197,7 +197,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 9,
-    lpSymbol: 'KLAY-oWBTC LP',
+    lpSymbol: 'KAIA-oWBTC LP',
     lpAddresses: getLpNetwork(WKLAY, OWBTC),
     tokenSymbol: 'oWBTC',
     tokenAddresses: OWBTC,
@@ -211,7 +211,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 10,
-    lpSymbol: 'KLAY-oXRP LP',
+    lpSymbol: 'KAIA-oXRP LP',
     lpAddresses: getLpNetwork(WKLAY, OXRP),
     tokenSymbol: 'oXRP',
     tokenAddresses: OXRP,
@@ -267,7 +267,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 14,
-    lpSymbol: 'KLAY-oUSDT LP',
+    lpSymbol: 'KAIA-oUSDT LP',
     lpAddresses: getLpNetwork(WKLAY, OUSDT),
     tokenSymbol: 'KLAY',
     tokenAddresses: WKLAY,

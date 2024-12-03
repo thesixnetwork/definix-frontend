@@ -9157,9 +9157,9 @@ define-property@^2.0.2:
     is-descriptor "^1.0.2"
     isobject "^3.0.1"
 
-"definix-uikit@https://github.com/thesixnetwork/definix-uikit.git#hand/main":
+"definix-uikit@https://github.com/thesixnetwork/definix-uikit.git#six/main":
   version "1.4.23"
-  resolved "https://github.com/thesixnetwork/definix-uikit.git#0da96c6f6c588c483b9d610906cafe9028f67f23"
+  resolved "https://github.com/thesixnetwork/definix-uikit.git#05187b1661b58f733b611188e4b3ae105ad6ddb5"
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"

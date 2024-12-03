@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Menu as UikitMenu, useModal } from '@fingerlabs/definixswap-uikit-v2'
+// import { Menu as UikitMenu } from "definix-uikit"
 import { useTranslation, Trans } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { supportedLanguages } from 'config/localisation/languageCodes'
