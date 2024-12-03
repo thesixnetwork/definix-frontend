@@ -119,7 +119,7 @@ const CardTVL = () => {
               <Coin symbol="KLAY" size={isXxl ? '24px' : '22px'} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
                 <Trans
-                  i18nKey="TVL in <bold>Klaytn</bold>"
+                  i18nKey="TVL in <bold>Kaia</bold>"
                   components={{
                     bold: <strong />,
                   }}

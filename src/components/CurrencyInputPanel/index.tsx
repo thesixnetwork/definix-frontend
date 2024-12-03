@@ -109,7 +109,7 @@ const CurrencyInputPanel = ({
     if (isMaxKlayNoti) {
       return (
         <Noti type={NotiType.ALERT} mt="12px">
-          {t('Full payment of KLAY')}
+          {t('Full payment of KAIA')}
         </Noti>
       )
     }

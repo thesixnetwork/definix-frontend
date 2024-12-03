@@ -111,7 +111,7 @@ const rebalances: RebalanceConfig[] = [
     description:
       'Inspired by Chain Creators, but with no stable coin in it. The rebalancing will trigger once the value of the farm is covered for the rebalancing fee +1%.',
     fullDescription:
-      'The natives of all three chains consist of ETH KLAY BNB which are equally distributed in the farm. An extra 1% rebalance fee is covered and the system will make rebalance for the group.',
+      'The natives of all three chains consist of ETH KAIA BNB which are equally distributed in the farm. An extra 1% rebalance fee is covered and the system will make rebalance for the group.',
     icon: [
       '/images/vaults/three_musketeers.png',
       '/images/vaults/three_musketeers@2x.png',
@@ -291,7 +291,7 @@ const rebalances: RebalanceConfig[] = [
     description:
       'Inspired by blockchain creator’s asset. The rebalancing will trigger every time the value of the farm is covered with the rebalancing fee.',
     fullDescription:
-      'Consisting of ETH BNB KLAY USDT which is the chain creator for many DeFi. Representing the trend on the DeFi ecosystem and distributing the ratio in the farm equally to make rebalancing trigger once when covering the rebalance fee.',
+      'Consisting of ETH BNB KAIA USDT which is the chain creator for many DeFi. Representing the trend on the DeFi ecosystem and distributing the ratio in the farm equally to make rebalancing trigger once when covering the rebalance fee.',
     icon: [
       '/images/vaults/chain_creators.png',
       '/images/vaults/chain_creators@2x.png',
@@ -403,7 +403,7 @@ const rebalances: RebalanceConfig[] = [
     description:
       'Mixture of different volatility of assets. The rebalancing will trigger every time the value of the farm is cover with the rebalancing fee.',
     fullDescription:
-      'Consisting of FINIX BTC ETH SIX KLAY XRP USDT which has the volatility characteristic and high fluctuation. To outperform the top market cap group, the distribution ratio is significant to add up some stablecoin in it. The rebalancing will occur every time it reaches a rebalance fee base.',
+      'Consisting of FINIX BTC ETH SIX KAIA XRP USDT which has the volatility characteristic and high fluctuation. To outperform the top market cap group, the distribution ratio is significant to add up some stablecoin in it. The rebalancing will occur every time it reaches a rebalance fee base.',
     icon: [
       '/images/vaults/finix_volatility.png',
       '/images/vaults/finix_volatility@2x.png',
