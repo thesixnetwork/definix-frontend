@@ -31,8 +31,8 @@ import {
   Box,
   Divider,
   ButtonVariants,
-  Coin,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'

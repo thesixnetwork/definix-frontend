@@ -1,4 +1,5 @@
-import { Coin, ColorStyles, Flex, useModal, Text, Box, ArrowBottomGIcon } from '@fingerlabs/definixswap-uikit-v2'
+import { ColorStyles, Flex, useModal, Text, Box, ArrowBottomGIcon } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

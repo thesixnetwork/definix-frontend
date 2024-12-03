@@ -4,7 +4,8 @@ import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Flex, Coin, Text, CheckboxLabel, Checkbox } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, CheckboxLabel, Checkbox } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 import { useFarms, usePools, useToast } from 'state/hooks'
 import {
   useHarvest,

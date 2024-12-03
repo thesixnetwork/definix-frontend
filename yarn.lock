@@ -9157,6 +9157,19 @@ define-property@^2.0.2:
     is-descriptor "^1.0.2"
     isobject "^3.0.1"
 
+"definix-uikit@https://github.com/thesixnetwork/definix-uikit.git#hand/main":
+  version "1.4.23"
+  resolved "https://github.com/thesixnetwork/definix-uikit.git#0da96c6f6c588c483b9d610906cafe9028f67f23"
+  dependencies:
+    "@types/lodash" "^4.14.162"
+    "@types/styled-system" "^5.1.10"
+    copy-to-clipboard "^3.3.1"
+    lodash "^4.17.20"
+    polished "^4.1.3"
+    react-popper-tooltip "^4.3.1"
+    react-transition-group "^4.4.1"
+    styled-system "^5.1.5"
+
 definixswap-sdk@1.0.0-klaytn:
   version "1.0.0-klaytn"
   resolved "https://registry.yarnpkg.com/definixswap-sdk/-/definixswap-sdk-1.0.0-klaytn.tgz#7e98810ad8ed272df425a40a9aeb6adecc5e6270"

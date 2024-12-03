@@ -2,7 +2,8 @@ import { Trade, TradeType } from 'definixswap-sdk'
 import { useTranslation } from 'react-i18next'
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Text, Flex, Box, ChangeBottomIcon, Noti, NotiType, Coin } from '@fingerlabs/definixswap-uikit-v2'
+import { Button, Text, Flex, Box, ChangeBottomIcon, Noti, NotiType } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 // import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
 const BalanceText = styled(Text)<{ isAcceptChange: boolean }>`

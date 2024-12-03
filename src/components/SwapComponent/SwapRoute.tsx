@@ -1,6 +1,7 @@
 import { Trade } from 'definixswap-sdk'
 import React, { memo } from 'react'
-import { Text, Flex, ArrowDoubleArrowIcon, ColorStyles, Coin } from '@fingerlabs/definixswap-uikit-v2'
+import { Text, Flex, ArrowDoubleArrowIcon, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 import { useTranslation } from 'react-i18next'
 
 export default memo(function SwapRoute({

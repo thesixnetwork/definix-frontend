@@ -13,9 +13,9 @@ import {
   useModal,
   Divider,
   ButtonVariants,
-  Coin,
   PlusBIcon,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 import { Currency, currencyEquals, TokenAmount, WETH } from 'definixswap-sdk'
 import { Field } from 'state/mint/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'

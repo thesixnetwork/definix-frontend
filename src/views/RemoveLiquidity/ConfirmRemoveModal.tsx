@@ -18,8 +18,8 @@ import {
   ModalBody,
   useMatchBreakpoints,
   Lp,
-  Coin,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 import { Currency, Percent, TokenAmount, CurrencyAmount, Pair, Token, ETHER, JSBI } from 'definixswap-sdk'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 

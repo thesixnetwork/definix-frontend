@@ -4,7 +4,8 @@ import { useTranslation, Trans } from 'react-i18next'
 import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import { usePriceTVL, usePriceWeb3TVL } from 'state/hooks'
-import { Card, CardBody, ColorStyles, Text, Flex, useMatchBreakpoints, Coin } from '@fingerlabs/definixswap-uikit-v2'
+import { Card, CardBody, ColorStyles, Text, Flex, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 import CurrencyText from 'components/Text/CurrencyText'
 
 const Title = styled(Text)`

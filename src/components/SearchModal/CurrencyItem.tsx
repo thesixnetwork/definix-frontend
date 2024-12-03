@@ -1,6 +1,7 @@
 import { Currency, CurrencyAmount } from 'definixswap-sdk'
 import React, { useCallback, useRef } from 'react'
-import { Text, Flex, Coin, AnountButton } from '@fingerlabs/definixswap-uikit-v2'
+import { Text, Flex, AnountButton } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 import styled from 'styled-components'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import useWallet from 'hooks/useWallet'

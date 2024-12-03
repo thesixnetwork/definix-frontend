@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { useToast } from 'state/hooks'
 import {
   Button,
-  Coin,
   Modal,
   ButtonVariants,
   Flex,
@@ -13,6 +12,7 @@ import {
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 
 const ModalBodyWrap = styled(ModalBody)`
   margin-top: ${({ theme }) => theme.spacing.S_16}px;

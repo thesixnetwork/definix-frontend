@@ -1,5 +1,6 @@
 import React from 'react'
-import { Flex, FlexProps, Coin as UikitCoin } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, FlexProps } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin as UikitCoin } from 'definix-uikit'
 import styled from 'styled-components'
 
 const Size = {

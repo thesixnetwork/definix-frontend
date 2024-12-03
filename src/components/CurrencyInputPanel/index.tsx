@@ -13,9 +13,9 @@ import {
   Noti,
   NotiType,
   useModal,
-  Coin,
   Lp,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { Coin } from 'definix-uikit'
 import useWallet from 'hooks/useWallet'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { Input as NumericalInput } from '../NumericalInputBySwap'
