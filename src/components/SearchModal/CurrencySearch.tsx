@@ -55,7 +55,7 @@ const WrapCurrencyList = styled(Box)`
   }
 `
 
-const ContainerCurrencyList = styled(Flex)<{ listLength: number }>`
+const ContainerCurrencyList = styled(Flex) <{ listLength: number }>`
   flex-direction: column;
   height: ${({ listLength }) => listLength * 60}px;
   ${({ theme }) => theme.mediaQueries.mobile} {
@@ -82,7 +82,8 @@ export function CurrencySearch({
 
   const showETH: boolean = useMemo(() => {
     const s = searchQuery.toLowerCase().trim()
-    return s === '' || s === 'k' || s === 'kl' || s === 'kla' || s === 'klay'
+    return s === '' || s === 'k' || s === 'ka' || s === 'kai' || s === 'kaia'
+    // return s === '' || s === 'k' || s === 'kl' || s === 'kla' || s === 'klay'
     // return s === '' || s === 'e' || s === 'et' || s === 'eth'
   }, [searchQuery])
 
