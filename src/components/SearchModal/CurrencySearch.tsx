@@ -55,7 +55,7 @@ const WrapCurrencyList = styled(Box)`
   }
 `
 
-const ContainerCurrencyList = styled(Flex) <{ listLength: number }>`
+const ContainerCurrencyList = styled(Flex)<{ listLength: number }>`
   flex-direction: column;
   height: ${({ listLength }) => listLength * 60}px;
   ${({ theme }) => theme.mediaQueries.mobile} {
