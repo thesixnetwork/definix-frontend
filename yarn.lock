@@ -9170,10 +9170,10 @@ define-property@^2.0.2:
     react-transition-group "^4.4.1"
     styled-system "^5.1.5"
 
-definixswap-sdk@1.0.0-klaytn:
-  version "1.0.0-klaytn"
-  resolved "https://registry.yarnpkg.com/definixswap-sdk/-/definixswap-sdk-1.0.0-klaytn.tgz#7e98810ad8ed272df425a40a9aeb6adecc5e6270"
-  integrity sha512-3pMG2l8cxPvXSvxGJqErL1FQL8+FlnljvwRHGU5dd++nY9CxjR+JURrEk5uCI/qnZ2UU20WueU89pAguoZmysQ==
+definixswap-sdk@^1.0.3-klaytn:
+  version "1.0.3-klaytn"
+  resolved "https://registry.yarnpkg.com/definixswap-sdk/-/definixswap-sdk-1.0.3-klaytn.tgz#f154e1de3ea7eb2f7d1446c0d3b787e996de0d10"
+  integrity sha512-8SxtxPcOH2fZccV++N4F6L9/sbxwlnl/ozwIS5L0bDZbUackuP1J5wRr9Rkt5q3dS316z79GlWAr+RJEMeWZ9w==
   dependencies:
     "@pancakeswap-libs/pancake-swap-core" "^0.1.0"
     big.js "^5.2.2"
