@@ -10,8 +10,9 @@ import {
   ButtonScales,
   ButtonVariants,
   useMatchBreakpoints,
-  Lp,
+  // Lp,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { Lp } from 'definix-uikit'
 import { useTranslation } from 'react-i18next'
 import useWallet from 'hooks/useWallet'
 import useTotalSupply from 'hooks/useTotalSupply'

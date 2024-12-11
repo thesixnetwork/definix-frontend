@@ -10,10 +10,10 @@ import {
   Noti,
   NotiType,
   useMatchBreakpoints,
-  Lp,
+  // Lp,
   textStyle,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { Coin } from 'definix-uikit'
+import { Coin, Lp } from 'definix-uikit'
 import { escapeRegExp } from 'utils'
 import styled from 'styled-components'
 import { Currency } from 'definixswap-sdk'

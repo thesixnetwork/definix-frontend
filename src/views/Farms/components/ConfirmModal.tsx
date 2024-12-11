@@ -11,8 +11,9 @@ import {
   ColorStyles,
   ModalBody,
   ModalFooter,
-  Lp,
+  // Lp,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { Lp } from 'definix-uikit'
 
 const ModalBodyWrap = styled(ModalBody)`
   margin-top: ${({ theme }) => theme.spacing.S_16}px;

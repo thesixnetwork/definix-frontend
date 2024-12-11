@@ -22,9 +22,9 @@ import {
   textStyle,
   ButtonVariants,
   CheckBIcon,
-  Lp,
+  // Lp,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { Coin } from 'definix-uikit'
+import { Coin, Lp } from 'definix-uikit'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { useTranslation } from 'react-i18next'
 import Slider from 'components/Slider'
