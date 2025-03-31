@@ -66,7 +66,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         alignItems="center"
         width={componentType === 'myInvestment' ? '70px' : 'auto'}
       >
-        {tokenNames.split('-').map((token, index) => (
+        {tokenNames?.split('-').map((token, index) => (
           <ImageBox key={index}>
             <StyledCoin symbol={token} size="40px" />
           </ImageBox>

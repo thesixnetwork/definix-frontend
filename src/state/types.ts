@@ -233,6 +233,7 @@ export interface ParticipatedVoting {
   title: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Voting extends VotingItem {
   // proposalIndex?: BigNumber
   // ipfsHash: any
