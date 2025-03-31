@@ -20,7 +20,7 @@ import {
   Lp,
   Coin,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { Currency, Percent, TokenAmount, CurrencyAmount, Pair, Token, ETHER } from 'definixswap-sdk'
+import { Currency, Percent, TokenAmount, CurrencyAmount, Pair, Token, ETHER, JSBI } from 'definixswap-sdk'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
@@ -38,7 +38,7 @@ import { ROUTER_ADDRESS } from 'config/constants/index'
 
 import KlaytnScopeLink from 'components/KlaytnScopeLink'
 
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
+import { calculateGasMargin, getRouterContract } from 'utils'
 import useWallet from 'hooks/useWallet'
 import useKlipContract from 'hooks/useKlipContract'
 import { getCaver } from 'utils/caver'
@@ -106,8 +106,10 @@ export default function ConfirmRemoveModal({
     const router = getRouterContract(chainId, library, account)
 
     const amountsMin = {
-      [Field.CURRENCY_A]: calculateSlippageAmount(currencyAmountA, allowedSlippage)[0],
-      [Field.CURRENCY_B]: calculateSlippageAmount(currencyAmountB, allowedSlippage)[0],
+      // [Field.CURRENCY_A]: calculateSlippageAmount(currencyAmountA, allowedSlippage)[0],
+      // [Field.CURRENCY_B]: calculateSlippageAmount(currencyAmountB, allowedSlippage)[0],
+      [Field.CURRENCY_A]: JSBI.divide(JSBI.multiply(currencyAmountA.raw, JSBI.BigInt(80)), JSBI.BigInt(100)),
+      [Field.CURRENCY_B]: JSBI.divide(JSBI.multiply(currencyAmountB.raw, JSBI.BigInt(80)), JSBI.BigInt(100)),
     }
 
     if (!currencyA || !currencyB) throw new Error('missing tokens')

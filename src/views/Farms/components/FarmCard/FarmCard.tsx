@@ -41,7 +41,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, klayt
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const { convertToPriceFromToken } = useConverter()
-  const lpTokenName = useMemo(() => farm.lpSymbols.map((lpSymbol) => lpSymbol.symbol).join('-'), [farm.lpSymbols])
+  const lpTokenName = useMemo(() => {
+    return farm?.lpSymbols?.map((lpSymbol) => lpSymbol.symbol).join('-')
+  }, [farm.lpSymbols])
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, stakedBalance, allowance, pendingRewards } = useFarmUser(pid)
   const lpContract = useMemo(() => getContract(klaytn as provider, getAddress(lpAddresses)), [klaytn, lpAddresses])
