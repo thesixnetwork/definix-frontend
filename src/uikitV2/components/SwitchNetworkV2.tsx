@@ -66,7 +66,7 @@ const SwitchNetworkV2 = () => {
       <Button
         size="small"
         onClick={() => {
-          window.location.href = 'https://g2.klaytn.definix.com/'
+          window.location.href = 'https://g2.kaia.definix.com/'
         }}
       >
         <img src={klaytn} alt="" width="20px" />

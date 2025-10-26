@@ -28,7 +28,7 @@ const DropdownNetwork = () => {
       }
     >
       <MenuButton
-        href="https://g2.klaytn.definix.com/"
+        href="https://g2.kaia.definix.com/"
         variant="text"
         startIcon={<img src={klaytnNewLogo} alt="" width="24" className="mr-2" />}
         className="color-primary text-bold mb-2"
@@ -36,7 +36,7 @@ const DropdownNetwork = () => {
         Klaytn Chain
       </MenuButton>
       <MenuButton
-        href="https://g2.klaytn.definix.com/"
+        href="https://g2.kaia.definix.com/"
         variant="text"
         startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
         className="color-primary mb-2"
