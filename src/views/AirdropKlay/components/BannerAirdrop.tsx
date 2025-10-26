@@ -99,7 +99,7 @@ const BannerAirdrop = ({ className = '' }) => {
         <div>
           <Heading as="h3" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
             <img src={definixLogo} alt="" /> <span style={{ fontSize: '15px' }}>is now on</span>{' '}
-            <span style={{ fontSize: '25px', color: '#83603E' }}>Klaytn Blockchain</span>
+            <span style={{ fontSize: '25px', color: '#83603E' }}>Kaia Blockchain</span>
           </Heading>
           <br />
           <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>

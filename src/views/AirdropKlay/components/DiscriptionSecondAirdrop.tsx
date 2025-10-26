@@ -29,8 +29,8 @@ export default function DiscriptionSecondAirdrop({ open = false, disable = false
     <Collapsible handleTriggerClick={toggle} trigger={<TriggerElement isDown={open} />} open={open} disabled={disable}>
       <div>
         <Text lineHeight="2">
-          1. Must have LP staked on Definix Klaytn during 21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59
-          a.m.(GMT +7).
+          1. Must have LP staked on Definix Kaia during 21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59 a.m.(GMT
+          +7).
         </Text>
         <Text lineHeight="2">
           2. The airdrop will be automatically distributed 30 KLAY within 48 hours to the wallet address that used on{' '}
@@ -45,7 +45,7 @@ export default function DiscriptionSecondAirdrop({ open = false, disable = false
         <Text lineHeight="2">
           3. Users must connect the same wallet used in claiming the airdrop from the first campaign.
         </Text>
-        <Text lineHeight="2">4. Input the destination Klaytn wallet (KIP-7 supported) on the claiming page</Text>
+        <Text lineHeight="2">4. Input the destination Kaia wallet (KIP-7 supported) on the claiming page</Text>
 
         <Text lineHeight="2">4. Airdrop is limited and distributed in a first come first serve method.</Text>
         <Text lineHeight="2">
@@ -76,7 +76,7 @@ export default function DiscriptionSecondAirdrop({ open = false, disable = false
         }}
       >
         <a href="https://klaytn.definix.com">
-          <Button fullWidth>Supply your liquidity at Definix on Klaytn</Button>
+          <Button fullWidth>Supply your liquidity at Definix on Kaia</Button>
         </a>
       </div>
     </Collapsible>
