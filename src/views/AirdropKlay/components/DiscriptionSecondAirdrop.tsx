@@ -29,8 +29,8 @@ export default function DiscriptionSecondAirdrop({ open = false, disable = false
     <Collapsible handleTriggerClick={toggle} trigger={<TriggerElement isDown={open} />} open={open} disabled={disable}>
       <div>
         <Text lineHeight="2">
-          1. Must have LP staked on Definix Kaia during 21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59
-          a.m.(GMT +7).
+          1. Must have LP staked on Definix Kaia during 21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59 a.m.(GMT
+          +7).
         </Text>
         <Text lineHeight="2">
           2. The airdrop will be automatically distributed 30 KLAY within 48 hours to the wallet address that used on{' '}
