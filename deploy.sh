@@ -17,7 +17,7 @@ echo "Profile : ${2}"
 echo -e "Enter to continue...\c"
 read
 
-yarn
+yarn install --frozen-lockfile --ignore-engines
 _exit_if_fail $?
 
 yarn build:${DEPLOY_ENV}

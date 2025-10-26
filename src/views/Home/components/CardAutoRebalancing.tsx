@@ -362,7 +362,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 Stake your FINIX here!
               </Text>
               <div className="mt-6">
-                <SpecialButton as="a" href="https://g2.klaytn.definix.com/long-term-stake" target="_blank">
+                <SpecialButton as="a" href="https://g2.kaia.definix.com/long-term-stake" target="_blank">
                   <span>Go to stake</span>
                 </SpecialButton>
               </div>
