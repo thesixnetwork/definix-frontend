@@ -29,12 +29,12 @@ const Bridge = () => {
   const list = [
     {
       title: 'SIX',
-      caption: 'Binance Smart Chain, Klaytn Chain, Stella Lumen',
+      caption: 'Binance Smart Chain, Kaia Chain, Stella Lumen',
       img: six,
     },
     {
       title: 'FINIX',
-      caption: 'Binance Smart Chain, Klaytn Chain',
+      caption: 'Binance Smart Chain, Kaia Chain',
       img: finix,
     },
   ]

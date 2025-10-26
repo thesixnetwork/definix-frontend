@@ -22,7 +22,7 @@ const DropdownNetwork = () => {
           className="network px-2"
         >
           <Text fontSize="12px" fontWeight="500">
-            Klaytn Chain
+            Kaia Chain
           </Text>
         </Button>
       }
@@ -33,7 +33,7 @@ const DropdownNetwork = () => {
         startIcon={<img src={klaytnNewLogo} alt="" width="24" className="mr-2" />}
         className="color-primary text-bold mb-2"
       >
-        Klaytn Chain
+        Kaia Chain
       </MenuButton>
       <MenuButton
         href="https://g2.kaia.definix.com/"

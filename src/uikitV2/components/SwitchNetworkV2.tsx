@@ -70,7 +70,7 @@ const SwitchNetworkV2 = () => {
         }}
       >
         <img src={klaytn} alt="" width="20px" />
-        <Typography variant="body2">Klaytn Chain</Typography>
+        <Typography variant="body2">Kaia Chain</Typography>
       </Button>
     </SwitchStyle>
   )

@@ -123,7 +123,7 @@ const Info: React.FC = () => {
       {
         title: 'Multi-Strategy Investment',
         detail:
-          'With the multi-chain environment (BSC, Klaytn). The fund manger is allow to match variety of assets across different blockchain and help maximize the profit for fund manager.',
+          'With the multi-chain environment (BSC, Kaia). The fund manger is allow to match variety of assets across different blockchain and help maximize the profit for fund manager.',
         img: m2,
       },
       {

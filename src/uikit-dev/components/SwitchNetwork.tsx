@@ -110,7 +110,7 @@ const SwitchNetwork = () => {
         }}
       >
         <img src={!isBsc || isDark ? klaytnNewLogo : klaytnNewLogo} alt="" width="20px" />
-        <Tooltip>Klaytn Chain</Tooltip>
+        <Tooltip>Kaia Chain</Tooltip>
       </IconButton>
     </SwitchStyle>
   )

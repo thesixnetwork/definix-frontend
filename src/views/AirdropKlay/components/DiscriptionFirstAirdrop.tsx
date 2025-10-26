@@ -41,7 +41,7 @@ export default function DiscriptionFirstAirdrop({ open = false, disable = false,
         3. The users need to sign-in their wallet; the address of the wallet must be matched with the screenshot block
         mentioned above.
       </Text>
-      <Text lineHeight="2">4. Input the destination Klaytn wallet (KIP-7 supported) on the claiming page</Text>
+      <Text lineHeight="2">4. Input the destination Kaia wallet (KIP-7 supported) on the claiming page</Text>
       <div style={{ marginLeft: '20px' }}>
         <Text lineHeight="2">
           4.1. In case you use software wallet such as Metamask, Binance Chain Wallet, Trust Wallet, and etc. as a
