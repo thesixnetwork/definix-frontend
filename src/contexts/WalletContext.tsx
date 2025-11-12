@@ -49,37 +49,40 @@ const WalletContextProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [connector, setConnector] = useState<ConnId>(null)
   const [isInit, setIsInit] = useState<boolean>(false)
 
-  const onActivate = useCallback(async (connectorId: AvailableConnectors) => {
-    const w = walletRef.current
-    if (!w) return
-    try {
-      if (w.isAvailable(connectorId)) {
-        await w.activate(connectorId)
-        setAccount(w.account || null)
-        setConnector((w as any).connectorId || connectorId)
-        localStorage.setItem(CACHE_KEY, String(connectorId))
-        toastSuccess(t('Wallet Connected'))
-      } else {
-        toastError(
-          t('Provider Error'),
-          <Text textStyle="R_12R" color="mediumgrey">
-            {t('No provider was found')}
-          </Text>,
-        )
+  const onActivate = useCallback(
+    async (connectorId: AvailableConnectors) => {
+      const w = walletRef.current
+      if (!w) return
+      try {
+        if (w.isAvailable(connectorId)) {
+          await w.activate(connectorId)
+          setAccount(w.account || null)
+          setConnector((w as any).connectorId || connectorId)
+          localStorage.setItem(CACHE_KEY, String(connectorId))
+          toastSuccess(t('Wallet Connected'))
+        } else {
+          toastError(
+            t('Provider Error'),
+            <Text textStyle="R_12R" color="mediumgrey">
+              {t('No provider was found')}
+            </Text>,
+          )
+        }
+      } catch (e: any) {
+        if (e?.message === WalletError.USER_DENIED) {
+          toastError(
+            t('Authorization Error'),
+            <Text textStyle="R_12R" color="mediumgrey">
+              {t('Please authorize to access your account')}
+            </Text>,
+          )
+        }
+        // eslint-disable-next-line no-console
+        console.error(e?.message || e)
       }
-    } catch (e: any) {
-      if (e?.message === WalletError.USER_DENIED) {
-        toastError(
-          t('Authorization Error'),
-          <Text textStyle="R_12R" color="mediumgrey">
-            {t('Please authorize to access your account')}
-          </Text>,
-        )
-      }
-      // eslint-disable-next-line no-console
-      console.error(e?.message || e)
-    }
-  }, [t, toastError, toastSuccess])
+    },
+    [t, toastError, toastSuccess],
+  )
 
   const onDeactivate = useCallback(() => {
     const w = walletRef.current
@@ -155,4 +158,3 @@ const WalletContextProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 }
 
 export { WalletContext, WalletContextProvider }
-
