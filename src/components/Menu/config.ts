@@ -1,5 +1,5 @@
 import { ROUTES } from 'config/constants/routes'
-import { AvailableConnectors } from '@fingerlabs/klaytn-wallets'
+import { AvailableConnectors } from 'six-kaia-wallet-kit'
 
 export const links = (t: (key: string) => string, currentLang: string) => {
   return [

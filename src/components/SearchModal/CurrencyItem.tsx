@@ -9,7 +9,7 @@ import { addCustomToken } from 'utils/caver'
 import Loader from '../Loader'
 import { MenuItem } from './styleds'
 import { useTranslation } from 'react-i18next'
-import { AvailableConnectors } from '@fingerlabs/klaytn-wallets'
+import { AvailableConnectors } from 'six-kaia-wallet-kit'
 
 const StyledBalanceText = styled(Text)`
   white-space: nowrap;

@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import KlaytnWallet, { AvailableConnectors, WalletError } from '@fingerlabs/klaytn-wallets'
+import KlaytnWallet, { AvailableConnectors, WalletError } from 'six-kaia-wallet-kit'
 import { useToast } from 'state/toasts/hooks'
 import { useTranslation } from 'react-i18next'
 import getLibrary from 'utils/getLibrary'
@@ -7,17 +7,22 @@ import { renderKlipTimeFormat } from 'hooks/useKlipModal'
 import { Text } from '@fingerlabs/definixswap-uikit-v2'
 import { getCaver } from 'utils/caver'
 
+type ConnId = AvailableConnectors | null
+
 interface WalletState {
-  wallet: KlaytnWallet
-  account: string
-  connector: string
+  wallet: KlaytnWallet | null
+  account: string | null
+  connector: ConnId
   chainId: number
-  library: any
-  klaytn: any
+  library: any | null
+  klaytn: any | null
   activate: (connectorId: AvailableConnectors | string) => Promise<void>
   deactivate: () => void
   initKlip: (callback: { show: () => void; hide: () => void }) => void
 }
+
+const CHAIN_ID = parseInt(process.env.REACT_APP_CHAIN_ID || '', 10) || 1001
+const CACHE_KEY = 'wallet:connectorId'
 
 const WalletContext = createContext<WalletState>({
   wallet: null,
@@ -28,28 +33,31 @@ const WalletContext = createContext<WalletState>({
   klaytn: null,
   activate: () => Promise.resolve(),
   deactivate: () => {
-    return
+    return undefined
   },
   initKlip: () => {
-    return
+    return undefined
   },
 })
 
-const WalletContextProvider = ({ children }) => {
+const WalletContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { t } = useTranslation()
-  const [isInit, setIsInit] = useState<boolean>(false)
-  const [account, setAccount] = useState<string>()
-  const [connector, setConnector] = useState<AvailableConnectors>()
   const { toastError, toastSuccess } = useToast()
-  const wallet = useRef<KlaytnWallet>()
 
-  const onActivate = async (connectorId: AvailableConnectors) => {
+  const walletRef = useRef<KlaytnWallet | null>(null)
+  const [account, setAccount] = useState<string | null>(null)
+  const [connector, setConnector] = useState<ConnId>(null)
+  const [isInit, setIsInit] = useState<boolean>(false)
+
+  const onActivate = useCallback(async (connectorId: AvailableConnectors) => {
+    const w = walletRef.current
+    if (!w) return
     try {
-      if (wallet.current.isAvailable(connectorId)) {
-        await wallet.current.activate(connectorId)
-        setAccount(wallet.current.account)
-        // @ts-ignore
-        setConnector(wallet.current.connectorId as AvailableConnectors)
+      if (w.isAvailable(connectorId)) {
+        await w.activate(connectorId)
+        setAccount(w.account || null)
+        setConnector((w as any).connectorId || connectorId)
+        localStorage.setItem(CACHE_KEY, String(connectorId))
         toastSuccess(t('Wallet Connected'))
       } else {
         toastError(
@@ -60,7 +68,7 @@ const WalletContextProvider = ({ children }) => {
         )
       }
     } catch (e: any) {
-      if (e.message === WalletError.USER_DENIED) {
+      if (e?.message === WalletError.USER_DENIED) {
         toastError(
           t('Authorization Error'),
           <Text textStyle="R_12R" color="mediumgrey">
@@ -68,48 +76,53 @@ const WalletContextProvider = ({ children }) => {
           </Text>,
         )
       }
-      console.error(e.message)
+      // eslint-disable-next-line no-console
+      console.error(e?.message || e)
     }
-  }
+  }, [t, toastError, toastSuccess])
 
   const onDeactivate = useCallback(() => {
-    wallet.current.deactivate()
-    setAccount(wallet.current.account)
-    // @ts-ignore
-    setConnector(wallet.current.connectorId as AvailableConnectors)
-  }, [wallet.current])
+    const w = walletRef.current
+    if (!w) return
+    w.deactivate()
+    setAccount(w.account || null)
+    setConnector((w as any).connectorId || null)
+    localStorage.removeItem(CACHE_KEY)
+  }, [])
 
   useEffect(() => {
-    if (wallet.current) return
-    // dcent inapp browser 관련 처리
-    setTimeout(() => {
-      wallet.current = new KlaytnWallet([
-        AvailableConnectors.KAIKAS,
-        AvailableConnectors.KLIP,
-        AvailableConnectors.METAMASK,
-        AvailableConnectors.DCENT,
-        AvailableConnectors.TOKENPOCKET,
-      ])
+    if (walletRef.current) return
+    walletRef.current = new KlaytnWallet([
+      AvailableConnectors.KAIKAS,
+      AvailableConnectors.KLIP,
+      AvailableConnectors.METAMASK,
+      AvailableConnectors.DCENT,
+      AvailableConnectors.TOKENPOCKET,
+    ])
 
-      if ((window as any).klaytn) {
-        window?.klaytn?.on('accountsChanged', (accounts) => {
-          setAccount(accounts[0])
-        })
-      }
+    if ((window as any).klaytn) {
+      window.klaytn.on('accountsChanged', (accounts: string[]) => {
+        setAccount(accounts?.[0] || null)
+      })
+    }
 
-      if (!wallet.current.isConnected()) {
-        // @ts-ignore
-        onActivate(wallet.current.connectorId)
-      }
-    }, 100)
-  }, [wallet.current])
+    const cached = (localStorage.getItem(CACHE_KEY) as AvailableConnectors | null) || null
+    if (cached && walletRef.current.isAvailable(cached)) {
+      onActivate(cached)
+    }
+  }, [onActivate])
 
-  const library = getLibrary(window.caver ? window.klaytn : getCaver().currentProvider)
-  const klaytn = useMemo(() => library?.provider || undefined, [library])
+  const library = useMemo(() => {
+    if (!account) return null
+    const provider = (window as any).caver ? (window as any).klaytn : getCaver().currentProvider
+    return getLibrary(provider)
+  }, [account])
+
+  const klaytn = useMemo(() => (library ? library.provider : null), [library])
 
   const initKlip = (callback: { show: () => void; hide: () => void }) => {
-    if (isInit || !wallet.current) return
-    wallet.current.initKlip(
+    if (isInit || !walletRef.current) return
+    walletRef.current.initKlip(
       {
         qrClassName: 'klip-qr',
         intervalClassName: 'klip-interval',
@@ -125,13 +138,13 @@ const WalletContextProvider = ({ children }) => {
   return (
     <WalletContext.Provider
       value={{
-        wallet: wallet.current,
+        wallet: walletRef.current || null,
         account,
-        chainId: parseInt(process.env.REACT_APP_CHAIN_ID) || 1001,
+        chainId: CHAIN_ID,
         library,
         klaytn,
         connector,
-        activate: (connectorId) => onActivate(connectorId as AvailableConnectors),
+        activate: (id) => onActivate(id as AvailableConnectors),
         deactivate: onDeactivate,
         initKlip,
       }}
@@ -142,3 +155,4 @@ const WalletContextProvider = ({ children }) => {
 }
 
 export { WalletContext, WalletContextProvider }
+
