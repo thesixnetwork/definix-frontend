@@ -38,12 +38,9 @@ export const approve = async (lpContract, herodotusContract, account: string) =>
       }
     }
 
-    const data = lpContract.methods
-      .approve(spender, useExact ? '0' : ethers.constants.MaxUint256)
-      .encodeABI()
+    const data = lpContract.methods.approve(spender, useExact ? '0' : ethers.constants.MaxUint256).encodeABI()
 
-    const gasLimitHint =
-      estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
 
     const txHash = await safeSendContractTx({
       account,
@@ -66,8 +63,7 @@ export const approveOther = async (lpContract, spender: string, account: string)
       estGas = undefined
     }
     const data = lpContract.methods.approve(spender, ethers.constants.MaxUint256).encodeABI()
-    const gasLimitHint =
-      estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
 
     const txHash = await safeSendContractTx({
       account,
@@ -365,4 +361,3 @@ export const soushHarvestBnb = async (sousChefContract, account: string) => {
     throw normalizeTxError(e)
   }
 }
-
