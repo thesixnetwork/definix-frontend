@@ -1,447 +1,368 @@
+// src/utils/callHelpers.ts
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { getHerodotusAddress } from 'utils/addressHelpers'
-import UseDeParam from 'hooks/useDeParam'
-import Caver from 'caver-js'
-import { getCaver } from './caver'
-
-const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
-const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
+import { getCaver, getContract } from './caver'
+import { safeSendContractTx, normalizeTxError } from 'utils/tx'
 
 const caver = getCaver()
 
+/** เดิมใช้บ่อย — เก็บไว้ให้ */
 export const getEstimateGas = async (method, account, ...args) => {
   const estimateGas = await method(...args).estimateGas({ from: account })
   return estimateGas
 }
 
-export const approve = async (lpContract, herodotusContract, account) => {
-  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
+const toWeiStr = (amount: string | number, decimals = 18) =>
+  new BigNumber(amount).times(new BigNumber(10).pow(decimals)).toString()
 
-  const estimatedGas = await getEstimateGas(
-    lpContract.methods.approve,
-    account,
-    herodotusContract.options.address,
-    ethers.constants.MaxUint256,
-  )
+const toHex = (v: string | number | bigint) => '0x' + BigInt(v as any).toString(16)
 
-  if (flagFeeDelegate === 'Y') {
-    return caver.klay
-      .signTransaction({
-        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-        from: account,
-        to: lpContract._address,
-        gas: estimatedGas,
-        data: lpContract.methods.approve(herodotusContract.options.address, ethers.constants.MaxUint256).encodeABI(),
-      })
-      .then((userSignTx) => {
-        const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-        userSigned.feePayer = feePayerAddress
+/** ----------------------- Approve ----------------------- */
 
-        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-          return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw)
-        })
-      })
-      .catch((tx) => {
-        return tx.transactionHash
-      })
-  }
+export const approve = async (lpContract, herodotusContract, account: string) => {
+  try {
+    const spender = herodotusContract.options.address
+    // try estimate both Max and exact ifบาง tokenไม่ยอม max
+    let useExact = false
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(lpContract.methods.approve, account, spender, ethers.constants.MaxUint256)
+    } catch {
+      useExact = true
+      // ถ้ายังพัง ให้เดา gas ทีหลังใน helper
+      try {
+        estGas = await getEstimateGas(lpContract.methods.approve, account, spender, '0')
+      } catch {
+        estGas = undefined
+      }
+    }
 
-  return lpContract.methods
-    .approve(herodotusContract.options.address, ethers.constants.MaxUint256)
-    .send({ from: account, gas: estimatedGas })
-}
+    const data = lpContract.methods
+      .approve(spender, useExact ? '0' : ethers.constants.MaxUint256)
+      .encodeABI()
 
-export const approveOther = async (lpContract, spender, account) => {
-  return lpContract.methods.approve(spender, ethers.constants.MaxUint256).send({ from: account, gas: 30 * 300000 })
-}
+    const gasLimitHint =
+      estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
 
-export const stake = async (herodotusContract, pid, amount, account) => {
-  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
-
-  if (pid === 0) {
-    const estimatedGas = await getEstimateGas(
-      herodotusContract.methods.enterStaking,
+    const txHash = await safeSendContractTx({
       account,
-      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-    )
+      to: lpContract._address,
+      data,
+      gasLimitHint,
+    })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
+  }
+}
 
-    if (flagFeeDelegate === 'Y') {
-      return caver.klay
-        .signTransaction({
-          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-          from: account,
-          to: getHerodotusAddress(),
-          gas: estimatedGas,
-          data: herodotusContract.methods
-            .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-            .encodeABI(),
-        })
-        .then((userSignTx) => {
-          const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-          userSigned.feePayer = feePayerAddress
-
-          return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-            return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
-              return sendTx.transactionHash
-            })
-          })
-        })
-        .catch((tx) => {
-          return tx.transactionHash
-        })
+export const approveOther = async (lpContract, spender: string, account: string) => {
+  try {
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(lpContract.methods.approve, account, spender, ethers.constants.MaxUint256)
+    } catch {
+      estGas = undefined
     }
+    const data = lpContract.methods.approve(spender, ethers.constants.MaxUint256).encodeABI()
+    const gasLimitHint =
+      estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
 
-    return herodotusContract.methods
-      .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-      .send({ from: account, gas: estimatedGas })
-      .then((tx) => {
-        return tx.transactionHash
-      })
-      .catch((tx) => {
-        return tx.transactionHash
-      })
-  }
-
-  const estimatedGas = await getEstimateGas(
-    herodotusContract.methods.deposit,
-    account,
-    pid,
-    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-  )
-
-  if (flagFeeDelegate === 'Y') {
-    return caver.klay
-      .signTransaction({
-        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-        from: account,
-        to: getHerodotusAddress(),
-        gas: estimatedGas,
-        data: herodotusContract.methods
-          .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-          .encodeABI(),
-      })
-      .then((userSignTx) => {
-        const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-        userSigned.feePayer = feePayerAddress
-
-        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-          return caverFeeDelegate.rpc.klay
-            .sendRawTransaction(feePayerSigningResult.raw)
-            .on('transactionHash', (sendTx) => {
-              return sendTx.transactionHash
-            })
-        })
-      })
-      .catch((tx) => {
-        return tx.transactionHash
-      })
-  }
-
-  return herodotusContract.methods
-    .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: estimatedGas })
-    .then((tx) => {
-      return tx.transactionHash
-    })
-    .catch((tx) => {
-      return tx.transactionHash
-    })
-}
-
-export const sousStake = async (sousChefContract, amount, account) => {
-  const estimatedGas = await getEstimateGas(
-    sousChefContract.methods.deposit,
-    account,
-    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-  )
-  return sousChefContract.methods
-    .deposit(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: estimatedGas })
-    .then((tx) => {
-      return tx.transactionHash
-    })
-    .catch((tx) => {
-      return tx.transactionHash
-    })
-  // .on('transactionHash', (tx) => {
-  //   return tx.transactionHash
-  // })
-}
-
-export const sousStakeBnb = async (sousChefContract, amount, account) => {
-  const estimatedGas = await getEstimateGas(sousChefContract.methods.deposit, account)
-  return sousChefContract.methods
-    .deposit()
-    .send({
-      from: account,
-      gas: estimatedGas,
-      value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-    })
-    .then((tx) => {
-      return tx.transactionHash
-    })
-    .catch((tx) => {
-      return tx.transactionHash
-    })
-  // .on('transactionHash', (tx) => {
-  //   return tx.transactionHash
-  // })
-}
-
-export const unstake = async (herodotusContract, pid, amount, account) => {
-  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
-
-  if (pid === 0) {
-    const estimatedGas = await getEstimateGas(
-      herodotusContract.methods.leaveStaking,
+    const txHash = await safeSendContractTx({
       account,
-      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-    )
-    if (flagFeeDelegate === 'Y') {
-      return caver.klay
-        .signTransaction({
-          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-          from: account,
-          to: getHerodotusAddress(),
-          gas: estimatedGas,
-          data: herodotusContract.methods
-            .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-            .encodeABI(),
-        })
-        .then((userSignTx) => {
-          const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-          userSigned.feePayer = feePayerAddress
+      to: lpContract._address,
+      data,
+      gasLimitHint,
+    })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
+  }
+}
 
-          return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-            return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
-              return sendTx.transactionHash
-            })
-          })
-        })
-        .catch((tx) => {
-          return tx.transactionHash
-        })
+/** ----------------------- Stake / Unstake (Herodotus) ----------------------- */
+
+export const stake = async (herodotusContract, pid: number, amount: string, account: string) => {
+  try {
+    if (pid === 0) {
+      const amountWei = toWeiStr(amount)
+      let estGas: any
+      try {
+        estGas = await getEstimateGas(herodotusContract.methods.enterStaking, account, amountWei)
+      } catch {
+        estGas = undefined
+      }
+      const data = herodotusContract.methods.enterStaking(amountWei).encodeABI()
+      const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+      const txHash = await safeSendContractTx({
+        account,
+        to: getHerodotusAddress(),
+        data,
+        gasLimitHint,
+      })
+      return txHash
     }
 
-    return herodotusContract.methods
-      .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-      .send({ from: account, gas: estimatedGas })
-      .then((tx) => {
-        return tx.transactionHash
-      })
-      .catch((tx) => {
-        return tx.transactionHash
-      })
+    const amountWei = toWeiStr(amount)
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(herodotusContract.methods.deposit, account, pid, amountWei)
+    } catch {
+      estGas = undefined
+    }
+    const data = herodotusContract.methods.deposit(pid, amountWei).encodeABI()
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const txHash = await safeSendContractTx({
+      account,
+      to: getHerodotusAddress(),
+      data,
+      gasLimitHint,
+    })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
   }
+}
 
-  const estimatedGas = await getEstimateGas(
-    herodotusContract.methods.withdraw,
-    account,
-    pid,
-    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-  )
-  if (flagFeeDelegate === 'Y') {
-    return caver.klay
-      .signTransaction({
-        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-        from: account,
+export const unstake = async (herodotusContract, pid: number, amount: string, account: string) => {
+  try {
+    if (pid === 0) {
+      const amountWei = toWeiStr(amount)
+      let estGas: any
+      try {
+        estGas = await getEstimateGas(herodotusContract.methods.leaveStaking, account, amountWei)
+      } catch {
+        estGas = undefined
+      }
+      const data = herodotusContract.methods.leaveStaking(amountWei).encodeABI()
+      const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+      const txHash = await safeSendContractTx({
+        account,
         to: getHerodotusAddress(),
-        gas: estimatedGas,
-        data: herodotusContract.methods
-          .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-          .encodeABI(),
+        data,
+        gasLimitHint,
       })
-      .then((userSignTx) => {
-        const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-        userSigned.feePayer = feePayerAddress
-
-        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-          return caverFeeDelegate.rpc.klay
-            .sendRawTransaction(feePayerSigningResult.raw)
-            .on('transactionHash', (sendTx) => {
-              return sendTx.transactionHash
-            })
-        })
-      })
-      .catch((tx) => {
-        return tx.transactionHash
-      })
-  }
-
-  return herodotusContract.methods
-    .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: estimatedGas })
-    .then((tx) => {
-      return tx.transactionHash
-    })
-    .catch((tx) => {
-      return tx.transactionHash
-    })
-}
-
-export const sousUnstake = async (sousChefContract, amount, account) => {
-  // shit code: hard fix for old CTK and BLK
-  if (sousChefContract.options.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
-    return sousChefContract.methods
-      .emergencyWithdraw()
-      .send({ from: account })
-      .then((tx) => {
-        return tx.transactionHash
-      })
-      .catch((tx) => {
-        return tx.transactionHash
-      })
-  }
-  if (sousChefContract.options.address === '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831') {
-    return sousChefContract.methods
-      .emergencyWithdraw()
-      .send({ from: account })
-      .then((tx) => {
-        return tx.transactionHash
-      })
-      .catch((tx) => {
-        return tx.transactionHash
-      })
-  }
-
-  const estimatedGas = await getEstimateGas(
-    sousChefContract.methods.withdraw,
-    account,
-    new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-  )
-  return sousChefContract.methods
-    .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-    .send({ from: account, gas: estimatedGas })
-    .then((tx) => {
-      return tx.transactionHash
-    })
-    .catch((tx) => {
-      return tx.transactionHash
-    })
-}
-
-export const sousEmegencyUnstake = async (sousChefContract, amount, account) => {
-  return sousChefContract.methods
-    .emergencyWithdraw()
-    .send({ from: account })
-    .then((tx) => {
-      return tx.transactionHash
-    })
-    .catch((tx) => {
-      return tx.transactionHash
-    })
-}
-
-export const harvest = async (herodotusContract, pid, account) => {
-  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
-
-  if (pid === 0) {
-    const estimatedGas = await getEstimateGas(herodotusContract.methods.leaveStaking, account, '0')
-    if (flagFeeDelegate === 'Y') {
-      return caver.klay
-        .signTransaction({
-          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-          from: account,
-          to: getHerodotusAddress(),
-          gas: estimatedGas,
-          data: herodotusContract.methods.leaveStaking('0').encodeABI(),
-        })
-        .then((userSignTx) => {
-          const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-          userSigned.feePayer = feePayerAddress
-
-          return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-            return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
-              return sendTx.transactionHash
-            })
-          })
-        })
-        .catch((e) => {
-          throw e
-        })
+      return txHash
     }
 
-    return herodotusContract.methods
-      .leaveStaking('0')
-      .send({ from: account, gas: estimatedGas })
-      .then((tx) => {
-        return tx.transactionHash
-      })
-      .catch((e) => {
-        throw e
-      })
-    // .on('transactionHash', (tx) => {
-    //   return tx.transactionHash
-    // })
+    const amountWei = toWeiStr(amount)
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(herodotusContract.methods.withdraw, account, pid, amountWei)
+    } catch {
+      estGas = undefined
+    }
+    const data = herodotusContract.methods.withdraw(pid, amountWei).encodeABI()
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const txHash = await safeSendContractTx({
+      account,
+      to: getHerodotusAddress(),
+      data,
+      gasLimitHint,
+    })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
   }
+}
 
-  const estimatedGas = await getEstimateGas(herodotusContract.methods.deposit, account, pid, '0')
-  if (flagFeeDelegate === 'Y') {
-    return caver.klay
-      .signTransaction({
-        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-        from: account,
+/** ----------------------- Sous Stake/Unstake ----------------------- */
+
+export const sousStake = async (sousChefContract, amount: string, account: string) => {
+  try {
+    const amountWei = toWeiStr(amount)
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(sousChefContract.methods.deposit, account, amountWei)
+    } catch {
+      estGas = undefined
+    }
+    const data = sousChefContract.methods.deposit(amountWei).encodeABI()
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const txHash = await safeSendContractTx({
+      account,
+      to: sousChefContract.options.address,
+      data,
+      gasLimitHint,
+    })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
+  }
+}
+
+export const sousStakeBnb = async (sousChefContract, amount: string, account: string) => {
+  try {
+    // deposit() payable: value = amountWei
+    const amountWei = toWeiStr(amount)
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(sousChefContract.methods.deposit, account)
+    } catch {
+      estGas = undefined
+    }
+    const data = sousChefContract.methods.deposit().encodeABI()
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const txHash = await safeSendContractTx({
+      account,
+      to: sousChefContract.options.address,
+      data,
+      gasLimitHint,
+      valueHex: toHex(amountWei),
+    })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
+  }
+}
+
+export const sousUnstake = async (sousChefContract, amount: string, account: string) => {
+  try {
+    // hard fix for old CTK / BLK (คง logic เดิม)
+    if (sousChefContract.options.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
+      const data = sousChefContract.methods.emergencyWithdraw().encodeABI()
+      const txHash = await safeSendContractTx({
+        account,
+        to: sousChefContract.options.address,
+        data,
+      })
+      return txHash
+    }
+    if (sousChefContract.options.address === '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831') {
+      const data = sousChefContract.methods.emergencyWithdraw().encodeABI()
+      const txHash = await safeSendContractTx({
+        account,
+        to: sousChefContract.options.address,
+        data,
+      })
+      return txHash
+    }
+
+    const amountWei = toWeiStr(amount)
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(sousChefContract.methods.withdraw, account, amountWei)
+    } catch {
+      estGas = undefined
+    }
+    const data = sousChefContract.methods.withdraw(amountWei).encodeABI()
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const txHash = await safeSendContractTx({
+      account,
+      to: sousChefContract.options.address,
+      data,
+      gasLimitHint,
+    })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
+  }
+}
+
+export const sousEmegencyUnstake = async (sousChefContract, _amount: string, account: string) => {
+  try {
+    const data = sousChefContract.methods.emergencyWithdraw().encodeABI()
+    const txHash = await safeSendContractTx({
+      account,
+      to: sousChefContract.options.address,
+      data,
+    })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
+  }
+}
+
+/** ----------------------- Harvest ----------------------- */
+
+export const harvest = async (herodotusContract, pid: number, account: string) => {
+  try {
+    if (pid === 0) {
+      // leaveStaking('0')
+      let estGas: any
+      try {
+        estGas = await getEstimateGas(herodotusContract.methods.leaveStaking, account, '0')
+      } catch {
+        estGas = undefined
+      }
+      const data = herodotusContract.methods.leaveStaking('0').encodeABI()
+      const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+      const txHash = await safeSendContractTx({
+        account,
         to: getHerodotusAddress(),
-        gas: estimatedGas,
-        data: herodotusContract.methods.deposit(pid, '0').encodeABI(),
+        data,
+        gasLimitHint,
       })
-      .then((userSignTx) => {
-        const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-        userSigned.feePayer = feePayerAddress
+      return txHash
+    }
 
-        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-          return caverFeeDelegate.rpc.klay
-            .sendRawTransaction(feePayerSigningResult.raw)
-            .on('transactionHash', (sendTx) => {
-              return sendTx.transactionHash
-            })
-        })
-      })
-      .catch((e) => {
-        throw e
-      })
+    // deposit(pid, '0')
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(herodotusContract.methods.deposit, account, pid, '0')
+    } catch {
+      estGas = undefined
+    }
+    const data = herodotusContract.methods.deposit(pid, '0').encodeABI()
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const txHash = await safeSendContractTx({
+      account,
+      to: getHerodotusAddress(),
+      data,
+      gasLimitHint,
+    })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
   }
-
-  return herodotusContract.methods
-    .deposit(pid, '0')
-    .send({ from: account, gas: estimatedGas })
-    .then((tx) => {
-      return tx.transactionHash
-    })
-    .catch((e) => {
-      throw e
-    })
 }
 
-export const soushHarvest = async (sousChefContract, account) => {
-  const estimatedGas = await getEstimateGas(sousChefContract.methods.deposit, account, '0')
-  return sousChefContract.methods
-    .deposit('0')
-    .send({ from: account, gas: estimatedGas })
-    .then((tx) => {
-      return tx.transactionHash
+export const soushHarvest = async (sousChefContract, account: string) => {
+  try {
+    // deposit('0')
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(sousChefContract.methods.deposit, account, '0')
+    } catch {
+      estGas = undefined
+    }
+    const data = sousChefContract.methods.deposit('0').encodeABI()
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const txHash = await safeSendContractTx({
+      account,
+      to: sousChefContract.options.address,
+      data,
+      gasLimitHint,
     })
-    .catch((tx) => {
-      return tx.transactionHash
-    })
-  // .on('transactionHash', (tx) => {
-  //   return tx.transactionHash
-  // })
+    return txHash
+  } catch (e: any) {
+    // อันเดิม return tx.transactionHash เสมอ; ที่นี่ถ้า fail ให้โยน error อ่านง่ายแทน
+    throw normalizeTxError(e)
+  }
 }
 
-export const soushHarvestBnb = async (sousChefContract, account) => {
-  const estimatedGas = await getEstimateGas(sousChefContract.methods.deposit, account)
-  return sousChefContract.methods
-    .deposit()
-    .send({ from: account, gas: estimatedGas, value: new BigNumber(0) })
-    .then((tx) => {
-      return tx.transactionHash
+export const soushHarvestBnb = async (sousChefContract, account: string) => {
+  try {
+    // deposit() with value 0
+    let estGas: any
+    try {
+      estGas = await getEstimateGas(sousChefContract.methods.deposit, account)
+    } catch {
+      estGas = undefined
+    }
+    const data = sousChefContract.methods.deposit().encodeABI()
+    const gasLimitHint = estGas && estGas._isBigNumber ? (estGas as any).toHexString() : undefined
+    const txHash = await safeSendContractTx({
+      account,
+      to: sousChefContract.options.address,
+      data,
+      gasLimitHint,
+      valueHex: toHex('0'),
     })
-    .catch((tx) => {
-      return tx.transactionHash
-    })
-  // .on('transactionHash', (tx) => {
-  //   return tx.transactionHash
-  // })
+    return txHash
+  } catch (e: any) {
+    throw normalizeTxError(e)
+  }
 }
+
