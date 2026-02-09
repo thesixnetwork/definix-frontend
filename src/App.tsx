@@ -14,6 +14,7 @@ import ToastListener from './components/ToastListener'
 import sdkConfig from './sdkconfig'
 
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/Liquidity/redirects'
+import DebugOverlay from 'components/DebugOverlay'
 import RemoveLiquidity from './views/RemoveLiquidity'
 import RedirectPathToSwapOnly from './views/Swap/redirects'
 
@@ -132,6 +133,7 @@ const App: React.FC = () => {
         </Suspense>
       </Menu>
       <ToastListener />
+      <DebugOverlay />
     </BrowserRouter>
   )
 }

@@ -1,106 +1,155 @@
-// src/utils/tx.ts
 import Caver from 'caver-js'
 import { ethers } from 'ethers'
-import { getCaver } from 'utils/caver'
-import KlaytnWallet, { AvailableConnectors } from 'six-kaia-wallet-kit'
+import getRpcUrl from 'utils/getRpcUrl'
+import { AvailableConnectors } from 'six-kaia-wallet-kit'
 
 type SendOpts = {
   account: string
   to: string
   data: string
-  valueHex?: string // '0x0' normally
-  gasLimitHint?: string // hex string
+  valueHex?: string
+  gasLimitHint?: string
+  gasPriceHint?: string
   connector?: AvailableConnectors | null
 }
 
-/**
- * ปลอดภัยกับ D'Cent/Kaikas:
- * - ถ้าใช้ Kaia (window.klaytn) จะส่ง legacy tx (gas + gasPrice) เท่านั้น
- * - ถ้า Fee-Delegation พร้อมจริง (env ครบ) ค่อยใช้ FEE_DELEGATED_* ไม่งั้น fallback
- * - คืนค่า transactionHash เสมอ (ถ้าส่งสำเร็จ)
- */
-export async function safeSendContractTx(opts: SendOpts): Promise<string> {
-  const { account, to, data, valueHex = '0x0', gasLimitHint, connector } = opts
+const isHex = (s: any) => typeof s === 'string' && s.startsWith('0x')
 
-  // เช็ค provider Kaia/Kaikas/D'Cent
+const toHex = (v: any) => {
+  try {
+    if (v == null) return undefined
+    if (typeof v === 'string') {
+      if (v.startsWith('0x')) return v
+      return '0x' + BigInt(v).toString(16)
+    }
+    if (typeof v === 'number') return '0x' + BigInt(Math.trunc(v)).toString(16)
+    if (typeof v === 'object' && typeof v.toString === 'function') {
+      const s = v.toString()
+      if (isHex(s)) return s
+      return '0x' + BigInt(s).toString(16)
+    }
+    return undefined
+  } catch {
+    return undefined
+  }
+}
+
+const bumpHex = (hex: string | undefined, multiplier = 1.6) => {
+  if (!hex) return undefined
+  try {
+    const n = BigInt(hex)
+    const scaled = BigInt(Math.floor(multiplier * 1000))
+    const result = (n * scaled) / BigInt(1000)
+    return '0x' + result.toString(16)
+  } catch {
+    return undefined
+  }
+}
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+const extractHash = (res: any) => {
+  if (typeof res === 'string') return res
+  if (res && typeof res === 'object') {
+    if (typeof (res as any).transactionHash === 'string') return (res as any).transactionHash
+    if (typeof (res as any).hash === 'string') return (res as any).hash
+    if (typeof (res as any).result === 'string') return (res as any).result
+  }
+  return undefined
+}
+
+const extractRaw = (res: any) => {
+  if (!res || typeof res !== 'object') return undefined
+  if (typeof (res as any).rawTransaction === 'string') return (res as any).rawTransaction
+  if (typeof (res as any).raw === 'string') return (res as any).raw
+  return undefined
+}
+
+const waitTxVisible = async (rpcCaver: any, hash: string, timeoutMs = 20000, intervalMs = 800) => {
+  const start = Date.now()
+  while (Date.now() - start < timeoutMs) {
+    try {
+      const tx = await rpcCaver.klay.getTransactionByHash(hash)
+      if (tx) return true
+    } catch {}
+    await sleep(intervalMs)
+  }
+  return false
+}
+
+const getRpcCaver = () => {
+  const rpcUrl = getRpcUrl()
+  const httpProvider = new Caver.providers.HttpProvider(rpcUrl)
+  return new Caver(httpProvider)
+}
+
+export async function safeSendContractTx(opts: SendOpts): Promise<string> {
+  const { account, to, data, valueHex = '0x0', gasLimitHint, gasPriceHint } = opts
+
   const isKaia = typeof (window as any)?.klaytn !== 'undefined'
   const kaiaProv: any = isKaia ? (window as any).klaytn : null
 
-  // เลือกใช้ caver สำหรับ Kaia
-  const caver = getCaver()
+  const rpcCaver = getRpcCaver()
 
-  // ดึง gas price แบบ legacy
-  let gasPriceHex = '0x3b9aca00' // 1 Gwei default safety
-  try {
-    const gp = await caver.klay.getGasPrice()
-    gasPriceHex = '0x' + BigInt(gp).toString(16)
-  } catch (_) {
-    // keep default
-  }
-
-  // gas limit (ถ้า estimate ไม่ได้ ให้ค่าเผื่อ)
-  let gasLimit = gasLimitHint
-  if (!gasLimit) {
+  let gpHex = toHex(gasPriceHint)
+  if (!gpHex) {
     try {
-      const est = await caver.klay.estimateGas({ from: account, to, data, value: valueHex })
-      gasLimit = '0x' + BigInt(est).toString(16)
-    } catch (_e) {
-      gasLimit = '0x5208' // 21000 (กันพัง; contract call ส่วนใหญ่ใช้มากกว่านี้ แต่อย่างน้อยไม่ throw)
+      gpHex = toHex(await rpcCaver.klay.getGasPrice())
+    } catch {}
+  }
+  if (!gpHex) gpHex = '0x3b9aca00'
+  const finalGasPriceHex = bumpHex(gpHex, 2.0) || bumpHex(gpHex, 1.6) || gpHex
+
+  let gasHex = toHex(gasLimitHint)
+  if (!gasHex) {
+    try {
+      const est = await rpcCaver.klay.estimateGas({ from: account, to, data, value: valueHex })
+      const estHex = toHex(est)
+      gasHex = bumpHex(estHex, 1.25) || estHex
+    } catch {
+      gasHex = '0x7a120'
     }
   }
 
-  // ตัดสินใจเรื่อง Fee-Delegation
-  const enUrl = process.env.REACT_APP_SIX_KLAYTN_EN_URL
-  const feePayer = process.env.REACT_APP_FEE_PAYER_ADDRESS
-  const canFeeDelegate = Boolean(enUrl && feePayer && false)
-
-  // ถ้าอยู่บน Kaia & ใช้ D'Cent/Kaikas → พยายามส่งให้ผ่านกระเป๋า
   if (isKaia) {
-    // 2 เส้นทาง:
-    // 2.1 ถ้า fee-delegation พร้อม -> ลองก่อน
-    if (canFeeDelegate) {
-      try {
-        const caverFeeDelegate = new Caver(enUrl as string)
-        const userSigned = await caver.klay.signTransaction({
-          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-          from: account,
-          to,
-          gas: gasLimit!,
-          gasPrice: gasPriceHex,
-          value: valueHex,
-          data,
-        })
-        const decoded = caver.transaction.decode((userSigned as any).rawTransaction)
-        ;(decoded as any).feePayer = feePayer
-        const feePayerSigned = await caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(decoded as any)
-        const sent = await caverFeeDelegate.rpc.klay.sendRawTransaction((feePayerSigned as any).raw)
-        const hash: string = (sent as any)?.transactionHash || (sent as any)
-        if (hash) return hash
-      } catch (e) {
-        // ถ้า fail ให้ตกไปเส้นทางธรรมดา
-      }
+    const tx = {
+      from: account,
+      to,
+      gas: gasHex!,
+      gasPrice: finalGasPriceHex,
+      value: valueHex,
+      data,
     }
 
-    // 2.2 ธรรมดา (legacy) ผ่าน wallet
     try {
-      // บางกระเป๋ารับ kaia_requestAccounts / klay_sendTransaction ต่างกัน
-      const method = 'klay_sendTransaction'
-      const tx = {
-        from: account,
-        to,
-        gas: gasLimit!,
-        gasPrice: gasPriceHex,
-        value: valueHex,
-        data,
+      let signed: any
+      try {
+        signed = await kaiaProv.request({ method: 'klay_signTransaction', params: [tx] })
+      } catch {
+        signed = undefined
       }
-      const hash = await kaiaProv.request({ method, params: [tx] })
-      if (typeof hash === 'string') return hash
+
+      const raw = extractRaw(signed)
+      if (raw) {
+        const sent = await rpcCaver.rpc.klay.sendRawTransaction(raw)
+        const hash = extractHash(sent) || extractHash(signed)
+        if (hash) return hash
+        throw new Error('Broadcasted raw tx but no hash returned')
+      }
+
+      const sent = await kaiaProv.request({ method: 'klay_sendTransaction', params: [tx] })
+      const hash = extractHash(sent)
+      if (!hash) throw new Error('Wallet did not return transaction hash')
+
+      const ok = await waitTxVisible(rpcCaver, hash, 20000, 800)
+      if (!ok) throw new Error('Transaction signed but not broadcasted to network')
+
+      return hash
     } catch (e: any) {
       throw normalizeTxError(e)
     }
   }
 
-  // ถ้าไม่ใช่ Kaia (กรณีไปเชน EVM อื่น) → ใช้ ethers legacy override
   try {
     const ethProvider = new ethers.providers.Web3Provider((window as any).ethereum)
     const signer = ethProvider.getSigner()
@@ -108,10 +157,8 @@ export async function safeSendContractTx(opts: SendOpts): Promise<string> {
       to,
       data,
       value: valueHex,
-      // บังคับ legacy บางราย
-      gasLimit: gasLimit ? ethers.BigNumber.from(gasLimit) : undefined,
-      gasPrice: ethers.BigNumber.from(gasPriceHex),
-      // ห้ามส่ง maxFeePerGas/maxPriority บน wallet ที่ไม่รองรับ EIP-1559
+      gasLimit: gasHex ? ethers.BigNumber.from(gasHex) : undefined,
+      gasPrice: ethers.BigNumber.from(finalGasPriceHex),
     })
     return txResp.hash
   } catch (e: any) {
@@ -124,3 +171,4 @@ export function normalizeTxError(e: any): Error {
     e?.data?.message || e?.error?.message || e?.message || (typeof e === 'object' ? JSON.stringify(e) : String(e))
   return new Error(m)
 }
+

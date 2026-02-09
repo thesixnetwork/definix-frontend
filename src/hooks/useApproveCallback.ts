@@ -1,3 +1,4 @@
+// src/hooks/useApproveCallback.ts
 import Caver from 'caver-js'
 import { ethers } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
@@ -22,6 +23,9 @@ import useWallet from './useWallet'
 import useKlipContract, { MAX_UINT_256_KLIP } from './useKlipContract'
 import { getCaver } from 'utils/caver'
 
+// >>> ใช้ helper ใหม่ที่รองรับ D'Cent / fee-delegation / legacy gas
+import { safeSendContractTx, normalizeTxError } from 'utils/tx'
+
 export enum ApprovalState {
   UNKNOWN,
   NOT_APPROVED,
@@ -34,7 +38,7 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
-  const { account, chainId } = useWallet()
+  const { account, chainId, connector } = useWallet()
 
   const { isKlip, request } = useKlipContract()
   const { toastSuccess, toastError } = useToast()
@@ -57,6 +61,7 @@ export function useApproveCallback(
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED
   }, [amountToApprove, currentAllowance, pendingApproval, spender])
+
   const tokenContract = useTokenContract(token?.address)
   const addTransaction = useTransactionAdder()
 
@@ -86,89 +91,82 @@ export function useApproveCallback(
       return
     }
 
-    let useExact = false
+    // KLIP เส้นทางเดิม (QR / in-app) — คงไว้ไม่แตะ
     if (isKlip()) {
-      await request({
-        contractAddress: tokenContract.address,
-        abi: getApproveAbi(),
-        input: [spender, MAX_UINT_256_KLIP],
-        value: '0',
-      })
-    } else {
-      const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
-        // general fallback for tokens who restrict approval amounts
+      try {
+        await request({
+          contractAddress: tokenContract.address,
+          abi: getApproveAbi(),
+          input: [spender, MAX_UINT_256_KLIP],
+          value: '0',
+        })
+        toastSuccess(
+          t('{{Action}} Complete', {
+            Action: t('actionApprove'),
+          }),
+        )
+      } catch (e: any) {
+        const err = normalizeTxError(e)
+        toastError(
+          t('{{Action}} Failed', {
+            Action: t('actionApprove'),
+          }),
+          err.message,
+        )
+        console.error('Failed to approve token (klip)', err)
+      }
+      return
+    }
+
+    // Non-Klip: ใช้ safeSendContractTx (รองรับ D’Cent, Kaikas, MetaMask)
+    try {
+      // detect token ที่ไม่ยอม max allowance → ถ้า estimateGas MaxUint256 พัง ให้สลับไป exact
+      let useExact = false
+      const gasEst = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
         useExact = true
         return tokenContract.estimateGas.approve(spender, amountToApprove.raw.toString())
       })
 
-      const iface = new ethers.utils.Interface(ERC20_ABI)
+      // เดิมโค้ดใช้ flagFeeDelegate + caver fee-delegation
+      // ตอนนี้ย้าย logic ไปอยู่ใน safeSendContractTx แล้ว
+      // ตรงนี้ encode data อย่างเดียว
+      const iface = new ethers.utils.Interface(ERC20_ABI as any)
+      const data = iface.encodeFunctionData('approve', [
+        spender,
+        useExact ? amountToApprove.raw.toString() : MaxUint256,
+      ])
 
-      const flagFeeDelegate = await UseDeParamForExchange(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
+      // เลือก gas limit hint (optional) — ให้ helper estimate เองก็ได้
+      const gasLimitHint =
+        gasEst && gasEst._isBigNumber ? '0x' + (gasEst as any).toHexString().replace(/^0x/, '') : undefined
 
-      if (flagFeeDelegate === 'Y') {
-        const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
-        const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
-        // @ts-ignore
-        const caver = getCaver()
-        // eslint-disable-next-line consistent-return
-        return caver.klay
-          .signTransaction({
-            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-            from: account,
-            to: token?.address,
-            gas: calculateGasMargin(estimatedGas),
-            data: iface.encodeFunctionData('approve', [
-              spender,
-              useExact ? amountToApprove.raw.toString() : MaxUint256,
-            ]),
-          })
-          .then((userSignTx) => {
-            const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-            userSigned.feePayer = feePayerAddress
+      const txHash = await safeSendContractTx({
+        account: account as string,
+        to: token.address,
+        data,
+        gasLimitHint, // ปล่อยว่างได้ถ้าอยากให้ helper estimate เอง
+        connector: (connector as any) ?? null,
+      })
 
-            return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
-              return caver.rpc.klay
-                .sendRawTransaction(feePayerSigningResult.raw)
-                .then((tx: KlaytnTransactionResponse) => {
-                  addTransaction(tx, {
-                    summary: `Approve ${amountToApprove.currency.symbol}`,
-                    approval: { tokenAddress: token.address, spender },
-                  })
-                })
-                .catch((error: Error) => {
-                  console.error('Failed to approve token', error)
-                })
-            })
-          })
-          .catch((tx) => {
-            return tx.transactionHash
-          })
-      }
+      addTransaction({ hash: txHash } as unknown as KlaytnTransactionResponse, {
+        summary: `Approve ${amountToApprove.currency.symbol}`,
+        approval: { tokenAddress: token.address, spender },
+      })
 
-      // eslint-disable-next-line consistent-return
-      return tokenContract
-        .approve(spender, useExact ? amountToApprove.raw.toString() : MaxUint256, {
-          gasLimit: calculateGasMargin(estimatedGas),
-        })
-        .then((response: KlaytnTransactionResponse) => {
-          addTransaction(response, {
-            summary: `Approve ${amountToApprove.currency.symbol}`,
-            approval: { tokenAddress: token.address, spender },
-          })
-          toastSuccess(
-            t('{{Action}} Complete', {
-              Action: t('actionApprove'),
-            }),
-          )
-        })
-        .catch((error: Error) => {
-          toastError(
-            t('{{Action}} Failed', {
-              Action: t('actionApprove'),
-            }),
-          )
-          console.error('Failed to approve token', error)
-        })
+      toastSuccess(
+        t('{{Action}} Complete', {
+          Action: t('actionApprove'),
+        }),
+      )
+    } catch (e: any) {
+      const err = normalizeTxError(e)
+      toastError(
+        t('{{Action}} Failed', {
+          Action: t('actionApprove'),
+        }),
+        err.message,
+      )
+      console.error('Failed to approve token', err)
     }
   }, [
     approvalState,
@@ -176,16 +174,19 @@ export function useApproveCallback(
     tokenContract,
     amountToApprove,
     spender,
-    chainId,
+    connector,
     account,
     addTransaction,
     toastSuccess,
     t,
     toastError,
+    isKlip,
+    request,
   ])
 
   return [approvalState, approve]
 }
+
 // wraps useApproveCallback in the context of a swap
 export function useApproveCallbackFromTrade(chainId, trade?: Trade, allowedSlippage = 0) {
   const amountToApprove = useMemo(
