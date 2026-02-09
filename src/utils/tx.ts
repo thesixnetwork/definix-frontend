@@ -171,4 +171,3 @@ export function normalizeTxError(e: any): Error {
     e?.data?.message || e?.error?.message || e?.message || (typeof e === 'object' ? JSON.stringify(e) : String(e))
   return new Error(m)
 }
-

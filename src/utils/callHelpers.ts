@@ -304,4 +304,3 @@ export const soushHarvestBnb = async (sousChefContract, account: string) => {
     throw normalizeTxError(e)
   }
 }
-
