@@ -107,7 +107,7 @@ const extractHashFromError = (err: any): string | undefined => {
     const errStr = JSON.stringify(err)
     const match = errStr.match(/"transactionHash"\s*:\s*"(0x[a-fA-F0-9]{64})"/)
     if (match) return match[1]
-  } catch { }
+  } catch {}
 
   return undefined
 }
@@ -118,7 +118,7 @@ const waitTxVisible = async (rpcCaver: any, hash: string, timeoutMs = 20000, int
     try {
       const tx = await rpcCaver.klay.getTransactionByHash(hash)
       if (tx) return true
-    } catch { }
+    } catch {}
     await sleep(intervalMs)
   }
   return false
@@ -133,7 +133,7 @@ const verifyTxOnChain = async (
   rpcCaver: any,
   hash: string,
   timeoutMs = 30000,
-  intervalMs = 2000
+  intervalMs = 2000,
 ): Promise<{ success: boolean; status: string; receipt: any }> => {
   const start = Date.now()
   while (Date.now() - start < timeoutMs) {
@@ -145,7 +145,7 @@ const verifyTxOnChain = async (
         const status = success ? 'success' : 'failed'
         return { success, status, receipt }
       }
-    } catch { }
+    } catch {}
     await sleep(intervalMs)
   }
   return { success: false, status: 'pending', receipt: null }
@@ -169,7 +169,7 @@ export async function safeSendContractTx(opts: SendOpts): Promise<string> {
   if (!gpHex) {
     try {
       gpHex = toHex(await rpcCaver.klay.getGasPrice())
-    } catch { }
+    } catch {}
   }
   if (!gpHex) gpHex = '0x3b9aca00'
   const finalGasPriceHex = bumpHex(gpHex, 2.0) || bumpHex(gpHex, 1.6) || gpHex
