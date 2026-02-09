@@ -58,10 +58,57 @@ const extractHash = (res: any) => {
   return undefined
 }
 
-const extractRaw = (res: any) => {
+const extractRaw = (res: any): string | undefined => {
   if (!res || typeof res !== 'object') return undefined
+  // Standard formats
   if (typeof (res as any).rawTransaction === 'string') return (res as any).rawTransaction
   if (typeof (res as any).raw === 'string') return (res as any).raw
+  // DCent / hardware wallet formats
+  if (typeof (res as any).result === 'string' && (res as any).result.startsWith('0x')) {
+    return (res as any).result
+  }
+  // Nested tx object
+  if ((res as any).tx && typeof (res as any).tx === 'object') {
+    if (typeof (res as any).tx.rawTransaction === 'string') return (res as any).tx.rawTransaction
+    if (typeof (res as any).tx.raw === 'string') return (res as any).tx.raw
+  }
+  // Check for signed transaction data
+  if (typeof (res as any).signedTransaction === 'string') return (res as any).signedTransaction
+  return undefined
+}
+
+/**
+ * Extracts a transaction hash from a wallet error object.
+ * Kaia Wallet includes the full receipt in "reverted" errors, allowing us to verify on-chain.
+ */
+const extractHashFromError = (err: any): string | undefined => {
+  if (!err) return undefined
+
+  // Direct transactionHash in error
+  if (typeof err?.transactionHash === 'string') return err.transactionHash
+
+  // Nested in data property (common in Kaia Wallet errors)
+  if (typeof err?.data?.transactionHash === 'string') return err.data.transactionHash
+
+  // Check error message for a hash pattern (0x followed by 64 hex chars)
+  const msg = err?.message || err?.data?.message || ''
+  if (typeof msg === 'string') {
+    const hashMatch = msg.match(/0x[a-fA-F0-9]{64}/)
+    if (hashMatch) return hashMatch[0]
+  }
+
+  // Check if error itself contains receipt-like structure
+  if (err?.blockHash && err?.transactionIndex !== undefined) {
+    return err.transactionHash
+  }
+
+  // Deep search in error object for transactionHash
+  try {
+    const errStr = JSON.stringify(err)
+    const match = errStr.match(/"transactionHash"\s*:\s*"(0x[a-fA-F0-9]{64})"/)
+    if (match) return match[1]
+  } catch { }
+
   return undefined
 }
 
@@ -71,10 +118,37 @@ const waitTxVisible = async (rpcCaver: any, hash: string, timeoutMs = 20000, int
     try {
       const tx = await rpcCaver.klay.getTransactionByHash(hash)
       if (tx) return true
-    } catch {}
+    } catch { }
     await sleep(intervalMs)
   }
   return false
+}
+
+/**
+ * Verifies transaction status on-chain by checking the receipt.
+ * This helps detect false wallet errors (e.g., wallet shows "reverted" but tx actually succeeded).
+ * @returns { success: boolean, status: string, receipt: any }
+ */
+const verifyTxOnChain = async (
+  rpcCaver: any,
+  hash: string,
+  timeoutMs = 30000,
+  intervalMs = 2000
+): Promise<{ success: boolean; status: string; receipt: any }> => {
+  const start = Date.now()
+  while (Date.now() - start < timeoutMs) {
+    try {
+      const receipt = await rpcCaver.klay.getTransactionReceipt(hash)
+      if (receipt) {
+        // status "0x1" = success, "0x0" = failed
+        const success = receipt.status === '0x1' || receipt.status === 1 || receipt.status === true
+        const status = success ? 'success' : 'failed'
+        return { success, status, receipt }
+      }
+    } catch { }
+    await sleep(intervalMs)
+  }
+  return { success: false, status: 'pending', receipt: null }
 }
 
 const getRpcCaver = () => {
@@ -95,7 +169,7 @@ export async function safeSendContractTx(opts: SendOpts): Promise<string> {
   if (!gpHex) {
     try {
       gpHex = toHex(await rpcCaver.klay.getGasPrice())
-    } catch {}
+    } catch { }
   }
   if (!gpHex) gpHex = '0x3b9aca00'
   const finalGasPriceHex = bumpHex(gpHex, 2.0) || bumpHex(gpHex, 1.6) || gpHex
@@ -122,30 +196,43 @@ export async function safeSendContractTx(opts: SendOpts): Promise<string> {
     }
 
     try {
-      let signed: any
-      try {
-        signed = await kaiaProv.request({ method: 'klay_signTransaction', params: [tx] })
-      } catch {
-        signed = undefined
+      // Create a promise that times out - helps detect if wallet hangs
+      const sendWithTimeout = async (timeoutMs: number) => {
+        return new Promise<any>((resolve, reject) => {
+          const timer = setTimeout(() => {
+            reject(new Error('Transaction request timed out. Please check your wallet.'))
+          }, timeoutMs)
+
+          kaiaProv
+            .request({ method: 'klay_sendTransaction', params: [tx] })
+            .then((result: any) => {
+              clearTimeout(timer)
+              resolve(result)
+            })
+            .catch((err: any) => {
+              clearTimeout(timer)
+              reject(err)
+            })
+        })
       }
 
-      const raw = extractRaw(signed)
-      if (raw) {
-        const sent = await rpcCaver.rpc.klay.sendRawTransaction(raw)
-        const hash = extractHash(sent) || extractHash(signed)
-        if (hash) return hash
-        throw new Error('Broadcasted raw tx but no hash returned')
-      }
-
-      const sent = await kaiaProv.request({ method: 'klay_sendTransaction', params: [tx] })
+      // 120 second timeout for hardware wallet signing
+      const sent = await sendWithTimeout(120000)
       const hash = extractHash(sent)
       if (!hash) throw new Error('Wallet did not return transaction hash')
 
-      const ok = await waitTxVisible(rpcCaver, hash, 20000, 800)
-      if (!ok) throw new Error('Transaction signed but not broadcasted to network')
-
+      await waitTxVisible(rpcCaver, hash, 30000, 1000)
       return hash
     } catch (e: any) {
+      // Check if the wallet error contains a transaction hash
+      // (Kaia Wallet sometimes shows "reverted" errors for successful transactions)
+      // Check if the wallet error contains a transaction hash
+      // (Kaia Wallet sometimes shows false "reverted" errors for successful transactions)
+      const errorHash = extractHashFromError(e)
+      if (errorHash) {
+        const verification = await verifyTxOnChain(rpcCaver, errorHash)
+        if (verification.success) return errorHash
+      }
       throw normalizeTxError(e)
     }
   }
