@@ -31,10 +31,10 @@ const FarmHighAPR = () => {
   const farmsLP = useFarms()
   const farmsWithApy = useFarmsList(farmsLP)
   const activeFarms = farmsWithApy.filter(
-    (farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X' && farm.apy.toString() !== 'Infinity',
+    (farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X' && farm.apy && farm.apy.toString() !== 'Infinity',
   )
   const activeFavorFarms = farmsWithApy.filter(
-    (farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X' && farm.favorApy.toString() !== 'Infinity',
+    (farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X' && farm.favorApy && farm.favorApy.toString() !== 'Infinity',
   )
   const sortedFarmData = useMemo(() => activeFarms.sort((a, b) => +a.apy - +b.apy).reverse(), [activeFarms])
   const sortedFavorFarmData = useMemo(
@@ -47,17 +47,17 @@ const FarmHighAPR = () => {
       const isFarmHighApy = sortedFarmData[0].apy.isGreaterThanOrEqualTo(sortedFavorFarmData[0].favorApy)
       return isFarmHighApy
         ? {
-            lpSymbol: sortedFarmData[0].lpSymbol,
-            apy: sortedFarmData[0].apy,
-            lpSymbols: sortedFarmData[0].lpSymbols,
-            totalLiquidityValue: sortedFarmData[0].totalLiquidityValue,
-          }
+          lpSymbol: sortedFarmData[0].lpSymbol,
+          apy: sortedFarmData[0].apy,
+          lpSymbols: sortedFarmData[0].lpSymbols,
+          totalLiquidityValue: sortedFarmData[0].totalLiquidityValue,
+        }
         : {
-            lpSymbol: sortedFavorFarmData[0].lpSymbol,
-            apy: sortedFavorFarmData[0].favorApy,
-            lpSymbols: sortedFavorFarmData[0].lpSymbols,
-            totalLiquidityValue: sortedFavorFarmData[0].totalLiquidityValue,
-          }
+          lpSymbol: sortedFavorFarmData[0].lpSymbol,
+          apy: sortedFavorFarmData[0].favorApy,
+          lpSymbols: sortedFavorFarmData[0].lpSymbols,
+          totalLiquidityValue: sortedFavorFarmData[0].totalLiquidityValue,
+        }
     }
     return null
   }, [sortedFarmData, sortedFavorFarmData])
